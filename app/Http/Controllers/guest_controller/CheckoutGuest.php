@@ -575,7 +575,7 @@ class CheckoutGuest extends Controller
 	public function InsertDataMapping($item)
 	{
 		$data_course = $this->courseModel->get_course($item);
-		$condition = "item_course.ID_COURSE = ".$data_course->ID_COURSE;
+		$condition = "item_course.ID_COURSE = '".$data_course->ID_COURSE."'";
 		$data_itemCourse = $this->courseModel->get_item_course($condition);
 		for ($i = 0; $i < count($data_itemCourse); $i++) {
 			if ($i == 0) {

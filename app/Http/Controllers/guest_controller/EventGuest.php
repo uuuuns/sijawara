@@ -43,11 +43,18 @@ class EventGuest extends Controller
 		$totalRows = DB::table('activity')->where('TYPE_ACTIVITY', 2)->count();
 
 		// Data event untuk halaman saat ini
-		$events = DB::table('activity')
-			->selectRaw('activity.*, event.ID_EVENT, event.CATEGORY_EVENT, event.LOCATION, event.ORGANIZER, event.CONTACT_CUSTOMER, event.DESKRIPSI_EVENT, event.LINK_ZOOM, (SELECT COUNT(*) FROM payment p LEFT JOIN `order` o ON o.ID_PAY = p.ID_PAY WHERE o.ID_USER = ? AND o.ID_PRODUCT = activity.ID_ACTIVITY AND p.DATE_PAY IS NOT NULL) as DATA_CHECKING, (DATEDIFF(CURDATE(), activity.DATE_START) >= 1) as EXPIRED', [session('user')[0]->get('ID_USER')])
-			->leftJoin('event', 'event.ID_ACTIVITY', '=', 'activity.ID_ACTIVITY')
-			->where('activity.TYPE_ACTIVITY', 2)
-			->paginate($perPage, ['*'], 'page', $currentPage);
+		if (empty(session('user'))) {
+			$events = DB::table('activity')
+				->selectRaw('activity.*, (DATEDIFF(CURDATE(), activity.DATE_START) >= 1) as EXPIRED')
+				->where('TYPE_ACTIVITY', 2)
+				->Paginate($perPage, ['*'], 'page', $currentPage);
+		}else {
+			$events = DB::table('activity')
+				->selectRaw('activity.*, event.ID_EVENT, event.CATEGORY_EVENT, event.LOCATION, event.ORGANIZER, event.CONTACT_CUSTOMER, event.DESKRIPSI_EVENT, event.LINK_ZOOM, (SELECT COUNT(*) FROM payment p LEFT JOIN `order` o ON o.ID_PAY = p.ID_PAY WHERE o.ID_USER = ? AND o.ID_PRODUCT = activity.ID_ACTIVITY AND p.DATE_PAY IS NOT NULL) as DATA_CHECKING, (DATEDIFF(CURDATE(), activity.DATE_START) >= 1) as EXPIRED', [session('user')[0]->get('ID_USER')])
+				->leftJoin('event', 'event.ID_ACTIVITY', '=', 'activity.ID_ACTIVITY')
+				->where('activity.TYPE_ACTIVITY', 2)
+				->paginate($perPage, ['*'], 'page', $currentPage);
+		}
 
 		// Load views
 		return 

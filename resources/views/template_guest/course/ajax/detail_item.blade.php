@@ -180,7 +180,7 @@
 
                         $("#body-detail").html('<div class="d-flex justify-content-center align-items-center"><img src="https://assets.materialup.com/uploads/b68f4460-aaa9-4e19-99d8-232dfea1c537/preview.gif" alt="Loader.gif" style="max-width: 50%;"></div>');
                         jQuery.ajax({
-                            url: "<?= url('course/quiz/evaluation/') ?>",
+                            url: "<?= Request::segment(0) ?>/course/quiz/evaluation/",
                             type: "POST",
                             data: {
                                 "id_quiz": $('input[name="id_quiz"]').val(),

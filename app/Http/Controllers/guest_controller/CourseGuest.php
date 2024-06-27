@@ -54,7 +54,7 @@ class CourseGuest extends Controller
 
 		$data['id_activity'] = $_GET['id_activity'];
 		$data['course'] = $this->courseModel->get_course($data['id_activity']);
-		$condition = "item_course.ID_COURSE = " . $data['course']->ID_COURSE .
+		$condition = "item_course.ID_COURSE = '" . $data['course']->ID_COURSE ."'".
 			" AND mapping_course.ID_USER = '" . session('user')[0]->get('ID_USER') . "'";
 		$this->courseModel->updateMappingIndex($data['course']->ID_COURSE, $data['id_activity']);
 		$data['item_course'] = $this->courseModel->get_item_course($condition);
