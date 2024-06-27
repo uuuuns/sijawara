@@ -184,7 +184,7 @@ class Course extends Model
         LEFT JOIN 
             mapping_course ON mapping_course.ID_ITEM = item_course.ID_ITEM
         WHERE 
-            "' . $condition . '"
+            ' . $condition . '
         GROUP BY 
             item_course.ID_ITEM;
         ');

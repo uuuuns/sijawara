@@ -257,7 +257,7 @@ class CourseGuest extends Controller
 			FROM
 				mapping_course
 			WHERE
-				"' . $condition_all_mapping . '"
+				' . $condition_all_mapping . '
 		');
 		echo json_encode($data_all_mapping);
 	}
@@ -271,7 +271,7 @@ class CourseGuest extends Controller
 		$id_activity = $_GET['id_activity'];
 		$data['checking_trans'] = $this->checkoutModel->get_trans($data_user);
 		$data['course'] = $this->courseModel->get_course($id_activity);
-		$condition = "item_course.ID_COURSE =" . $data['course']->ID_COURSE;
+		$condition = "item_course.ID_COURSE = '" . $data['course']->ID_COURSE."'";
 		$data_itemCourse = $this->courseModel->get_item_course($condition);
 		$data['item_course'] = array();
 		$data['total_item'] = array(
