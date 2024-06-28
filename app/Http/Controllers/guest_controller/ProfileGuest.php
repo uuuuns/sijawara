@@ -197,12 +197,13 @@ class ProfileGuest extends Controller
     {
         $userId = session('user')[0]['ID_USER'];
         $data = [
-            'FOTO_PROFILE' => FileUpload::S3($request->file('foto_profile'), 'FOTO_PROFILE', 'Foto-Profile-' . strtotime(now())),
+            'ID_USER' => $userId,
             'UNIV' => $request->input('univ'),
             'NIM' => $request->input('nim'),
             'STUDY' => $request->input('study'),
             'DEGREE' => $request->input('degree'),
-            'SEMESTER' => $request->input('sem')
+            'SEMESTER' => empty($request->input('sem')) ? 0 : $request->input('sem'),
+            'IS_GRADUATED' => empty($request->input('sem')) ? 1 : 0
         ];
         $user = DB::table('user_data')->where('ID_USER', $userId)->first();
         if ($user) {
