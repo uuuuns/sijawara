@@ -105,10 +105,13 @@
                         <label>Title <span class="text-danger">*</span></label>
                         <input placeholder="Title" type="text" name="title_activity" class="form-control" required>
                     </div>
-                    <div class="form-group mb-3">
-                        <label>Price <span class="text-danger">*</span></label>
-                        <input type="number" class="form-control CurrencyInput" name="price_activity">
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label control-label">
+                            Price <span class="text-danger">*</span>
+                        </label>
                         <div class="col-md-5">
+                            <input type="number" class="form-control CurrencyInput" name="price_activity"
+                                placeholder="0" required>
                             <span class="d-flex align-items-center mt-2">
                                 <div class="switch m-r-10">
                                     <input type="checkbox" id="setFree">
@@ -173,9 +176,9 @@
 </div>
 {{-- End Modal Add --}}
 
-{{-- Start Modal Update--}}
-<div class="modal" id="updateModal" data-backdrop="static" data-keyboard="false" tabindex="-1"
-    role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+{{-- Start Modal Update --}}
+<div class="modal" id="updateModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -193,23 +196,24 @@
                     <div class="form-group">
                         <label>Cover <span class="text-danger">*</span></label>
                         <div class="custom-file">
-                            <input type="file" name="image_activity" accept=".jpg, .png" data-max-file-size="1M"
-                                data-allowed-file-extensions="jpg png" class="custom-file-input dropify" required>
+                            <input type="file" name="up_image_activity" accept=".jpg, .png"
+                                data-max-file-size="1M" data-allowed-file-extensions="jpg png"
+                                class="custom-file-input dropify" required>
                         </div>
                     </div>
                     <div class="form-group mb-3">
                         <label>Title <span class="text-danger">*</span></label>
-                        <input placeholder="Title" type="text" name="title_activity" class="form-control"
+                        <input placeholder="Title" type="text" name="up_title_activity" class="form-control"
                             required>
                     </div>
                     <div class="form-group mb-3">
                         <label>Price <span class="text-danger">*</span></label>
-                        <input type="number" class="form-control CurrencyInput" name="price_activity">
+                        <input type="number" class="form-control up_CurrencyInput" name="up_price_activity">
                         <div class="col-md-5">
                             <span class="d-flex align-items-center mt-2">
                                 <div class="switch m-r-10">
-                                    <input type="checkbox" id="setFree">
-                                    <label for="setFree"></label>
+                                    <input type="checkbox" id="up_setFree">
+                                    <label for="up_setFree"></label>
                                 </div>
                                 Free
                             </span>
@@ -217,17 +221,17 @@
                     </div>
                     <div class="form-group mb-3">
                         <label>Date <span class="text-danger">*</span></label>
-                        <input type="datetime-local" class="form-control" name="date_start"
+                        <input type="datetime-local" class="form-control" name="up_date_start"
                             placeholder="Date Start">
                     </div>
                     <div class="form-group mb-3">
                         <label>Certificate Code <span class="text-danger">*</span></label>
-                        <input placeholder="Certificate Code" type="text" name="sertif_code" class="form-control"
-                            required>
+                        <input placeholder="Certificate Code" type="text" name="up_sertif_code"
+                            class="form-control" required>
                     </div>
                     <div class="form-group mb-3">
                         <label>Kategori <span class="text-danger">*</span></label>
-                        <select class="form-control select-category" name="category" id="cars"
+                        <select class="form-control select-category" name="up_category" id="cars"
                             onchange="zoomLinkCheck(this)" required>
                             <option value="0">Hybrid</option>
                             <option value="1">Online</option>
@@ -236,21 +240,22 @@
                     </div>
                     <div class="form-group mb-3">
                         <label>Contact Person <span class="text-danger">*</span></label>
-                        <input placeholder="+62 83342457452" type="text" name="contact" class="form-control"
+                        <input placeholder="+62 83342457452" type="text" name="up_contact" class="form-control"
                             required>
                     </div>
                     <div class="form-group mb-3">
                         <label>Penyelenggara <span class="text-danger">*</span></label>
-                        <input placeholder="Penyelenggara" type="text" name="penyelenggara" class="form-control"
-                            required>
+                        <input placeholder="Penyelenggara" type="text" name="up_penyelenggara"
+                            class="form-control" required>
                     </div>
                     <div class="form-group mb-3">
                         <label>Location <span class="text-danger">*</span></label>
-                        <input placeholder="Location" type="text" name="location" class="form-control" required>
+                        <input placeholder="Location" type="text" name="up_location" class="form-control"
+                            required>
                     </div>
                     <div class="form-group mb-3">
                         <label>Link Zoom </label>
-                        <input placeholder="zoom.com/" type="text" name="link_zoom" class="form-control"
+                        <input placeholder="zoom.com/" type="text" name="up_link_zoom" class="form-control"
                             required>
                     </div>
                     <div class="form-group mb-3">
@@ -272,8 +277,8 @@
 {{-- End Modal Update --}}
 
 {{-- Start Modal Delete --}}
-<div class="modal" id="deleteModal" data-backdrop="static" data-keyboard="false" tabindex="-1"
-    role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal" id="deleteModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -318,17 +323,25 @@
 
     function openviewModal(viewData) {
         var data = JSON.parse(viewData)
-        $('input[name="id_activity"]').val(data.ID_ACTIVITY)
-        $('input[name="image_activity"]').attr('data-default-file', data.IMAGE_ACTIVITY)
-        $('input[name="title_activity"]').val(data.TITLE_ACTIVITY)
-        $('input[name="price_activity"]').val(data.PRICE_ACTIVITY)
-        $('input[name="date_start"]').val(data.DATE_START)
-        $('input[name="sertif_code"]').val(data.SERTIF_CODE)
-        $('input[name="category"]').val(data.CATEGORY)
-        $('input[name="contact"]').val(data.CONTACT_CUSTOMER)
-        $('input[name="penyelenggara"]').val(data.ORGANIZER)
-        $('input[name="location"]').val(data.LOCATION)
-        $('input[name="link_zoom"]').val(data.LINK_ZOOM)
+        var price = data.PRICE_ACTIVITY
+        $('input[name="up_id_activity"]').val(data.ID_ACTIVITY)
+        $('input[name="up_image_activity"]').attr('data-default-file', data.IMAGE_ACTIVITY)
+        $('input[name="up_title_activity"]').val(data.TITLE_ACTIVITY)
+        // $('input[name="up_price_activity"]').val(price)
+        if (price = 0) {
+            $('#up_setFree').prop('checked')
+            $('.CurrencyInput').prop('readonly', true)
+            $('input[name="up_price_activity"]').val(price)
+        } else {
+            $('input[name="up_price_activity"]').val(price)
+        }
+        $('input[name="up_date_start"]').val(data.DATE_START)
+        $('input[name="up_sertif_code"]').val(data.SERTIF_CODE)
+        $('input[name="up_category"]').val(data.CATEGORY)
+        $('input[name="up_contact"]').val(data.CONTACT_CUSTOMER)
+        $('input[name="up_penyelenggara"]').val(data.ORGANIZER)
+        $('input[name="up_location"]').val(data.LOCATION)
+        $('input[name="up_link_zoom"]').val(data.LINK_ZOOM)
         $.ajax({
             url: 'events/get/' + data.ID_ACTIVITY, // Ganti 'URL_target' dengan URL yang tepat
             method: 'GET', // Atau 'POST' tergantung pada kebutuhan Anda
@@ -355,6 +368,16 @@
         } else {
             $('.CurrencyInput').prop('readonly', false)
             $('.CurrencyInput').val('')
+        }
+    })
+
+    $('#up_setFree').change(function() {
+        if ($(this).prop('checked')) {
+            $('.up_CurrencyInput').prop('readonly', true)
+            $('.up_CurrencyInput').val(0)
+        } else {
+            $('.up_CurrencyInput').prop('readonly', false)
+            $('.up_CurrencyInput').val('')
         }
     })
 

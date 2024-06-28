@@ -88,7 +88,6 @@ class CourseController extends Controller
 
     public function store(Request $req)
     {
-        // dd($req);
         $activity = [
             'ID_ACTIVITY'           => $this->GenerateUniqID('ACT', $req->input('title_activity')),
             'TITLE_ACTIVITY'        => $req->input('title_activity'),
@@ -120,7 +119,6 @@ class CourseController extends Controller
         DB::table('activity')->insert($activity);
         DB::table('course')->insert($course);
 
-        // dd($req);
         $data['ID_COURSE'] = $course['ID_COURSE'];
         $this->item_materi($data, $req);
 
@@ -157,7 +155,7 @@ class CourseController extends Controller
             view('template_main.admin_side.course.item_question', $data);
     }
 
-    public function update_course($id)
+    public function update_course(Request $req)
     {
         $data['title'] = "Update Course";
 
@@ -168,24 +166,27 @@ class CourseController extends Controller
                 kategori k
         ");
 
-        $data["course"] = DB::select("
+        $data['data'] = DB::select("
             SELECT
-                a.* ,
-                c.* ,
-                ic.* ,
-                dq.*
+                a.IMAGE_ACTIVITY ,
+                a.TITLE_ACTIVITY ,
+                a.PRICE_ACTIVITY ,
+                a.DATE_START ,
+                a.DATE_END ,
+                c.ID_COURSE ,
+                c.PENGUMUMAN ,
+                c.DESKRIPSI_COURSE ,
+                c.DESKRIPSI_COURSE_ITEM ,
+                a.SERTIF_CODE ,
+                k.KATEGORI
             FROM
                 activity a
             LEFT JOIN course c ON
                 c.ID_ACTIVITY = a.ID_ACTIVITY
-            LEFT JOIN item_course ic ON
-                ic.ID_COURSE = c.ID_COURSE
-            LEFT JOIN detail_quiz dq
-                dq.ID_COURSE = c.ID_COURSE
-            WHERE
-                a.STATUS = 1
-            AND
-                c.ID_ACTIVITY = '" . $id . "'
+            LEFT JOIN kategori k ON
+                k.ID_KATEGORI = c.KATEGORI
+            WHERE 
+                a.ID_ACTIVITY = '". $req->id_activity ."'
         ");
 
         return
@@ -195,9 +196,42 @@ class CourseController extends Controller
             view('template_main.admin_side.etc.footer');
     }
 
+    public function get_course_item($id_course, $id_materi)
+    {
+        // $id_detailCourse = $id_materi;
+        // $data['id_item'] = $id_detailCourse;
+        // // $data['data_materi'] = $this->Course->get_all_materi($_GET['ID_COURSE']);
+        // $data['data_materi'] = DB::select("
+        //     SELECT
+        //         *
+        //     FROM
+        //         item_course
+        //     WHERE
+        //         ID_COURSE = $id_course
+        // ");
+        // $data['no'] = 1;
+        // foreach ($data['data_materi'] as $item_data) {
+        //     $data['item']['ID_ITEM'] = $item_data['ID_ITEM'];
+        //     if ($item_data['TYPE'] == 1) {
+        //         $data['item'] = array(
+        //             'FILE'      => $item_data['FILE'],
+        //             'TITLE'     => $item_data['TITLE'],
+        //             'LINK_YT'   => $item_data['LINK_YT'],
+        //             'DESKRIPSI' => $item_data['DESKRIPSI']
+        //         );
+        //         $this->load->view('admin/activity/course/materi/item_materi_update', $data);
+        //     } else {
+        //         $this->load->view('admin/activity/course/quiz/item_quiz_update', $data);
+        //     }
+        //     $data['no']++;
+        // }
+    }
+
     public function update(Request $req)
     {
-        $data = [];
+        $data = [
+            '' => $req->input('')
+        ];
 
         DB::table('')->WHERE(['' => $req->input('')])->update($data);
 
@@ -206,11 +240,21 @@ class CourseController extends Controller
 
     public function delete(Request $req)
     {
-        $data = [];
+        $find_id_course = DB::selectOne("
+            SELECT
+                *
+            FROM
+                course
+            WHERE
+                ID_ACTIVITY = '". $req->id_activity ."'
+        ");
 
-        DB::table('')->WHERE(['' => $req->input('')])->delete($data);
-
-        return redirect('courses')->with(['succ_msg' => 'Successfully Add New Course', 'location' => 'courses']);
+        DB::table('detail_quiz')->WHERE(['ID_COURSE' => $find_id_course->ID_COURSE])->delete();
+        DB::table('item_course')->WHERE(['ID_COURSE' => $find_id_course->ID_COURSE])->delete();
+        DB::table('course')->WHERE(['ID_COURSE' => $find_id_course->ID_COURSE])->delete();
+        DB::table('activity')->WHERE(['ID_ACTIVITY' => $find_id_course->ID_ACTIVITY])->delete();
+        
+        return redirect('courses')->with(['succ_msg' => 'Successfully Delete Course', 'location' => 'courses']);
     }
 
     public function item_materi($data, $req)
@@ -275,9 +319,9 @@ class CourseController extends Controller
             $quiz[] = [
                 'ID_QUIZ'       => $lastIdQuiz,
                 'ID_COURSE'     => $data['ID_COURSE'],
-                'SOAL'          => $soalformedArray[$i],
+                'SOAL'          => $soalformedArray[0][$i],
                 'PIL_JWB'       => implode(',', [$jawaban_a[$i], $jawaban_b[$i], $jawaban_c[$i]]),
-                'KUNCI'         => $kunciformedArray[$i],
+                'KUNCI'         => $kunciformedArray[0][$i],
                 'ORDER_LIST'    => $order_list_quiz[$i]
             ];
 
