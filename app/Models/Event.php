@@ -111,7 +111,7 @@ class Event extends Model
                     FROM payment p
                     LEFT JOIN `order` o ON o.ID_PAY = p.ID_PAY 
                     WHERE o.ID_USER = "' . session('user')[0]->get('ID_USER') . '"
-                    AND o.ID_PRODUCT = activity.ID_ACTIVITY
+                    AND o.ID_PRODUCT = "activity.ID_ACTIVITY"
                     AND p.DATE_PAY IS NOT NULL) as DATA_CHECKING,
                 (DATEDIFF(CURDATE(), activity.DATE_START) >= 1) as EXPIRED
             FROM activity
