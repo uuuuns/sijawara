@@ -48,8 +48,8 @@
                             Price <span class="text-danger">*</span>
                         </label>
                         <div class="col-md-5">
-                            <input type="number" class="form-control CurrencyInput" name="price_course"
-                                placeholder="0">
+                            <input type="number" class="form-control CurrencyInput" name="price_course" placeholder="0"
+                                required>
                             <span class="d-flex align-items-center mt-2">
                                 <div class="switch m-r-10">
                                     <input type="checkbox" id="setFree">
@@ -64,10 +64,10 @@
                                 class="text-danger">*</span></label>
                         <div class="col-md-5">
                             <div class="d-flex align-items-center">
-                                <input type="datetime-local" class="form-control" name="date_start"
-                                    placeholder="Date Start" required>
+                                <input type="datetime-local" class="form-control" name="date_start" id="date_start"
+                                    required>
                                 <span class="p-h-10">to</span>
-                                <input type="datetime-local" class="form-control" name="date_end" placeholder="Date End"
+                                <input type="datetime-local" class="form-control" name="date_end" id="date_end"
                                     required>
                             </div>
                         </div>
@@ -75,7 +75,7 @@
                     <div class="form-group row">
                         <label class="col-sm-2 col-form-label control-label">Announcement</label>
                         <div class="col-md-5">
-                            <textarea name="announcement" id="editor"></textarea>
+                            <textarea name="announcement" id="editor" required></textarea>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -93,11 +93,10 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label control-label">Certificate Code<span
-                                class="text-danger">*</span></label>
+                        <label class="col-sm-2 col-form-label control-label">Certificate Code</label>
                         <div class="col-md-5">
                             <input type="text" class="form-control" name="certif_code" placeholder="Certificate Code"
-                                style="text-transform: uppercase" required>
+                                style="text-transform: uppercase">
                         </div>
                     </div>
                     <div class="form-group row">
@@ -188,6 +187,29 @@
             $('.CurrencyInput').val('')
         }
     })
+
+    const dateStartInput = document.getElementById('date_start');
+    const dateEndInput = document.getElementById('date_end');
+    $(document).ready(function() {
+        dateStartInput.addEventListener('change', function() {
+            // Set the minimum value of date_end to the value of date_start
+            dateEndInput.min = dateStartInput.value;
+
+            // If date_end is before date_start, clear the date_end input
+            if (dateEndInput.value && dateEndInput.value < dateStartInput.value) {
+                dateEndInput.value = '';
+            }
+        });
+
+
+        dateEndInput.addEventListener('change', function() {
+            // Check if date_end is before date_start
+            if (dateEndInput.value < dateStartInput.value) {
+                alert('End date cannot be before start date');
+                dateEndInput.value = '';
+            }
+        });
+    });
 
     $('#add_materi').click(function(e) {
         $("#add_item").toggleClass("is-loading");
