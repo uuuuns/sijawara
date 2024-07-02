@@ -14,10 +14,10 @@
             </li>
             <li class="nav-item dropdown">
                 <a class="dropdown-toggle" href="javascript:void(0);"
-                    style="<?= $title == 'Course' || $title == 'Event' ? 'color: #4b94f7 ; background-color: #e2edfe' : '' ?>;">
+                    style="<?= $title == 'Kursus' || $title == 'Event' ? 'color: #4b94f7 ; background-color: #e2edfe' : '' ?>;">
                     <span class="icon-holder">
                         <i class="anticon anticon-project"
-                            style="<?= $title == 'Course' || $title == 'Event' ? 'color: #4b94f7;' : '' ?>;"></i>
+                            style="<?= $title == 'Kursus' || $title == 'Event' ? 'color: #4b94f7;' : '' ?>;"></i>
                     </span>
                     <span class="title">Activity</span>
                     <span class="arrow">
@@ -26,10 +26,10 @@
                 </a>
                 <ul class="dropdown-menu">
                     <li>
-                        <a href="<?= url('courses') ?>">Course</a>
+                        <a href="<?= url('courses') ?>">Kursus</a>
                     </li>
                     <li>
-                        <a href="<?= url('events') ?>">Event</a>
+                        <a href="<?= url('events') ?>">Webinar</a>
                     </li>
                 </ul>
             </li>
@@ -53,7 +53,7 @@
                         <i class="anticon anticon-tag"
                             style="<?= $title == 'Promo' ? 'color: #4b94f7;' : '' ?>;"></i>
                     </span>
-                    <span class="title">Promo Code</span>
+                    <span class="title">Kode Promo</span>
                 </a>
             </li>
             <li class="nav-item dropdown">
@@ -75,7 +75,7 @@
                         <i class="anticon anticon-user"
                             style="<?= $title == 'User' ? 'color: #4b94f7;' : '' ?>;"></i>
                     </span>
-                    <span class="title">User</span>
+                    <span class="title">Peserta</span>
                 </a>
             </li>
             <li class="nav-item dropdown">

@@ -65,7 +65,7 @@
             <div class="d-flex justify-content-center">
                 <img src="{{ asset('assets_new') }}/images/empty.svg" width="350">
             </div>
-            <h3 class="font-sm text-center">No course available</h2>
+            <h3 class="font-sm text-center">Kursus tidak tersedia</h2>
 
         </div>
     </div>

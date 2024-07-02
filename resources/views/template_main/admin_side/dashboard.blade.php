@@ -46,7 +46,7 @@
                             <h2 class="m-b-0">
                                 <?= isset($total_course[0]->TOTAL) && $total_course[0]->TOTAL !== null ? $total_course[0]->TOTAL : '0' ?>
                             </h2>
-                            <p class="m-b-0 text-muted">Course</p>
+                            <p class="m-b-0 text-muted">Kursus</p>
                         </div>
                     </div>
                 </div>

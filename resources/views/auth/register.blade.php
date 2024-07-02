@@ -8,26 +8,26 @@
             </div>
             <div class="col-12 col-lg-6 h-100 p-4 bg-white rounded-5 position-absolute" id="formLogin">
                 <div class="d-flex ps-md-4 flex-column justify-content-center h-100">
-                    <h4 class="ps-1 fw-semibold">Register as User</h4>
+                    <h4 class="ps-1 fw-semibold">Daftar sebagai Peserta</h4>
                     <form class="fw-normal" action="<?= url('register/store') ?>" method="POST">
                         @csrf
                         <div id="form-1">
                             <div class="my-4 float-label-control">
                                 <input type="text"
                                     class="form-control input-text woocommerce-Input woocommerce-Input--text"
-                                    id="exampleInputEmail1" placeholder="Name" name="name" aria-describedby=""
+                                    id="exampleInputEmail1" placeholder="Nama Lengkap" name="name" aria-describedby=""
                                     required>
                             </div>
                             <div class="my-4 float-label-control">
                                 <input type="email"
                                     class="form-control input-text woocommerce-Input woocommerce-Input--text"
-                                    id="exampleInputEmail1" placeholder="Email address" name="email"
+                                    id="exampleInputEmail1" placeholder="Alamat Email" name="email"
                                     aria-describedby="emailHelp" required>
                             </div>
                             <div class="input-group my-4">
                                 <input type="password"
                                     class="form-control input-text woocommerce-Input woocommerce-Input--text"
-                                    id="registerPassword1" placeholder="Create password" name="password"
+                                    id="registerPassword1" placeholder="Buat Kata Sandi" name="password"
                                     aria-describedby="passwordHelp" required>
                                 <span class="align-self-center fw-semibold" id="togglePassword1"
                                     style="cursor: pointer;margin-left: -46px;z-index: 5;padding: 10px;"><i
@@ -36,7 +36,7 @@
                             <div class="input-group my-4 pb-lg-3">
                                 <input type="password"
                                     class="form-control input-text woocommerce-Input woocommerce-Input--text"
-                                    id="registerPassword2" placeholder="Confirm Password"
+                                    id="registerPassword2" placeholder="Konfirmasi Kata Sandi"
                                     aria-describedby="passwordHelp" required>
                                 <span class="align-self-center fw-semibold" id="togglePassword2"
                                     style="cursor: pointer;margin-left: -46px;z-index: 5;padding: 10px;"><i
@@ -45,11 +45,10 @@
                             <div class="col-md-12 mr-2 px-md-1 mt-1">
                                 <button type="submit"
                                     class="btn btn-primary btn-main-2 w-100 rounded-3 fw-semibold py-2 text-black border-0"
-                                    id="next-2">Register</button>
+                                    id="next-2">Daftar</button>
                             </div>
                             <div class="my-4 text-center">
-                                <span>Have an account? <a href="<?= url('login') ?>"
-                                        class="text-decoration-none fw-bold text-black">Login</a></span>
+                                <span>Sudah punya akun? <a href="<?= url('login') ?>" class="text-decoration-none fw-bold text-black">Masuk</a></span>
                             </div>
                         </div>
                     </form>

@@ -14,10 +14,10 @@
         <div class="row justify-content-center">
             <div class="col-lg-8 col-xl-8">
                 <div class="title-block">
-                    <h1>Courses</h1>
+                    <h1>Kursus</h1>
                     <ul class="header-bradcrumb justify-content-center">
-                        <li><a href="{{ url('') }}">Home</a></li>
-                        <li class="active" aria-current="page">Courses</li>
+                        <li><a href="{{ url('') }}">Beranda</a></li>
+                        <li class="active" aria-current="page">Kursus</li>
                     </ul>
                 </div>
             </div>
@@ -32,7 +32,7 @@
                 </div>
                 <div class="col-lg-4">
                     <div class="topbar-search ">
-                        <input type="text" placeholder="Search our courses" class="form-control search" id="search-form">
+                        <input type="text" placeholder="Cari Kursus" class="form-control search" id="search-form">
                         <label><i class="fa fa-search"></i></label>
                     </div>
                     <div class="dropdown mt-2">
@@ -47,7 +47,7 @@
     <div>
         <div class="filter-wrap text-center">
             <ul class="course-filter ">
-                <li><a href="#" data-value="0" id="nav-all" onclick="ChangeNav(this, event)">All</a></li>
+                <li><a href="#" data-value="0" id="nav-all" onclick="ChangeNav(this, event)">Lihat Semua</a></li>
                 <?php foreach ($kategori as $item_kategori) : ?>
                     <li><a href="#" data-value="<?= $item_kategori->ID_KATEGORI ?>" id="nav-<?= $item_kategori->ID_KATEGORI ?>" onclick="ChangeNav(this, event)"><?= $item_kategori->KATEGORI ?></a></li>
                 <?php endforeach ?>
@@ -58,7 +58,7 @@
                 <div class="tab-content" id="nav-tabContent">
                     <div class="tab-pane fade show pt-4 active show" id="nav-content" role="tabpanel" aria-labelledby="nav-content-tab" tabindex="0">
                         <div class="row justify-content-center" id="nav-content-item">
-                            <h3 class="font-sm text-center">No course available</h2>
+                            <h3 class="font-sm text-center">Tidak ada kursus tersedia</h2>
                         </div>
                     </div>
                 </div>

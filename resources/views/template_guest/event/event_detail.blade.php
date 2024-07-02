@@ -6,7 +6,7 @@
                 <div class="alert alert-danger " role="alert">
                     <div class="position-relative">
                         <div class="position-absolute top-50 start-50 translate-middle">
-                            <h5 class="py-2">This event has been expired</h5>
+                            <h5 class="py-2">Webinar telas dilaksanakan</h5>
                         </div>
                     </div>
                 </div>
@@ -25,7 +25,7 @@
                                 <div class="my-3 fw-bold d-flex align-self-start justify-content-start pe-0 align-items-center text-black">
                                     Share :<span class="fs-5"> <i class="fab fa-facebook mx-2" style="cursor: pointer"></i><i class="fab fa-twitter me-2" style="cursor: pointer"></i><i class="fab fa-instagram" style="cursor: pointer"></i></span>
                                 </div>
-                                <?php if ($event->DATA_CHECKING == 0) : ?>
+                                <?php if ($event->DATA_CHECKING == 0 && $event->EXPIRED != 1) : ?>
                                 <div class="price-header mb-3">
                                     <h2 class="course-price">
                                         <?= ($event->PRICE_ACTIVITY == 0) ? "Free" : "Rp " . number_format($event->PRICE_ACTIVITY, 2, ',', '.') ?>
@@ -35,10 +35,10 @@
                                     <form class="" id="FormBuyNow-info" method="POST" action="<?= url('purchase') ?>">
                                     @csrf
                                         <div id="data-input-info"></div>
-                                        <div class="w-100 button button-enroll-course btn btn-main-2 rounded" onclick="BuyNow()">Buy Now</div>
+                                        <div class="w-100 button button-enroll-course btn btn-main-2 rounded" onclick="BuyNow()">Beli Sekarang</div>
                                     </form>
                                     <button data-id-activity="<?= $event->ID_ACTIVITY ?>" onclick="AddToCart(this)" class="mt-2 w-100 button button-enroll-course btn btn-secondary btn-sm rounded">
-                                        Add to Cart
+                                        Tambahkan ke Keranjang
                                     </button>
                                 </div>
                                 <?php endif ?>
@@ -140,9 +140,9 @@
                                                         </div>
                                                         <div class="mt-3 rounded-4 d-flex align-items-center">
                                                             <div class="mx-4 py-3 bg-white">
-                                                                <label>Sertificate Code</label>
+                                                                <label>Kode Sertifikat</label>
                                                                 <input type="text" class="form-control mb-4" name="" id="input-code">
-                                                                <button type="button" class="btn btn-primary col-md-12 my-3" onclick="DownloadPdf(this)">Download PDF</button>
+                                                                <button type="button" class="btn btn-primary col-md-12 my-3" onclick="DownloadPdf(this)">Unduh PDF</button>
                                                             </div>
                                                         </div>
                                                     <?php } else if (date('Y-m-d h:i:s') > $event->DATE_START) { ?>
@@ -236,21 +236,28 @@
                 location.reload();
             }
         })
-        $.ajax({
-            url: '<?= Request::segment(0) ?>/add/order',
-            type: "GET",
-            data: {
-                id_activity: $(e).data("id-activity"),
-                type: 2
-            },
-            dataType: 'json',
-            success: function(data) {
-                Toast.fire({
-                    icon: (data.Status) ? 'success' : 'error',
-                    title: data.Message
-                })
-            }
-        });
+        <?php if (!empty(session('user'))) { ?>
+            $.ajax({
+                url: '<?= Request::segment(0) ?>/add/order',
+                type: "GET",
+                data: {
+                    id_activity: $(e).data("id-activity"),
+                    type: 2
+                },
+                dataType: 'json',
+                success: function(data) {
+                    Toast.fire({
+                        icon: (data.Status) ? 'success' : 'error',
+                        title: data.Message
+                    })
+                }
+            });
+        <?php } else { ?>
+            Toast.fire({
+                icon: 'error',
+                title: 'Harap Masuk Terlebih dulu!'
+            })
+        <?php } ?>
     }
 
     function BuyNow() {
@@ -269,7 +276,7 @@
             <?php if (!empty($checking_trans)) { ?>
                 Toast.fire({
                     icon: 'error',
-                    title: 'You have unfinished transactions!'
+                    title: 'Anda mempunyai transaksi yang belum selesai!'
                 })
             <?php } else { ?>
                 var csrfToken = $('meta[name="csrf-token"]').attr('content');
@@ -311,7 +318,7 @@
         <?php } else { ?>
             Toast.fire({
                 icon: 'error',
-                title: 'Please Login First!'
+                title: 'Harap Masuk Terlebih dulu!'
             })
         <?php } ?>
     }

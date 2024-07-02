@@ -6,26 +6,25 @@
             </div>
             <div class="col-12 col-lg-6 h-100 p-4 bg-white rounded-5 position-absolute" id="formLogin">
                 <div class="d-flex ps-4 flex-column justify-content-center h-100">
-                    <h4 class="ps-1 fw-semibold">Create New Password</h4>
-                    <h5 class="fw-normal mt-5">Your new password must be different from previous used passwords</h5>
+                    <h4 class="ps-1 fw-semibold">Buat Kata Sandi Baru</h4>
+                    <h5 class="fw-normal mt-5">Kata sandi baru harus berbeda dengan kata sandi lama</h5>
                     <form class="fw-normal" action="<?= url('resetPassword') ?>" method="POST">
                     <input type="hidden" value="<?= $token->ID_USER?>" name="id_user">
                     @csrf
                         <div class="input-group my-4">
-                            <input type="password" class="form-control border-bottom border-0 shadow-none rounded-0 ps-1" id="registerPassword1" placeholder="Password" name="password" aria-describedby="passwordHelp" required>
+                            <input type="password" class="form-control border-bottom border-0 shadow-none rounded-0 ps-1" id="registerPassword1" placeholder="Kata Sandi" name="password" aria-describedby="passwordHelp" required>
                             <span class="align-self-center fw-semibold" id="togglePassword1" style="cursor: pointer;margin-left: -46px;z-index: 5;padding: 10px;"><i class="far fa-eye fs-4"></i></span>
                         </div>
                         <div class="input-group my-4 pb-lg-3">
-                            <input type="password" class="form-control border-bottom border-0 shadow-none rounded-0 ps-1" id="registerPassword2" placeholder="Confirm Password" aria-describedby="passwordHelp" required>
+                            <input type="password" class="form-control border-bottom border-0 shadow-none rounded-0 ps-1" id="registerPassword2" placeholder="Konfirmasi Kata Sandi" aria-describedby="passwordHelp" required>
                             <span class="align-self-center fw-semibold" id="togglePassword2" style="cursor: pointer;margin-left: -46px;z-index: 5;padding: 10px;"><i class="far fa-eye fs-4"></i></span>
                         </div>
                         <div class="my-4 mt-6">
                             <button type="submit" class="btn btn-primary btb-main-2 w-100 rounded-3 fw-semibold py-2 text-black border-0">Reset
-                                Password</button>
+                                Kata Sandi</button>
                         </div>
                         <div class="my-4 text-center">
-                            <a href="<?= url('login') ?>" class="text-decoration-none text-black">Back
-                                to Login</a>
+                            <a href="<?= url('login') ?>" class="text-decoration-none text-black">Masuk</a>
                         </div>
                     </form>
                 </div>

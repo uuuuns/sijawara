@@ -144,7 +144,7 @@ class ProfileGuest extends Controller
     }
     public function mycourses()
     {
-        $data['title'] = "My Courses";
+        $data['title'] = "Kursus Ku";
         $user = new User();
         // dd($data);
         $data['course'] = [];

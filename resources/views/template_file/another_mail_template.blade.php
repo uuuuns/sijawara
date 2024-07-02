@@ -355,8 +355,8 @@
                                             </tbody>
                                         </table>
                                     <?php } ?>
-                                    <p>If you didn't request this, you can safely ignore this email.
-                                    <p>Thanks,<br>TBH Team</p>
+                                    <p>Jika anda tidak meminta email ini tolong abaikan.
+                                    <p>Terimakasih,<br>Jawara Team</p>
                                 </td>
                             </tr>
                         <?php } else { ?>

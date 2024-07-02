@@ -2,7 +2,7 @@
     <div class="card-header">
         <h5 class="card-title d-flex align-items-center row">
             <a data-toggle="collapse" href="#collapse{{ $no }}" class="col-md-12">
-                <span class="col-md-11">Detail - Quiz</span>
+                <span class="col-md-11">Detail - Kuis</span>
                 <input type="hidden" class="form-control" name="order_list[]" value="{{ $no }}">
                 <input type="hidden" class="form-control" name="type[]" value="2">
                 <div id="delete_quiz_{{ $no }}" class="btn btn-danger px-1 py-0 float-right"
@@ -24,13 +24,13 @@
                     <div id="add_new_soal_{{ $no }}" class="btn btn-success col-md-4 float-right mx-2"
                         style="cursor: pointer;">
                         <i class="anticon anticon-loading m-r-5"></i>
-                        <span class="col-md-12">Add New Question</span>
+                        <span class="col-md-12">Tambahkan Pertanyaan Baru</span>
 
                     </div>
                     <div class="row col-md-4 float-left mx-2">
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
-                                <span class="input-group-text" id="basic-addon1">Question Amount</span>
+                                <span class="input-group-text" id="basic-addon1">Jumlah Pertanyaan</span>
                             </div>
                             <input type="number" class="form-control" id="total_question_{{ $no }}"
                                 placeholder="0">
@@ -39,7 +39,7 @@
                     <div id="add_new_batch_soal_{{ $no }}" class="btn btn-warning col-md-3 float-left mx-2"
                         style="cursor: pointer;">
                         <i class="anticon anticon-loading m-r-5"></i>
-                        <span class="col-md-12">Add Batch Question</span>
+                        <span class="col-md-12">Tambahkan Pertanyaan Batch</span>
                     </div>
                 </div>
             </div>
@@ -64,7 +64,7 @@
             </form>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-primary">Simpan Perubahan</button>
             </div>
         </div>
     </div>

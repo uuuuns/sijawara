@@ -14,8 +14,8 @@
                 <div class="title-block">
                     <h1>Events</h1>
                     <ul class="header-bradcrumb justify-content-center">
-                        <li><a href="{{ url('') }}">Home</a></li>
-                        <li class="active" aria-current="page">Events</li>
+                        <li><a href="{{ url('') }}">Beranda</a></li>
+                        <li class="active" aria-current="page">Webinar</li>
                     </ul>
                 </div>
             </div>
@@ -31,7 +31,7 @@
                 </div>
                 <div class="col-lg-4">
                     <div class="topbar-search ">
-                        <input type="text" placeholder="Search our courses" class="form-control search" id="search-form">
+                        <input type="text" placeholder="Cari Webinar" class="form-control search" id="search-form">
                         <label><i class="fa fa-search"></i></label>
                     </div>
                     <div class="dropdown mt-2">
@@ -139,7 +139,7 @@
                 if (result != "") {
                     $('#search-result').append(result)
                 } else {
-                    $('#search-result').append(" <a class='dropdown-item'>No matching records found</a>")
+                    $('#search-result').append(" <a class='dropdown-item'>Webinar tidak ditemukan</a>")
                 }
 
                 // show results if not empty

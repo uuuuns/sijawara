@@ -1,10 +1,10 @@
-<section class="footer <?= $title == 'TBHAcademy' ? 'pt-200' : '' ?>">
+<section class="footer <?= $title == 'SIJAWARA+' ? 'pt-200' : '' ?>">
     <div class="footer-mid">
         <div class="container">
             <div class="row">
                 <div class="col-xl-3 me-auto col-sm-8">
                     <div class="footer-logo mb-3">
-                        <img src="<?= url('assets/images/white-logo.svg') ?>" class="w-75 img-fluid">
+                        <img src="<?= url('assets_admin/images/logo/logo_sijawara.png') ?>" class="w-160 img-fluid">
                     </div>
                     <div class="widget footer-widget mb-5 mb-lg-0">
                         <p>Everyone can share and learn</p>
@@ -15,31 +15,30 @@
                     <div class="footer-widget mb-5 mb-xl-0" style="width: fit-content;float: inline-end;padding-right: 50px;">
                         <h5 class="widget-title">Explore</h5>
                         <ul class="list-unstyled footer-links">
-                            <li><a href="<?= url('') ?>">Home</a></li>
-                            <li><a href="<?= url('course') ?>">Course</a></li>
-                            <li><a href="<?= url('event') ?>">Event</a></li>
-                            <li><a href="<?= url('') ?>">About</a></li>
+                            <li><a href="<?= url('') ?>">Beranda</a></li>
+                            <li><a href="<?= url('course') ?>">Kursus</a></li>
+                            <li><a href="<?= url('event') ?>">Webinar</a></li>
+                            <li><a href="<?= url('') ?>">Tentang</a></li>
                         </ul>
                     </div>
                 </div>
 
                 <div class="col-xl-5 col-sm-6">
                     <div class="footer-widget mb-5 mb-xl-0">
-                        <h5 class="widget-title">Address</h5>
+                        <h5 class="widget-title">Alamat</h5>
                         <div class="d-flex gap-5">
                             <ul class="list-unstyled footer-links" style="flex:1;">
                                 <li>
-                                    <h6 class="text-white">Phone</h6><a href="#">+62 899-2876-420</a>
+                                    <h6 class="text-white">Nomor HP</h6><a href="#">+62 899-2876-420</a>
                                 </li>
                                 <li>
-                                    <h6 class="text-white">Email</h6><a href="#">inbis@stiki.ac.id</a>
+                                    <h6 class="text-white">Email</h6><a href="#">sijawara@gmail.com</a>
                                 </li>
                             </ul>
                             <ul class="list-unstyled footer-links" style="flex:2">
                                 <li>
-                                    <h6 class="text-white">Location</h6><a href="#">
-                                        Jl. Raya Tidar No.100, Karangbesuki,<br> Kec. Sukun,
-                                        Kota Malang, East Java 65146, 13910</a>
+                                    <h6 class="text-white">Lokasi</h6><a href="#">
+                                        Jl. Raya Ki Ageng Gribig, Madyopuro,<br> Kec. Kedungkandang, Kota Malang, Jawa Timur 65139</a>
                                 </li>
                             </ul>
                         </div>

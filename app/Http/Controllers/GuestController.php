@@ -21,7 +21,7 @@ class GuestController extends Controller
 
 	public function index()
 	{
-		$data['title'] = 'TBHAcademy';
+		$data['title'] = 'SIJAWARA+';
 
 		$data['kategori'] = DB::select('
 			SELECT

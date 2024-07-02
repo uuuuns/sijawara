@@ -15,24 +15,24 @@
                     </div>
                     <nav class="course-single-tabs learn-press-nav-tabs">
                         <div class="nav nav-tabs course-nav" id="nav-tab" role="tablist">
-                            <a class="nav-item nav-link active" id="nav-home-tab" data-bs-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home-tab" aria-selected="true">Overview</a>
+                            <a class="nav-item nav-link active" id="nav-home-tab" data-bs-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home-tab" aria-selected="true">Ringkasan</a>
                             <?php if (!empty(session('user'))) : ?>
-                                <a class="nav-item nav-link" id="nav-topics-tab" data-bs-toggle="tab" href="#nav-topics" role="tab" aria-controls="nav-topics-tab" aria-selected="false">Curriculum</a>
+                                <a class="nav-item nav-link" id="nav-topics-tab" data-bs-toggle="tab" href="#nav-topics" role="tab" aria-controls="nav-topics-tab" aria-selected="false">Kurikulum</a>
                             <?php endif ?>
-                            <a class="nav-item nav-link" id="nav-instructor-tab" data-bs-toggle="tab" href="#nav-instructor" role="tab" aria-controls="nav-instructor-tab" aria-selected="false">Instructor</a>
+                            <a class="nav-item nav-link" id="nav-instructor-tab" data-bs-toggle="tab" href="#nav-instructor" role="tab" aria-controls="nav-instructor-tab" aria-selected="false">Instruktur</a>
                         </div>
                     </nav>
 
                     <div class="tab-content tutori-course-content" id="nav-tabContent">
                         <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
                             <div class="single-course-details">
-                                <h4 class="course-title">Description</h4>
+                                <h4 class="course-title">Deskripsi</h4>
                                 <p>
                                     <?= $course->DESKRIPSI_COURSE ?>
                                 </p>
 
                                 <div class="course-widget course-info">
-                                    <h4 class="course-title">What You will Learn?</h4>
+                                    <h4 class="course-title">Apa yang akan anda pelajari?</h4>
                                     <?= $course->DESKRIPSI_COURSE_ITEM ?>
                                 </div>
                             </div>
@@ -112,7 +112,7 @@
 
                                 <li>
                                     <div class="d-flex justify-content-between align-items-center">
-                                        <span><i class="fas fa-play-circle"></i>Total Quiz</span>
+                                        <span><i class="fas fa-play-circle"></i>Total Kuis</span>
                                         <?= $total_item['quiz'] ?>
                                     </div>
                                 </li>
@@ -121,10 +121,10 @@
                                 <form class="" id="FormBuyNow-info" method="POST" action="<?= url('purchase') ?>">
                                     @csrf
                                     <div id="data-input-info"></div>
-                                    <div class="w-100 button button-enroll-course btn btn-main-2 rounded" onclick="BuyNow()">Buy Now</div>
+                                    <div class="w-100 button button-enroll-course btn btn-main-2 rounded" onclick="BuyNow()">Beli Sekarang</div>
                                 </form>
                                 <button data-id-activity="<?= $course->ID_ACTIVITY ?>" onclick="AddToCart(this)" class="mt-2 w-100 button button-enroll-course btn btn-secondary btn-sm rounded">
-                                    Add to Cart
+                                    Tambahakan ke keranjang
                                 </button>
                             </div>
                         </div>
@@ -167,7 +167,7 @@
         <?php } else { ?>
             Toast.fire({
                 icon: 'error',
-                title: 'Please login first!'
+                title: 'Harap Masuk terlebih dulu!'
             })
         <?php } ?>
     }
@@ -188,7 +188,7 @@
             <?php if (!empty($checking_trans)) { ?>
                 Toast.fire({
                     icon: 'error',
-                    title: 'You have unfinished transactions!'
+                    title: 'Anda punya transaksi yang belum selesai!'
                 })
             <?php } else { ?>
                 var csrfToken = $('meta[name="csrf-token"]').attr('content');
@@ -209,7 +209,7 @@
                         let timerInterval
                         $('#data-input-info').append('<input type="hidden" name="id_order_purchase[0]" value="' + data.IdOrder + '" />')
                         Swal.fire({
-                            title: 'Create Order!',
+                            title: 'Membuat Pesanan!',
                             html: 'Please Wait ...',
                             timer: 2000,
                             timerProgressBar: false,
@@ -230,7 +230,7 @@
         <?php } else { ?>
             Toast.fire({
                 icon: 'error',
-                title: 'Please login first!'
+                title: 'Harap Masuk Terlebih Dulu!'
             })
         <?php } ?>
     }

@@ -30,7 +30,7 @@ class AuthController extends Controller
 
     public function login()
     {
-        $data['title'] = "Login TBH";
+        $data['title'] = "Masuk SIJAWARA+";
 
         if (!empty(session('user')[0]['ID_ROLE']) && session('user')[0]['ID_ROLE'] == 1) {
             return redirect('dashboard');

@@ -248,7 +248,7 @@
         data: {
             labels: ['01:00', '12:00', '19:00', '23:00'],
             datasets: [{
-                label: 'Total Courses',
+                label: 'Total Kursus',
                 data: [0, 2, 5, 8],
                 borderColor: "#5580e9",
                 backgroundColor: "#ffff"

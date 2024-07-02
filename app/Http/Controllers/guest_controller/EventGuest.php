@@ -87,7 +87,9 @@ class EventGuest extends Controller
 		$id_activity = $_GET['id_activity'];
 		$data['event'] = $this->eventModel->get_event($id_activity);
 		$data['other_event'] = $this->eventModel->get_other_event($id_activity);
-
+		if (empty($data['event']->DATA_CHECKING)){
+			$data['event']->DATA_CHECKING = null;
+		}
 		$con = ['ID_ACTIVITY = "'.$id_activity.'"'];
         // $sertifCheck = $this->certificateModel->getCertificate($con);
 		$sertifCheck = DB::select("

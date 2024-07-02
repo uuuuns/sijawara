@@ -26,7 +26,7 @@
                 <form id="form-user" action="store" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label control-label">Cover <span class="text-danger">*</span>
+                        <label class="col-sm-2 col-form-label control-label">Kover Depan <span class="text-danger">*</span>
                         </label>
                         <div class="col-md-5">
                             <div class="custom-file">
@@ -36,16 +36,16 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label control-label">Title <span
+                        <label class="col-sm-2 col-form-label control-label">Judul <span
                                 class="text-danger">*</span></label>
                         <div class="col-md-5">
-                            <input type="text" class="form-control" name="title_activity" placeholder="Title Course"
+                            <input type="text" class="form-control" name="title_activity" placeholder="Judul Kursus"
                                 required>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-sm-2 col-form-label control-label">
-                            Price <span class="text-danger">*</span>
+                            Harga <span class="text-danger">*</span>
                         </label>
                         <div class="col-md-5">
                             <input type="number" class="form-control CurrencyInput" name="price_course"
@@ -55,12 +55,12 @@
                                     <input type="checkbox" id="setFree">
                                     <label for="setFree"></label>
                                 </div>
-                                Free
+                                Gratis
                             </span>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label control-label">Date <span
+                        <label class="col-sm-2 col-form-label control-label">Tanggal Kursus<span
                                 class="text-danger">*</span></label>
                         <div class="col-md-5">
                             <div class="d-flex align-items-center">
@@ -73,27 +73,27 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label control-label">Announcement</label>
+                        <label class="col-sm-2 col-form-label control-label">Pengunguman</label>
                         <div class="col-md-5">
                             <textarea name="announcement" id="editor"></textarea>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label control-label">Description <span
+                        <label class="col-sm-2 col-form-label control-label">Deskripsi<span
                                 class="text-danger">*</span></label>
                         <div class="col-md-5">
                             <textarea name="desc_course" id="editor" rows=11 cols=50 maxlength=250 required></textarea>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label control-label">What to Learn ? <span
+                        <label class="col-sm-2 col-form-label control-label">List Materi<span
                                 class="text-danger">*</span></label>
                         <div class="col-md-5">
                             <textarea name="desc_what_to_learn" id="editor" rows=11 cols=50 maxlength=250 required></textarea>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label control-label">Certificate Code<span
+                        <label class="col-sm-2 col-form-label control-label">Kode Sertifikat<span
                                 class="text-danger">*</span></label>
                         <div class="col-md-5">
                             <input type="text" class="form-control" name="certif_code" placeholder="Certificate Code"
@@ -101,7 +101,7 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label control-label">Category <span
+                        <label class="col-sm-2 col-form-label control-label">Kategori <span
                                 class="text-danger">*</span></label>
                         <div class="col-md-5">
                             <select class="select2" name="category">
@@ -129,12 +129,12 @@
                             <div data-toggle="modal" id="add_item" data-target="#exampleModalCenter"
                                 class="btn btn-primary m-r-5 col-md-12" style="cursor: pointer;">
                                 <i class="anticon anticon-loading m-r-5"></i>
-                                <span class="col-md-12">Add Item</span>
+                                <span class="col-md-12">Tambahkan Materi atau Kuis</span>
                             </div>
                         </div>
                     </div>
                     <div class="form-group text-right mt-5">
-                        <button type="submit" class="btn btn-primary btn-submit-form">Submit</button>
+                        <button type="submit" class="btn btn-primary btn-submit-form">Kirim</button>
                     </div>
                 </form>
             </div>
@@ -148,7 +148,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalCenterTitle">Add Chapter or Quiz ?</h5>
+                <h5 class="modal-title" id="exampleModalCenterTitle">Tambahkan Bab or kuis ?</h5>
                 <button type="button" class="close" data-dismiss="modal">
                     <i class="anticon anticon-close"></i>
                 </button>
@@ -157,11 +157,11 @@
                 <div class="col-md-12 text-center d-flex justify-content-around">
                     <a href="javascript.void(0)" id="add_materi" data-dismiss="modal"
                         class="btn btn-success col-md-5 py-5 h-100">
-                        <h1><i class="anticon anticon-book text-white"></i></h1> CHAPTER
+                        <h1><i class="anticon anticon-book text-white"></i></h1> BAB
                     </a>
                     <a href="javascript.void(0)" id="add_quiz" data-dismiss="modal"
                         class="btn btn-danger col-md-5 py-5 h-100">
-                        <h1><i class="anticon anticon-trophy text-white"></i></h1> QUIZ
+                        <h1><i class="anticon anticon-trophy text-white"></i></h1> KUIS
                     </a>
                 </div>
             </div>
@@ -234,13 +234,13 @@
     $(document).ready(function() {
         $('.dropify').dropify({
             messages: {
-                default: 'Drag or Drop to Choose Image',
-                replace: 'Change',
-                remove: 'Delete',
+                default: 'Tarik dan lepas gambar disini atau klik',
+                replace: 'Ganti',
+                remove: 'Hapus',
                 error: 'Error'
             },
             error: {
-                'fileSize': 'The file size is too big (1MB max).'
+                'fileSize': 'File terlalu besar (1MB maksimal).'
             }
         });
     });
