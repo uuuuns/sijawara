@@ -1,13 +1,13 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <div class="container px-4 px-md-0 py-4 pb-6 pt-3">
-    <h5 class="py-2 fw-semibold">Course</h5>
+    <h5 class="py-2 fw-semibold">Kursus</h5>
     <hr class="opacity-25">
     <div class="row mt-5 flex-column-reverse flex-lg-row">
         <div class="col-12 col-lg-6">
             <div class="d-flex flex-column flex-lg-row px-lg-0 ps-lg-3 px-3 justify-content-between align-items-lg-center align-items-start">
                 <div class="d-flex flex-row align-items-center gap-2 h-100">
                     <?php if ($tot_proggress == 100) { ?>
-                        <p class="fw-semibold fs-5 m-0">Done</p>
+                        <p class="fw-semibold fs-5 m-0">Tuntas</p>
                         <i class="bi bi-check-circle-fill text-success" style="font-size:24px; margin-top:2px"></i>
                     <?php } else { ?>
                         <p class="fw-semibold fs-5 m-0">Progress <?= ceil($tot_proggress) ?>%</p>
@@ -67,7 +67,7 @@
                                     </button>
                                 <?php } else { ?>
                                     <button class="btn <?= ($item->STATUS == 1) ? "border-primary" : "text-disable" ?> px-4 py-3 mb-3 rounded-3 shadow fw-semibold w-100" id="show-detail-<?= $item->ID_ITEM ?>" data-status="<?= $item->STATUS ?>" data-iditem="<?= $item->ID_ITEM ?>" data-type="<?= $item->TYPE ?>" onclick="ShowDetailItem(this)" <?= ($item->STATUS == 0) ? "disabled" : "" ?>>
-                                        Quiz <?= ++$quiz ?>
+                                        Kuis <?= ++$quiz ?>
                                     </button>
                             <?php }
                             } ?>
@@ -76,7 +76,7 @@
                             if ($tot_proggress == 100 ) { ?>
 
                                 <button class="btn border-primary px-4 py-3 mb-3 rounded-3 shadow fw-semibold w-100 btn-code" onclick="ShowCertificateCode(this)" data-type="5">
-                                    Show Certificate Code
+                                    Tampilkan kode sertifikat
                                 </button>
                             <?php } ?>
                         </div>
@@ -86,7 +86,7 @@
                                     <img src="https://img.freepik.com/free-vector/hr-management-hiring-employees-people-cv_107791-11222.jpg" alt="Loader.gif" style="max-width: 50%;">
                                 </div>
                                 <div class="d-flex justify-content-center pt-4">
-                                    Choose Materi
+                                    Pilih materi
                                 </div>
                             </div>
                         </div>
@@ -97,29 +97,28 @@
                         <?= (!empty($course->PENGUMUMAN)) ? $course->PENGUMUMAN : "Tidak ada pengumuman" ?>
                     </div>
                 </div>
-                <?php
-                if ($tot_proggress == 100 && $grade > 75) { ?>
-                    <div class="tab-pane fade" id="nav-sertif" role="tabpanel" aria-labelledby="nav-sertif-tab" tabindex="0">
+                <div class="tab-pane fade" id="nav-sertif" role="tabpanel" aria-labelledby="nav-sertif-tab" tabindex="0">
+                    <?php if ($tot_proggress == 100 && $grade > 75) { ?>
                         <div class="d-flex justify-content-center">
                             <div class="blurred-image" style="pointer-events: none">
                                 <embed class="overlay" style="width:600px; height:500px; pointer-events: none;" src="<?= $sertif->FILE_SERTIFIKAT ?>#toolbar=0&navpanes=0&scrollbar=0&statusbar=0&messages=0&scrollbar=0" type="text/plain"></emb>
                             </div>
                             <div class="shadow mx-5 mt-3 rounded-4 box-input d-flex align-items-center">
                                 <div class="mx-4 py-3 bg-white">
-                                    <label>Sertificate Code</label>
+                                    <label>Kode Sertifikat</label>
                                     <form action="javascript:void(0)">
                                         <input type="text" class="form-control mb-4" name="" id="input-code">
-                                        <button type="button" class="btn btn-primary col-md-12 my-3" onclick="DownloadPdf(this)">Download PDF</button>
+                                        <button type="button" class="btn btn-primary col-md-12 my-3" onclick="DownloadPdf(this)">Unduh PDF</button>
                                     </form>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                <?php } else { ?>
-                    <div class="mx-3 mx-lg-7 my-4 text-muted">
-                        Please complete the entire course and achieve a score above 75 poin.
-                    </div>
-                <?php } ?>
+                    <?php } else { ?>
+                        <div class="mx-3 mx-lg-7 my-4 text-muted">
+                            Silakan lengkapi seluruh kursus dan capai skor di atas 75 poin.
+                        </div>
+                    <?php } ?>
+                </div>
             </div>
         </div>
     </div>
@@ -165,7 +164,7 @@
             } else {
                 Toast.fire({
                     icon: 'error',
-                    title: 'Wrong Code!'
+                    title: 'Kode Tidak Valid!'
                 })
             }
         }
@@ -200,19 +199,19 @@
         }
         if ($(e).data("type") == 3) {
             Swal.fire({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
+                title: 'Apakah anda yakin?',
+                text: "Hal ini tidak bisa dikembalikan!",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, Try Again!'
+                confirmButtonText: 'Ya, Coba Lagi!'
             }).then((result) => {
                 if (result.isConfirmed) {
                     let timerInterval
                     Swal.fire({
-                        title: 'Reseting Quiz On Proccess !',
-                        html: 'it will be over in a few seconds.',
+                        title: 'Mereset Kuis Dalam Proses!',
+                        html: 'ini akan memakan waktu sebentar.',
                         timer: 2000,
                         timerProgressBar: false,
                         didOpen: () => {

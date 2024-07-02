@@ -7,7 +7,7 @@
                 <div class="d-flex align-items-center justify-content-center" style="width:600px; height:300px;">
                     <button class="btn bg-white px-3 py-2 rounded-3 shadow fw-semibold" onclick="ShowDocument(this)">
                         <i class="bi bi-file-text me-2" style="font-size: 1.1rem;-webkit-text-stroke: 0.2px;"></i>
-                        Show Document
+                        Tampilkan Dokumen
                     </button>
                 </div>
             </div>
@@ -20,16 +20,16 @@
         </section>
         <hr>
         <section id="video-course">
-            <h6 class="fw-semibold">Course video :</h6>
+            <h6 class="fw-semibold">Video Kursus :</h6>
             <?php
                 $pattern = '/(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/';
                 $url = $detail_item_course->LINK_YT;
             if (preg_match('/\/d\/(.*?)\//', $url, $matches)) { ?>
                     <button type="button" class="btn btn-primary w-100" data-toggle="modal" data-target="#YTModal" onclick=" window.open('<?=$detail_item_course->LINK_YT?>')">
-                            Open Video </button>
+                            Buka Video </button>
             <?php } else if (preg_match($pattern, $url, $matches)) { ?>
                     <button type="button" class="btn btn-primary w-100" data-toggle="modal" data-target="#YTModal" onclick=" window.open('<?=$detail_item_course->LINK_YT?>')">
-                        Open Video
+                        Buka Video
                     </button>
             <?php } else {
                 echo '<h6>Video cannot be opened. Contact instructor for more information.</h6>';
@@ -68,7 +68,7 @@
         </section>
         <hr>
         <section id="desc-course">
-            <h6 class="fw-semibold">Course Description :</h6>
+            <h6 class="fw-semibold">Deskripsi Kursus :</h6>
             <p class="text-muted">
                 <?= $detail_item_course->DESKRIPSI ?>
             </p>
@@ -78,7 +78,7 @@
     <?php if ($type == 1 && !empty($data_all_mapping) && $last_item[0]->ID_ITEM == $id_item) { ?>
         <div class="mx-4 my-4">
             <button class="btn btn-primary mt-4 px-4 py-2 mb-3 rounded-3 shadow fw-semibold w-100" data-iditem="<?= $id_item ?>" data-status="2" data-type="1" onclick="NextItem(this)">
-                Continue
+                Lanjukan
             </button>
         </div>
     <?php } ?>
@@ -124,13 +124,13 @@
                         <img class="nav-link rounded-circle" src="https://img.freepik.com/free-vector/completed-concept-illustration_114360-3891.jpg" style="width: 40%;height:50%;background-size:cover"></img>
                     </div>
                     <div class="d-flex justify-content-center pt-4">
-                        Anda Sudah Menyelesaikan Quiz dan Mendapatkan Nilai 100
+                        Anda Sudah Menyelesaikan Kuis dan Mendapatkan Nilai 100
                     </div>
                 </div>
             </div>
             <?php if (!empty($data_all_mapping) && $last_item->ID_ITEM == $id_item) { ?>
                 <button class="btn btn-primary mt-4 px-4 py-2 mb-3 rounded-3 shadow fw-semibold w-100" data-iditem="<?= $id_item ?>" data-status="2" data-type="2" onclick="NextItem(this)">
-                    Continue
+                    Lanjukan
                 </button>
             <?php } ?>
         <?php } else { ?>
@@ -140,7 +140,7 @@
                         <img src="https://img.freepik.com/free-vector/hr-management-hiring-employees-people-cv_107791-11222.jpg" alt="Loader.gif" style="max-width: 50%;">
                     </div>
                     <div class="d-flex justify-content-center pt-4">
-                        Anda Sudah Menyelesaikan Quiz dan Mendapatkan Nilai : <?= $quiz_grade->NILAI ?>
+                        Anda Sudah Menyelesaikan Kuis dan Mendapatkan Nilai : <?= $quiz_grade->NILAI ?>
                     </div>
                 </div>
             </div>
@@ -163,8 +163,8 @@
                             </p>
                         </div>
                         <div class="modal-footer row mx-2 border-0" id="footer_modal_<?= $item->ID_ITEM ?>">
-                            <button type="button" class="btn btn-white fw-semibold border border-primary col" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary fw-semibold col" onclick="submitKuis<?= $item->ID_ITEM ?>(this)">Submit</button>
+                            <button type="button" class="btn btn-white fw-semibold border border-primary col" data-bs-dismiss="modal">Tutup</button>
+                            <button type="button" class="btn btn-primary fw-semibold col" onclick="submitKuis<?= $item->ID_ITEM ?>(this)">Kirim</button>
                         </div>
                     </div>
                 </div>
@@ -198,7 +198,7 @@
             </div>
         <?php } else if ($quiz_grade->NILAI < 75) { ?>
             <button class="btn btn-primary px-4 py-2 mb-3 rounded-3 shadow fw-semibold w-100" data-iditem="<?= $id_item ?>" data-status="0" data-type="3" onclick="ShowDetailItem(this)">
-                Try The Quiz Again
+                Coba lagi
             </button>
         <?php } ?>
     </div>
@@ -206,13 +206,13 @@
 <script>
     function NextItem(e) {
         Swal.fire({
-            title: 'Are you sure, you want continue?',
-            text: "You won't be able to revert this!",
+            title: 'Apakah yakin lanjut?',
+            text: "Anda tidak akan dapat mengembalikannya!",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, Continue!'
+            confirmButtonText: 'Ya, Lanjutkan!'
         }).then((result) => {
             if (result.isConfirmed) {
                 ShowDetailItem(e)

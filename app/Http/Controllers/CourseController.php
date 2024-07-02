@@ -18,7 +18,7 @@ class CourseController extends Controller
     }
     public function index()
     {
-        $data['title'] = "Course";
+        $data['title'] = "Kursus";
 
         if (session('user')[0]->get('ID_ROLE') == 1) {
             $data['course'] = DB::select("
@@ -70,7 +70,7 @@ class CourseController extends Controller
 
     public function add_course()
     {
-        $data['title'] = "Add Course";
+        $data['title'] = "Tambahkan Kursus Baru";
 
         $data["kategori"] = DB::select("
             SELECT
@@ -157,7 +157,7 @@ class CourseController extends Controller
 
     public function update_course(Request $req)
     {
-        $data['title'] = "Update Course";
+        $data['title'] = "Edit Kursus";
 
         $data["kategori"] = DB::select("
             SELECT

@@ -40,7 +40,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 </head>
 
-<body id="top-header" style="<?= $title == "TBHAcademy" ? "background-image: url(assets_new/images/new/bg.png);background-size: cover;" : "" ?>">
+<body id="top-header" style="<?= $title == "SIJAWARA+" ? "background-image: url(assets_new/images/new/bg.png);background-size: cover;" : "" ?>">
     <style>
         :root {
             --theme-heading-font: "Poppins", sans-serif;
@@ -132,7 +132,7 @@
                 <div class="row justify-content-between align-items-center">
                     <div class="col-xl-8 col-lg-8 col-sm-6">
                         <div class="header-contact text-center text-sm-start text-lg-start">
-                            <a href="#">1010 Moon ave, New York, NY US</a>
+                            <a href="#">Jl. Raya Ki Ageng Gribig, Madyopuro, Kec. Kedungkandang, Kota Malang, Jawa Timur 65139 </a>
                         </div>
                     </div>
 
@@ -156,9 +156,9 @@
                 <div class="d-flex align-items-center justify-content-between">
                     <div class="site-logo">
                         <a href="{{ url('') }}" class="d-flex">
-                            <img class="" style="width: 35px; height: 35px;" src="<?= asset('assets_admin\images\logo\Logo TUT WURI HANDAYANI.png') ?>" alt="">
-                            <img class="ms-3" style="width: auto; height: 35px;" src="<?= asset('assets_admin\images\logo\Logo MBKM.png') ?>" alt="">
-                            <img class="ms-3" style="width: auto; height: 35px;" src="<?= asset('assets_admin\images\logo\logo-STIKI-PNG.png') ?>" alt="">
+                            <img class="" style="width: auto; height: 60px;" src="<?= asset('assets_new\images\new\sponsor\sijawara.png') ?>" alt="">
+                            <!-- <img class="ms-3" style="width: auto; height: 35px;" src="<?= asset('assets_admin\images\logo\Logo MBKM.png') ?>" alt="">
+                            <img class="ms-3" style="width: auto; height: 35px;" src="<?= asset('assets_admin\images\logo\logo-STIKI-PNG.png') ?>" alt=""> -->
                         </a>
                     </div>
 
@@ -170,25 +170,25 @@
                     <nav class="site-navbar ms-auto">
                         <ul class="primary-menu">
                             <li class="current">
-                                <a href="{{ url('course') }}">Course</a>
+                                <a href="{{ url('course') }}">Kursus</a>
                             </li>
                             <li class="me-0">
-                                <a href="{{ url('event') }}">Event</a>
+                                <a href="{{ url('event') }}">Webinar</a>
                             </li>
 
                             <?php if (!empty(session('user')[0])) { ?>
                                 <li class="d-md-none">
-                                    <a href="#" onclick="$('#form_checkout').submit()">Cart</a>
+                                    <a href="#" onclick="$('#form_checkout').submit()">Keranjang</a>
                                 </li>
                                 <li class="d-md-none">
-                                    <a href="{{ url('profile') }}">My Profile</a>
+                                    <a href="{{ url('profile') }}">Profil</a>
                                 </li>
                             <?php } else { ?>
                                 <li class="d-md-none">
-                                    <a href="{{ url('login') }}">Login</a>
+                                    <a href="{{ url('login') }}">Masuk</a>
                                 </li>
                                 <li class="d-md-none">
-                                    <a href="{{ url('register') }}">Sign up</a>
+                                    <a href="{{ url('register') }}">Daftar</a>
                                 </li>
                             <?php } ?>
                         </ul>
@@ -273,9 +273,9 @@
                                             <li><a class="" href="<?= url('dashboard') ?>">Dashboard</a></li>
                                         <?php    } else { ?>
                                             <li><a class="" href="<?= url('profile') ?>">Profile</a></li>
-                                            <li><a class=" " href="<?= url('profile/mycourses') ?>">My Courses</a></li>
-                                            <li><a class="" href="<?= url('profile/myevents') ?>">My Events</a></li>
-                                            <li><a class="" href="<?= url('profile/myebook') ?>">My Ebook</a></li>
+                                            <li><a class=" " href="<?= url('profile/mycourses') ?>">Kursus Ku</a></li>
+                                            <li><a class="" href="<?= url('profile/myevents') ?>">Webinar Ku</a></li>
+                                            <li><a class="" href="<?= url('profile/myebook') ?>">Ebook Ku</a></li>
                                         <?php    } ?>
                                         <hr>
                                         <li><a class="text-danger" href="<?= url('logout') ?>">Keluar</a></li>
@@ -286,8 +286,8 @@
                         </nav>
                     <?php  } else { ?>
                         <div class="header-btn d-none d-xl-block">
-                            <a href="{{ url('login') }}" class="login">Login</a>
-                            <a href="{{ url('register') }}" class="btn btn-main-2 btn-sm-2 rounded">Sign up</a>
+                            <a href="{{ url('login') }}" class="login">Masuk</a>
+                            <a href="{{ url('register') }}" class="btn btn-main-2 btn-sm-2 rounded">Daftar</a>
                         </div>
                     <?php } ?>
                 </div>

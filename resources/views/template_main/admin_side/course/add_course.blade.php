@@ -1,12 +1,12 @@
 <div class="main-content">
     <div class="page-header">
-        <h2 class="header-title">Add <?= $title ?></h2>
+        <h2 class="header-title">Tambah <?= $title ?></h2>
         <div class="header-sub-title">
             <nav class="breadcrumb breadcrumb-dash">
                 <a href="<?= url('dashboard') ?>" class="breadcrumb-item"><i
-                        class="anticon anticon-home m-r-5"></i>Home</a>
+                        class="anticon anticon-home m-r-5"></i>Beranda</a>
                 <a class="breadcrumb-item" href="<?= asset('manage/activity/course') ?>"><?= $title ?></a>
-                <span class="breadcrumb-item active">Add <?= $title ?></span>
+                <span class="breadcrumb-item active">Tambah <?= $title ?></span>
             </nav>
         </div>
     </div>
@@ -26,7 +26,7 @@
                 <form id="form-user" action="store" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label control-label">Cover <span class="text-danger">*</span>
+                        <label class="col-sm-2 col-form-label control-label">Kover Depan <span class="text-danger">*</span>
                         </label>
                         <div class="col-md-5">
                             <div class="custom-file">
@@ -36,16 +36,16 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label control-label">Title <span
+                        <label class="col-sm-2 col-form-label control-label">Judul Kursus <span
                                 class="text-danger">*</span></label>
                         <div class="col-md-5">
-                            <input type="text" class="form-control" name="title_activity" placeholder="Title Course"
+                            <input type="text" class="form-control" name="title_activity" placeholder="Judul Kursus"
                                 required>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-sm-2 col-form-label control-label">
-                            Price <span class="text-danger">*</span>
+                            Harga <span class="text-danger">*</span>
                         </label>
                         <div class="col-md-5">
                             <input type="number" class="form-control CurrencyInput" name="price_course" placeholder="0"
@@ -55,52 +55,52 @@
                                     <input type="checkbox" id="setFree">
                                     <label for="setFree"></label>
                                 </div>
-                                Free
+                                Gratis
                             </span>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label control-label">Date <span
+                        <label class="col-sm-2 col-form-label control-label">Tanggal <span
                                 class="text-danger">*</span></label>
                         <div class="col-md-5">
                             <div class="d-flex align-items-center">
                                 <input type="datetime-local" class="form-control" name="date_start" id="date_start"
                                     required>
-                                <span class="p-h-10">to</span>
+                                <span class="p-h-10">sampai</span>
                                 <input type="datetime-local" class="form-control" name="date_end" id="date_end"
                                     required>
                             </div>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label control-label">Announcement</label>
+                        <label class="col-sm-2 col-form-label control-label">Pengunguman</label>
                         <div class="col-md-5">
                             <textarea name="announcement" id="editor" required></textarea>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label control-label">Description <span
+                        <label class="col-sm-2 col-form-label control-label">Deskripsi <span
                                 class="text-danger">*</span></label>
                         <div class="col-md-5">
                             <textarea name="desc_course" id="editor" rows=11 cols=50 maxlength=250 required></textarea>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label control-label">What to Learn ? <span
+                        <label class="col-sm-2 col-form-label control-label">Apa yang akan dipelajari? <span
                                 class="text-danger">*</span></label>
                         <div class="col-md-5">
                             <textarea name="desc_what_to_learn" id="editor" rows=11 cols=50 maxlength=250 required></textarea>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label control-label">Certificate Code</label>
+                        <label class="col-sm-2 col-form-label control-label">Kode Sertifikat</label>
                         <div class="col-md-5">
-                            <input type="text" class="form-control" name="certif_code" placeholder="Certificate Code"
+                            <input type="text" class="form-control" name="certif_code" placeholder="Kode Sertifikat"
                                 style="text-transform: uppercase">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label control-label">Category <span
+                        <label class="col-sm-2 col-form-label control-label">Kategori <span
                                 class="text-danger">*</span></label>
                         <div class="col-md-5">
                             <select class="select2" name="category">
@@ -128,7 +128,7 @@
                             <div data-toggle="modal" id="add_item" data-target="#exampleModalCenter"
                                 class="btn btn-primary m-r-5 col-md-12" style="cursor: pointer;">
                                 <i class="anticon anticon-loading m-r-5"></i>
-                                <span class="col-md-12">Add Item</span>
+                                <span class="col-md-12">Tambahkan Bab atau Kuis</span>
                             </div>
                         </div>
                     </div>
@@ -147,7 +147,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalCenterTitle">Add Chapter or Quiz ?</h5>
+                <h5 class="modal-title" id="exampleModalCenterTitle">Tambahkan Bab atau Kuis?</h5>
                 <button type="button" class="close" data-dismiss="modal">
                     <i class="anticon anticon-close"></i>
                 </button>
@@ -156,11 +156,11 @@
                 <div class="col-md-12 text-center d-flex justify-content-around">
                     <a href="javascript.void(0)" id="add_materi" data-dismiss="modal"
                         class="btn btn-success col-md-5 py-5 h-100">
-                        <h1><i class="anticon anticon-book text-white"></i></h1> CHAPTER
+                        <h1><i class="anticon anticon-book text-white"></i></h1> BAB
                     </a>
                     <a href="javascript.void(0)" id="add_quiz" data-dismiss="modal"
                         class="btn btn-danger col-md-5 py-5 h-100">
-                        <h1><i class="anticon anticon-trophy text-white"></i></h1> QUIZ
+                        <h1><i class="anticon anticon-trophy text-white"></i></h1> KUIS
                     </a>
                 </div>
             </div>
@@ -205,7 +205,7 @@
         dateEndInput.addEventListener('change', function() {
             // Check if date_end is before date_start
             if (dateEndInput.value < dateStartInput.value) {
-                alert('End date cannot be before start date');
+                alert('Akhir tanggal tidak bisa dipilih sebelum tanggal dimulai');
                 dateEndInput.value = '';
             }
         });
@@ -242,7 +242,7 @@
 
     $('.dropify').dropify({
         messages: {
-            default: 'Drag atau drop untuk memilih file',
+            default: 'Drag dan drop untuk memilih file',
             replace: 'Ganti',
             remove: 'Hapus',
             error: 'error'

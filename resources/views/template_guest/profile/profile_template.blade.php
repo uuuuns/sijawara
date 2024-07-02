@@ -71,7 +71,7 @@
                                         <ul class="nav nav-list collapse" id="submenu">
                                             <li class="nav-item w-100">
                                                 <a href="/profile/mycourses" class="nav-link d-flex align-middle px-4 py-3 rounded-0">
-                                                    <span class="ms-3 ps-3 fs-6 align-self-center d-none d-sm-inline">My Courses</span>
+                                                    <span class="ms-3 ps-3 fs-6 align-self-center d-none d-sm-inline">Kursus Ku</span>
                                                 </a>
                                             </li>
                                             <li class="w-100">
@@ -79,7 +79,7 @@
                                             </li>
                                             <li class="nav-item w-100">
                                                 <a href="/profile/myevents" class="nav-link d-flex align-middle px-4 py-3 rounded-0">
-                                                    <span class="ms-3 ps-3 fs-6 align-self-center d-none d-sm-inline">My Events</span>
+                                                    <span class="ms-3 ps-3 fs-6 align-self-center d-none d-sm-inline">Webinar Ku</span>
                                                 </a>
                                             </li>
                                         </ul>

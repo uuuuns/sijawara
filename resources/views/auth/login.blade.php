@@ -10,27 +10,27 @@
                     {{--
                         msg error
                     --}}
-                    <h4 class="ps-1 fw-semibold">Login</h4>
+                    <h4 class="ps-1 fw-semibold">Masuk</h4>
                     <form class="fw-normal" action="<?= url('login/authentication') ?>" method="POST">
                         @csrf
                         <div class="my-4 float-label-control">
                             <input type="email" class="form-control input-text woocommerce-Input woocommerce-Input--text" id="exampleInputEmail1" name="email" placeholder="Email" aria-describedby="emailHelp" required>
                         </div>
                         <div class="input-group my-4">
-                            <input type="password" class="form-control input-text woocommerce-Input woocommerce-Input--text" name="password" id="exampleInputPassword1" placeholder="Password" aria-describedby="passwordHelp" required>
+                            <input type="password" class="form-control input-text woocommerce-Input woocommerce-Input--text" name="password" id="exampleInputPassword1" placeholder="Kata Sandi" aria-describedby="passwordHelp" required>
                             <span class="align-self-center fw-semibold" id="togglePassword" style="cursor: pointer;margin-left: -46px;z-index: 5;padding: 10px;"><i class="far fa-eye fs-4"></i></span>
                         </div>
                         <div class="mt-4 my-3">
                             <div class="g-recaptcha" data-sitekey="6LfZlSETAAAAAC5VW4R4tQP8Am_to4bM3dddxkEt"></div>
                         </div>
                         <div class="mt-3 my-3">
-                            <a href="<?= url('forgot-password') ?>" class="text-decoration-none fw-bold text-black">Forgot Password?</a>
+                            <a href="<?= url('forgot-password') ?>" class="text-decoration-none fw-bold text-black">Lupa Password?</a>
                         </div>
                         <div class="my-4">
-                            <button type="submit" class="btn  btn-main-2 btn-primary w-100 rounded-3 fw-semibold py-2 text-black border-0">Login</button>
+                            <button type="submit" class="btn  btn-main-2 btn-primary w-100 rounded-3 fw-semibold py-2 text-black border-0">Masuk</button>
                         </div>
                         <div class="my-4 text-center">
-                            <span>Don't have account? <a href="<?= url('register') ?>" class="text-decoration-none fw-bold text-black">Register</a></span>
+                            <span>Tidak punya akun? <a href="<?= url('register') ?>" class="text-decoration-none fw-bold text-black">Daftar Sekarang</a></span>
                         </div>
                     </form>
                 </div>

@@ -95,7 +95,7 @@
                 </div>
             </form>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-primary">Simpan Perubahan</button>
             </div>
         </div>
     </div>

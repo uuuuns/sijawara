@@ -4,10 +4,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title><?= $title ?> - TBH Academy</title>
+    <title><?= $title ?> - SIJAWARA+</title>
 
     <!-- Favicon -->
-    <link rel="shortcut icon" href="<?= asset('assets/images/logo_colored.svg') ?>">
+    <link rel="shortcut icon" href="<?= asset('assets_admin\images\logo\favicon_sijawara.svg') ?>">
     <!-- Select2 css -->
     <link href="<?= asset('assets_admin/vendors/select2/select2.css') ?>" rel="stylesheet">
     <!-- DatePicker css -->
@@ -104,7 +104,7 @@
                                     <div class="d-flex align-items-center justify-content-between">
                                         <div>
                                             <i class="anticon opacity-04 font-size-16 anticon-laptop"></i>
-                                            <span class="m-l-10">Home</span>
+                                            <span class="m-l-10">Beranda</span>
                                         </div>
                                         <i class="anticon font-size-10 anticon-right"></i>
                                     </div>
@@ -113,7 +113,7 @@
                                     <div class="d-flex align-items-center justify-content-between">
                                         <div>
                                             <i class="anticon opacity-04 font-size-16 anticon-logout"></i>
-                                            <span class="m-l-10">Logout</span>
+                                            <span class="m-l-10">Keluar</span>
                                         </div>
                                         <i class="anticon font-size-10 anticon-right"></i>
                                     </div>
