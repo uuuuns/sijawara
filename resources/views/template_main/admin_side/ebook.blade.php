@@ -271,8 +271,6 @@
         cover_book.settings['defaultFile'] = test;
         cover_book.destroy();
         cover_book.init();
-        // $('input[name="up_image_ebook"]').attr('data-default-file', data.IMAGE_EBOOK)
-        console.log(test);
 
         var ebook = $('input[name="frame_ebook"]').dropify();
         ebook = ebook.data('dropify');

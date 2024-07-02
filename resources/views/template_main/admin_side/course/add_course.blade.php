@@ -26,7 +26,8 @@
                 <form id="form-user" action="store" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label control-label">Kover Depan <span class="text-danger">*</span>
+                        <label class="col-sm-2 col-form-label control-label">Kover Depan <span
+                                class="text-danger">*</span>
                         </label>
                         <div class="col-md-5">
                             <div class="custom-file">
@@ -75,21 +76,21 @@
                     <div class="form-group row">
                         <label class="col-sm-2 col-form-label control-label">Pengunguman</label>
                         <div class="col-md-5">
-                            <textarea name="announcement" id="editor" required></textarea>
+                            <textarea name="announcement" id="announcement" required></textarea>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-sm-2 col-form-label control-label">Deskripsi <span
                                 class="text-danger">*</span></label>
                         <div class="col-md-5">
-                            <textarea name="desc_course" id="editor" rows=11 cols=50 maxlength=250 required></textarea>
+                            <textarea name="desc_course" id="desc_course" rows=11 cols=50 maxlength=250 required></textarea>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-sm-2 col-form-label control-label">Apa yang akan dipelajari? <span
                                 class="text-danger">*</span></label>
                         <div class="col-md-5">
-                            <textarea name="desc_what_to_learn" id="editor" rows=11 cols=50 maxlength=250 required></textarea>
+                            <textarea name="desc_what_to_learn" id="desc_what_to_learn" rows=11 cols=50 maxlength=250 required></textarea>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -97,6 +98,16 @@
                         <div class="col-md-5">
                             <input type="text" class="form-control" name="certif_code" placeholder="Kode Sertifikat"
                                 style="text-transform: uppercase">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label control-label">Tipe Kursus <span
+                                class="text-danger">*</span></label>
+                        <div class="col-md-5">
+                            <select class="select2" name="is_public">
+                                <option value="1">Umum</option>
+                                <option value="0">Pribadi</option>
+                            </select>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -172,11 +183,106 @@
 <script>
     var i = 0;
     var id_quiz = 1;
-    var limit = 0;
+    var limit = 0;    
 
-    CKEDITOR.replace('announcement');
-    CKEDITOR.replace('desc_course');
-    CKEDITOR.replace('desc_what_to_learn');
+    $(document).ready(function() {
+        var $editor = $('#desc_course');
+        $editor.summernote({
+            height: 200,
+            callbacks: {
+                onPaste: function(e) {
+                    console.log('Called event paste', e);
+                },
+                onImageUpload: function(files) {
+                    console.log(files);
+                    $summernote.summernote('insertNode', imgNode);
+                }
+            },
+            toolbar: [
+                ['style', ['bold', 'italic', 'underline']],
+                ['fontsize', ['fontsize']],
+                ['color', ['color']],
+                ['height', ['height']],
+                ['operation', ['undo', 'redo']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['object', ['link']]
+            ]
+        });
+
+        $('#insert-btn').click(() => {
+            $editor.summernote('insertParagraph');
+        });
+
+        $('#bold-btn').click(() => {
+            $editor.summernote('bold');
+        });
+    });
+
+    $(document).ready(function() {
+        var $editor = $('#announcement');
+        $editor.summernote({
+            height: 200,
+            callbacks: {
+                onPaste: function(e) {
+                    console.log('Called event paste', e);
+                },
+                onImageUpload: function(files) {
+                    console.log(files);
+                    $summernote.summernote('insertNode', imgNode);
+                }
+            },
+            toolbar: [
+                ['style', ['bold', 'italic', 'underline']],
+                ['fontsize', ['fontsize']],
+                ['color', ['color']],
+                ['height', ['height']],
+                ['operation', ['undo', 'redo']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['object', ['link']]
+            ]
+        });
+
+        $('#insert-btn').click(() => {
+            $editor.summernote('insertParagraph');
+        });
+
+        $('#bold-btn').click(() => {
+            $editor.summernote('bold');
+        });
+    });
+
+    $(document).ready(function() {
+        var $editor = $('#desc_what_to_learn');
+        $editor.summernote({
+            height: 200,
+            callbacks: {
+                onPaste: function(e) {
+                    console.log('Called event paste', e);
+                },
+                onImageUpload: function(files) {
+                    console.log(files);
+                    $summernote.summernote('insertNode', imgNode);
+                }
+            },
+            toolbar: [
+                ['style', ['bold', 'italic', 'underline']],
+                ['fontsize', ['fontsize']],
+                ['color', ['color']],
+                ['height', ['height']],
+                ['operation', ['undo', 'redo']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['object', ['link']]
+            ]
+        });
+
+        $('#insert-btn').click(() => {
+            $editor.summernote('insertParagraph');
+        });
+
+        $('#bold-btn').click(() => {
+            $editor.summernote('bold');
+        });
+    });
 
     $('#setFree').change(function() {
         if ($(this).prop('checked')) {

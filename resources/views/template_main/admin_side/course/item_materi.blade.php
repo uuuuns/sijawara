@@ -19,8 +19,10 @@
                 <label class="col-sm-2 col-form-label control-label">File Materi</label>
                 <div class="col-md-5">
                     <div class="custom-file">
-                        <input type="file" name="materi_file[]" accept=".pdf" data-allowed-file-extensions="pdf"
-                            class="custom-file-input file_materi" required required>
+                        <input type="file" name="materi_file[]"
+                            accept="application/pdf, application/vnd.ms-powerpoint, application/vnd.openxmlformats-officedocument.presentationml.presentation"
+                            data-allowed-file-extensions="pdf, ppt, pptx" class="custom-file-input file_materi"
+                            required>
                     </div>
                 </div>
             </div>
@@ -48,59 +50,6 @@
         </div>
     </div>
 </div>
-
-{{-- Start Modal Update --}}
-<div class="modal" id="addModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog"
-    aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Detail Materi</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form id="form-user" action="materi/update" method="POST" enctype="multipart/form-data">
-                @csrf
-                <div class="modal-body">
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label control-label">File Materi</label>
-                        <div class="col-md-5">
-                            <div class="custom-file">
-                                <input type="file" name="materi_file[]" class="custom-file-input file_materi"
-                                    accept=".pdf" data-allowed-file-extensions="pdf" data-default-file="">
-                                <input type="hidden" class="form-control" name="MATERI_FILE[]" value="" required>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label control-label" required>Nama Materi</label>
-                        <div class="col-md-5">
-                            <input type="text" class="form-control" name="MATERI_TITLE[]" value="" required>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label control-label">Link Youtube</label>
-                        <div class="col-md-5">
-                            <input type="text" class="form-control" name="MATERI_LINK[]" value="" required>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label control-label">Deskripsi Materi</label>
-                        <div class="col-md-5">
-                            <textarea name="desc_materi[]" id="MATERI_DESC[]" required>
-                        </textarea>
-                        </div>
-                    </div>
-                </div>
-            </form>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary">Simpan Perubahan</button>
-            </div>
-        </div>
-    </div>
-</div>
-{{-- End Modal Update --}}
 
 <script>
     var textarea = document.getElementById('mytextarea_{{ $no }}');

@@ -61,11 +61,12 @@
                                 <td><?= date_format(date_create($item->DATE_START), 'j F Y H:i:s') ?></td>
                                 <td><?= date_format(date_create($item->DATE_END), 'j F Y H:i:s') ?></td>
                                 <td>
-                                    <button type="button"
-                                        onclick="openviewModal(`<?= htmlentities(json_encode($item)) ?>`)"
-                                        class="btn btn-subtle-primary waves-effect waves-light">
-                                        <i class="bx bx-edit-alt font-size-16 align-middle"></i>
-                                    </button>
+                                    <form action="courses/edit" method="POST">
+                                        <input type="hidden" value="<?= $item->ID_ACTIVITY ?>">
+                                        <button type="submit" class="btn btn-subtle-primary waves-effect waves-light">
+                                            <i class="bx bx-edit-alt font-size-16 align-middle"></i>
+                                        </button>
+                                    </form>
                                     <button type="button"
                                         onclick="opendeleteModal(`<?= htmlentities(json_encode($item)) ?>`)"
                                         class="btn btn-subtle-danger waves-effect waves-light">
@@ -82,39 +83,18 @@
 </div>
 <!-- Content Wrapper END -->
 
-{{-- Start Modal Add blom --}}
-<div class="modal" tabindex="-1">
+{{-- Start Modal Delete blom --}}
+<div class="modal fade" id="deleteModal" style="z-index: 1060;" id="exampleModalCenter" data-backdrop="static"
+    data-keyboard="false">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Detail Materi</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
-            <form id="form-user" action="courses/update" method="POST" enctype="multipart/form-data">
-                @csrf
-                <div class="modal-body">
-                    {{-- isi --}}
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                    <button type="button" class="btn btn-primary">Simpan perubahan</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-{{-- End Modal Add --}}
-
-{{-- Start Modal Update blom --}}
-<div class="modal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Detail Materi</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form id="form-user" action="courses/update" method="POST" enctype="multipart/form-data">
+            <form id="form-user" action="courses/delete" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
                     <div class="modal-body">
@@ -129,7 +109,7 @@
         </div>
     </div>
 </div>
-{{-- End Modal Update --}}
+{{-- End Modal Delete --}}
 
 <script>
     $('#dtTable').DataTable()

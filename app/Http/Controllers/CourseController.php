@@ -70,7 +70,7 @@ class CourseController extends Controller
 
     public function add_course()
     {
-        $data['title'] = "Tambahkan Kursus Baru";
+        $data['title'] = "Kursus Baru";
 
         $data["kategori"] = DB::select("
             SELECT
@@ -88,6 +88,7 @@ class CourseController extends Controller
 
     public function store(Request $req)
     {
+        dd($req);
         $activity = [
             'ID_ACTIVITY'           => $this->GenerateUniqID('ACT', $req->input('title_activity')),
             'TITLE_ACTIVITY'        => $req->input('title_activity'),
@@ -98,6 +99,7 @@ class CourseController extends Controller
             'SERTIF_CODE'           => $req->input('certif_code'),
             'DATE_START'            => $req->input('date_start'),
             'DATE_END'              => $req->input('date_end'),
+            'IS_PUBLIC'             => $req->input('is_public'),
             'LOG_TIME'              => date('Y-m-d H:i:s')
         ];
 
