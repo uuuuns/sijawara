@@ -62,7 +62,8 @@
                                 <td><?= date_format(date_create($item->DATE_END), 'j F Y H:i:s') ?></td>
                                 <td>
                                     <form action="courses/edit" method="POST">
-                                        <input type="hidden" value="<?= $item->ID_ACTIVITY ?>">
+                                        @csrf
+                                        <input type="hidden" name="id_activity" value="<?= $item->ID_ACTIVITY ?>">
                                         <button type="submit" class="btn btn-subtle-primary waves-effect waves-light">
                                             <i class="bx bx-edit-alt font-size-16 align-middle"></i>
                                         </button>
