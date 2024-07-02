@@ -21,18 +21,13 @@ class CourseController extends Controller
         $data['title'] = "Kursus";
 
         if (session('user')[0]->get('ID_ROLE') == 1) {
-            $data['course'] = DB::select("
-                SELECT
-                    c.*
-                FROM
-                    course c
-            ");
-
             $data["activity"] = DB::select("
             SELECT
                 c.*
             FROM
                 activity c
+            WHERE
+                c.TYPE_ACTIVITY = 1
             ");
         } else {
             $data['course'] = DB::select("
@@ -88,7 +83,6 @@ class CourseController extends Controller
 
     public function store(Request $req)
     {
-        dd($req);
         $activity = [
             'ID_ACTIVITY'           => $this->GenerateUniqID('ACT', $req->input('title_activity')),
             'TITLE_ACTIVITY'        => $req->input('title_activity'),
@@ -168,13 +162,14 @@ class CourseController extends Controller
                 kategori k
         ");
 
-        $data['data'] = DB::select("
+        $data['data'] = DB::Select("
             SELECT
                 a.IMAGE_ACTIVITY ,
                 a.TITLE_ACTIVITY ,
                 a.PRICE_ACTIVITY ,
                 a.DATE_START ,
                 a.DATE_END ,
+                a.STATUS ,
                 c.ID_COURSE ,
                 c.PENGUMUMAN ,
                 c.DESKRIPSI_COURSE ,
@@ -188,8 +183,8 @@ class CourseController extends Controller
             LEFT JOIN kategori k ON
                 k.ID_KATEGORI = c.KATEGORI
             WHERE 
-                a.ID_ACTIVITY = '". $req->id_activity ."'
-        ");
+                a.ID_ACTIVITY = '" . $req->input('id_activity') . "'
+        ")[0];
 
         return
             view('template_main.admin_side.etc.header', $data) .
@@ -267,12 +262,12 @@ class CourseController extends Controller
         $descMateriList     = $req->input('desc_materi');
         $file               = $req->file('materi_file');
         $linkYT             = $req->input('materi_link');
-        $data_item          = [];
+        $idQuiz          = [];
 
         if (!empty($orderList)) {
             for ($i = 0; $i < count($orderList); $i++) {
                 if ($categoryList[$i] == 1) {
-                    $materi = [
+                    $data_item = [
                         'ID_COURSE'     => $data['ID_COURSE'],
                         'TITLE'         => $materiTitleList[$i],
                         'FILE'          => FileUpload::S3($file[$i], 'MATERI_FILE', 'Materi-' . strtotime(now())),
@@ -281,10 +276,8 @@ class CourseController extends Controller
                         'ORDER_LIST'    => $orderList[$i],
                         'TYPE'          => $categoryList[$i]
                     ];
-
-                    $data_item[] = $materi;
                 } else {
-                    $data_item[] = [
+                    $data_item = [
                         'ID_COURSE'     => $data['ID_COURSE'],
                         'TITLE'         => null,
                         'FILE'          => null,
@@ -294,9 +287,10 @@ class CourseController extends Controller
                         'TYPE'          => $categoryList[$i]
                     ];
                 }
+                $idQuiz[] = DB::table('item_course')->insertGetId($data_item);
             }
         }
-        $idQuiz = DB::table('item_course')->insert($data_item);
+        
 
         if (!empty($req->input('question'))) {
             $data['data_item'] = $data_item;
@@ -310,24 +304,27 @@ class CourseController extends Controller
         $jawaban_b              = $req->input('jawaban_b');
         $jawaban_c              = $req->input('jawaban_c');
         $order_list_quiz        = $req->input('order_list_question');
-        $questions              = $req->input('question');
+        $question              = $req->input('question');
         $kunci_soal             = $req->input('kunci_soal');
 
-        $soalformedArray        = $this->transformArray($questions);
-        $kunciformedArray       = $this->transformArray($kunci_soal);
-
-        $quiz                   = [];
-        for ($i = 0; $i < count($order_list_quiz); $i++) {
-            $quiz[] = [
-                'ID_QUIZ'       => $lastIdQuiz,
-                'ID_COURSE'     => $data['ID_COURSE'],
-                'SOAL'          => $soalformedArray[0][$i],
-                'PIL_JWB'       => implode(',', [$jawaban_a[$i], $jawaban_b[$i], $jawaban_c[$i]]),
-                'KUNCI'         => $kunciformedArray[0][$i],
-                'ORDER_LIST'    => $order_list_quiz[$i]
-            ];
-
-            DB::table('detail_quiz')->insert($quiz);
+        // $soalformedArray        = $this->transformArray($questions);
+        // $kunciformedArray       = $this->transformArray($kunci_soal);
+        
+        $tmpNo = 0;
+        foreach($question AS $i => $questions) {
+            $id_quiz = $lastIdQuiz[$tmpNo];
+            for ($j = 0; $j < count($questions); $j++){
+                $quiz = [
+                    'ID_QUIZ'       => $id_quiz,
+                    'ID_COURSE'     => $data['ID_COURSE'],
+                    'SOAL'          => $questions[$j],
+                    'PIL_JWB'       => implode(',', [$jawaban_a[$tmpNo], $jawaban_b[$tmpNo], $jawaban_c[$tmpNo]]),
+                    'KUNCI'         => $kunci_soal[$i][$j],
+                    'ORDER_LIST'    => $order_list_quiz[$tmpNo]
+                ];
+                DB::table('detail_quiz')->insert($quiz);
+            }
+            $tmpNo++;
         }
     }
 
