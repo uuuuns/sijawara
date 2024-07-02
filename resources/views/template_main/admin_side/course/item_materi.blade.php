@@ -52,8 +52,42 @@
 </div>
 
 <script>
-    var textarea = document.getElementById('mytextarea_{{ $no }}');
-    CKEDITOR.replace(textarea);
+    // var textarea = document.getElementById('mytextarea_{{ $no }}');
+    // CKEDITOR.replace(textarea);
+
+    $(document).ready(function() {
+        var $editor = $('#mytextarea_{{ $no }}');
+        $editor.summernote({
+            height: 200,
+            callbacks: {
+                onPaste: function(e) {
+                    console.log('Called event paste', e);
+                },
+                onImageUpload: function(files) {
+                    console.log(files);
+                    $summernote.summernote('insertNode', imgNode);
+                }
+            },
+            toolbar: [
+                ['style', ['bold', 'italic', 'underline']],
+                ['fontsize', ['fontsize']],
+                ['color', ['color']],
+                ['height', ['height']],
+                ['operation', ['undo', 'redo']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['object', ['link']]
+            ]
+        });
+
+        $('#insert-btn').click(() => {
+            $editor.summernote('insertParagraph');
+        });
+
+        $('#bold-btn').click(() => {
+            $editor.summernote('bold');
+        });
+    });
+
     $(document).ready(function() {
         $('.file_materi').dropify({
             messages: {
