@@ -153,8 +153,7 @@
                     </div>
                     <div class="form-group mb-3">
                         <label>Link Zoom </label>
-                        <input placeholder="zoom.com/" type="text" name="link_zoom" class="form-control"
-                            required>
+                        <input placeholder="zoom.com/" type="text" name="link_zoom" class="form-control">
                     </div>
                     <div class="form-group mb-3">
                         <label>Deskripsi Event</label>
@@ -253,8 +252,7 @@
                     </div>
                     <div class="form-group mb-3">
                         <label>Link Zoom </label>
-                        <input placeholder="zoom.com/" type="text" name="up_link_zoom" class="form-control"
-                            required>
+                        <input placeholder="zoom.com/" type="text" name="up_link_zoom" class="form-control">
                     </div>
                     <div class="form-group mb-3">
                         <label>Deskripsi Event</label>
