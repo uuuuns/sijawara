@@ -76,9 +76,12 @@ class EventController extends Controller
             'LOCATION'          => $req->input('location'),
             'ORGANIZER'         => $req->input('penyelenggara'),
             'CONTACT_CUSTOMER'  => $req->input('contact'),
-            'DESKRIPSI_EVENT'   => $req->input('desc_event'),
-            'LINK_ZOOM'         => $req->input('link_zoom')
+            'DESKRIPSI_EVENT'   => $req->input('desc_event')
         ];
+
+        if (!empty($req->input('link_zoom'))) {
+            $event['LINK_ZOOM'] = $req->input('link_zoom');
+        }
 
         DB::table('activity')->insert($activity);
         DB::table('event')->insert($event);
@@ -104,9 +107,12 @@ class EventController extends Controller
             'LOCATION'          => $req->input('location'),
             'ORGANIZER'         => $req->input('penyelenggara'),
             'CONTACT_CUSTOMER'  => $req->input('contact'),
-            'DESKRIPSI_EVENT'   => $req->input('up_desc_event'),
-            'LINK_ZOOM'         => $req->input('link_zoom')
+            'DESKRIPSI_EVENT'   => $req->input('up_desc_event')
         ];
+
+        if (!empty($req->input('link_zoom'))) {
+            $event['LINK_ZOOM'] = $req->input('link_zoom');
+        }
 
         DB::table('activity')->WHERE(['ID_ACTIVITY' => $req->input('id_activity')])->update($activity);
         DB::table('event')->WHERE(['ID_ACTIVITY' => $req->input('id_activity')])->update($event);
