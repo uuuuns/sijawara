@@ -56,7 +56,8 @@
                                 <td><?= $number ?></td>
                                 <td><?= $item->TITLE_ACTIVITY ?></td>
                                 <td><?= $item->STATUS ?></td>
-                                <td><?= $item->PRICE_ACTIVITY ?></td>
+                                <td><?= $item->PRICE_ACTIVITY == 0 ? '<span class="badge badge-success">Free</span>' : $item->PRICE_ACTIVITY ?>
+                                </td>
                                 <td><?= date_format(date_create($item->DATE_START), 'j F Y H:i:s') ?></td>
                                 <td>
                                     <button type="button"
@@ -105,13 +106,10 @@
                         <label>Title <span class="text-danger">*</span></label>
                         <input placeholder="Title" type="text" name="title_activity" class="form-control" required>
                     </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label control-label">
-                            Price <span class="text-danger">*</span>
-                        </label>
+                    <div class="form-group mb-3">
+                        <label>Price <span class="text-danger">*</span></label>
+                        <input type="number" class="form-control CurrencyInput" name="price_activity">
                         <div class="col-md-5">
-                            <input type="number" class="form-control CurrencyInput" name="price_activity"
-                                placeholder="0" required>
                             <span class="d-flex align-items-center mt-2">
                                 <div class="switch m-r-10">
                                     <input type="checkbox" id="setFree">
@@ -160,7 +158,7 @@
                     </div>
                     <div class="form-group mb-3">
                         <label>Deskripsi Event</label>
-                        <textarea name="desc_event" id="editor"></textarea>
+                        <textarea name="desc_event" id="desc_event"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -231,7 +229,7 @@
                     </div>
                     <div class="form-group mb-3">
                         <label>Kategori <span class="text-danger">*</span></label>
-                        <select class="form-control select-category" name="up_category" id="cars"
+                        <select class="form-control select-category" name="up_category" id="up_category"
                             onchange="zoomLinkCheck(this)" required>
                             <option value="0">Hybrid</option>
                             <option value="1">Online</option>
@@ -308,8 +306,72 @@
 <script>
     $('#dtTable').DataTable();
 
-    CKEDITOR.replace('desc_event');
-    CKEDITOR.replace('up_desc_event');
+    $(document).ready(function() {
+        var $editor = $('#desc_event');
+        $editor.summernote({
+            height: 200,
+            callbacks: {
+                onPaste: function(e) {
+                    console.log('Called event paste', e);
+                },
+                onImageUpload: function(files) {
+                    console.log(files);
+                    $summernote.summernote('insertNode', imgNode);
+                }
+            },
+            toolbar: [
+                ['style', ['bold', 'italic', 'underline']],
+                ['fontsize', ['fontsize']],
+                ['color', ['color']],
+                ['height', ['height']],
+                ['operation', ['undo', 'redo']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['object', ['link']]
+            ]
+        });
+
+        $('#insert-btn').click(() => {
+            $editor.summernote('insertParagraph');
+        });
+
+        $('#bold-btn').click(() => {
+            $editor.summernote('bold');
+        });
+    });
+
+    $(document).ready(function() {
+        var $editor = $('#up_desc_event');
+        $editor.summernote({
+            height: 200,
+            callbacks: {
+                onPaste: function(e) {
+                    console.log('Called event paste', e);
+                },
+                onImageUpload: function(files) {
+                    console.log(files);
+                    $summernote.summernote('insertNode', imgNode);
+                }
+            },
+            toolbar: [
+                ['style', ['bold', 'italic', 'underline']],
+                ['fontsize', ['fontsize']],
+                ['color', ['color']],
+                ['height', ['height']],
+                ['operation', ['undo', 'redo']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['object', ['link']]
+            ]
+        });
+
+        $('#insert-btn').click(() => {
+            $editor.summernote('insertParagraph');
+        });
+
+        $('#bold-btn').click(() => {
+            $editor.summernote('bold');
+        });
+    });
+
     $('.loader').hide();
     $('.main-btn').show();
 
@@ -324,31 +386,45 @@
     function openviewModal(viewData) {
         var data = JSON.parse(viewData)
         var price = data.PRICE_ACTIVITY
+        var cat = data.CATEGORY_EVENT
+
+        function initializeDropify(inputName, fileUrl) {
+            var dropifyElement = $('input[name="' + inputName + '"]').dropify();
+            var instance = dropifyElement.data('dropify');
+            instance.resetPreview();
+            instance.clearElement();
+            instance.settings['defaultFile'] = fileUrl;
+            instance.destroy();
+            instance.init();
+        }
+        initializeDropify('up_image_activity', data.IMAGE_ACTIVITY);
+
         $('input[name="up_id_activity"]').val(data.ID_ACTIVITY)
-        $('input[name="up_image_activity"]').attr('data-default-file', data.IMAGE_ACTIVITY)
         $('input[name="up_title_activity"]').val(data.TITLE_ACTIVITY)
-        // $('input[name="up_price_activity"]').val(price)
-        if (price = 0) {
-            $('#up_setFree').prop('checked')
-            $('.CurrencyInput').prop('readonly', true)
+        if (price == 0) {
+            $('#up_setFree').prop('checked', true);
+            $('.up_CurrencyInput').prop('readonly', true)
             $('input[name="up_price_activity"]').val(price)
         } else {
+            $('#up_setFree').prop('checked', false);
+            $('.up_CurrencyInput').prop('readonly', false)
             $('input[name="up_price_activity"]').val(price)
         }
         $('input[name="up_date_start"]').val(data.DATE_START)
         $('input[name="up_sertif_code"]').val(data.SERTIF_CODE)
-        $('input[name="up_category"]').val(data.CATEGORY)
+        $('select[name="up_category"]').val(cat).change()
         $('input[name="up_contact"]').val(data.CONTACT_CUSTOMER)
         $('input[name="up_penyelenggara"]').val(data.ORGANIZER)
         $('input[name="up_location"]').val(data.LOCATION)
         $('input[name="up_link_zoom"]').val(data.LINK_ZOOM)
         $.ajax({
-            url: 'events/get/' + data.ID_ACTIVITY, // Ganti 'URL_target' dengan URL yang tepat
-            method: 'GET', // Atau 'POST' tergantung pada kebutuhan Anda
-            dataType: 'JSON', // Ganti 'json' dengan 'html', 'text', dll. tergantung pada jenis respons yang diharapkan
+            url: 'events/get/' + data.ID_ACTIVITY,
+            method: 'GET',
+            dataType: 'JSON',
 
             success: function(response) {
-                CKEDITOR.instances.up_desc_event.setData(response[0].event.DESKRIPSI_EVENT);
+                // make with summernote
+                $('#up_desc_event').summernote('code', response[0].event.DESKRIPSI_EVENT);
             },
             error: function(xhr, status, error) {}
         });
@@ -385,8 +461,11 @@
         if ($(e).val() == 2) {
             $('input[name="link_zoom"]').prop('disabled', true);
             $('input:text[name="link_zoom"]').val('')
+            $('input[name="up_link_zoom"]').prop('disabled', true);
+            $('input:text[name="up_link_zoom"]').val('')
         } else {
             $('input[name="link_zoom"]').prop('disabled', false);
+            $('input[name="up_link_zoom"]').prop('disabled', false);
         }
     }
 

@@ -32,8 +32,11 @@
     <script src="<?= asset('assets_admin/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js') ?>"></script>
     <!-- Validate JS -->
     <script src="<?= asset('assets_admin/vendors/jquery-validation/jquery.validate.min.js') ?>"></script>
-    <!-- CKEditor 4 Basic -->
-    <script src="//cdn.ckeditor.com/4.22.1/basic/ckeditor.js"></script>
+    <!-- include libraries(jQuery, bootstrap) -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <!-- include summernote css/js -->
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
     <!-- Core JS -->
     <script src="<?= asset('assets_admin/js/app.min.js') ?>"></script>
     <!-- Vendor Chart -->
