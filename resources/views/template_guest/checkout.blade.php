@@ -12,10 +12,10 @@
         <div class="row justify-content-center">
             <div class="col-12 col-lg-9 pe-3">
                 <div class="title-block">
-                    <h1>Shopping Cart</h1>
+                    <h1>Keranjang</h1>
                     <ul class="header-bradcrumb justify-content-center">
-                        <li><a href="{{ url('') }}">Home</a></li>
-                        <li class="active" aria-current="page">Cart</li>
+                        <li><a href="{{ url('') }}">Beranda</a></li>
+                        <li class="active" aria-current="page">Keranjang</li>
                     </ul>
                 </div>
             </div>
@@ -32,10 +32,10 @@
                             <thead>
                                 <tr class="fw-normal">
                                     <th scope="col" width="2%"></th>
-                                    <th scope="col" width="43%">Product</th>
-                                    <th scope="col" width="18%">Price</td>
+                                    <th scope="col" width="43%">Produk</th>
+                                    <th scope="col" width="18%">Harga</td>
                                     <th scope="col" width="18%"></th>
-                                    <th scope="col" width="18%">Action</th>
+                                    <th scope="col" width="18%">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody class="table-group-divider text-black" style="border-color:#C8C8C8; border-top-width: 2px !important">
@@ -71,7 +71,7 @@
                                             <div class="d-flex justify-content-center">
                                                 <img src="{{ asset('assets_new') }}/images/empty.svg" width="350">
                                             </div>
-                                            <h3 class="font-sm text-center">No product</h2>
+                                            <h3 class="font-sm text-center">Tidak ada produk</h2>
                                         </td>
                                     </tr>
                                 <?php } ?>
@@ -82,7 +82,7 @@
                                 <div class="actions">
                                     <div class="coupon">
                                         <input type="text" name="coupon_code" class="input-text" id="search-form" value="" placeholder="Promo Code">
-                                        <button type="submit" class="button" name="apply_coupon" id="search-button" value="Apply coupon" style="width: 200px;">Search Promo</button>
+                                        <button type="submit" class="button" name="apply_coupon" id="search-button" value="Apply coupon" style="width: 200px;">Cari Promo</button>
                                     </div>
                                 </div>
                                 <div class="dropdown mt-4">
@@ -97,7 +97,7 @@
             <div class="col-12 col-lg-3 ">
                 <div class="cart-collaterals">
                     <div class="cart_totals ">
-                        <h2>Order Summary</h2>
+                        <h2>Ringkasan Pesanan</h2>
                         <table cellspacing="0" class="shop_table shop_table_responsive">
                             <tbody>
                                 <tr class="order-total">
@@ -117,14 +117,14 @@
                             <div id="data-input"></div>
                             <div class="wc-proceed-to-checkout">
                                 <button type="button" class="checkout-button button alt wc-forward" onclick="BuyNow()">
-                                    Proceed to checkout
+                                    Melanjutkan Membeli
                                 </button>
                             </div>
 
                             <?php if (!empty($checking_trans)) { ?>
                                 <div class="wc-proceed-to-checkout">
                                     <button class="alt btn btn-main-2 btn-sm w-100 rounded" onclick="BuyNow()">
-                                        Check Last Transaction
+                                        Periksa Transaksi Terakhir
                                     </button>
                                 </div>
                             <?php } ?>
@@ -263,7 +263,7 @@
         <?php if (!empty($checking_trans)) { ?>
             Toast.fire({
                 icon: 'error',
-                title: 'Complete your transaction first!'
+                title: 'Selesaikan Transaksi Anda!'
             })
         <?php } else { ?>
             if (data != "") {
@@ -275,7 +275,7 @@
             } else {
                 Toast.fire({
                     icon: 'error',
-                    title: '<?= (empty($checkout) != "") ? 'No product in cart!' : 'Please choose product first!' ?>'
+                    title: '<?= (empty($checkout) != "") ? 'Tidak ada produk di keranjang!' : 'Pilih Produk Terlebih Dulu!' ?>'
                 })
             }
         <?php } ?>
@@ -318,19 +318,19 @@
             }
         })
         Swal.fire({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
+            title: 'Apakah Kamu Yakin?',
+            text: "Tidak dapat mengembalikan hal ini!",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!'
+            confirmButtonText: 'Ya Hapus!'
         }).then((result) => {
             if (result.isConfirmed) {
                 let timerInterval
                 Swal.fire({
-                    title: 'Delete On Proccess !',
-                    html: 'it will be over in a few seconds.',
+                    title: 'Penghapusan Dalam Proses!',
+                    html: 'Tunggu beberapa detik.',
                     timer: 2000,
                     timerProgressBar: false,
                     didOpen: () => {
@@ -347,7 +347,7 @@
                             success: function(data) {
                                 Toast.fire({
                                     icon: 'success',
-                                    title: "Order Deleted"
+                                    title: "Pesanan Dihapus"
                                 })
                                 $('#items-' + $(e).data("id")).remove()
                                 location.reload()
@@ -355,7 +355,7 @@
                             error: function(data) {
                                 Toast.fire({
                                     icon: 'error',
-                                    title: "Failed to delete order"
+                                    title: "Gagal Menghapus Pesanan"
                                 })
                             }
                         });

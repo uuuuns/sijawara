@@ -5,20 +5,20 @@
         <img src="<?= base_url('assets/images/logo_bigger.svg') ?>" class="d-block justify-content-center img-logo img-fluid">
     </div>
     <div class="mx-2 mx-lg-6 text-muted mb-6">
-        <p>TBH Academy is a versatile platform that empowers organizers to effortlessly create events,
+        <p>Sijawara+ is a versatile platform that empowers organizers to effortlessly create events,
             whether they are free or paid. With a host of user-friendly features at your fingertips,
             including video conference platform management, event link generation, automated certificate issuance,
-            and secure event payment processing, TBH Academy is your one-stop solution for seamlessly orchestrating
+            and secure event payment processing, Sijawara+ is your one-stop solution for seamlessly orchestrating
             classes comprising diverse meetings and modules. Our platform streamlines the event creation process,
             allowing organizers to focus on delivering enriching educational experiences.</p>
-        <p>Not only does TBH Academy cater to event organizers, but it also offers a wealth of learning opportunities to participants.
+        <p>Not only does Sijawara+ cater to event organizers, but it also offers a wealth of learning opportunities to participants.
             The platform boasts an extensive array of events that cater to a wide range of interests and fields of study.
             Whether you're looking to expand your knowledge,
-            TBH Academy has you covered. Each event is meticulously curated to uphold professional standards in both content and speaker quality,
+            Sijawara+ has you covered. Each event is meticulously curated to uphold professional standards in both content and speaker quality,
             ensuring that every learning experience is not only informative but also engaging and inspiring.</p>
-        <p>In addition to its robust event offerings, TBH Academy fosters a thriving community of learners and experts. Our platform encourages
+        <p>In addition to its robust event offerings, Sijawara+ fosters a thriving community of learners and experts. Our platform encourages
             meaningful interactions among participants, allowing you to connect with like-minded individuals,
-            exchange ideas, and build valuable networks. With TBH Academy, education extends beyond the confines of
+            exchange ideas, and build valuable networks. With Sijawara+, education extends beyond the confines of
             traditional classrooms, offering a dynamic and accessible approach to learning that adapts to your schedule and preferences.
             Join our vibrant community today and embark on a journey of continuous learning and personal growth.</p>
     </div>

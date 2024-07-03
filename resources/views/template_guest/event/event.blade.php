@@ -12,7 +12,7 @@
         <div class="row justify-content-center">
             <div class="col-lg-8 col-xl-8">
                 <div class="title-block">
-                    <h1>Events</h1>
+                    <h1>Webinar</h1>
                     <ul class="header-bradcrumb justify-content-center">
                         <li><a href="{{ url('') }}">Beranda</a></li>
                         <li class="active" aria-current="page">Webinar</li>
@@ -82,7 +82,7 @@
                 <hr>
                 <div class="px-3 d-grid d-md-flex text-center justify-content-md-between justify-content-center align-items-center">
                     <div class="order-2 order-md-1 pt-3 pt-md-0">
-                        <span class="fs-8 pagination-text">Showing {{$events->currentPage()}} of {{$events->lastPage()}} Page</span>
+                        <span class="fs-8 pagination-text">Menampilkan {{$events->currentPage()}} dari {{$events->lastPage()}} Halaman</span>
                     </div>
                     <div class="order-1 order-md-2">
                         {{ $events->links() }}

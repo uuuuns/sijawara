@@ -196,7 +196,8 @@ class CourseGuest extends Controller
 				AND STATUS = 1
 			ORDER BY ID_ITEM DESC
 		');
-		$condition = ['tc.ID_ITEM = "' . $data['id_item'] . '"'];
+		$limit_question = empty($data['last_item'][0]->LIMIT_QUESTION) ? 0 : $data['last_item'][0]->LIMIT_QUESTION;
+		$condition = ['tc.ID_ITEM = ' . $data['id_item']];
 		// $data['detail_item_course'] = $this->courseModel->get_detail_item_course($condition, $data['type']);
 		// GET DATA UNTUK MATERI, ELSE QUIZ
 		$sql = "
@@ -230,7 +231,6 @@ class CourseGuest extends Controller
 			WHERE
 				".implode('AND ', $condition)."
 			ORDER BY RAND()
-			LIMIT ".$data['last_item'][0]->LIMIT_QUESTION."
 			";
 			$data['detail_item_course'] = DB::select($sql);
 		}
@@ -243,7 +243,7 @@ class CourseGuest extends Controller
 				nilai_quiz
 			WHERE
 				ID_USER = "' . session('user')[0]->get('ID_USER') . '"
-				AND ID_QUIZ = "' . $data['id_item'] . '"
+				AND ID_QUIZ = ' . $data['id_item'] . '
 		');
 		return view('template_guest.course.ajax.detail_item', $data);
 	}

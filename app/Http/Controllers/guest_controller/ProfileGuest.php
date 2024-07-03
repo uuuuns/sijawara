@@ -119,7 +119,7 @@ class ProfileGuest extends Controller
     }
     public function myevents()
     {
-        $data['title'] = "My Event";
+        $data['title'] = "Webinar Ku";
         $user = new User();
         // $data['data_personal'] = $user->get_user(session('user')[0]['ID_USER']);
         $data['event'] = [];

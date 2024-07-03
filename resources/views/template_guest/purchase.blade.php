@@ -14,10 +14,10 @@
         <div class="row justify-content-center">
             <div class="col-12 col-lg-9 pe-3">
                 <div class="title-block">
-                    <h1>Checkout</h1>
+                    <h1>Konfirmasi Pembayaran</h1>
                     <ul class="header-bradcrumb justify-content-center">
-                        <li><a href="{{ url('') }}">Home</a></li>
-                        <li class="active" aria-current="page">Checkout</li>
+                        <li><a href="{{ url('') }}">Beranda</a></li>
+                        <li class="active" aria-current="page">Konfirmasi Pembayaran</li>
                     </ul>
                 </div>
             </div>
@@ -36,10 +36,10 @@
                             <table class="shop_table shop_table_responsive cart woocommerce-cart-form__contents table-responsive w-100" cellspacing="0">
                                 <thead>
                                     <tr class="fw-normal">
-                                        <th scope="col" width="43%">Product</th>
+                                        <th scope="col" width="43%">Produk</th>
                                         <th scope="col" width="18%"></th>
                                         <th scope="col" width="18%"></th>
-                                        <th scope="col" width="18%">Price</th>
+                                        <th scope="col" width="18%">Harga</th>
                                     </tr>
                                 </thead>
                                 <tbody class="table-group-divider text-black" style="border-color:#C8C8C8; border-top-width: 2px !important">
@@ -93,7 +93,7 @@
                                 <?php } else { ?>
                                     <tr class="fw-semibold">
                                         <td scope="col" width="61%"></td>
-                                        <td class="text-left product-subtotal" scope="col" width="18%">Sub Total</td>
+                                        <td class="text-left product-subtotal" scope="col" width="18%">Total</td>
                                         <td scope="col" width="18%" class="product-subtotal">
                                             <?= "Rp " . number_format($TotalBayar, 2, ',', '.') ?>
                                         </td>
@@ -120,8 +120,8 @@
                         <?php } ?>
                     </form>
                     <div class="wc-proceed-to-checkout">
-                        <div class="alt btn btn-danger w-100 rounded" style="    padding: 0.718047em 1.41575em;" onclick="$('#form-cancel-trans').submit()">
-                            Cancel Transaction
+                        <div class="alt btn btn-danger w-100 rounded" style="padding: 0.718047em 1.41575em;" onclick="$('#form-cancel-trans').submit()">
+                            Batalkan Transaksi
                         </div>
                     </div>
                     <div>
@@ -129,7 +129,7 @@
                     </div>
                     <div class="wc-proceed-to-checkout ms-3">
                         <button type="button" class="checkout-button button alt wc-forward" onclick="CobaPayment()">
-                            Purchase Now
+                            Beli Sekarang
                         </button>
                     </div>
                 </div>
