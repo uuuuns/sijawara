@@ -30,7 +30,7 @@
                     <div class="mt-3 mt-md-0">
                         <button type="button" class="btn btn-primary" onclick="addModal()">
                             <i class="mdi mdi-plus me-1"></i>
-                            Add Promo</button>
+                            Tambah Promo</button>
                     </div>
                 </div>
             </div>
@@ -40,9 +40,9 @@
                         <tr>
                             <th>No</th>
                             <th>Name</th>
-                            <th>Discount</th>
-                            <th>Expired Date</th>
-                            <th>Action</th>
+                            <th>Diskon</th>
+                            <th>Masa Berlaku</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -83,7 +83,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Delete</h5>
+                <h5 class="modal-title">Hapus</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -92,20 +92,20 @@
                 @csrf
                 <div class="modal-body">
                     <div class="form-group mb-3">
-                        <label>Promo Name<span class="text-danger">*</span></label>
+                        <label>Nama Promo<span class="text-danger">*</span></label>
                         <input placeholder="Promo Name" type="text" name="promo_name" class="form-control" required>
                     </div>
                     <div class="form-group mb-3">
-                        <label>Discount<span class="text-danger">*</span></label>
+                        <label>Diskon<span class="text-danger">*</span></label>
                         <input placeholder="50" type="text" name="discount" class="form-control" required>
                     </div>
                     <div class="form-group mb-3">
-                        <label>Expired Date<span class="text-danger">*</span></label>
+                        <label>Masa Berlaku<span class="text-danger">*</span></label>
                         <input type="datetime-local" name="exp_date" class="form-control" required>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Add</button>
+                    <button type="submit" class="btn btn-primary">Tambah</button>
                 </div>
             </form>
         </div>
@@ -119,7 +119,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Promo Detail</h5>
+                <h5 class="modal-title">Detail Promo</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -129,20 +129,20 @@
                 <div class="modal-body">
                     <input type="hidden" name="up_id_promo" value="" readonly>
                     <div class="form-group mb-3">
-                        <label>Promo Name<span class="text-danger">*</span></label>
+                        <label>Nama Promo<span class="text-danger">*</span></label>
                         <input placeholder="Promo Name" type="text" name="up_promo_name" class="form-control" required>
                     </div>
                     <div class="form-group mb-3">
-                        <label>Discount<span class="text-danger">*</span></label>
+                        <label>Diskon<span class="text-danger">*</span></label>
                         <input placeholder="50" type="text" name="up_discount" class="form-control" required>
                     </div>
                     <div class="form-group mb-3">
-                        <label>Expired Date<span class="text-danger">*</span></label>
+                        <label>Masa Berlaku<span class="text-danger">*</span></label>
                         <input type="datetime-local" name="up_exp_date" class="form-control" required>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Save Change</button>
+                    <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
                 </div>
             </form>
         </div>
@@ -156,7 +156,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Delete</h5>
+                <h5 class="modal-title">Hapus</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -164,11 +164,11 @@
             <form id="form-user" action="promo/delete" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
-                    <p>Do you want to delete this category ?</p>
+                    <p>Apakah Anda ingin menghapus kategori ini ?</p>
                     <input type="hidden" name="id_promo" value="" readonly>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Delete</button>
+                    <button type="submit" class="btn btn-primary">Hapus</button>
                 </div>
             </form>
         </div>

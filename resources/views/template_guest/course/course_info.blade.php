@@ -92,7 +92,7 @@
                             <div class="course-thumbnail">
                                 <img src="<?= $course->IMAGE_ACTIVITY ?>" alt="" class="img-fluid w-100" />
                                 <div class="my-3 fw-bold d-flex align-self-end justify-content-end pe-0 align-items-center text-black">
-                                    Share :<span class="fs-5"> <i class="fab fa-facebook mx-2" style="cursor: pointer"></i><i class="fab fa-twitter me-2" style="cursor: pointer"></i><i class="fab fa-instagram" style="cursor: pointer"></i></span>
+                                    Bagikan :<span class="fs-5"> <i class="fab fa-facebook mx-2" style="cursor: pointer"></i><i class="fab fa-twitter me-2" style="cursor: pointer"></i><i class="fab fa-instagram" style="cursor: pointer"></i></span>
                                 </div>
                             </div>
 
@@ -124,7 +124,7 @@
                                     <div class="w-100 button button-enroll-course btn btn-main-2 rounded" onclick="BuyNow()">Beli Sekarang</div>
                                 </form>
                                 <button data-id-activity="<?= $course->ID_ACTIVITY ?>" onclick="AddToCart(this)" class="mt-2 w-100 button button-enroll-course btn btn-secondary btn-sm rounded">
-                                    Tambahakan ke keranjang
+                                    Tambahkan ke keranjang
                                 </button>
                             </div>
                         </div>

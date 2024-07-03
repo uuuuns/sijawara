@@ -13,7 +13,7 @@
 
                         <div class="course-content">
                             <?php if ($item->PROGRESS == 100) { ?>
-                                <span class="course-price bg-success">Done</span>
+                                <span class="course-price bg-success">Selesai</span>
                             <?php } else { ?>
                                 <span class="course-price bg-success">Progress <?= ceil($item->PROGRESS) ?>%</span>
                             <?php } ?>

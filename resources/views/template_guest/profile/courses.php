@@ -3,8 +3,8 @@
     <table class="table" style="color: #8A8A8E">
         <thead>
             <tr class="fw-normal text-black">
-                <td scope="col" class="fw-semibold fs-5" width="60%">Courses</td>
-                <td scope="col" class="fw-semibold fs-5" width="20%">Category</td>
+                <td scope="col" class="fw-semibold fs-5" width="60%">Kursus</td>
+                <td scope="col" class="fw-semibold fs-5" width="20%">Kategori</td>
                 <td scope="col" class="fw-semibold fs-5" width="20%">Status</td>
             </tr>
         </thead>
@@ -20,7 +20,7 @@
                 <td class="py-3">UIUX Designer</td>
                 <td class="py-3">
                     <i class="bi bi-check-circle-fill text-success"></i>
-                    <span>Approved</span>
+                    <span>Disetujui</span>
                 </td>
             </tr>
             <tr onclick="location.href='<?= base_url('course')?>" style="cursor:pointer">
@@ -34,7 +34,7 @@
                 <td class="py-3">UIUX Designer</td>
                 <td class="py-3">
                     <i class="bi bi-x-circle-fill text-danger"></i>
-                    <span>Disapproved</span>
+                    <span>Tidak Disetujui</span>
                 </td>
             </tr>
             <tr onclick="location.href='<?= base_url('course')?>" style="cursor:pointer">
@@ -49,7 +49,7 @@
                 <td class="py-3">UIUX Designer</td>
                 <td class="py-3">
                     <i class="bi bi-exclamation-circle-fill text-warning"></i>
-                    <span>Pending</span>
+                    <span>Tertunda</span>
                 </td>
             </tr>
         </tbody>

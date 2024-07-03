@@ -14,7 +14,7 @@
 </style>
 
 <div class="container px-4 px-md-0 py-4 pb-6 pt-3">
-    <h5 class="py-2 fw-semibold">Profile</h5>
+    <h5 class="py-2 fw-semibold">Profil</h5>
     <hr class="opacity-25">
     <div class="container-fluid">
         <div class="row main-content">
@@ -26,8 +26,8 @@
                                 <ul class="sidebar-profile nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start w-100" id="menu">
                                     <li class="nav-item w-100 pt-2">
                                         <a href="/profile" class=" {{ request()->is('profile') ? 'active' : '' }}  .  nav-link d-flex align-middle px-4 py-3 rounded-0">
-                                            <i class="fs-6 d-flex align-items-center far fa-user"></i> <span class="ms-1 ps-2 fs-6 align-self-center d-none d-sm-inline">Personal
-                                                Data</span>
+                                            <i class="fs-6 d-flex align-items-center far fa-user"></i> <span class="ms-1 ps-2 fs-6 align-self-center d-none d-sm-inline">Data
+                                                Pribadi</span>
                                         </a>
                                     </li>
                                     <li class="w-100">
@@ -39,8 +39,8 @@
                                     <?php if (session('user')[0]['ID_ROLE'] == 2) { ?>
                                         <li class="nav-item w-100">
                                             <a href="/profile/overview" class="overview  nav-link d-flex align-middle px-4 py-3 rounded-0">
-                                                <i class="fs-6 d-flex align-items-center far fa-bookmark"></i> <span class="ms-1 ps-2 fs-6 align-self-center d-none d-sm-inline">Sale
-                                                    Overview</span>
+                                                <i class="fs-6 d-flex align-items-center far fa-bookmark"></i> <span class="ms-1 ps-2 fs-6 align-self-center d-none d-sm-inline">Ringkasan
+                                                    Penjualan</span>
                                             </a>
                                         </li>
                                         <li class="w-100">
@@ -48,8 +48,8 @@
                                         </li>
                                         <li class="nav-item w-100">
                                             <a href="/dashboard" class="nav-link d-flex align-middle px-4 py-3 rounded-0">
-                                                <i class="fs-6 d-flex align-items-center far fa-book-medical"></i> <span class="ms-1 ps-2 fs-6 align-self-center d-none d-sm-inline">Create
-                                                    Activity</span>
+                                                <i class="fs-6 d-flex align-items-center far fa-book-medical"></i> <span class="ms-1 ps-2 fs-6 align-self-center d-none d-sm-inline">Buat
+                                                    Aktifitas</span>
                                             </a>
                                         </li>
                                         <li class="w-100">
@@ -62,7 +62,7 @@
                                     <li class="nav-item w-100">
                                         <a data-bs-toggle="collapse" data-bs-target="#submenu" aria-expanded="true" aria-controls="submenu" class="nav-link d-flex align-middle px-4 py-3 rounded-0" style="cursor: pointer;">
                                             <i class="fs-6 d-flex align-items-center far fa-book-open"></i>
-                                            <span class="ms-1 ps-2 fs-6 align-self-center d-none d-sm-inline">My Activities</span>
+                                            <span class="ms-1 ps-2 fs-6 align-self-center d-none d-sm-inline">Aktifitas Saya</span>
                                             <svg class="svg-inline--fa fa-chevron-down ms-auto" style="width: 18px" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-down" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="">
                                                 <path fill="currentColor" d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
                                                 </path>
@@ -98,8 +98,8 @@
                                     </li>
                                     <li class="nav-item w-100">
                                         <a href="/profile/academic" class="nav-link  d-flex align-middle px-4 py-3 rounded-0">
-                                            <i class="fs-6 d-flex align-items-center far fa-file-alt"></i> <span class="ms-1 ps-2 fs-6 align-self-center d-none d-sm-inline">Academic
-                                                Data</span>
+                                            <i class="fs-6 d-flex align-items-center far fa-file-alt"></i> <span class="ms-1 ps-2 fs-6 align-self-center d-none d-sm-inline">Data
+                                                Akademik</span>
                                         </a>
                                     </li>
                                     <li class="w-100">
@@ -107,8 +107,8 @@
                                     </li>
                                     <li class="nav-item w-100">
                                         <a href="/profile/document" class="nav-link d-flex align-middle px-4 py-3 rounded-0">
-                                            <i class="fs-6 d-flex align-items-center far fa-building"></i> <span class="ms-1 ps-2 fs-6 align-self-center d-none d-sm-inline">Supporting
-                                                Documents</span>
+                                            <i class="fs-6 d-flex align-items-center far fa-building"></i> <span class="ms-1 ps-2 fs-6 align-self-center d-none d-sm-inline">Dokumen
+                                                Pendukung</span>
                                         </a>
                                     </li>
                                     <li class="w-100">
@@ -122,7 +122,7 @@
                                         <li class="nav-item w-100">
                                             <a href="#" class="nav-link  d-flex align-middle px-4 py-3 rounded-0" onclick="forgot()">
                                                 <i class="fs-6 d-flex align-items-center far fa-lock"></i> <span class="ms-1 ps-2 fs-6 align-self-center d-none d-sm-inline">Reset
-                                                    Password</span>
+                                                    Kata Sandi</span>
                                             </a>
                                         </li>
                                     </form>
@@ -132,8 +132,8 @@
                                     </li>
                                     <li class="nav-item w-100 pb-3">
                                         <a href="<?= url('logout') ?>" class="nav-link d-flex align-middle px-4 py-3 rounded-0">
-                                            <i class="fs-6 d-flex align-items-center far fa-arrow-alt-to-left"></i> <span class="ms-1 ps-2 fs-6 align-self-center d-none d-sm-inline">Log
-                                                out</span>
+                                            <i class="fs-6 d-flex align-items-center far fa-arrow-alt-to-left"></i> <span class="ms-1 ps-2 fs-6 align-self-center d-none d-sm-inline">Keluar
+                                                </span>
                                         </a>
                                     </li>
                                 </ul>
@@ -146,39 +146,39 @@
                                 <?php if (session('user')[0]['ID_ROLE'] == 3) { ?>
                                     <?php if ($totDoc === 11) { ?>
                                         <div class="col-md-12">
-                                            <button type="button" class="btn btn-main-2 btn-primary rounded rounded-4 fw-semibold w-100 btn-instructor">Apply as an
-                                                Instructor</button>
+                                            <button type="button" class="btn btn-main-2 btn-primary rounded rounded-4 fw-semibold w-100 btn-instructor">Lamar sebagai
+                                                Instruktur</button>
                                         </div>
                                     <?php    } else { ?>
                                         <div class="row">
-                                            <button type="button" class="btn btn-muted rounded-4 fw-semibold w-100 mb-3" disabled>Apply as an Instructor</button>
-                                            <span class="text-danger" style="text-align: justify;">* Complete academic data and
-                                                supporting documents to apply as an instructor at "The Brain & Heart
+                                            <button type="button" class="btn btn-muted rounded-4 fw-semibold w-100 mb-3" disabled>Lamar sebagai instruktur</button>
+                                            <span class="text-danger" style="text-align: justify;">* Lengkapi data akademik dan
+                                                dokumen pendukung untuk melamar sebagai instruktur di "The Brain & Heart
                                                 Academy".</span>
                                         </div>
                                     <?php    } ?>
                                 <?php } else { ?>
                                     <?php if (isset($document->STATUS) == 1) { ?>
                                         <div class="row">
-                                            <button type="button" class="btn btn-muted rounded-4 fw-semibold w-100 mb-3" disabled>Apply as an Instructor</button>
-                                            <span class="text-success" style="text-align: justify;">You are now part of our
-                                                instructor team. Thank you for your participation. Make sure you login again to
-                                                access the instructor menu.</span>
+                                            <button type="button" class="btn btn-muted rounded-4 fw-semibold w-100 mb-3" disabled>Lamar sebagai instruktur</button>
+                                            <span class="text-success" style="text-align: justify;">Anda sekarang adalah bagian dari tim
+                                                instruktur kami. Terima kasih atas partisipasinya. Pastikan Anda login kembali untuk
+                                                mengakses menu instruktur.</span>
                                         </div>
                                     <?php    } else if (isset($document->STATUS) == 2) { ?>
                                         <div class="row">
-                                            <button type="button" class="btn btn-main-2 btn-primary rounded rounded-4 fw-semibold w-100 mb-3 btn-instructor">Apply as
-                                                an Instructor</button>
-                                            <span class="text-danger" style="text-align: justify;">We are sorry to reject your
-                                                application because there is a discrepancy between the standard
-                                                documents you submitted and our standard documents. Please correct your data
-                                                again and click the button above to submit again..</span>
+                                            <button type="button" class="btn btn-main-2 btn-primary rounded rounded-4 fw-semibold w-100 mb-3 btn-instructor">Lamar
+                                                sebagai instruktur</button>
+                                            <span class="text-danger" style="text-align: justify;">Kami mohon maaf telah menolak
+                                                lamaran anda karena ada perbedaan antara 
+                                                dokumen yang anda kirim dan standart dokumen kami. Harap perbaiki data anda
+                                                lagi dan klik tombol diatas untuk mengirimkan lagi..</span>
                                         </div>
                                     <?php        } else if (isset($document->STATUS) == 0) { ?>
                                         <div class="row">
-                                            <button type="button" class="btn btn-muted rounded-4 fw-semibold w-100 mb-3" disabled>Apply as an Instructor</button>
-                                            <span style="color: #edab00; text-align: justify;">Please be patient as we are still
-                                                evaluating your personal data and documents.</span>
+                                            <button type="button" class="btn btn-muted rounded-4 fw-semibold w-100 mb-3" disabled>Lamar sebagai instruktur</button>
+                                            <span style="color: #edab00; text-align: justify;">Harap bersabar karena kami masih
+                                            mengevaluasi data dan dokumen pribadi Anda.</span>
                                         </div>
                                     <?php        } ?>
                                 <?php } ?>
@@ -201,7 +201,7 @@
             @csrf
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="tokenModalLabel">Insert Token</h5>
+                    <h5 class="modal-title" id="tokenModalLabel">Masukan Token</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -211,8 +211,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger rounded" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-main-2 btn-primary rounded">Submit</button>
+                    <button type="button" class="btn btn-danger rounded" data-bs-dismiss="modal">Tutup</button>
+                    <button type="submit" class="btn btn-main-2 btn-primary rounded">Kirim</button>
                 </div>
             </div>
         </form>

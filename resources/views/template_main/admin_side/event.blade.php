@@ -31,7 +31,7 @@
                     <div class="mt-3 mt-md-0">
                         <button type="button" class="btn btn-primary" onclick="openModal()">
                             <i class="mdi mdi-plus me-1"></i>
-                            Add Event</button>
+                            Tambah Event</button>
                     </div>
                 </div>
             </div>
@@ -42,9 +42,9 @@
                             <th>No</th>
                             <th style="width: 500px;">Nama Event</th>
                             <th>Status</th>
-                            <th>Event Price</th>
-                            <th>Date</th>
-                            <th>Action</th>
+                            <th>Harga Event</th>
+                            <th>Tanggal</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -87,7 +87,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Add Event</h5>
+                <h5 class="modal-title">Tambah Event</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -96,18 +96,18 @@
                 @csrf
                 <div class="modal-body">
                     <div class="form-group">
-                        <label>Cover <span class="text-danger">*</span></label>
+                        <label>Kover <span class="text-danger">*</span></label>
                         <div class="custom-file">
                             <input type="file" name="image_activity" accept=".jpg, .png" data-max-file-size="1M"
                                 data-allowed-file-extensions="jpg png" class="custom-file-input dropify" required>
                         </div>
                     </div>
                     <div class="form-group mb-3">
-                        <label>Title <span class="text-danger">*</span></label>
+                        <label>Judul <span class="text-danger">*</span></label>
                         <input placeholder="Title" type="text" name="title_activity" class="form-control" required>
                     </div>
                     <div class="form-group mb-3">
-                        <label>Price <span class="text-danger">*</span></label>
+                        <label>Harga <span class="text-danger">*</span></label>
                         <input type="number" class="form-control CurrencyInput" name="price_activity">
                         <div class="col-md-5">
                             <span class="d-flex align-items-center mt-2">
@@ -115,16 +115,16 @@
                                     <input type="checkbox" id="setFree">
                                     <label for="setFree"></label>
                                 </div>
-                                Free
+                                Gratis
                             </span>
                         </div>
                     </div>
                     <div class="form-group mb-3">
-                        <label>Date <span class="text-danger">*</span></label>
+                        <label>Tanggal <span class="text-danger">*</span></label>
                         <input type="datetime-local" class="form-control" name="date_start" placeholder="Date Start">
                     </div>
                     <div class="form-group mb-3">
-                        <label>Certificate Code <span class="text-danger">*</span></label>
+                        <label>Kode Sertifikat <span class="text-danger">*</span></label>
                         <input placeholder="Certificate Code" type="text" name="sertif_code" class="form-control"
                             required>
                     </div>
@@ -138,7 +138,7 @@
                         </select>
                     </div>
                     <div class="form-group mb-3">
-                        <label>Contact Person <span class="text-danger">*</span></label>
+                        <label>Kontak Penyelenggara <span class="text-danger">*</span></label>
                         <input placeholder="+62 83342457452" type="text" name="contact" class="form-control"
                             required>
                     </div>
@@ -148,7 +148,7 @@
                             required>
                     </div>
                     <div class="form-group mb-3">
-                        <label>Location <span class="text-danger">*</span></label>
+                        <label>Lokasi <span class="text-danger">*</span></label>
                         <input placeholder="Location" type="text" name="location" class="form-control" required>
                     </div>
                     <div class="form-group mb-3">
@@ -164,7 +164,7 @@
                     <button type="submit" class="btn btn-primary waves-effect waves-light" id="confirmButton">
                         <span class="loader"><i class="bx bx-loader bx-spin font-size-16 align-middle me-2"></i>
                             Loading</span>
-                        <span class="main-btn">Confirm</span>
+                        <span class="main-btn">Konfirmasi</span>
                     </button>
                 </div>
             </form>
@@ -191,7 +191,7 @@
                         <input placeholder="Title" type="hidden" name="id_activity" class="form-control" readonly>
                     </div>
                     <div class="form-group">
-                        <label>Cover <span class="text-danger">*</span></label>
+                        <label>Kover <span class="text-danger">*</span></label>
                         <div class="custom-file">
                             <input type="file" name="up_image_activity" accept=".jpg, .png"
                                 data-max-file-size="1M" data-allowed-file-extensions="jpg png"
@@ -199,12 +199,12 @@
                         </div>
                     </div>
                     <div class="form-group mb-3">
-                        <label>Title <span class="text-danger">*</span></label>
+                        <label>Judul <span class="text-danger">*</span></label>
                         <input placeholder="Title" type="text" name="up_title_activity" class="form-control"
                             required>
                     </div>
                     <div class="form-group mb-3">
-                        <label>Price <span class="text-danger">*</span></label>
+                        <label>Harga <span class="text-danger">*</span></label>
                         <input type="number" class="form-control up_CurrencyInput" name="up_price_activity">
                         <div class="col-md-5">
                             <span class="d-flex align-items-center mt-2">
@@ -212,17 +212,17 @@
                                     <input type="checkbox" id="up_setFree">
                                     <label for="up_setFree"></label>
                                 </div>
-                                Free
+                                Gratis
                             </span>
                         </div>
                     </div>
                     <div class="form-group mb-3">
-                        <label>Date <span class="text-danger">*</span></label>
+                        <label>Tanggal <span class="text-danger">*</span></label>
                         <input type="datetime-local" class="form-control" name="up_date_start"
                             placeholder="Date Start">
                     </div>
                     <div class="form-group mb-3">
-                        <label>Certificate Code <span class="text-danger">*</span></label>
+                        <label>Kode Sertifikat <span class="text-danger">*</span></label>
                         <input placeholder="Certificate Code" type="text" name="up_sertif_code"
                             class="form-control" required>
                     </div>
@@ -236,7 +236,7 @@
                         </select>
                     </div>
                     <div class="form-group mb-3">
-                        <label>Contact Person <span class="text-danger">*</span></label>
+                        <label>Kontak Penyelenggara <span class="text-danger">*</span></label>
                         <input placeholder="+62 83342457452" type="text" name="up_contact" class="form-control"
                             required>
                     </div>
@@ -246,7 +246,7 @@
                             class="form-control" required>
                     </div>
                     <div class="form-group mb-3">
-                        <label>Location <span class="text-danger">*</span></label>
+                        <label>Lokasi <span class="text-danger">*</span></label>
                         <input placeholder="Location" type="text" name="up_location" class="form-control"
                             required>
                     </div>
@@ -263,7 +263,7 @@
                     <button type="submit" class="btn btn-primary waves-effect waves-light" id="confirmButton">
                         <span class="loader"><i class="bx bx-loader bx-spin font-size-16 align-middle me-2"></i>
                             Loading</span>
-                        <span class="main-btn">Confirm</span>
+                        <span class="main-btn">Konfirmasi</span>
                     </button>
                 </div>
             </form>
@@ -278,7 +278,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Delete Event</h5>
+                <h5 class="modal-title">Hapus Event</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -293,7 +293,7 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Delete</button>
+                    <button type="submit" class="btn btn-primary">Hapus</button>
                 </div>
             </form>
         </div>

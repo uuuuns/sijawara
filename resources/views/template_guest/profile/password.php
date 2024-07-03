@@ -1,17 +1,17 @@
 <div class="col ms-4 px-5 py-5 shadow rounded-3 overflow-hidden bg-white">
-    <h3 class="fw-bold pb-5" style="color:#5580E9">Change Password</h3>
-    <h5 class="text-black ps-1">Your Current Password</h5>
+    <h3 class="fw-bold pb-5" style="color:#5580E9">Ganti Kata Sandi</h3>
+    <h5 class="text-black ps-1">Kata Sandi Anda Saat Ini</h5>
     <div class="input-group my-4">
         <input type="password" class="form-control border-bottom border-0 shadow-none rounded-0 ps-1" id="currentPassword" placeholder="Your Current Password" name="password" value="bahagia">
         <span class="align-self-center fw-semibold" id="togglePassword1" style="cursor: pointer; margin-left: -25px; z-index: 5;"><i class="bi bi-eye fs-4"></i></span>
     </div>
 
-    <h5 class="text-black ps-1">New Password</h5>
+    <h5 class="text-black ps-1">Kata Sandi Baru</h5>
     <div class="input-group my-4 pb-lg-3">
         <input type="password" class="form-control border-bottom border-0 shadow-none rounded-0 ps-1" id="newPassword" placeholder="New Password" value="bahagia">
         <span class="align-self-center fw-semibold" id="togglePassword2" style="cursor: pointer; margin-left: -25px; z-index: 5;"><i class="bi bi-eye fs-4"></i></span>
     </div>
-    <h5 class="text-black ps-1">Confirm New Password</h5>
+    <h5 class="text-black ps-1">Konfirmasi Kata Sandi Baru</h5>
     <div class="input-group my-4 pb-lg-3">
         <input type="password" class="form-control border-bottom border-0 shadow-none rounded-0 ps-1" id="confirmPassword" placeholder="Confirm New Password" value="bahagia">
         <span class="align-self-center fw-semibold" id="togglePassword3" style="cursor: pointer; margin-left: -25px; z-index: 5;"><i class="bi bi-eye fs-4"></i></span>

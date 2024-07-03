@@ -19,7 +19,7 @@
                         <i class="anticon anticon-project"
                             style="<?= $title == 'Kursus' || $title == 'Event' ? 'color: #4b94f7;' : '' ?>;"></i>
                     </span>
-                    <span class="title">Activity</span>
+                    <span class="title">Aktifitas</span>
                     <span class="arrow">
                         <i class="arrow-icon"></i>
                     </span>
@@ -63,7 +63,7 @@
                         <i class="anticon anticon-gold"
                             style="<?= $title == 'Category' ? 'color: #4b94f7;' : '' ?>;"></i>
                     </span>
-                    <span class="title">Category</span>
+                    <span class="title">Kategori</span>
                     <span class="arrow">
                     </span>
                 </a>
@@ -85,7 +85,7 @@
                         <i class="anticon anticon-audit"
                             style="<?= $title == 'Instructor' ? 'color: #4b94f7;' : '' ?>;"></i>
                     </span>
-                    <span class="title">Instructor</span>
+                    <span class="title">Instruktur</span>
                 </a>
             </li>
             <?php } ?>

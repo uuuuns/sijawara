@@ -2,11 +2,11 @@
     <div class="d-flex justify-content-between">
         <div class="image-ebook rounded-5 text-black me-lg-4">
             <div>
-                <h1 class=" fw-bold">Everyone can<br> <span class=" fw-bold">share and learn</span></h1>
+                <h1 class=" fw-bold">Semua bisa<br> <span class=" fw-bold">berbagi dan belajar</span></h1>
             </div>
         </div>
         <div class="image-blur rounded-5 text-white text-center">
-            <span class="fs-1 fw-semibold">Best Seller!</span>
+            <span class="fs-1 fw-semibold">Penjualan Terbaik!</span>
             <div class="child-list overflow-hidden my-4 m-auto">
                 <img src="<?= $ebook[0]['IMAGE_EBOOK'] ?>" class="img-fluid rounded-2" style="height: 282px; object-fit: cover;" alt="">
             </div>
@@ -15,12 +15,12 @@
                 <?php if (!empty($this->session->userdata('ID_USER'))) { ?>
                     <button type="button" class="btn btn-light rounded-4 py-2 w-90  mt-3" data-toggle="modal" data-target="#exampleModalCenter" style="--bs-btn-padding-x: 1.5rem; height: 64px; width: 339px;">
                         <!-- <p class="fs-6 m-0">Purchase Now <span class="fw-bold ms-3 fs-4">IDR 60.000</span></p> -->
-                        <p class="fs-6 m-0" data-toggle="modal" data-target="#exampleModal">Try Now</p>
+                        <p class="fs-6 m-0" data-toggle="modal" data-target="#exampleModal">Coba Sekarang</p>
                     </button>
                 <?php } else { ?>
                     <button type="button" onclick="CheckLogin()" class="btn btn-light rounded-4 py-2 w-90  mt-3" style="--bs-btn-padding-x: 1.5rem; height: 64px; width: 339px;">
                         <!-- <p class="fs-6 m-0">Purchase Now <span class="fw-bold ms-3 fs-4">IDR 60.000</span></p> -->
-                        <p class="fs-6 m-0" data-toggle="modal" data-target="#exampleModal">Try Now</p>
+                        <p class="fs-6 m-0" data-toggle="modal" data-target="#exampleModal">Coba Sekarang</p>
                     </button>
                     <script>
                         function CheckLogin() {
@@ -58,7 +58,7 @@
         </span>
     </div>
     <div>
-        <a class="nav-link " href="<?= base_url('ebook/list') ?>">See all ></a>
+        <a class="nav-link " href="<?= base_url('ebook/list') ?>">Lihat Semua ></a>
     </div>
 </div>
 <div class="container p-0 mb-4">
@@ -71,7 +71,7 @@
                 </div>
                 <div class="mt-2">
                     <span class="fw-semibold"><?= $book['JUDUL'] ?></span>
-                    <p class="m-0">By <span class="fw-semibold"><?= $book['AUTHOR'] ?></span></p>
+                    <p class="m-0">Oleh <span class="fw-semibold"><?= $book['AUTHOR'] ?></span></p>
                     <div class="d-flex flex-row align-items-center gap-2">
                         <p class="fw-semibold px-3 fs-8 m-0 rounded-5" style="color:white; background-color:<?= ($book['PRICE'] == 0) ? "#47DE13" : "#5580E9" ?>">
                             <?= ($book['PRICE'] == 0) ? "FREE" : "PAID" ?>
@@ -83,7 +83,7 @@
                         <form id="FormBuyNow-info" method="POST" action="<?= base_url('purchase') ?>">
                             <div id="data-input-info"></div>
                             <button type="button" onclick="BuyNow()" class="btn btn-primary rounded-2 " style="height: 35px; width: 150px;">
-                                <p class="m-0 fw-semibold">Buy now</p>
+                                <p class="m-0 fw-semibold">Beli Sekarang</p>
                             </button>
                         </form>
                         <div class="ms-3" style="">
@@ -93,7 +93,7 @@
                 <?php } else { ?>
                     <div class="d-flex mt-3 align-items-center">
                         <button type="button" class="btn btn-primary rounded-2 " data-toggle="modal" data-target="#exampleModalCenter" style="height: 35px; width: 150px;">
-                            <p class="m-0 fw-semibold" data-toggle="modal" data-target="#exampleModal">Read</p>
+                            <p class="m-0 fw-semibold" data-toggle="modal" data-target="#exampleModal">Baca</p>
                         </button>
                     </div>
                 <?php } ?>

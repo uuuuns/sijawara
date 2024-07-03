@@ -6,7 +6,7 @@
                 <div class="alert alert-danger " role="alert">
                     <div class="position-relative">
                         <div class="position-absolute top-50 start-50 translate-middle">
-                            <h5 class="py-2">Webinar telas dilaksanakan</h5>
+                            <h5 class="py-2">Webinar telah dilaksanakan</h5>
                         </div>
                     </div>
                 </div>
@@ -23,7 +23,7 @@
 
                             <div class="container container-padding">
                                 <div class="my-3 fw-bold d-flex align-self-start justify-content-start pe-0 align-items-center text-black">
-                                    Share :<span class="fs-5"> <i class="fab fa-facebook mx-2" style="cursor: pointer"></i><i class="fab fa-twitter me-2" style="cursor: pointer"></i><i class="fab fa-instagram" style="cursor: pointer"></i></span>
+                                    Bagikan :<span class="fs-5"> <i class="fab fa-facebook mx-2" style="cursor: pointer"></i><i class="fab fa-twitter me-2" style="cursor: pointer"></i><i class="fab fa-instagram" style="cursor: pointer"></i></span>
                                 </div>
                                 <?php if ($event->DATA_CHECKING == 0 && $event->EXPIRED != 1) : ?>
                                 <div class="price-header mb-3">
@@ -59,11 +59,11 @@
                     </div>
                     <nav class="course-single-tabs learn-press-nav-tabs">
                         <div class="nav nav-tabs course-nav" id="nav-tab" role="tablist">
-                            <a class="nav-item nav-link active" id="nav-home-tab" data-bs-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home-tab" aria-selected="true">Overview</a>
-                            <a class="nav-item nav-link" id="nav-instructor-tab" data-bs-toggle="tab" href="#nav-instructor" role="tab" aria-controls="nav-instructor-tab" aria-selected="false">Description</a>
+                            <a class="nav-item nav-link active" id="nav-home-tab" data-bs-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home-tab" aria-selected="true">Ringkasan</a>
+                            <a class="nav-item nav-link" id="nav-instructor-tab" data-bs-toggle="tab" href="#nav-instructor" role="tab" aria-controls="nav-instructor-tab" aria-selected="false">Deskripsi</a>
                             <?php if (!empty(session('user')) && $event->DATA_CHECKING <> 0) : ?>
-                                <a class="nav-item nav-link" id="nav-link-tab" data-bs-toggle="tab" href="#nav-link" role="tab" aria-controls="nav-link-tab" aria-selected="false">Link Conference</a>
-                                <a class="nav-item nav-link" id="nav-certificate-tab" data-bs-toggle="tab" href="#nav-certificate" role="tab" aria-controls="nav-certificate-tab" aria-selected="false">Certificate</a>
+                                <a class="nav-item nav-link" id="nav-link-tab" data-bs-toggle="tab" href="#nav-link" role="tab" aria-controls="nav-link-tab" aria-selected="false">Link Konferensi</a>
+                                <a class="nav-item nav-link" id="nav-certificate-tab" data-bs-toggle="tab" href="#nav-certificate" role="tab" aria-controls="nav-certificate-tab" aria-selected="false">Sertifikat</a>
                             <?php endif ?>
 
                         </div>

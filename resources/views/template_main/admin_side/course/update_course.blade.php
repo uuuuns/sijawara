@@ -6,7 +6,7 @@
                 <a href="<?= url('dashboard') ?>" class="breadcrumb-item"><i
                         class="anticon anticon-home m-r-5"></i>Home</a>
                 <a class="breadcrumb-item" href="<?= asset('manage/activity/course') ?>"><?= $title ?></a>
-                <span class="breadcrumb-item active">Add <?= $title ?></span>
+                <span class="breadcrumb-item active">Tambah <?= $title ?></span>
             </nav>
         </div>
     </div>
@@ -73,7 +73,7 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label control-label">Pengunguman</label>
+                        <label class="col-sm-2 col-form-label control-label">Pengumuman</label>
                         <div class="col-md-5">
                             <textarea name="announcement" id="editor"></textarea>
                         </div>
@@ -148,7 +148,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalCenterTitle">Tambahkan Bab or kuis ?</h5>
+                <h5 class="modal-title" id="exampleModalCenterTitle">Tambahkan Bab atau kuis ?</h5>
                 <button type="button" class="close" data-dismiss="modal">
                     <i class="anticon anticon-close"></i>
                 </button>

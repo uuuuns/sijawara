@@ -25,7 +25,7 @@
                 <span class="readmore-btn position-absolute w-100 fw-semibold justify-content-center align-items-end d-flex" style="background: linear-gradient( to bottom, transparent, white 60%); height:70px; margin-left:-1rem; margin-top:-4rem">
                     <div class="w-100 text-center " style="cursor:pointer;">
                         <span class="text-btn-content">
-                            More Info
+                            Info Lebih Lanjut
                         </span>
                         <i id="icon-btn" class="bi bi-chevron-down" style="font-size: 1rem;-webkit-text-stroke: 1px;margin-left:0.4rem;"></i>
                     </div>
@@ -37,7 +37,7 @@
                 <img src="<?= $course->IMAGE_ACTIVITY ?>" class="d-block img-fluid rounded-5" width="380">
             </div>
             <div class="my-3 fw-bold d-flex justify-content-start justify-content-lg-end align-items-center me-2 text-black">
-                Share :<span class="fs-5"> <i class="fab fa-facebook mx-2" style="cursor: pointer"></i><i class="fab fa-twitter me-2" style="cursor: pointer"></i><i class="fab fa-instagram" style="cursor: pointer"></i></span>
+                Bagikan :<span class="fs-5"> <i class="fab fa-facebook mx-2" style="cursor: pointer"></i><i class="fab fa-twitter me-2" style="cursor: pointer"></i><i class="fab fa-instagram" style="cursor: pointer"></i></span>
             </div>
         </div>
     </div>
@@ -45,11 +45,11 @@
         <div class="col-md-12">
             <nav>
                 <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                    <button class="nav-link active border-0 col col-lg-2 fs-5" id="nav-course-tab" data-bs-toggle="tab" data-bs-target="#nav-course" type="button" role="tab" aria-controls="nav-course" aria-selected="true">Course</button>
-                    <button class="nav-link border-0 col col-lg-2 fs-5" id="nav-announcement-tab" data-bs-toggle="tab" data-bs-target="#nav-announcement" type="button" role="tab" aria-controls="nav-announcement" aria-selected="false">Announcement</button>
+                    <button class="nav-link active border-0 col col-lg-2 fs-5" id="nav-course-tab" data-bs-toggle="tab" data-bs-target="#nav-course" type="button" role="tab" aria-controls="nav-course" aria-selected="true">Kursus</button>
+                    <button class="nav-link border-0 col col-lg-2 fs-5" id="nav-announcement-tab" data-bs-toggle="tab" data-bs-target="#nav-announcement" type="button" role="tab" aria-controls="nav-announcement" aria-selected="false">Pengumuman</button>
 
                     <?php if ($tot_proggress == 100) { ?>
-                        <button class="nav-link border-0 col col-lg-2 fs-5" id="nav-sertif-tab" data-bs-toggle="tab" data-bs-target="#nav-sertif" type="button" role="tab" aria-controls="nav-sertif" aria-selected="false">Certificate</button>
+                        <button class="nav-link border-0 col col-lg-2 fs-5" id="nav-sertif-tab" data-bs-toggle="tab" data-bs-target="#nav-sertif" type="button" role="tab" aria-controls="nav-sertif" aria-selected="false">Sertifikat</button>
                     <?php } ?>
                 </div>
             </nav>
@@ -115,7 +115,7 @@
                         </div>
                     <?php } else { ?>
                         <div class="mx-3 mx-lg-7 my-4 text-muted">
-                            Silakan lengkapi seluruh kursus dan capai skor di atas 75 poin.
+                            Silahkan lengkapi seluruh kursus dan capai skor di atas 75 poin.
                         </div>
                     <?php } ?>
                 </div>

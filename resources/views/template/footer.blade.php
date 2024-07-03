@@ -7,13 +7,13 @@
                         <img src="<?= url('assets_admin/images/logo/logo_sijawara.png') ?>" class="w-160 img-fluid">
                     </div>
                     <div class="widget footer-widget mb-5 mb-lg-0">
-                        <p>Everyone can share and learn</p>
+                        <p>Semua bisa berbagi dan belajar</p>
                     </div>
                 </div>
 
                 <div class="col-xl-4 col-sm-6">
                     <div class="footer-widget mb-5 mb-xl-0" style="width: fit-content;float: inline-end;padding-right: 50px;">
-                        <h5 class="widget-title">Explore</h5>
+                        <h5 class="widget-title">Jelajahi</h5>
                         <ul class="list-unstyled footer-links">
                             <li><a href="<?= url('') ?>">Beranda</a></li>
                             <li><a href="<?= url('course') ?>">Kursus</a></li>

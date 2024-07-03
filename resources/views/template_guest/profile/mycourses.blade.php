@@ -23,9 +23,9 @@
                     <td class="py-3">
                         <?php if ($item->PROGRESS == 100) { ?>
                             <i class="bi bi-check-circle-fill text-success"></i>
-                            <span>Done</span>
+                            <span>Tuntas</span>
                         <?php } else { ?>
-                            In Progress <?= ceil($item->PROGRESS) ?>%
+                            Sedang Berlangsung <?= ceil($item->PROGRESS) ?>%
                         <?php } ?>
                     </td>
                 </tr>

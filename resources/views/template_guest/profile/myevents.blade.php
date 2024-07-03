@@ -6,8 +6,8 @@
         <thead>
             <tr class="fw-normal text-black">
                 <td scope="col" class="fw-semibold fs-5" width="60%">Event</td>
-                <td scope="col" class="fw-semibold fs-5" width="20%">Date</td>
-                <td scope="col" class="fw-semibold fs-5" width="20%">Time</td>
+                <td scope="col" class="fw-semibold fs-5" width="20%">Tanggal</td>
+                <td scope="col" class="fw-semibold fs-5" width="20%">Waktu</td>
             </tr>
         </thead>
         <tbody class="table-group-divider text-black" style="border-color:#C8C8C8; border-top-width: 2px !important">

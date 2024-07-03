@@ -11,8 +11,8 @@
 <div class="col ms-4 px-5 py-5 shadow rounded-3 overflow-hidden bg-white">
     <form action="/profile/academic/change" id="academic-form" method="POST">
         @csrf
-        <h3 class="fw-bold pb-5" style="color:#5580E9">Academic Data</h3>
-        <h5 class="text-black ps-1">University Name</h5>
+        <h3 class="fw-bold pb-5" style="color:#5580E9">Data Akademik</h3>
+        <h5 class="text-black ps-1">Nama Universitas</h5>
         <div class="my-3 float-label-control">
             <input type="text" name="univ" class="form-control input-text woocommerce-Input woocommerce-Input--text" placeholder="Nama Universitas" value="<?= !empty($academic->UNIV) ? $academic->UNIV : ''  ?>" required>
         </div>
@@ -20,29 +20,29 @@
         <div class="my-3 float-label-control">
             <input type="number" name="nim" class="form-control input-text woocommerce-Input woocommerce-Input--text number" placeholder="NIM" value="<?= !empty($academic->NIM) ? $academic->NIM : '' ?>" required>
         </div>
-        <h5 class="text-black ps-1 mt-4">Study Program</h5>
+        <h5 class="text-black ps-1 mt-4">Program Studi</h5>
         <div class="my-3 float-label-control">
             <input type="text" name="study" class="form-control input-text woocommerce-Input woocommerce-Input--text" placeholder="Nama" value="<?= !empty($academic->STUDY) ? $academic->STUDY : '' ?>" required>
         </div>
-        <h5 class="text-black ps-1 mt-4">Degree</h5>
+        <h5 class="text-black ps-1 mt-4">Gelar</h5>
         <div class="my-3 float-label-control">
             <select name="degree" class="form-select woocommerce-Input woocommerce-Input--text" required>
-                <option value="" <?= !empty($academic->DEGREE) ? 'selected' : "" ?>>--Select Degree--</option>
+                <option value="" <?= !empty($academic->DEGREE) ? 'selected' : "" ?>>--Pilih Gelar--</option>
                 <option value="D3" <?= !empty($academic->DEGREE) ? ($academic->DEGREE == "D3" ? 'selected' : "")
-                                        : '' ?>>Associate Degree</option>
+                                        : '' ?>>Gelar Diploma</option>
                 <option value="S1" <?= !empty($academic->DEGREE) ? ($academic->DEGREE == "S1" ? 'selected' : "")
-                                        : '' ?>>Bachelor Degree</option>
+                                        : '' ?>>Gelar Sarjana</option>
                 <option value="S2" <?= !empty($academic->DEGREE) ? ($academic->DEGREE == "S2" ? 'selected' : "")
-                                        : '' ?>>Master Degree</option>
+                                        : '' ?>>Gelar Magister</option>
             </select>
         </div>
         <h5 class="text-black ps-1 mt-4">Semester</h5>
         <div class="my-3 float-label-control">
             <input type="number" name="sem" class="form-control input-text woocommerce-Input woocommerce-Input--text number" placeholder="Semester" value="<?= !empty($academic->SEMESTER) ? $academic->SEMESTER : '' ?>">
-            <span><small class="text-danger">* If you graduated, just left semester field empty</small></span>
+            <span><small class="text-danger">* Jika anda sudah lulus, biarkan kolom semester kosong</small></span>
         </div>
 
-        <button type="button" class="btn btn-main-2 btn-primary rounded rounded-4 fw-semibold py-2 w-100 mt-5 edit" style="--bs-btn-padding-x: 4.5rem;">Save</button>
+        <button type="button" class="btn btn-main-2 btn-primary rounded rounded-4 fw-semibold py-2 w-100 mt-5 edit" style="--bs-btn-padding-x: 4.5rem;">Simpan</button>
     </form>
 </div>
 

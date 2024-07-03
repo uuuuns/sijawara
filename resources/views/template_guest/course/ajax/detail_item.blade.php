@@ -78,7 +78,7 @@
     <?php if ($type == 1 && !empty($data_all_mapping) && $last_item[0]->ID_ITEM == $id_item) { ?>
         <div class="mx-4 my-4">
             <button class="btn btn-primary mt-4 px-4 py-2 mb-3 rounded-3 shadow fw-semibold w-100" data-iditem="<?= $id_item ?>" data-status="2" data-type="1" onclick="NextItem(this)">
-                Lanjukan
+                Lanjutkan
             </button>
         </div>
     <?php } ?>
@@ -130,7 +130,7 @@
             </div>
             <?php if (!empty($data_all_mapping) && $last_item[0]->ID_ITEM == $id_item) { ?>
                 <button class="btn btn-primary mt-4 px-4 py-2 mb-3 rounded-3 shadow fw-semibold w-100" data-iditem="<?= $id_item ?>" data-status="2" data-type="2" onclick="NextItem(this)">
-                    Lanjukan
+                    Lanjutkan
                 </button>
             <?php } ?>
         <?php } else { ?>

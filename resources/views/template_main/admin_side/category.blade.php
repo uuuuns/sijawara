@@ -25,13 +25,13 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-6 align-self-center">
-                    <label class="card-title" style="font-size: 20px">Category</label>
+                    <label class="card-title" style="font-size: 20px">Kategori</label>
                 </div>
                 <div class="col-md-6 d-flex justify-content-md-end justify-content-end align-items-center">
                     <div class="mt-3 mt-md-0">
                         <button type="button" class="btn btn-primary" onclick="openaddModal()">
                             <i class="mdi mdi-plus me-1"></i>
-                            Add Category</button>
+                            Tambah Kategori</button>
                     </div>
                 </div>
             </div>
@@ -41,7 +41,7 @@
                         <tr>
                             <th>No</th>
                             <th style="width: 60%;">Kategori</th>
-                            <th>Action</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -136,7 +136,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Delete</h5>
+                <h5 class="modal-title">Hapus</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -144,11 +144,11 @@
             <form id="form-user" action="category/delete" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
-                    <p>Do you want to delete this category ?</p>
+                    <p>Apakah Anda ingin menghapus kategori ini ?</p>
                     <input type="hidden" name="del_id_kategori" value="" readonly>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Delete</button>
+                    <button type="submit" class="btn btn-primary">Hapus</button>
                 </div>
             </form>
         </div>
