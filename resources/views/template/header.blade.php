@@ -219,7 +219,7 @@
                                     </a>
                                     <?php if ($title != 'Checkout') { ?>
                                         <ul class="submenu" style="left: initial;right:0;width: max-content;">
-                                            <h6 class="title mx-3 fs-5 my-3">Cart</h6>
+                                            <h6 class="title mx-3 fs-5 my-3">Keranjang</h6>
                                             <hr class="dropdown-divider">
                                             <ul class="p-0 m-2 overflow-auto" style="max-height:300px">
                                                 <?php if (!empty($checkout)) { ?>
@@ -244,13 +244,13 @@
                                                             <div class="d-flex justify-content-center">
                                                                 <img src="https://img.freepik.com/free-vector/empty-concept-illustration_114360-1253.jpg" height="210">
                                                             </div>
-                                                            <p class="text-center">No Product</p>
+                                                            <p class="text-center">Tidak ada produk</p>
                                                         </td>
                                                     </tr>
                                                 <?php        } ?>
                                             </ul>
                                             <hr class="dropdown-divider">
-                                            <p class="text-center m-0 p-0 mt-2"><a href="#" onclick="$('#form_checkout').submit()" class="small">View All</a>
+                                            <p class="text-center m-0 p-0 mt-2"><a href="#" onclick="$('#form_checkout').submit()" class="small">Lihat Semua</a>
                                             </p>
 
                                         </ul>
@@ -270,7 +270,7 @@
                                     </a>
                                     <ul class="submenu" style="left: initial;right:0">
                                         <?php if (session('user')[0]['ID_ROLE'] == 1) { ?>
-                                            <li><a class="" href="<?= url('dashboard') ?>">Dashboard</a></li>
+                                            <li><a class="" href="<?= url('dashboard') ?>">Beranda  </a></li>
                                         <?php    } else { ?>
                                             <li><a class="" href="<?= url('profile') ?>">Profile</a></li>
                                             <li><a class=" " href="<?= url('profile/mycourses') ?>">Kursus Ku</a></li>

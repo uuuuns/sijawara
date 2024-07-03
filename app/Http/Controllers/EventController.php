@@ -19,7 +19,7 @@ class EventController extends Controller
 
     public function index()
     {
-        $data['title'] = "Event";
+        $data['title'] = "Webinar";
 
         $data['event'] = DB::select("
             Select

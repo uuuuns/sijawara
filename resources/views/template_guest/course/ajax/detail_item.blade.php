@@ -128,7 +128,7 @@
                     </div>
                 </div>
             </div>
-            <?php if (!empty($data_all_mapping) && $last_item->ID_ITEM == $id_item) { ?>
+            <?php if (!empty($data_all_mapping) && $last_item[0]->ID_ITEM == $id_item) { ?>
                 <button class="btn btn-primary mt-4 px-4 py-2 mb-3 rounded-3 shadow fw-semibold w-100" data-iditem="<?= $id_item ?>" data-status="2" data-type="2" onclick="NextItem(this)">
                     Lanjukan
                 </button>

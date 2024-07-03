@@ -52,7 +52,7 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-xl-6 col-sm-12 col-lg-6">
-                    <p class="mb-0 copyright text-sm-center text-lg-start">© 2024 TBH Academy. All rights reserved.</p>
+                    <p class="mb-0 copyright text-sm-center text-lg-start">© 2024 Sijawara+. All rights reserved.</p>
                 </div>
                 <div class="col-xl-6 col-sm-12 col-lg-6">
                     <div class="footer-btm-links text-start text-sm-center text-lg-end">

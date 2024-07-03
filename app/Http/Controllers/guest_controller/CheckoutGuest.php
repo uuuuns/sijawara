@@ -46,7 +46,7 @@ class CheckoutGuest extends Controller
 		if (session('user') == null) {
 			return redirect('login');
 		}
-		$data['title'] = 'Checkout';
+		$data['title'] = 'Konfirmasi Pembayaran';
 
 		$data['checking_trans'] = $this->checkoutModel->get_trans(session('user')[0]->get('ID_USER'));
 		$data['checkout'] = $this->checkoutModel->get_all_order(session('user')[0]->get('ID_USER'));
@@ -108,7 +108,7 @@ class CheckoutGuest extends Controller
 				->where('ID_PRODUCT', $id_activity)
 				->where('ID_USER', session('user')[0]->get('ID_USER'))
 				->update($data_order);
-				$msg = "Your Course is Already in Cart!";
+				$msg = "Kursus ini sudah ada di keranjang!";
 			} else {
 				$data_order = array(
 					"ID_ORDER" => $this->GenerateUniqID_Order(time()),
@@ -119,7 +119,7 @@ class CheckoutGuest extends Controller
 				);
 				// $this->checkoutModel->insert_order($data_order);
 				DB::table("order")->insert($data_order);
-				$msg = "Successfully Added Course to Cart!";
+				$msg = "Berhasil menambahkan ke keranjang!";
 			}
 		} else {
 			if (!empty($id_activity) && !empty(session('user')[0]->get('ID_USER')) && $type == 1) { //COURSE
@@ -138,7 +138,7 @@ class CheckoutGuest extends Controller
 					->where('ID_USER', session('user')[0]->get('ID_USER'))
 					->update($data_order);
 					
-					$msg = "Your Course is Already in Cart!";
+					$msg = "Kursus ini sudah ada di keranjang!";
 				} else {
 					$data_order = array(
 						"ID_ORDER" => $this->GenerateUniqID_Order(time()),
@@ -149,7 +149,7 @@ class CheckoutGuest extends Controller
 					);
 					// $this->checkoutModel->insert_order($data_order);
 					DB::table("order")->insert($data_order);
-					$msg = "Successfully Added Course to Cart!";
+					$msg = "Berhasil menambahkan ke keranjang!";
 				}
 			} else if (!empty($id_activity) && !empty(session('user')[0]->get('ID_USER')) && $type == 2) { //EVENT
 				$event = $this->eventModel->get_event($id_activity);
@@ -166,7 +166,7 @@ class CheckoutGuest extends Controller
 					->where('ID_PRODUCT', $id_activity)
 					->where('ID_USER', session('user')[0]->get('ID_USER'))
 					->update($data_order);
-					$msg = "Your Product is Already in Cart!";
+					$msg = "Webinar ini sudah ada di keranjang!";
 				} else {
 					$data_order = array(
 						"ID_ORDER" => $this->GenerateUniqID_Order(time()),
@@ -177,7 +177,7 @@ class CheckoutGuest extends Controller
 					);
 					// $this->checkoutModel->insert_order($data_order);
 					DB::table("order")->insert($data_order);
-					$msg = "Successfully Added Product to Cart!";
+					$msg = "Berhasil menambahkan ke keranjang!";
 				}
 			}
 		}
@@ -249,7 +249,7 @@ class CheckoutGuest extends Controller
 						'quantity' => 1,
 						'price' => (int)$_response->PRICE_ORDER,
 						"name" => $_response->TITLE_ACTIVITY,
-						"brand" => "TBH Academy",
+						"brand" => "Sijawara+",
 						"category" => "Course",
 						"merchant_name" => "PT. DBI",
 						"url" => ""
