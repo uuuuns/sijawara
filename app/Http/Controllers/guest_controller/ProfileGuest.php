@@ -242,6 +242,6 @@ class ProfileGuest extends Controller
             $updated = DB::table('user_data')->insert($data);
         }
         // $updateStatus = User::updateTableById($data);
-        return redirect('/profile/academic');
+        return redirect('/profile/document');
     }
 }

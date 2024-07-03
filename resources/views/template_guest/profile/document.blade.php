@@ -21,7 +21,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-12">
-                            <object style="width: 100%; height: 309px;" data="<?= $document->CV ?>">
+                            <object style="width: 100%; height: 309px;" data="<?= !empty($document->CV) ? $document->CV : '' ?>">
                                 Error: Embedded data could not be displayed in mobile mode change it to dekstop mode to show the file.
                             </object>
                         </div>
@@ -31,8 +31,11 @@
         </div>
         <div id="input-data" class="d-none">
             <form action="/profile/document/change" method="post" enctype="multipart/form-data">
-            @csrf
-                <input id="input-file" name="file_cv" type="file" accept="application/pdf" />
+                @csrf
+                <input id="input-file1" name="file_cv" type="file" accept="application/pdf" />
+                <button type="submit" title="Upload selected files" id="upload-button1" style="display: none;"
+                    class="btn btn-primary rounded-1 fw-semibold w-7 edit-file mb-2" tabindex="500"><i
+                        class="bi-upload"></i> <span class="hidden-xs">Upload</span></button>
             </form>
         </div>
     </section>
@@ -55,7 +58,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-12">
-                            <object style="width: 100%; height: 309px;" data="<?= $document->PORTOFOLIO ?>">
+                            <object style="width: 100%; height: 309px;" data="<?= !empty($document->PORTOFOLIO) ? $document->PORTOFOLIO : '' ?>">
                                 Error: Embedded data could not be displayed in mobile mode change it to dekstop mode to show the file.
                             </object>
                         </div>
@@ -65,8 +68,11 @@
         </div>
         <div id="input-data" class="d-none">
             <form action="/profile/document/change" method="post" enctype="multipart/form-data">
-            @csrf
-                <input id="input-file" name="file_porto" type="file" accept="application/pdf" />
+                @csrf
+                <input id="input-file2" name="file_porto" type="file" accept="application/pdf" />
+                <button type="submit" title="Upload selected files" id="upload-button2" style="display: none;"
+                    class="btn btn-primary rounded-1 fw-semibold w-7 edit-file mb-2" tabindex="500"><i
+                        class="bi-upload"></i> <span class="hidden-xs">Upload</span></button>
             </form>
         </div>
     </section>
@@ -88,7 +94,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="row">
-                        <?php $sertif = explode(';', $document->SERTIFIKAT);
+                        <?php $sertif = explode(';', !empty($document->CV) ? $document->CV : '' );
                         foreach ($sertif as $link) { ?>
                             <div class="col-md-4">
                                 <object style="width: 100%; height: 309px;" data="<?= $link ?>">
@@ -102,8 +108,11 @@
         </div>
         <div id="input-data" class="d-none">
             <form action="/profile/document/change" method="post" enctype="multipart/form-data">
-            @csrf
-                <input id="input-file" name="file_cert[]" type="file" accept="application/pdf" multiple />
+                @csrf
+                <input id="input-file3" name="file_cert[]" type="file" accept="application/pdf" multiple />
+                <button type="submit" title="Upload selected files" id="upload-button3" style="display: none;"
+                    class="btn btn-primary rounded-1 fw-semibold w-7 edit-file mb-2" tabindex="500"><i
+                        class="bi-upload"></i> <span class="hidden-xs">Upload</span></button>
             </form>
         </div>
     </section>
@@ -126,7 +135,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-12">
-                            <object style="width: 100%; height: 309px;" data="<?= $document->SURAT_RECOM ?>">
+                            <object style="width: 100%; height: 309px;" data="<?= !empty($document->SURAT_RECOM) ? $document->SURAT_RECOM : '' ?>">
                                 Error: Embedded data could not be displayed in mobile mode change it to dekstop mode to show the file.
                             </object>
                         </div>
@@ -136,8 +145,11 @@
         </div>
         <div id="input-data" class="d-none">
             <form action="profile/document/change" method="post" enctype="multipart/form-data">
-            @csrf
-                <input id="input-file" name="file_recom" type="file" accept="application/pdf" />
+                @csrf
+                <input id="input-file4" name="file_recom" type="file" accept="application/pdf" />
+                <button type="submit" title="Upload selected files" id="upload-button4" style="display: none;"
+                    class="btn btn-primary rounded-1 fw-semibold w-7 edit-file mb-2" tabindex="500"><i
+                        class="bi-upload"></i> <span class="hidden-xs">Upload</span></button>
             </form>
         </div>
     </section>
@@ -216,6 +228,28 @@
     initFileUploader('#recom-letter-section', 1, 'recom')
     initFileUploader('#cert-section', 3, 'cert')
 
+    document.getElementById('input-file1').addEventListener('change', function () {
+        const uploadButton = document.getElementById('upload-button1');
+        if (this.files.length > 0) {
+            uploadButton.style.display = 'inline-block';
+        } else {
+            uploadButton.style.display = 'none';
+        }
+    });
+    document.getElementById('input-file2').addEventListener('change', function () {
+        const uploadButton2 = document.getElementById('upload-button2');
+        uploadButton2.style.display = this.files.length > 0 ? 'inline-block' : 'none';
+    });
+
+    document.getElementById('input-file3').addEventListener('change', function () {
+        const uploadButton3 = document.getElementById('upload-button3');
+        uploadButton3.style.display = this.files.length > 0 ? 'inline-block' : 'none';
+    });
+
+    document.getElementById('input-file4').addEventListener('change', function () {
+        const uploadButton4 = document.getElementById('upload-button4');
+        uploadButton4.style.display = this.files.length > 0 ? 'inline-block' : 'none';
+    });
     function initFileUploader(sectioId, limitFile, type) {
         $(document).ready(function() {
             $(sectioId + " #input-file").fileinput({
