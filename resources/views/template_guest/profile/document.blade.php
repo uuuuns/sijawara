@@ -109,7 +109,7 @@
         <div id="input-data" class="d-none">
             <form action="/profile/document/change" method="post" enctype="multipart/form-data">
                 @csrf
-                <input id="input-file3" name="file_cert[]" type="file" accept="application/pdf" multiple />
+                <input id="input-file3" name="file_cert" type="file" accept="application/pdf" multiple />
                 <button type="submit" title="Upload selected files" id="upload-button3" style="display: none;"
                     class="btn btn-primary rounded-1 fw-semibold w-7 edit-file mb-2" tabindex="500"><i
                         class="bi-upload"></i> <span class="hidden-xs">Upload</span></button>
