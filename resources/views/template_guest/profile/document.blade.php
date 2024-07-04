@@ -144,7 +144,7 @@
             </div>
         </div>
         <div id="input-data" class="d-none">
-            <form action="profile/document/change" method="post" enctype="multipart/form-data">
+            <form action="/profile/document/change" method="post" enctype="multipart/form-data">
                 @csrf
                 <input id="input-file4" name="file_recom" type="file" accept="application/pdf" />
                 <button type="submit" title="Upload selected files" id="upload-button4" style="display: none;"
