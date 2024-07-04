@@ -217,6 +217,7 @@ class ProfileGuest extends Controller
     public function doc_up(request $request)
     {
         $userId = session('user')[0]['ID_USER'];
+        $data = [];
         // dd($request->file('file_cv'));
         if (!empty($request->file('file_cv'))) {
             $data = [
