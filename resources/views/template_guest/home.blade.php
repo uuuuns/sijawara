@@ -28,6 +28,7 @@
         <!-- Carousel Start -->
         <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
         <link href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css" rel="stylesheet">
+        <link href="https://unpkg.com/swiper/swiper-bundle.min.css" rel="stylesheet">
 
         <script>
             document.addEventListener('DOMContentLoaded', function() {
@@ -38,24 +39,56 @@
                     interval: 5000,
                 });
                 splide.mount();
+                const swiperConfig = {
+                    loop: true,
+                    speed: 600,
+                    autoplay: {
+                        delay: 5000
+                    },
+                    slidesPerView: 'auto',
+                    pagination: {
+                        el: '.swiper-pagination',
+                        type: 'bullets',
+                        clickable: true
+                    },
+                    breakpoints: {
+                        320: {
+                            slidesPerView: 1,
+                            spaceBetween: 40
+                        },
+                        1200: {
+                            slidesPerView: 3,
+                            spaceBetween: 10
+                        }
+                    }
+                };
+                new Swiper('.swiper-container', swiperConfig);
             });
         </script>
 
         <style>
-            .clients .swiper {
-                padding: 10px 0;
+            .swiper-container {
+                width: 100%;
+                height: 100%;
             }
 
-            .clients .swiper-wrapper {
-                height: auto;
+            .testimonial-item {
+                text-align: center;
             }
 
-            .clients .swiper-slide img {
-                transition: 0.3s;
+            .testimonial-img {
+                width: 100px;
+                border-radius: 50%;
+                margin-bottom: 10px;
             }
 
-            .clients .swiper-slide img:hover {
-                transform: scale(1.1);
+            .stars {
+                color: #ff0;
+            }
+
+            .quote-icon-left,
+            .quote-icon-right {
+                color: #ccc;
             }
 
             .splide__pagination__page.is-active {
@@ -418,31 +451,7 @@
         <div class="container" data-aos="fade-up" data-aos-delay="100">
 
             <div class="swiper init-swiper">
-                <script type="application/json" class="swiper-config">
-                    {
-                        "loop": true,
-                        "speed": 600,
-                        "autoplay": {
-                            "delay": 5000
-                        },
-                        "slidesPerView": "auto",
-                        "pagination": {
-                            "el": ".swiper-pagination",
-                            "type": "bullets",
-                            "clickable": true
-                        },
-                        "breakpoints": {
-                            "320": {
-                                "slidesPerView": 1,
-                                "spaceBetween": 40
-                            },
-                            "1200": {
-                                "slidesPerView": 3,
-                                "spaceBetween": 10
-                            }
-                        }
-                    }
-                </script>
+
                 <div class="swiper-wrapper">
 
                     <div class="swiper-slide">
