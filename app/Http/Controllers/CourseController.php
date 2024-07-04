@@ -263,14 +263,14 @@ class CourseController extends Controller
         $file               = $req->file('materi_file');
         $linkYT             = $req->input('materi_link');
         $idQuiz          = [];
-
+        // dd($req);
         if (!empty($orderList)) {
             for ($i = 0; $i < count($orderList); $i++) {
                 if ($categoryList[$i] == 1) {
                     $data_item = [
                         'ID_COURSE'     => $data['ID_COURSE'],
                         'TITLE'         => $materiTitleList[$i],
-                        'FILE'          => FileUpload::S3($file[$i], 'MATERI_FILE', 'Materi-' . strtotime(now())),
+                        'FILE'          => !empty($file[$i]) ? FileUpload::S3($file[$i], 'MATERI_FILE', 'Materi-' . strtotime(now())) : null,
                         'LINK_YT'       => $linkYT[$i],
                         'DESKRIPSI'     => $descMateriList[$i],
                         'ORDER_LIST'    => $orderList[$i],
