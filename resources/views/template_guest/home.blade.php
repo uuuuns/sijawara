@@ -3,21 +3,15 @@
         <div class="row">
             <div class="col-12 col-lg-7 py-2 px-4">
                 <h1 class="fw-bold">Selamat Datang di SIJAWARA+</h1>
-                <p class="fw-600 text-dark pt-3">SIJAWARA adalah akronim dari Sistem Informasi Pembelajaran dan
-                    Peningkatan Wawasan Perkoperasian. Melalui sijawara, sobat bisa mempelajari secara mandiri ilmu
-                    perkoperasian. Tak hanya itu, sobat sijawara bisa juga mempelajari ilmu terkait pengembangan UMKM.
-                </p>
+                <p class="fw-600 text-dark pt-3">SIJAWARA adalah akronim dari Sistem Informasi Pembelajaran dan Peningkatan Wawasan Perkoperasian. Melalui sijawara, sobat bisa mempelajari secara mandiri ilmu perkoperasian. Tak hanya itu, sobat sijawara bisa juga mempelajari ilmu terkait pengembangan UMKM. </p>
                 <svg width="375" height="34" viewBox="0 0 487 34" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M4 30C73.6307 10.3798 266.914 -17.0885 483 30" stroke="#45B104" stroke-width="8" stroke-linecap="round" />
                 </svg>
                 <p class="py-3" style="font-size:14px;color:#505050;font-weight:500">
-                    Tersedia video pembelajaran, materi tertulis, dan dilengkapi soal-soal. Kamu juga akan mendapatkan
-                    sertifikat. Sijawara juga hadir untuk pembelajaran daring. Pilih materi yang disukai dan segera
-                    daftarkan dirimu !!!
+                    Tersedia video pembelajaran, materi tertulis, dan dilengkapi soal-soal. Kamu juga akan mendapatkan sertifikat. Sijawara juga hadir untuk pembelajaran daring. Pilih materi yang disukai dan segera daftarkan dirimu !!!
                 </p>
                 <div class="d-flex gap-2">
-                    <button class="btn btn-main py-2 px-4 rounded" onclick="window.location.href = '/course'">Mulai
-                        Belajar</button>
+                    <button class="btn btn-main py-2 px-4 rounded" onclick="window.location.href = '/course'">Mulai Belajar</button>
                     <button class="btn btn-main-outline py-2 px-4 rounded" onclick="window.location.href = '/register'">Daftar</button>
                 </div>
             </div>
@@ -28,7 +22,6 @@
         <!-- Carousel Start -->
         <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
         <link href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css" rel="stylesheet">
-        <link href="https://unpkg.com/swiper/swiper-bundle.min.css" rel="stylesheet">
 
         <script>
             document.addEventListener('DOMContentLoaded', function() {
@@ -39,58 +32,10 @@
                     interval: 5000,
                 });
                 splide.mount();
-                const swiperConfig = {
-                    loop: true,
-                    speed: 600,
-                    autoplay: {
-                        delay: 5000
-                    },
-                    slidesPerView: 'auto',
-                    pagination: {
-                        el: '.swiper-pagination',
-                        type: 'bullets',
-                        clickable: true
-                    },
-                    breakpoints: {
-                        320: {
-                            slidesPerView: 1,
-                            spaceBetween: 40
-                        },
-                        1200: {
-                            slidesPerView: 3,
-                            spaceBetween: 10
-                        }
-                    }
-                };
-                new Swiper('.swiper-container', swiperConfig);
             });
         </script>
 
         <style>
-            .swiper-container {
-                width: 100%;
-                height: 100%;
-            }
-
-            .testimonial-item {
-                text-align: center;
-            }
-
-            .testimonial-img {
-                width: 100px;
-                border-radius: 50%;
-                margin-bottom: 10px;
-            }
-
-            .stars {
-                color: #ff0;
-            }
-
-            .quote-icon-left,
-            .quote-icon-right {
-                color: #ccc;
-            }
-
             .splide__pagination__page.is-active {
                 background: #FC8B14;
             }
@@ -448,106 +393,42 @@
         </div>
     </div>
     <div class="container py-5">
-        <div class="container" data-aos="fade-up" data-aos-delay="100">
-
-            <div class="swiper init-swiper">
-
-                <div class="swiper-wrapper">
-
-                    <div class="swiper-slide">
-                        <div class="testimonial-item">
-                            <img src="assets/img/testimonials/testimonials-1.jpg" class="testimonial-img" alt="">
-                            <h3>Saul Goodman</h3>
-                            <h4>Ceo &amp; Founder</h4>
-                            <div class="stars">
-                                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+        <div class="pb-7">
+            <h3 class="text-center mb-2" style="font-weight:600">Apa Kata Mereka ?</h3>
+            <h6 class="text-center" style="font-weight:300;color:#A2A2A2">Testimoni dari beberapa peserta Pelatihan,<br>
+                apakah kamu selanjutnya?</h6>
+            <!-- Carousel Start -->
+            <div class="splide testimonial-carousel" style="margin-top:20px;">
+                <div class="splide__track">
+                    <ul class="splide__list">
+                        <li class="splide__slide">
+                            <div class="col-12 p-4">
+                                <div class="rounded shadow py-4 px-4" style="background-color: #D9D9D9;">
+                                    <i>"Lorem ipsum dolor, sit amet consectetur adipisicing elit. Voluptate quaerat soluta eligendi magni cumque iusto."</i>
+                                    <div class="mt-3 fw-bold">John Doe</div>
+                                </div>
                             </div>
-                            <p>
-                                <i class="bi bi-quote quote-icon-left"></i>
-                                <span>Proin iaculis purus consequat sem cure digni ssim donec porttitora entum suscipit
-                                    rhoncus. Accusantium quam, ultricies eget id, aliquam eget nibh et. Maecen aliquam,
-                                    risus at semper.</span>
-                                <i class="bi bi-quote quote-icon-right"></i>
-                            </p>
-                        </div>
-                    </div><!-- End testimonial item -->
-
-                    <div class="swiper-slide">
-                        <div class="testimonial-item">
-                            <img src="assets/img/testimonials/testimonials-2.jpg" class="testimonial-img" alt="">
-                            <h3>Sara Wilsson</h3>
-                            <h4>Designer</h4>
-                            <div class="stars">
-                                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                        </li>
+                        <li class="splide__slide">
+                            <div class="col-12 p-4">
+                                <div class="rounded shadow py-4 px-4" style="background-color: #D9D9D9;">
+                                    <i>"Lorem ipsum dolor, sit amet consectetur adipisicing elit. Voluptate quaerat soluta eligendi magni cumque iusto."</i>
+                                    <div class="mt-3 fw-bold">John Doe</div>
+                                </div>
                             </div>
-                            <p>
-                                <i class="bi bi-quote quote-icon-left"></i>
-                                <span>Export tempor illum tamen malis malis eram quae irure esse labore quem cillum quid
-                                    cillum eram malis quorum velit fore eram velit sunt aliqua noster fugiat irure amet
-                                    legam anim culpa.</span>
-                                <i class="bi bi-quote quote-icon-right"></i>
-                            </p>
-                        </div>
-                    </div><!-- End testimonial item -->
-
-                    <div class="swiper-slide">
-                        <div class="testimonial-item">
-                            <img src="assets/img/testimonials/testimonials-3.jpg" class="testimonial-img" alt="">
-                            <h3>Jena Karlis</h3>
-                            <h4>Store Owner</h4>
-                            <div class="stars">
-                                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                        </li>
+                        <li class="splide__slide">
+                            <div class="col-12 p-4">
+                                <div class="rounded shadow py-4 px-4" style="background-color: #D9D9D9;">
+                                    <i>"Lorem ipsum dolor, sit amet consectetur adipisicing elit. Voluptate quaerat soluta eligendi magni cumque iusto."</i>
+                                    <div class="mt-3 fw-bold">John Doe</div>
+                                </div>
                             </div>
-                            <p>
-                                <i class="bi bi-quote quote-icon-left"></i>
-                                <span>Enim nisi quem export duis labore cillum quae magna enim sint quorum nulla quem
-                                    veniam duis minim tempor labore quem eram duis noster aute amet eram fore quis sint
-                                    minim.</span>
-                                <i class="bi bi-quote quote-icon-right"></i>
-                            </p>
-                        </div>
-                    </div><!-- End testimonial item -->
-
-                    <div class="swiper-slide">
-                        <div class="testimonial-item">
-                            <img src="assets/img/testimonials/testimonials-4.jpg" class="testimonial-img" alt="">
-                            <h3>Matt Brandon</h3>
-                            <h4>Freelancer</h4>
-                            <div class="stars">
-                                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
-                            </div>
-                            <p>
-                                <i class="bi bi-quote quote-icon-left"></i>
-                                <span>Fugiat enim eram quae cillum dolore dolor amet nulla culpa multos export minim
-                                    fugiat minim velit minim dolor enim duis veniam ipsum anim magna sunt elit fore quem
-                                    dolore labore illum veniam.</span>
-                                <i class="bi bi-quote quote-icon-right"></i>
-                            </p>
-                        </div>
-                    </div><!-- End testimonial item -->
-
-                    <div class="swiper-slide">
-                        <div class="testimonial-item">
-                            <img src="assets/img/testimonials/testimonials-5.jpg" class="testimonial-img" alt="">
-                            <h3>John Larson</h3>
-                            <h4>Entrepreneur</h4>
-                            <div class="stars">
-                                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
-                            </div>
-                            <p>
-                                <i class="bi bi-quote quote-icon-left"></i>
-                                <span>Quis quorum aliqua sint quem legam fore sunt eram irure aliqua veniam tempor
-                                    noster veniam enim culpa labore duis sunt culpa nulla illum cillum fugiat legam esse
-                                    veniam culpa fore nisi cillum quid.</span>
-                                <i class="bi bi-quote quote-icon-right"></i>
-                            </p>
-                        </div>
-                    </div><!-- End testimonial item -->
-
+                        </li>
+                    </ul>
                 </div>
-                <div class="swiper-pagination"></div>
             </div>
-
+            <!-- Carousel End -->
         </div>
         <div class="row" style="margin-top: 8rem !important;margin-bottom: 8rem !important;">
             <h3 class="text-center" style="font-weight:600">Support By</h3>
@@ -569,3 +450,22 @@
         </div>
     </div>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var testimonialSplide = new Splide('.testimonial-carousel', {
+            type: 'loop',
+            perPage: 3,
+            perMove: 1,
+            autoplay: true,
+            interval: 5000,
+            breakpoints: {
+                991: {
+                    perPage: 2,
+                },
+                767: {
+                    perPage: 1,
+                }
+            }
+        }).mount();
+    });
+</script>
