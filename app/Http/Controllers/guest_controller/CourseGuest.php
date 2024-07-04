@@ -39,6 +39,15 @@ class CourseGuest extends Controller
 		$data['kategori'] = $this->categoryModel->get_all_category();
 		$data_user = (session('user') == null) ? null : Session::get('user')[0]->get('ID_USER');
 		$data['checkout'] = $this->checkoutModel->get_all_order($data_user);
+		$data['is_invited'] = DB::select("
+			SELECT
+				id_activity	
+			FROM
+				activity
+			WHERE
+				TYPE_ACTIVITY = 1
+				AND IS_PUBLIC != 1
+		");
 
 		return
 			view('template.header', $data) .
@@ -354,7 +363,7 @@ class CourseGuest extends Controller
 	}
 	public function getFilterByKat(Request $req)
 	{
-		$condition = (!empty($_POST['category'])) ? "WHERE activity.TYPE_ACTIVITY = 1 AND course.KATEGORI = '" . $_POST['category'] . "'" : "WHERE activity.TYPE_ACTIVITY = 1";
+		$condition = (!empty($_POST['category'])) ? "WHERE activity.TYPE_ACTIVITY = 1 AND activity.IS_PUBLIC = 1 AND course.KATEGORI = '" . $_POST['category'] . "'" : "WHERE activity.TYPE_ACTIVITY = 1 AND activity.IS_PUBLIC = 1";
 		$id_user = (session('user') == null) ? null : Session::get('user')[0]->get('ID_USER');
 		if ($id_user != null) {
 			$data['course'] = DB::select('
@@ -377,6 +386,15 @@ class CourseGuest extends Controller
 						CEIL(
 							(
 								SELECT
+										MAX(o.MAPPING_COUNT)
+									FROM
+										`order` o
+									WHERE
+										o.ID_USER = "' . $id_user . '"
+										AND o.ID_PRODUCT = activity.ID_ACTIVITY
+							) / 
+							(
+									SELECT
 									COUNT(*)
 								FROM
 									mapping_course
@@ -384,15 +402,6 @@ class CourseGuest extends Controller
 									mapping_course.ID_USER = "' . $id_user . '"
 									AND mapping_course.ID_ACTIVITY = activity.ID_ACTIVITY
 									AND mapping_course.STATUS = 1
-							) / 
-							(
-								SELECT
-									MAX(o.MAPPING_COUNT)
-								FROM
-									`order` o
-								WHERE
-									o.ID_USER = "' . $id_user . '"
-									AND o.ID_PRODUCT = activity.ID_ACTIVITY
 							) * 100
 						)
 					) AS PROGRESS

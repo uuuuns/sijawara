@@ -25,7 +25,8 @@ class Course extends Model
             LEFT JOIN course ON 
                 course.ID_ACTIVITY = activity.ID_ACTIVITY
             WHERE
-                ".implode(' AND ', $id_category)."
+                activity.IS_PUBLIC = 1
+                AND ".implode(' AND ', $id_category)."
             ORDER BY activity.LOG_TIME DESC
             LIMIT 4");
         return $data;
@@ -43,34 +44,50 @@ class Course extends Model
         $id_user = session()->get('ID_USER');
         if (!empty($id_user)) {
             $data = DB::select('
-            SELECT 
-            activity.*, 
-            course.DESKRIPSI_COURSE,
-            (
-                SELECT COUNT(*)
-                FROM payment p
-                LEFT JOIN `order` o ON o.ID_PAY = p.ID_PAY 
-                WHERE o.ID_USER = "' . $id_user . '"
-                    AND o.ID_PRODUCT = activity.ID_ACTIVITY
-                    AND p.DATE_PAY IS NOT NULL
-            ) as DATA_CHECKING,
-            (
-                CEIL((
-                    SELECT COUNT(*)
-                    FROM `mapping_course`
-                    WHERE `mapping_course`.ID_USER = "' . $id_user . '"
-                        AND `mapping_course`.ID_ACTIVITY = activity.ID_ACTIVITY
-                ) / (
-                    SELECT COUNT(*)
-                    FROM `mapping_course`
-                    WHERE `mapping_course`.ID_USER = "' . $id_user . '"
-                        AND `mapping_course`.ID_ACTIVITY = activity.ID_ACTIVITY
-                ) * 100)
-            ) as PROGRESS
-        FROM 
-            activity
-        LEFT JOIN 
-            course ON course.ID_ACTIVITY = activity.ID_ACTIVITY
+                SELECT 
+					activity.*, 
+					course.DESKRIPSI_COURSE,
+					(
+						SELECT
+							COUNT(*)
+						FROM
+							payment p
+						LEFT JOIN `order` o ON
+							o.ID_PAY = p.ID_PAY
+						WHERE
+							o.ID_USER = "' . $id_user . '"
+							AND o.ID_PRODUCT = activity.ID_ACTIVITY
+							AND p.DATE_PAY IS NOT NULL
+					) AS DATA_CHECKING,
+					(
+						CEIL(
+							(
+								SELECT
+										MAX(o.MAPPING_COUNT)
+									FROM
+										`order` o
+									WHERE
+										o.ID_USER = "' . $id_user . '"
+										AND o.ID_PRODUCT = activity.ID_ACTIVITY
+							) / 
+							(
+									SELECT
+									COUNT(*)
+								FROM
+									mapping_course
+								WHERE
+									mapping_course.ID_USER = "' . $id_user . '"
+									AND mapping_course.ID_ACTIVITY = activity.ID_ACTIVITY
+									AND mapping_course.STATUS = 1
+							) * 100
+						)
+					) AS PROGRESS
+				FROM 
+					activity
+				LEFT JOIN course ON
+					course.ID_ACTIVITY = activity.ID_ACTIVITY
+                WHERE 
+                    `activity`.`TYPE_ACTIVITY` = 1
             ');
 
             return $data;
@@ -84,7 +101,7 @@ class Course extends Model
             LEFT JOIN 
                 course ON course.ID_ACTIVITY = activity.ID_ACTIVITY
             WHERE 
-                <your_condition>
+                ' . $condition . '
             LIMIT 
                 $start, $limit;
             ');
@@ -159,6 +176,7 @@ class Course extends Model
                     ->whereColumn('o.ID_PRODUCT', 'act.ID_ACTIVITY')
                     ->where('t.STAT_BAYAR', 3);
             }, 'DATA_CHECKING')
+            ->where('act.IS_PUBLIC', 1)
             ->where('act.TYPE_ACTIVITY', $type);
 
         if (!empty($keyword)) {
@@ -314,6 +332,17 @@ class Course extends Model
                 AND ID_ACTIVITY = "' . $id_activity . '"
         ');
 
+        $mapping_aktif = DB::selectOne('
+            SELECT
+                COUNT(id_mapping) as total
+            FROM
+                mapping_course
+            WHERE
+                ID_USER = "' . session('user')[0]->get('ID_USER') . '"
+                AND ID_ACTIVITY = "' . $id_activity . '"
+                AND STATUS = 1
+        ');
+
         // $new_item = $this->db->get_where('item_course', ['ID_COURSE' => $id_course])->result_array();
         $new_item = DB::select('
             SELECT
@@ -346,6 +375,10 @@ class Course extends Model
                         );
                     }
                     $this->db->insert('mapping_course', $data_mapping);
+                    DB::table('order')
+                    ->where('ID_PRODUCT', $id_activity)
+                    ->where('ID_USER', session('user')[0]->get('ID_USER'))
+                    ->update(['MAPPING_COUNT' => $mapping_aktif->total]);
                 }
             }
         } else {
