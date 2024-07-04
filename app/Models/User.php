@@ -28,14 +28,52 @@ class User extends Model
         return $sql;
     }
     public function get_my_product(){
-        $sql = DB::select("
-        SELECT `activity`.*, 
-        `kategori`.`KATEGORI`, 
-        `course`.`DESKRIPSI_COURSE`, ( SELECT COUNT(*) 
-        FROM payment p LEFT JOIN `order` o ON o.ID_PAY = p.ID_PAY 
-        WHERE o.ID_USER = '" . session('user')[0]['ID_USER'] . "' AND o.ID_PRODUCT = `activity`.ID_ACTIVITY AND p.DATE_PAY IS NOT NULL ) as DATA_CHECKING, ( CEIL(( SELECT COUNT(*) 
-        FROM `mapping_course` WHERE `mapping_course`.ID_USER = '" . session('user')[0]['ID_USER'] . "' AND `mapping_course`.ID_ACTIVITY = `activity`.ID_ACTIVITY AND `mapping_course`.STATUS = 1) / ( SELECT COUNT(*) FROM `mapping_course` WHERE `mapping_course`.ID_USER = '" . session('user')[0]['ID_USER'] . "' AND `mapping_course`.ID_ACTIVITY = `activity`.ID_ACTIVITY ) * 100)) as PROGRESS FROM `activity` LEFT JOIN `course` ON `course`.`ID_ACTIVITY` = `activity`.`ID_ACTIVITY` LEFT JOIN `kategori` ON `kategori`.`ID_KATEGORI` = `course`.`KATEGORI` WHERE `activity`.`TYPE_ACTIVITY` = 1 
-        ");
+        $sql = DB::select('
+        SELECT 
+            `activity`.*, 
+            `kategori`.`KATEGORI`, 
+            `course`.`DESKRIPSI_COURSE`, 
+            (
+                SELECT 
+                    COUNT(*) 
+                FROM 
+                    payment p 
+                    LEFT JOIN `order` o ON o.ID_PAY = p.ID_PAY 
+                WHERE 
+                    o.ID_USER = "' . session('user')[0]['ID_USER'] . '"
+                    AND o.ID_PRODUCT = `activity`.ID_ACTIVITY 
+                    AND p.DATE_PAY IS NOT NULL
+            ) AS DATA_CHECKING, 
+            (
+                CEIL(
+                    (
+                        SELECT
+                                MAX(o.MAPPING_COUNT)
+                            FROM
+                                `order` o
+                            WHERE
+                                o.ID_USER = "' . session('user')[0]['ID_USER'] . '"
+                                AND o.ID_PRODUCT = activity.ID_ACTIVITY
+                    ) / 
+                    (
+                            SELECT
+                            COUNT(*)
+                        FROM
+                            mapping_course
+                        WHERE
+                            mapping_course.ID_USER = "' . session('user')[0]['ID_USER'] . '"
+                            AND mapping_course.ID_ACTIVITY = activity.ID_ACTIVITY
+                            AND mapping_course.STATUS = 1
+                    ) * 100
+                )
+            ) AS PROGRESS
+        FROM 
+            `activity` 
+            LEFT JOIN `course` ON `course`.`ID_ACTIVITY` = `activity`.`ID_ACTIVITY` 
+            LEFT JOIN `kategori` ON `kategori`.`ID_KATEGORI` = `course`.`KATEGORI` 
+        WHERE 
+            `activity`.`TYPE_ACTIVITY` = 1
+        ');
         return $sql;
     }
     public function get_my_product2(){

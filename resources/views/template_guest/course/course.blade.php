@@ -48,9 +48,12 @@
         <div class="filter-wrap text-center">
             <ul class="course-filter ">
                 <li><a href="#" data-value="0" id="nav-all" onclick="ChangeNav(this, event)">Lihat Semua</a></li>
-                <?php foreach ($kategori as $item_kategori) : ?>
-                    <li><a href="#" data-value="<?= $item_kategori->ID_KATEGORI ?>" id="nav-<?= $item_kategori->ID_KATEGORI ?>" onclick="ChangeNav(this, event)"><?= $item_kategori->KATEGORI ?></a></li>
-                <?php endforeach ?>
+            <?php foreach ($kategori as $item_kategori) : ?>
+                <li><a href="#" data-value="<?= $item_kategori->ID_KATEGORI ?>" id="nav-<?= $item_kategori->ID_KATEGORI ?>" onclick="ChangeNav(this, event)"><?= $item_kategori->KATEGORI ?></a></li>
+            <?php endforeach;
+            if ($is_invited != null) { ?>
+                <li><a href="#" data-value="999" id="nav-invited" onclick="ChangeNav(this, event)">Invited</a></li>
+            <?php } ?>
             </ul>
         </div>
         <div class="container-fluid container-padding">
