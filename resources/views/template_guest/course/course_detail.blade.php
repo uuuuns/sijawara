@@ -1,128 +1,202 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
-<div class="container px-4 px-md-0 py-4 pb-6 pt-3">
-    <h5 class="py-2 fw-semibold">Kursus</h5>
-    <hr class="opacity-25">
-    <div class="row mt-5 flex-column-reverse flex-lg-row">
-        <div class="col-12 col-lg-6">
-            <div class="d-flex flex-column flex-lg-row px-lg-0 ps-lg-3 px-3 justify-content-between align-items-lg-center align-items-start">
-                <div class="d-flex flex-row align-items-center gap-2 h-100">
-                    <?php if ($tot_proggress == 100) { ?>
-                        <p class="fw-semibold fs-5 m-0">Tuntas</p>
-                        <i class="bi bi-check-circle-fill text-success" style="font-size:24px; margin-top:2px"></i>
-                    <?php } else { ?>
-                        <p class="fw-semibold fs-5 m-0">Progress <?= ceil($tot_proggress) ?>%</p>
-                    <?php } ?>
-                </div>
-                <div>
-                    <span class="fw-bold">Kategori</span> : <?= $course->KATEGORI ?>
-                </div>
-            </div>
-            <div class="px-3 py-3 readmore position-relative">
-                <span class="fw-semibold fs-3"><?= $course->TITLE_ACTIVITY ?></span>
-                <div class="text-muted m-0 pt-2 fs-6 readmore-text" style="overflow:hidden">
-                    <?= (!empty($course->DESKRIPSI_COURSE)) ? $course->DESKRIPSI_COURSE : "Tidak ada deskripsi" ?>
-                </div>
-                <span class="readmore-btn position-absolute w-100 fw-semibold justify-content-center align-items-end d-flex" style="background: linear-gradient( to bottom, transparent, white 60%); height:70px; margin-left:-1rem; margin-top:-4rem">
-                    <div class="w-100 text-center " style="cursor:pointer;">
-                        <span class="text-btn-content">
-                            More Info
-                        </span>
-                        <i id="icon-btn" class="bi bi-chevron-down" style="font-size: 1rem;-webkit-text-stroke: 1px;margin-left:0.4rem;"></i>
+
+<section class="page-wrapper">
+    <div class="tutori-course-content">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-7 col-xl-8">
+                    <div class="course-header-wrapper">
+                        <div>
+                            <h2 class="course-title bg-white">
+                                <?= $course->TITLE_ACTIVITY ?>
+                            </h2>
+                        </div>
                     </div>
-                </span>
-            </div>
-        </div>
-        <div class="col-12 col-lg-6">
-            <div class="d-flex justify-content-end ps-0 ps-lg-4">
-                <img src="<?= $course->IMAGE_ACTIVITY ?>" class="d-block img-fluid rounded-5" width="380">
-            </div>
-            <div class="my-3 fw-bold d-flex justify-content-start justify-content-lg-end align-items-center me-2 text-black">
-                Share :<span class="fs-5"> <i class="fab fa-facebook mx-2" style="cursor: pointer"></i><i class="fab fa-twitter me-2" style="cursor: pointer"></i><i class="fab fa-instagram" style="cursor: pointer"></i></span>
-            </div>
-        </div>
-    </div>
-    <div class="row project-tab">
-        <div class="col-md-12">
-            <nav>
-                <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                    <button class="nav-link active border-0 col col-lg-2 fs-5" id="nav-course-tab" data-bs-toggle="tab" data-bs-target="#nav-course" type="button" role="tab" aria-controls="nav-course" aria-selected="true">Course</button>
-                    <button class="nav-link border-0 col col-lg-2 fs-5" id="nav-announcement-tab" data-bs-toggle="tab" data-bs-target="#nav-announcement" type="button" role="tab" aria-controls="nav-announcement" aria-selected="false">Announcement</button>
+                    <nav class="course-single-tabs learn-press-nav-tabs">
+                        <div class="nav nav-tabs course-nav" id="nav-tab" role="tablist">
+                            <a class="nav-item nav-link active" id="nav-home-tab" data-bs-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home-tab" aria-selected="true">Overview</a>
+                            <a class="nav-item nav-link" id="nav-instructor-tab" data-bs-toggle="tab" href="#nav-instructor" role="tab" aria-controls="nav-instructor-tab" aria-selected="false">Instructor</a>
+                        </div>
+                    </nav>
 
-                    <?php if ($tot_proggress == 100) { ?>
-                        <button class="nav-link border-0 col col-lg-2 fs-5" id="nav-sertif-tab" data-bs-toggle="tab" data-bs-target="#nav-sertif" type="button" role="tab" aria-controls="nav-sertif" aria-selected="false">Certificate</button>
-                    <?php } ?>
+                    <div class="tab-content tutori-course-content" id="nav-tabContent">
+                        <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                            <div class="single-course-details">
+                                <h4 class="course-title">Description</h4>
+                                <p>
+                                    <?= (!empty($course->DESKRIPSI_COURSE)) ? $course->DESKRIPSI_COURSE : "Tidak ada deskripsi" ?>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade" id="nav-instructor" role="tabpanel" aria-labelledby="nav-instructor-tab">
+                            <!-- Course instructor start -->
+                            <div class="courses-instructor">
+                                <div class="single-instructor-box">
+                                    <div class="row align-items-center">
+
+                                        <div class="col-lg-8 col-md-8">
+                                            <div class="instructor-content">
+                                                <h4><?= $course->NAME ?></h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Conurse  instructor end -->
+
+                            <div class="tutori-course-curriculum">
+                                <div class="curriculum-scrollable">
+                                    <ul class="curriculum-sections">
+                                        <li class="section">
+                                            <ul class="section-content">
+                                                <?php if (!empty($item_course)) { ?>
+                                                    <?php foreach ($item_course as $item) :  ?>
+                                                        <li class="course-item has-status">
+                                                            <button class="section-item-link">
+                                                                <span class="item-name"> <?= $item->TITLE ?></span>
+                                                            </button>
+                                                        </li>
+                                                    <?php endforeach; ?>
+                                                <?php } else { ?>
+                                                    <div class="d-flex flex-column align-items-center">
+                                                        <img src="{{ asset('assets_new') }}/images/empty.svg" width="350">
+                                                        <h4 class="font-sm text-center">Tidak ada bab</h4>
+                                                    </div>
+                                                <?php } ?>
+                                            </ul>
+                                        </li>
+
+                                    </ul>
+                                    <!-- Main ul end -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </nav>
-            <div class="tab-content" id="nav-tabContent">
-                <div class="tab-pane fade show active" id="nav-course" role="tabpanel" aria-labelledby="nav-course-tab" tabindex="0">
-                    <div class="row flex-row gap-3">
-                        <div class="col-3 my-4 d-none d-lg-block">
-                            <?php
-                            $quiz = 0;
-                            $materi = 0;
-                            foreach ($item_course as $item) {
-                                if ($item->TYPE <> 2) { ?>
-                                    <button class="btn <?= ($item->STATUS == 1) ? "border-primary" : "text-disable" ?> px-4 py-3 mb-3 rounded-3 shadow fw-semibold w-100" id="show-detail-<?= $item->ID_ITEM ?>" data-status="<?= $item->STATUS ?>" data-iditem="<?= $item->ID_ITEM ?>" data-type="<?= $item->TYPE ?>" onclick="ShowDetailItem(this)" <?= ($item->STATUS == 0) ? "disabled" : "" ?>>
-                                        <?= $item->TITLE ?>
-                                    </button>
-                                <?php } else { ?>
-                                    <button class="btn <?= ($item->STATUS == 1) ? "border-primary" : "text-disable" ?> px-4 py-3 mb-3 rounded-3 shadow fw-semibold w-100" id="show-detail-<?= $item->ID_ITEM ?>" data-status="<?= $item->STATUS ?>" data-iditem="<?= $item->ID_ITEM ?>" data-type="<?= $item->TYPE ?>" onclick="ShowDetailItem(this)" <?= ($item->STATUS == 0) ? "disabled" : "" ?>>
-                                        Kuis <?= ++$quiz ?>
-                                    </button>
-                            <?php }
-                            } ?>
-                            <?php     
-                            $grade = !empty($nilai->NILAI) ? $nilai->NILAI : 0; 
-                            if ($tot_proggress == 100 ) { ?>
 
-                                <button class="btn border-primary px-4 py-3 mb-3 rounded-3 shadow fw-semibold w-100 btn-code" onclick="ShowCertificateCode(this)" data-type="5">
-                                    Tampilkan kode sertifikat
-                                </button>
+                <div class="col-lg-5 col-xl-4">
+                    <!-- Course Sidebar start -->
+                    <div class="course-sidebar course-sidebar-2 mt-5 mt-lg-0">
+                        <div class="course-widget course-details-info">
+                            <div class="course-thumbnail">
+                                <img src="<?= $course->IMAGE_ACTIVITY ?>" alt="" class="img-fluid w-100" />
+                                <div class="my-3 fw-bold d-flex align-self-end justify-content-end pe-0 align-items-center text-black">
+                                    Share :<span class="fs-5"> <i class="fab fa-facebook mx-2" style="cursor: pointer"></i><i class="fab fa-twitter me-2" style="cursor: pointer"></i><i class="fab fa-instagram" style="cursor: pointer"></i></span>
+                                </div>
+                            </div>
+
+                            <ul class="course-sidebar-list">
+                                <li>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span><i class="far fa-sliders-h"></i>Progress</span>
+                                        <div class="price-header">
+                                            <h2 class="course-price <?= $tot_proggress == 100 ? 'text-success' : 'text-danger' ?>">
+                                                <?= ceil($tot_proggress) ?>%
+                                            </h2>
+                                        </div>
+                                    </div>
+                                </li>
+
+                                <li>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span><i class="fas fa-play-circle"></i>Kategori</span>
+                                        <?= $course->KATEGORI ?>
+                                    </div>
+                                </li>
+                            </ul>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-5">
+                <div class="col-12">
+                    <nav class="course-single-tabs learn-press-nav-tabs">
+                        <div class="nav nav-tabs course-nav" id="nav-tab" role="tablist">
+                            <a class="nav-item nav-link active" id="nav-course-tab" data-bs-toggle="tab" href="#nav-course" role="tab" aria-controls="nav-course-tab" aria-selected="true">Course</a>
+                            <a class="nav-item nav-link" id="nav-announcement-tab" data-bs-toggle="tab" href="#nav-announcement" role="tab" aria-controls="nav-announcement-tab" aria-selected="false">Announcement</a>
+                            <?php if ($tot_proggress == 100) { ?>
+                                <a class="nav-item nav-link" id="nav-sertif-tab" data-bs-toggle="tab" href="#nav-sertif" role="tab" aria-controls="nav-sertif-tab" aria-selected="false">Certificate</a>
                             <?php } ?>
                         </div>
-                        <div class="col bg-secondary" id="detail-item">
-                            <div class="py-5">
-                                <div class="d-flex justify-content-center">
-                                    <img src="https://img.freepik.com/free-vector/hr-management-hiring-employees-people-cv_107791-11222.jpg" alt="Loader.gif" style="max-width: 50%;">
+                    </nav>
+
+                    <div class="tab-content tutori-course-content" id="nav-tabContent">
+                        <div class="tab-pane fade show active" id="nav-course" role="tabpanel" aria-labelledby="nav-course-tab" tabindex="0">
+                            <div class="row flex-row gap-3">
+                                <div class="col-3 mb-4 d-none d-lg-block">
+                                    <?php
+                                    $quiz = 0;
+                                    $materi = 0;
+                                    foreach ($item_course as $item) {
+                                        if ($item->TYPE <> 2) { ?>
+                                            <button class="button <?= ($item->STATUS == 1) ? "btn-main-outline" : "btn-grey" ?> px-4 py-3 mb-3 rounded-3 shadow fw-semibold w-100" id="show-detail-<?= $item->ID_ITEM ?>" data-status="<?= $item->STATUS ?>" data-iditem="<?= $item->ID_ITEM ?>" data-type="<?= $item->TYPE ?>" onclick="ShowDetailItem(this)" <?= ($item->STATUS == 0) ? "disabled" : "" ?>>
+                                                <?= $item->TITLE ?>
+                                            </button>
+                                        <?php } else { ?>
+                                            <button class="button <?= ($item->STATUS == 1) ? "btn-main-outline" : "btn-grey" ?> px-4 py-3 mb-3 rounded-3 shadow fw-semibold w-100" id="show-detail-<?= $item->ID_ITEM ?>" data-status="<?= $item->STATUS ?>" data-iditem="<?= $item->ID_ITEM ?>" data-type="<?= $item->TYPE ?>" onclick="ShowDetailItem(this)" <?= ($item->STATUS == 0) ? "disabled" : "" ?>>
+                                                Quiz <?= ++$quiz ?>
+                                            </button>
+                                    <?php }
+                                    } ?>
+                                    <?php
+                                    $grade = !empty($nilai->NILAI) ? $nilai->NILAI : 0;
+                                    if ($tot_proggress == 100) { ?>
+                                        <button class="button btn-main-outline px-4 py-3 mb-3 rounded-3 shadow fw-semibold w-100 btn-code" onclick="ShowCertificateCode(this)" data-type="5">
+                                            Show Certificate Code
+                                        </button>
+                                    <?php } ?>
                                 </div>
-                                <div class="d-flex justify-content-center pt-4">
-                                    Pilih materi
+                                <div class="col bg-white shadow rounded" id="detail-item">
+                                    <div class="py-5">
+                                        <div class="d-flex justify-content-center">
+                                            <img src="https://icons8.com/preloaders/preloaders/1476/Rocket.gif" alt="Loader.gif" />
+                                        </div>
+                                        <div class="d-flex justify-content-center pt-4">
+                                            Choose Materi
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        <div class="tab-pane fade" id="nav-announcement" role="tabpanel" aria-labelledby="nav-announcement-tab" tabindex="0">
+                            <div class="mx-3 mx-lg-7 my-4 text-muted">
+                                <?= (!empty($course->PENGUMUMAN)) ? $course->PENGUMUMAN : "Tidak ada pengumuman" ?>
+                            </div>
+                        </div>
+                        <?php
+                        if ($tot_proggress == 100) { ?>
+                            <div class="tab-pane fade" id="nav-sertif" role="tabpanel" aria-labelledby="nav-sertif-tab" tabindex="0">
+                                <?php if ($grade > 75) { ?>
+                                    <div class="d-flex justify-content-center">
+                                        <div class="blurred-image" style="pointer-events: none">
+                                            <embed class="overlay" style="width:600px; height:500px; pointer-events: none;" src="<?= $sertif->FILE_SERTIFIKAT ?>#toolbar=0&navpanes=0&scrollbar=0&statusbar=0&messages=0&scrollbar=0" type="text/plain"></emb>
+                                        </div>
+                                        <div class="shadow mx-5 mt-3 rounded-4 box-input d-flex align-items-center">
+                                            <div class="mx-4 py-3 bg-white">
+                                                <label>Sertificate Code</label>
+                                                <form action="javascript:void(0)">
+                                                    <input type="text" class="form-control mb-4" name="" id="input-code">
+                                                    <button type="button" class="btn btn-primary col-md-12 my-3" onclick="DownloadPdf(this)">Download PDF</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php } else { ?>
+                                    <div class="mx-3 mx-lg-7 my-4 text-muted">
+                                        Please complete the entire course and achieve a score above 75 poin.
+                                    </div>
+                                <?php } ?>
+                            </div>
+                        <?php } ?>
                     </div>
-                </div>
-                <div class="tab-pane fade" id="nav-announcement" role="tabpanel" aria-labelledby="nav-announcement-tab" tabindex="0">
-                    <div class="mx-3 mx-lg-7 my-4 text-muted">
-                        <?= (!empty($course->PENGUMUMAN)) ? $course->PENGUMUMAN : "Tidak ada pengumuman" ?>
-                    </div>
-                </div>
-                <div class="tab-pane fade" id="nav-sertif" role="tabpanel" aria-labelledby="nav-sertif-tab" tabindex="0">
-                    <?php if ($tot_proggress == 100 && $grade > 75) { ?>
-                        <div class="d-flex justify-content-center">
-                            <div class="blurred-image" style="pointer-events: none">
-                                <embed class="overlay" style="width:600px; height:500px; pointer-events: none;" src="<?= $sertif->FILE_SERTIFIKAT ?>#toolbar=0&navpanes=0&scrollbar=0&statusbar=0&messages=0&scrollbar=0" type="text/plain"></emb>
-                            </div>
-                            <div class="shadow mx-5 mt-3 rounded-4 box-input d-flex align-items-center">
-                                <div class="mx-4 py-3 bg-white">
-                                    <label>Kode Sertifikat</label>
-                                    <form action="javascript:void(0)">
-                                        <input type="text" class="form-control mb-4" name="" id="input-code">
-                                        <button type="button" class="btn btn-primary col-md-12 my-3" onclick="DownloadPdf(this)">Unduh PDF</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    <?php } else { ?>
-                        <div class="mx-3 mx-lg-7 my-4 text-muted">
-                            Silakan lengkapi seluruh kursus dan capai skor di atas 75 poin.
-                        </div>
-                    <?php } ?>
                 </div>
             </div>
         </div>
     </div>
-</div>
+</section>
+
 
 <style>
     .blurred-image {
@@ -164,7 +238,7 @@
             } else {
                 Toast.fire({
                     icon: 'error',
-                    title: 'Kode Tidak Valid!'
+                    title: 'Wrong Code!'
                 })
             }
         }
@@ -177,41 +251,38 @@
 
     function ShowCertificateCode(e) {
         <?php foreach ($item_course as $item) :  ?>
-            $('#show-detail-' + <?= $item->ID_ITEM ?>).removeClass('btn-primary bg-primary')
+            $('#show-detail-' + <?= $item->ID_ITEM ?>).removeClass('btn-main-2')
+            $('#show-detail-' + <?= $item->ID_ITEM ?>).addClass('btn-main-outline')
         <?php endforeach; ?>
-        $(e).addClass('btn-primary bg-primary')
-        $("#detail-item").html('<div class="d-flex justify-content-center align-items-center"><img src="https://assets.materialup.com/uploads/b68f4460-aaa9-4e19-99d8-232dfea1c537/preview.gif" alt="Loader.gif" style="max-width: 50%;" /></div>');
+        $(e).removeClass('btn-main-outline')
+        $(e).addClass('btn-main-2')
+        $("#detail-item").html('<div class="d-flex justify-content-center align-items-center h-100"><img src="https://icons8.com/preloaders/preloaders/1476/Rocket.gif" alt="Loader.gif" /></div>');
         $("#detail-item").html(`<div class="d-flex justify-content-center align-items-center h-100">
-                <div class="bg-white px-3 py-2 rounded-3 shadow fw-semibold">
+                <div class="bg-white px-3 py-2 rounded-3 shadow fw-semibold text-center">
                     <i class="bi bi-file-text me-2" style="font-size: 1.1rem; -webkit-text-stroke: 0.2px;"></i>
                     Your Certificate Code :
-                    <?= $course->SERTIF_CODE ?>
+                    <h6><?= $course->SERTIF_CODE ?></h6>
                 </div>
             </div>`);
     }
 
     function ShowDetailItem(e) {
-        if ($(e).data("type") != 4) {
-            $('.btn-code').removeClass('btn-primary bg-primary')
-            <?php foreach ($item_course as $item) :  ?>
-                $('#show-detail-' + <?= $item->ID_ITEM ?>).removeClass('btn-primary bg-primary')
-            <?php endforeach; ?>
-        }
+
         if ($(e).data("type") == 3) {
             Swal.fire({
-                title: 'Apakah anda yakin?',
-                text: "Hal ini tidak bisa dikembalikan!",
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, Coba Lagi!'
+                confirmButtonText: 'Yes, Try Again!'
             }).then((result) => {
                 if (result.isConfirmed) {
                     let timerInterval
                     Swal.fire({
-                        title: 'Mereset Kuis Dalam Proses!',
-                        html: 'ini akan memakan waktu sebentar.',
+                        title: 'Reseting Quiz On Proccess !',
+                        html: 'it will be over in a few seconds.',
                         timer: 2000,
                         timerProgressBar: false,
                         didOpen: () => {
@@ -222,11 +293,19 @@
                         }
                     }).then((result) => {
                         GetItemCourse(e)
-                        location.reload()
+                        // location.reload()
                     })
                 }
             })
         } else {
+            if ($(e).data("type") != 4) {
+                $('.btn-code').removeClass('btn-main-2')
+                $('.btn-code').addClass('btn-main-outline')
+                <?php foreach ($item_course as $item) :  ?>
+                    $('#show-detail-' + <?= $item->ID_ITEM ?>).removeClass('btn-main-2')
+                    $('#show-detail-' + <?= $item->ID_ITEM ?>).addClass('btn-main-outline')
+                <?php endforeach; ?>
+            }
             GetItemCourse(e)
         }
     }
@@ -247,7 +326,7 @@
             }
         });
         $.ajax({
-            url: "<?= url('course/item/mapping') ?>",
+            url: "<?= Request::segment(0) ?>/course/item/mapping",
             type: "POST",
             data: {
                 id_activity: "<?= $id_activity; ?>"
@@ -266,8 +345,9 @@
     }
 
     function GetItemCourse(e) {
-        $(e).addClass('btn-primary bg-primary');
-        $("#detail-item").html('<div class="d-flex justify-content-center align-items-center"><img src="https://assets.materialup.com/uploads/b68f4460-aaa9-4e19-99d8-232dfea1c537/preview.gif" alt="Loader.gif" style="max-width: 50%;" /></div>');
+        $(e).removeClass('btn-main-outline');
+        $(e).addClass('btn-main-2');
+        $("#detail-item").html('<div class="d-flex justify-content-center align-items-center h-100"><img src="https://icons8.com/preloaders/preloaders/1476/Rocket.gif" alt="Loader.gif" /></div>');
 
         var csrfToken = $('meta[name="csrf-token"]').attr('content');
 

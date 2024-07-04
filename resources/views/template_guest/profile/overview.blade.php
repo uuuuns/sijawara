@@ -1,13 +1,13 @@
 @extends('template_guest.profile.profile_template')
 @section('content')
 <div class="col ms-4 px-5 py-5 shadow rounded-3 overflow-hidden bg-white">
-    <h3 class="fw-bold pb-2" style="color:#5580E9">Overview</h3>
+    <h3 class="fw-bold pb-2" style="color:#5580E9">Ringkasan</h3>
     <div class="row my-4">
         <div class="col-6">
             <div class="card mx-2 border-0 shadow rounded-4">
                 <div class="card-body">
                     <div class="m-l-15">
-                        <strong class="fs-6 text-muted">Today's Revenue</strong>
+                        <strong class="fs-6 text-muted">Pendapatan Hari Ini</strong>
                         <h2 class="mb-3 mt-4">IDR 25.000</h2>
                         <canvas id="revenueChart"></canvas>
                     </div>
@@ -18,7 +18,7 @@
             <div class="card mx-2 border-0 shadow rounded-4">
                 <div class="card-body">
                     <div class="m-l-15">
-                        <strong class="fs-6 text-muted">Today's Order</strong>
+                        <strong class="fs-6 text-muted">Pesanan Hari Ini</strong>
                         <h2 class="mb-3 mt-4">5</h2>
                         <canvas id="orderChart"></canvas>
                     </div>
@@ -31,7 +31,7 @@
             <div class="card mx-2 border-0 shadow rounded-4">
                 <div class="card-body">
                     <div class="m-l-15">
-                        <strong class="fs-6 text-muted">Total Courses</strong>
+                        <strong class="fs-6 text-muted">Total Kursus</strong>
                         <h2 class="mb-3 mt-4">8</h2>
                         <canvas id="coursesChart"></canvas>
                     </div>
@@ -42,7 +42,7 @@
             <div class="card mx-2 border-0 shadow rounded-4">
                 <div class="card-body">
                     <div class="m-l-15">
-                        <strong class="fs-6 text-muted">Total Purchase</strong>
+                        <strong class="fs-6 text-muted">Total Pembelian</strong>
                         <h2 class="mb-3 mt-4">48</h2>
                         <canvas id="purchaseChart"></canvas>
                     </div>
@@ -55,7 +55,7 @@
             <div class="card mx-2 border-0 shadow rounded-4">
                 <div class="card-body">
                     <div class="m-l-15">
-                        <strong class="fs-6 text-muted">Total Profit</strong>
+                        <strong class="fs-6 text-muted">Total Keuntungan</strong>
                         <h2 class="mb-3 mt-4">IDR 700.000</h2>
                         <canvas id="profitChart"></canvas>
                     </div>
@@ -86,8 +86,8 @@
     </div>
 
     <div class="mt-5 d-flex flex-column">
-        <span class="fw-semibold fs-5">Recent Activities</span>
-        <span class="text-muted text-uppercase mt-3 fs-6">Today</span>
+        <span class="fw-semibold fs-5">Aktifitas Terkini</span>
+        <span class="text-muted text-uppercase mt-3 fs-6">Hari ini</span>
         <hr class="mb-1">
         <!-- Item activities start -->
         <div class="d-flex flex-row justify-content-between align-items-center">
@@ -96,8 +96,8 @@
                     <i class="fs-2 bi bi-wallet2"></i>
                 </div>
                 <div class="d-flex flex-column ms-3 pt-2">
-                    <h6 class="mb-1  fw-semibold">Take</h6>
-                    <h6 style="font-size:0.9rem;" class="text-muted fw-semibold">December 32, 2022</h6>
+                    <h6 class="mb-1  fw-semibold">Ambil</h6>
+                    <h6 style="font-size:0.9rem;" class="text-muted fw-semibold">Desember 32, 2022</h6>
                 </div>
             </div>
             <div>
@@ -112,15 +112,15 @@
                     <i class="fs-2 bi bi-wallet2"></i>
                 </div>
                 <div class="d-flex flex-column ms-3 pt-2">
-                    <h6 class="mb-1  fw-semibold">Take</h6>
-                    <h6 style="font-size:0.9rem;" class="text-muted fw-semibold">December 32, 2022</h6>
+                    <h6 class="mb-1  fw-semibold">Ambil</h6>
+                    <h6 style="font-size:0.9rem;" class="text-muted fw-semibold">Desember 32, 2022</h6>
                 </div>
             </div>
             <div>
                 <h6 class="mb-3 mt-4 fw-semibold">IDR 1.000.000</h6>
             </div>
         </div>
-        <span class="text-muted text-uppercase mt-3 fs-6">Yesterday</span>
+        <span class="text-muted text-uppercase mt-3 fs-6">Kemarin</span>
         <hr class="mb-1">
 
         <div class="d-flex flex-row justify-content-between align-items-center">
@@ -129,8 +129,8 @@
                     <i class="fs-2 bi bi-wallet2"></i>
                 </div>
                 <div class="d-flex flex-column ms-3 pt-2">
-                    <h6 class="mb-1  fw-semibold">Take</h6>
-                    <h6 style="font-size:0.9rem;" class="text-muted fw-semibold">December 31, 2022</h6>
+                    <h6 class="mb-1  fw-semibold">Ambil</h6>
+                    <h6 style="font-size:0.9rem;" class="text-muted fw-semibold">Desember 31, 2022</h6>
                 </div>
             </div>
             <div>

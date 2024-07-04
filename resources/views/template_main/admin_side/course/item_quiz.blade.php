@@ -39,7 +39,7 @@
                     <div id="add_new_batch_soal_{{ $no }}" class="btn btn-warning col-md-3 float-left mx-2"
                         style="cursor: pointer;">
                         <i class="anticon anticon-loading m-r-5"></i>
-                        <span class="col-md-12">Tambahkan Pertanyaan Batch</span>
+                        <span class="col-md-12">Tambahkan Sekumpulan Pertanyaan</span>
                     </div>
                 </div>
             </div>

@@ -218,6 +218,7 @@ class ProfileGuest extends Controller
     {
         $userId = session('user')[0]['ID_USER'];
         $data = [];
+
         if (!empty($request->file('file_cv'))) {
             $data['CV'] = FileUpload::S3_PDF($request->file('file_cv'), 'Instructor_CV', 'Curriculum-Vitae-' . strtotime(now()));
         } 

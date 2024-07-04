@@ -30,7 +30,7 @@
                     <div class="mt-3 mt-md-0">
                         <button type="button" class="btn btn-primary" onclick="addModal()">
                             <i class="mdi mdi-plus me-1"></i>
-                            Add E-book</button>
+                            Tambah E-book</button>
                     </div>
                 </div>
             </div>
@@ -44,7 +44,7 @@
                             <th>Genre</th>
                             <th>Author</th>
                             <th>Tahun</th>
-                            <th>Action</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -88,7 +88,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Delete</h5>
+                <h5 class="modal-title">Hapus</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -97,7 +97,7 @@
                 @csrf
                 <div class="modal-body">
                     <div class="form-group mb-3">
-                        <label>Cover <span class="text-danger">*</span></label>
+                        <label>Kover <span class="text-danger">*</span></label>
                         <div class="custom-file">
                             <input type="file" name="image_ebook" accept=".jpg, .png, .jpeg" data-max-file-size="1M"
                                 data-allowed-file-extensions="jpg png" class="custom-file-input dropify" required>
@@ -108,7 +108,7 @@
                         <input placeholder="Judul" type="text" name="judul" class="form-control" required>
                     </div>
                     <div class="form-group mb-3">
-                        <label>Price <span class="text-danger">*</span></label>
+                        <label>Harga <span class="text-danger">*</span></label>
                         <input placeholder="10000" type="text" name="harga" class="form-control" required>
                     </div>
                     <div class="form-group mb-3">
@@ -129,7 +129,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Add</button>
+                    <button type="submit" class="btn btn-primary">Tambah</button>
                 </div>
             </form>
         </div>
@@ -143,7 +143,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">E-book Detail</h5>
+                <h5 class="modal-title">Detail E-book</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -165,7 +165,7 @@
                         <input placeholder="Judul" type="text" name="up_judul" class="form-control" required>
                     </div>
                     <div class="form-group mb-3">
-                        <label>Price</label>
+                        <label>Harga</label>
                         <input placeholder="10000" type="text" name="up_harga" class="form-control" required>
                     </div>
                     <div class="form-group mb-3">
@@ -194,12 +194,12 @@
                         </div>
                     </div>
                     <div class="form-group mb-3">
-                        <button type="button" class="btn btn-secondary" id="ganti">Change Ebook</button>
-                        <button type="button" class="btn btn-danger" id="cancel">Cancel</button>
+                        <button type="button" class="btn btn-secondary" id="ganti">Ganti Ebook</button>
+                        <button type="button" class="btn btn-danger" id="cancel">Batalkan</button>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Save Change</button>
+                    <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
                 </div>
             </form>
         </div>
@@ -213,7 +213,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Delete</h5>
+                <h5 class="modal-title">Hapus</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -221,11 +221,11 @@
             <form id="form-user" action="ebook/delete" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
-                    <p>Do you want to delete this e-book ?</p>
+                    <p>Apakah Anda ingin menghapus e-book ini ?</p>
                     <input type="hidden" name="del_id_ebook" value="" readonly>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Delete</button>
+                    <button type="submit" class="btn btn-primary">Hapus</button>
                 </div>
             </form>
         </div>

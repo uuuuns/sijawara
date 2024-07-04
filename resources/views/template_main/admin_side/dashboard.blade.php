@@ -12,7 +12,7 @@
                             <h2 class="m-b-0">
                                 <?= isset($total_revenue[0]->TOTAL) && $total_revenue[0]->TOTAL !== null ? $total_revenue[0]->TOTAL : '0' ?>
                                 IDR</h2>
-                            <p class="m-b-0 text-muted">Revenue</p>
+                            <p class="m-b-0 text-muted">Pendapatan</p>
                         </div>
                     </div>
                 </div>
@@ -76,7 +76,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
-                        <h5>Total Revenue</h5>
+                        <h5>Total Pendapatan</h5>
                         <!-- <div>
                             <div class="btn-group">
                                 <button class="btn btn-default active">
@@ -97,7 +97,7 @@
         <div class="col-md-12 col-lg-4">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="m-b-0">Customers</h5>
+                    <h5 class="m-b-0">Pelanggan</h5>
                     <div class="m-v-60 text-center" style="height: 200px">
                         <canvas class="chart" id="customers-chart"></canvas>
                     </div>
@@ -108,7 +108,7 @@
                                     <span class="badge badge-success badge-dot m-r-10"></span>
                                     <div class="m-l-5">
                                         <h4 class="m-b-0">350</h4>
-                                        <p class="m-b-0 muted">New</p>
+                                        <p class="m-b-0 muted">Baru</p>
                                     </div>
                                 </div>
                             </div>
@@ -119,7 +119,7 @@
                                     <span class="badge badge-secondary badge-dot m-r-10"></span>
                                     <div class="m-l-5">
                                         <h4 class="m-b-0">450</h4>
-                                        <p class="m-b-0 muted">Returning</p>
+                                        <p class="m-b-0 muted">Kembali</p>
                                     </div>
                                 </div>
                             </div>
@@ -130,7 +130,7 @@
                                     <span class="badge badge-warning badge-dot m-r-10"></span>
                                     <div class="m-l-5">
                                         <h4 class="m-b-0">100</h4>
-                                        <p class="m-b-0 muted">Others</p>
+                                        <p class="m-b-0 muted">Lainnya</p>
                                     </div>
                                 </div>
                             </div>

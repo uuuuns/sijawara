@@ -19,14 +19,21 @@
                             <span class="ms-2"><?= $item->TITLE_ACTIVITY ?></span>
                         </div>
                     </td>
-                    <td class="py-3"><?= $item->KATEGORI ?></td>
                     <td class="py-3">
-                        <?php if ($item->PROGRESS == 100) { ?>
-                            <i class="bi bi-check-circle-fill text-success"></i>
-                            <span>Done</span>
-                        <?php } else { ?>
-                            In Progress <?= ceil($item->PROGRESS) ?>%
-                        <?php } ?>
+                        <div class="d-flex align-items-center">
+                            <?= $item->KATEGORI ?></td>
+                        </div>
+                    <td class="py-3">
+                        <div class="d-flex align-items-center">
+                            <?php if ($item->PROGRESS == 100) { ?>
+                                <i class="bi bi-check-circle-fill text-success"></i>
+                                <span>Tuntas</span>
+                            <?php } else { ?>
+                                <span class="ms-2">
+                                    <?= ceil($item->PROGRESS) ?>%
+                                </span>
+                            <?php } ?>
+                        </div>
                     </td>
                 </tr>
             <?php endforeach; ?>

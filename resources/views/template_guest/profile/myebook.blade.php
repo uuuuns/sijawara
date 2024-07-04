@@ -10,7 +10,7 @@
         </div>
         <div class="ms-3">
             <span class="fw-semibold">Front-End Developer</span>
-            <p class="m-0" style='color:#8860D0'>by <span class="fw-semibold">Dominic Myers</span></p>
+            <p class="m-0" style='color:#8860D0'>Oleh <span class="fw-semibold">Dominic Myers</span></p>
         </div>
     </div>
     <hr class="p-0 my-3">
@@ -21,7 +21,7 @@
         </div>
         <div class="ms-3">
             <span class="fw-semibold">Front-End Developer</span>
-            <p class="m-0" style='color:#8860D0'>by <span class="fw-semibold">Dominic Myers</span></p>
+            <p class="m-0" style='color:#8860D0'>Oleh <span class="fw-semibold">Dominic Myers</span></p>
         </div>
     </div>
 

@@ -33,10 +33,10 @@
                         <tr>
                             <th>No</th>
                             <th>Nama User</th>
-                            <th>University</th>
-                            <th>Study</th>
+                            <th>Universitas</th>
+                            <th>Studi</th>
                             <th>Status</th>
-                            <th>Action</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -50,11 +50,11 @@
                                 <td><?= $item->UNIV ?></td>
                                 <td><?= $item->DEGREE . ' - ' . $item->STUDY ?></td>
                                 <?php if ($item->STATUS == 0) { ?>
-                                <td><span class="badge badge-warning text-dark">Need Verify</span></td>
+                                <td><span class="badge badge-warning text-dark">Butuh Verifikasi</span></td>
                                 <?php } else if ($item->STATUS == 1) { ?>
-                                <td><span class="badge badge-success">Instructor</span></td>
+                                <td><span class="badge badge-success">Instruktur</span></td>
                                 <?php } else { ?>
-                                <td><span class="badge badge-danger">Rejected</span></td>
+                                <td><span class="badge badge-danger">Ditolak</span></td>
                                 <?php } ?>
                                 <td>
                                     <button type="button"
@@ -89,7 +89,7 @@
                     <table class="table">
                         <tbody>
                             <tr>
-                                <th scope="row" style="max-width: 100px !important;">NAME</th>
+                                <th scope="row" style="max-width: 100px !important;">NAMA</th>
                                 <td name="name"></td>
                             </tr>
                             <tr>
@@ -101,11 +101,11 @@
                                 <td name="nim"></td>
                             </tr>
                             <tr>
-                                <th scope="row">STUDY</th>
+                                <th scope="row">STUDI</th>
                                 <td name="study"></td>
                             </tr>
                             <tr>
-                                <th scope="row">DEGREE</th>
+                                <th scope="row">GELAR</th>
                                 <td name="degree"></td>
                             </tr>
                             <tr class="col-semester">
@@ -113,7 +113,7 @@
                                 <td name="semester"></td>
                             </tr>
                             <tr>
-                                <th scope="row">GRADUATED</th>
+                                <th scope="row">LULUS</th>
                                 <td name="is_graduated"></td>
                             </tr>
                         </tbody>
@@ -121,23 +121,23 @@
                 </div>
                 <div class="row">
                     <div class="col">
-                        <label>CV Document :</label>
+                        <label>Dokumen CV :</label>
                         <iframe width="100%" height="512" id="cv_doc" style="border: 5px #3d3d3d solid;"
                             src=""></iframe>
                     </div>
                     <div class="col">
-                        <label>Certificate Document :</label>
+                        <label>Dokumen Sertifikat :</label>
                         <iframe width="100%" height="512" id="cer_doc" style="border: 5px #3d3d3d solid;"
                             src=""></iframe>
                     </div>
                     <div class="w-100" style="margin: 20px 0px;"></div>
                     <div class="col">
-                        <label>Portofolio Document :</label>
+                        <label>Dokumen Portofolio :</label>
                         <iframe width="100%" height="512" id="por_doc" style="border: 5px #3d3d3d solid;"
                             src=""></iframe>
                     </div>
                     <div class="col">
-                        <label>Recomendation Letter Document :</label>
+                        <label>Dokumen Surat Rekomendasi :</label>
                         <iframe width="100%" height="512" id="rec_doc" style="border: 5px #3d3d3d solid;"
                             src=""></iframe>
                     </div>
@@ -151,7 +151,7 @@
                         <input placeholder="Title" type="hidden" name="dec_id_instructor" id="dec_id_instructor"
                             class="form-control" readonly>
                     </div>
-                    <button type="submit" class="btn btn-danger btn-reject">Decline</button>
+                    <button type="submit" class="btn btn-danger btn-reject">Tolak</button>
                 </form>
                 <form id="form-user" action="instructor/accept" method="POST" enctype="multipart/form-data">
                     @csrf
@@ -159,7 +159,7 @@
                         <input placeholder="Title" type="hidden" name="acc_id_instructor" id="acc_id_instructor"
                             class="form-control" readonly>
                     </div>
-                    <button type="submit" class="btn btn-success btn-accept">Accept</button>
+                    <button type="submit" class="btn btn-success btn-accept">Terima</button>
                 </form>
             </div>
         </div>

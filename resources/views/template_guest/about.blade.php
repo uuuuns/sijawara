@@ -1,5 +1,5 @@
 <div class="container px-4 px-md-0 py-4 pb-6 pt-3">
-    <h5 class="py-2 fw-semibold">About</h5>
+    <h5 class="py-2 fw-semibold">Tentang</h5>
     <hr class="opacity-25">
     <div class="d-flex justify-content-center w-100 my-6">
         <img src="<?= base_url('assets/images/logo_bigger.svg') ?>" class="d-block justify-content-center img-logo img-fluid">
@@ -31,7 +31,7 @@
                 <div class="d-none d-lg-block bg-primary rounded-3 mb-3 h-50 overflow-hidden" style="width: 94%;">
                     <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1975.6568654849596!2d112.60876838907387!3d-7.966493549666502!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7882889f4d1b3f%3A0xa57e19534d73a2d8!2sSTIKI!5e0!3m2!1sen!2sid!4v1663893485888!5m2!1sen!2sid" width="715" height="500" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                 </div>
-                <h5 class="fw-semibold">Contact</h5>
+                <h5 class="fw-semibold">Kontak</h5>
                 <div class="d-grid mt-lg-2 mt-3 gap-2">
                     <div class="">
                         <i class="bi bi-telephone-fill fs-5"></i>
@@ -55,8 +55,8 @@
                     <form class="fw-normal" action="<?= base_url('send/mail') ?>" method="POST">
                         <div class="card-body">
                             <div>
-                                <p>Do you have any questions about using our website? </p>
-                                <p> complete the form below and we will contact you as soon as possible.</p>
+                                <p>Apakah Anda memiliki pertanyaan tentang penggunaan situs web kami? </p>
+                                <p> lengkapi formulir di bawah ini dan kami akan menghubungi Anda sesegera mungkin.</p>
                             </div>
                             <div class="my-4 float-label-control">
                                 <label for="#exampleInputtext1">Nama Lengkap <span class="text-danger">*</span></label>
@@ -67,7 +67,7 @@
                                 <input type="email" class="form-control rounded-1 ps-1" id="exampleInputEmail1" name="email" aria-describedby="emailHelp" required>
                             </div>
                             <div class="my-4 float-label-control">
-                                <label for="#exampleInputtext1">Nomor Telepon <span class="text-mute">(optional)</span></label>
+                                <label for="#exampleInputtext1">Nomor Telepon <span class="text-mute">(opsional)</span></label>
                                 <input type="text" class="form-control rounded-1 ps-1" id="exampleInputtext2" name="noHP" aria-describedby="textHelp">
                             </div>
                             <div class="my-4 float-label-control">
@@ -80,7 +80,7 @@
                         </div>
                         <div class="card-footer">
                             <div class="text-right">
-                                <button type="submit" class="btn btn-primary w-100 rounded-3 fw-semibold py-2 text-black border-0">Submit</button>
+                                <button type="submit" class="btn btn-primary w-100 rounded-3 fw-semibold py-2 text-black border-0">Kirim</button>
                             </div>
                         </div>
                     </form>

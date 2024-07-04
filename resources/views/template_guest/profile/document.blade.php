@@ -1,18 +1,18 @@
 @extends('template_guest.profile.profile_template')
 @section('content')
 <div class="col ms-4 px-5 py-5 shadow rounded-3 overflow-hidden bg-white">
-    <h3 class="fw-bold pb-5" style="color:#5580E9">Supporting Document</h3>
+    <h3 class="fw-bold pb-5" style="color:#5580E9">Dokumen Pendukung</h3>
 
     <section id="cv-section">
         <div class="dropzone-container">
             <div class="row col-md-12">
                 <div class="col-md-8">
                     <h5 class="text-black ps-1">Curriculum Vitae </h5>
-                    <h6 class="text-muted ps-1 pt-1">Upload in PDF format with a maximum size of 2 MB</h6>
+                    <h6 class="text-muted ps-1 pt-1">Upload dalam format PDF dengan ukuran maksimal 2 MB</h6>
                 </div>
                 <div class="col-md-4 d-flex align-items-end btn-container">
-                    <button type="button" class="btn btn-danger rounded-4 fw-semibold w-100 edit-cancel mb-2 d-none">Cancel</button>
-                    <button type="button" class="btn btn-primary rounded-4 fw-semibold w-100 edit-file mb-2">Change File</button>
+                    <button type="button" class="btn btn-danger rounded-4 fw-semibold w-100 edit-cancel mb-2 d-none">Batalkan</button>
+                    <button type="button" class="btn btn-primary rounded-4 fw-semibold w-100 edit-file mb-2">Ganti File</button>
                 </div>
             </div>
         </div>
@@ -21,8 +21,8 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-12">
-                            <object style="width: 100%; height: 309px;" data="<?= !empty($document->CV) ? $document->CV : '' ?>">
-                                Error: Embedded data could not be displayed in mobile mode change it to dekstop mode to show the file.
+                            <object style="width: 100%; height: 309px;" data="<?= $document->CV ?>">
+                            Error: Data yang disematkan tidak dapat ditampilkan dalam mode seluler, ubah ke mode dekstop untuk menampilkan file.
                             </object>
                         </div>
                     </div>
@@ -44,12 +44,12 @@
         <div class="dropzone-container">
             <div class="row col-md-12">
                 <div class="col-md-8">
-                    <h5 class="text-black ps-1 mt-4">Portfolio</h5>
-                    <h6 class="text-muted ps-1 pt-1">Upload in PDF format with a maximum size of 2 MB </h6>
+                    <h5 class="text-black ps-1 mt-4">Portofolio</h5>
+                    <h6 class="text-muted ps-1 pt-1">Upload dalam format PDF dengan ukuran maksimal 2 MB</h6>
                 </div>
                 <div class="col-md-4 d-flex align-items-end btn-container">
-                    <button type="button" class="btn btn-danger rounded-4 fw-semibold w-100 edit-cancel mb-2 d-none">Cancel</button>
-                    <button type="button" class="btn btn-primary rounded-4 fw-semibold w-100 edit-file mb-2">Change File</button>
+                    <button type="button" class="btn btn-danger rounded-4 fw-semibold w-100 edit-cancel mb-2 d-none">Batalkan</button>
+                    <button type="button" class="btn btn-primary rounded-4 fw-semibold w-100 edit-file mb-2">Ganti File</button>
                 </div>
             </div>
         </div>
@@ -58,8 +58,8 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-12">
-                            <object style="width: 100%; height: 309px;" data="<?= !empty($document->PORTOFOLIO) ? $document->PORTOFOLIO : '' ?>">
-                                Error: Embedded data could not be displayed in mobile mode change it to dekstop mode to show the file.
+                            <object style="width: 100%; height: 309px;" data="<?= $document->PORTOFOLIO ?>">
+                                Error: Data yang disematkan tidak dapat ditampilkan dalam mode seluler, ubah ke mode dekstop untuk menampilkan file.
                             </object>
                         </div>
                     </div>
@@ -81,12 +81,12 @@
         <div class="dropzone-container">
             <div class="row col-md-12">
                 <div class="col-md-8">
-                    <h5 class="text-black ps-1 mt-4">Certificates/Supporting Documents</h5>
-                    <h6 class="text-muted ps-1 pt-1">Upload in PDF format with a maximum size of 2 MB </h6>
+                    <h5 class="text-black ps-1 mt-4">Sertifikasi/Dokumen Pendukung</h5>
+                    <h6 class="text-muted ps-1 pt-1">Upload dalam format PDF dengan ukuran maksimal 2 MB</h6>
                 </div>
                 <div class="col-md-4 d-flex align-items-end btn-container">
-                    <button type="button" class="btn btn-danger rounded-4 fw-semibold w-100 edit-cancel mb-2 d-none">Cancel</button>
-                    <button type="button" class="btn btn-main-2 rounded-4 fw-semibold w-100 edit-file mb-2">Change File</button>
+                    <button type="button" class="btn btn-danger rounded-4 fw-semibold w-100 edit-cancel mb-2 d-none">Batalkan</button>
+                    <button type="button" class="btn btn-main-2 rounded-4 fw-semibold w-100 edit-file mb-2">Ganti File</button>
                 </div>
             </div>
         </div>
@@ -98,7 +98,7 @@
                         foreach ($sertif as $link) { ?>
                             <div class="col-md-4">
                                 <object style="width: 100%; height: 309px;" data="<?= $link ?>">
-                                    Error: Embedded data could not be displayed in mobile mode change it to dekstop mode to show the file.
+                                    Error: Data yang disematkan tidak dapat ditampilkan dalam mode seluler, ubah ke mode dekstop untuk menampilkan file.
                                 </object>
                             </div>
                         <?php } ?>
@@ -121,12 +121,12 @@
         <div class="dropzone-container">
             <div class="row col-md-12">
                 <div class="col-md-8">
-                    <h5 class="text-black ps-1 mt-4">University Recommendation Letter</h5>
-                    <h6 class="text-muted ps-1 pt-1">Upload in PDF format with a maximum size of 2 MB </h6>
+                    <h5 class="text-black ps-1 mt-4">Surat Rekomendasi Universitas</h5>
+                    <h6 class="text-muted ps-1 pt-1">Upload dalam format PDF dengan ukuran maksimal 2 MB</h6>
                 </div>
                 <div class="col-md-4 d-flex align-items-end btn-container">
-                    <button type="button" class="btn btn-danger rounded-4 fw-semibold w-100 edit-cancel mb-2 d-none">Cancel</button>
-                    <button type="button" class="btn btn-main-2 rounded-4 fw-semibold w-100 edit-file mb-2">Change File</button>
+                    <button type="button" class="btn btn-danger rounded-4 fw-semibold w-100 edit-cancel mb-2 d-none">Batalkan</button>
+                    <button type="button" class="btn btn-main-2 rounded-4 fw-semibold w-100 edit-file mb-2">Ganti File</button>
                 </div>
             </div>
         </div>
@@ -135,8 +135,8 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-12">
-                            <object style="width: 100%; height: 309px;" data="<?= !empty($document->SURAT_RECOM) ? $document->SURAT_RECOM : '' ?>">
-                                Error: Embedded data could not be displayed in mobile mode change it to dekstop mode to show the file.
+                            <object style="width: 100%; height: 309px;" data="<?= $document->SURAT_RECOM ?>">
+                                Error: Data yang disematkan tidak dapat ditampilkan dalam mode seluler, ubah ke mode dekstop untuk menampilkan file.
                             </object>
                         </div>
                     </div>

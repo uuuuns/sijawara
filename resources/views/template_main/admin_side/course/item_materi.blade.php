@@ -36,8 +36,8 @@
                 <label class="col-sm-2 col-form-label control-label">Link Youtube</label>
                 <div class="col-md-5">
                     <input type="text" class="form-control" name="materi_link[]" required>
-                    <span class="text-danger">* Upload link video in google drive and submit the link in this field.
-                        Example link must contain d/your_id_video like this
+                    <span class="text-danger">* Unggah video tautan di Google Drive dan kirimkan tautan di kolom ini.
+                        Contoh link harus berisi d/id_video_anda seperti ini
                         https://drive.google.com/file/d/1fTx7Ij-ora0xIFAWU0Gz4Ej8kJZh1tgs/view?usp=sharing</span>
                 </div>
             </div>

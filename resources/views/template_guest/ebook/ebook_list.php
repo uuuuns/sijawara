@@ -21,12 +21,12 @@
             </div>
             <div class="mt-2">
                 <span class="fw-semibold">Front End Developer</span>
-                <p class="m-0">By <span class="fw-semibold">Dominic Mayers</span></p>
+                <p class="m-0">Oleh <span class="fw-semibold">Dominic Mayers</span></p>
                 <span class="fw-semibold">IDR 59,999</span>
             </div>
             <div class="d-flex mt-3 align-items-center">
                 <button type="button" onclick="" class="btn btn-primary rounded-2 " style="height: 35px; width: 150px;">
-                    <p class="m-0 fw-semibold">Purchase now</p>
+                    <p class="m-0 fw-semibold">Beli Sekarang</p>
                 </button>
                 <div class="ms-3" style="">
                     <a href="<?= base_url('checkout') ?>"><i class="border border-3 border-primary rounded-2 bi bi-cart text-black fs-5 px-1" ></i></a>

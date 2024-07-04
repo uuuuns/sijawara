@@ -16,7 +16,7 @@
             <div class="d-flex align-items-center ps-6">
                 <a href="#" type="submit"
                     class="disabled h-auto d-flex align-items-center justify-content-center btn btn-primary rounded-1 fs-6 text-center fw-semibold text-white border-0"
-                    style="--bs-btn-padding-x: 2rem">Claim</a>
+                    style="--bs-btn-padding-x: 2rem">Klaim</a>
             </div>
         </div>
     </div>
@@ -29,11 +29,11 @@
             </div>
             <div class="d-flex flex-column align-items-center border-start border-5 mx-4 ps-4 border-dark">
                 <div class="fw-bold" style="font-size:5rem;margin-top: -30px;">20%</div>
-                <div class="fw-semibold" style="margin-top:-20px; font-size:0.9rem">Valid Until : 25/01/2022</div>
+                <div class="fw-semibold" style="margin-top:-20px; font-size:0.9rem">Berlaku Hingga : 25/01/2022</div>
                 <div class="d-flex align-items-center mt-4">
                     <a href="#" type="submit"
                         class="h-auto d-flex align-items-center justify-content-center btn btn-primary rounded-1 fs-6 text-center fw-semibold text-white border-0"
-                        style="--bs-btn-padding-x: 2rem">Claim</a>
+                        style="--bs-btn-padding-x: 2rem">Klaim</a>
                 </div>
             </div>
         </div>
@@ -44,11 +44,11 @@
             </div>
             <div class="d-flex flex-column align-items-center border-start border-5 mx-4 ps-4 border-dark">
                 <div class="fw-bold" style="font-size:5rem;margin-top: -30px;">20%</div>
-                <div class="fw-semibold" style="margin-top:-20px; font-size:0.9rem">Valid Until : 25/01/2022</div>
+                <div class="fw-semibold" style="margin-top:-20px; font-size:0.9rem">Berlaku Hingga : 25/01/2022</div>
                 <div class="d-flex align-items-center mt-4">
                     <a href="#" type="submit"
                         class="h-auto d-flex align-items-center justify-content-center btn btn-primary rounded-1 fs-6 text-center fw-semibold text-white border-0"
-                        style="--bs-btn-padding-x: 2rem">Claim</a>
+                        style="--bs-btn-padding-x: 2rem">Klaim</a>
                 </div>
             </div>
         </div>
@@ -59,11 +59,11 @@
             </div>
             <div class="d-flex flex-column align-items-center border-start border-5 mx-4 ps-4 border-dark">
                 <div class="fw-bold" style="font-size:5rem;margin-top: -30px;">20%</div>
-                <div class="fw-semibold" style="margin-top:-20px; font-size:0.9rem">Valid Until : 25/01/2022</div>
+                <div class="fw-semibold" style="margin-top:-20px; font-size:0.9rem">Berlaku Hingga : 25/01/2022</div>
                 <div class="d-flex align-items-center mt-4">
                     <a href="#" type="submit"
                         class="h-auto d-flex align-items-center justify-content-center btn btn-primary rounded-1 fs-6 text-center fw-semibold text-white border-0"
-                        style="--bs-btn-padding-x: 2rem">Claim</a>
+                        style="--bs-btn-padding-x: 2rem">Klaim</a>
                 </div>
             </div>
         </div>
@@ -74,11 +74,11 @@
             </div>
             <div class="d-flex flex-column align-items-center border-start border-5 mx-4 ps-4 border-dark">
                 <div class="fw-bold" style="font-size:5rem;margin-top: -30px;">20%</div>
-                <div class="fw-semibold" style="margin-top:-20px; font-size:0.9rem">Valid Until : 25/01/2022</div>
+                <div class="fw-semibold" style="margin-top:-20px; font-size:0.9rem">Berlaku Hingga : 25/01/2022</div>
                 <div class="d-flex align-items-center mt-4">
                     <a href="#" type="submit"
                         class="h-auto d-flex align-items-center justify-content-center btn btn-primary rounded-1 fs-6 text-center fw-semibold text-white border-0"
-                        style="--bs-btn-padding-x: 2rem">Claim</a>
+                        style="--bs-btn-padding-x: 2rem">Klaim</a>
                 </div>
             </div>
         </div>

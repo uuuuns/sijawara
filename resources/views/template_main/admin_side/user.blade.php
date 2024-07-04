@@ -30,7 +30,7 @@
                     <div class="mt-3 mt-md-0">
                         <button type="button" class="btn btn-primary" onclick="openaddModal()">
                             <i class="mdi mdi-plus me-1"></i>
-                            Add User</button>
+                            Tambah User</button>
                     </div>
                 </div>
             </div>
@@ -41,9 +41,9 @@
                             <th>No</th>
                             <th>Nama User</th>
                             <th>Email</th>
-                            <th>No Telpon</th>
+                            <th>No Telepon</th>
                             <th>Jenis Kelamin</th>
-                            <th>Action</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -85,7 +85,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Add User</h5>
+                <h5 class="modal-title">Tambah User</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -94,7 +94,7 @@
                 @csrf
                 <div class="modal-body">
                     <div class="form-group">
-                        <label>Foto Profile <span class="text-danger">*</span></label>
+                        <label>Foto Profil <span class="text-danger">*</span></label>
                         <div class="custom-file">
                             <input type="file" name="foto_profile" class="custom-file-input dropify"
                                 data-allowed-file-extensions="png jpg jpeg" data-max-file-size="1M" required>
@@ -129,12 +129,12 @@
                         <input placeholder="085141xxxx" type="text" name="contact" class="form-control" required>
                     </div>
                     <div class="form-group mb-3">
-                        <label>Password <span class="text-danger">*</span></label>
+                        <label>Kata Sandi <span class="text-danger">*</span></label>
                         <input placeholder="Password" type="password" id="password" name="password"
                             class="form-control" required>
                     </div>
                     <div class="form-group mb-3">
-                        <label>Konfirmasi Password <span class="text-danger">*</span></label>
+                        <label>Konfirmasi Kata Sandi <span class="text-danger">*</span></label>
                         <input placeholder="Konfirmasi Password" type="password" id="cnfirm_password"
                             name="cnfirm_password" class="form-control" required>
                     </div>
@@ -166,7 +166,7 @@
                             required>
                     </div>
                     <div class="form-group mb-3">
-                        <label>Degree <span class="text-danger">*</span></label>
+                        <label>Gelar <span class="text-danger">*</span></label>
                         <select class="form-control select-degree" name="degree" required>
                             <option value="D3">D3</option>
                             <option value="S1">S1</option>
@@ -180,14 +180,14 @@
                     </div>
                     <div class="row">
                         <div class="col">
-                            <label><span class="text-danger">*</span>CV Document :</label>
+                            <label><span class="text-danger">*</span>Dokumen CV :</label>
                             <div class="custom-file">
                                 <input type="file" name="cv_doc" class="custom-file-input dropify"
                                     data-allowed-file-extensions="pdf" data-max-file-size="5M">
                             </div>
                         </div>
                         <div class="col">
-                            <label><span class="text-danger">*</span>Certificate Document :</label>
+                            <label><span class="text-danger">*</span>Dokumen Sertifikat :</label>
                             <div class="custom-file">
                                 <input type="file" name="certi_doc" class="custom-file-input dropify"
                                     data-allowed-file-extensions="pdf" data-max-file-size="5M">
@@ -195,14 +195,14 @@
                         </div>
                         <div class="w-100" style="margin: 20px 0px;"></div>
                         <div class="col">
-                            <label><span class="text-danger">*</span>Portofolio Document :</label>
+                            <label><span class="text-danger">*</span>Dokumen Portofolio :</label>
                             <div class="custom-file">
                                 <input type="file" name="portofolio_doc" class="custom-file-input dropify"
                                     data-allowed-file-extensions="pdf" data-max-file-size="5M">
                             </div>
                         </div>
                         <div class="col">
-                            <label><span class="text-danger">*</span>Recomendation Letter Document :</label>
+                            <label><span class="text-danger">*</span>Dokumen Surat Rekomendasi :</label>
                             <div class="custom-file">
                                 <input type="file" name="recommend_doc" class="custom-file-input dropify"
                                     data-allowed-file-extensions="pdf" data-max-file-size="5M">
@@ -211,7 +211,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="Submit" class="btn btn-primary">Add User</button>
+                    <button type="Submit" class="btn btn-primary">Tambah User</button>
                 </div>
             </form>
         </div>
@@ -236,7 +236,7 @@
                     <div class="modal-body">
                         <input type="hidden" name="up_id_user" value="" readonly>
                         <div class="form-group">
-                            <label>Foto Profile</label>
+                            <label>Foto Profil</label>
                             <div class="custom-file photo">
                                 <input type="file" name="up_foto_profile" class="custom-file-input dropify"
                                     data-allowed-file-extensions="png jpg jpeg" data-max-file-size="1M"
@@ -301,7 +301,7 @@
                                 required>
                         </div>
                         <div class="form-group mb-3">
-                            <label>Degree</label>
+                            <label>Gelar</label>
                             <select class="form-control select-degree" name="up_degree" required>
                                 <option value="D3">D3</option>
                                 <option value="S1">S1</option>
@@ -315,7 +315,7 @@
                         </div>
                         <div class="row mb-3">
                             <div class="col">
-                                <label>CV Document :</label>
+                                <label>Dokumen CV :</label>
                                 <div class="custom-file show-file">
                                     <iframe width="100%" height="512" style="border: 5px #3d3d3d solid;"
                                         name="frame_cv_doc" src=""></iframe>
@@ -327,7 +327,7 @@
                                 </div>
                             </div>
                             <div class="col ">
-                                <label>Certificate Document :</label>
+                                <label>Dokumen Sertifikat :</label>
                                 <div class="custom-file show-file">
                                     <iframe width="100%" height="512" style="border: 5px #3d3d3d solid;"
                                         name="frame_certi_doc" src=""></iframe>
@@ -340,7 +340,7 @@
                             </div>
                             <div class="w-100" style="margin: 20px 0px;"></div>
                             <div class="col">
-                                <label>Portofolio Document :</label>
+                                <label>Dokumen Portofolio :</label>
                                 <div class="custom-file show-file">
                                     <iframe width="100%" height="512" style="border: 5px #3d3d3d solid;"
                                         name="frame_portofolio_doc" src=""></iframe>
@@ -352,7 +352,7 @@
                                 </div>
                             </div>
                             <div class="col">
-                                <label>Recomendation Letter Document :</label>
+                                <label>Dokumen Surat Rekomendasi :</label>
                                 <div class="custom-file show-file">
                                     <iframe width="100%" height="512" style="border: 5px #3d3d3d solid;"
                                         name="frame_recommend_doc" src=""></iframe>
@@ -365,8 +365,8 @@
                             </div>
                         </div>
                         <div class="form-group mb-3">
-                            <button type="button" class="btn btn-secondary" id="ganti">Change Document</button>
-                            <button type="button" class="btn btn-danger" id="cancel">Cancel</button>
+                            <button type="button" class="btn btn-secondary" id="ganti">Ganti Dokumen</button>
+                            <button type="button" class="btn btn-danger" id="cancel">Batalkan</button>
                         </div>
                     </div>
                 </div>
@@ -385,7 +385,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content modal lg">
             <div class="modal-header">
-                <h5 class="modal-title">Delete User</h5>
+                <h5 class="modal-title">Hapus User</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -397,7 +397,7 @@
                     <input type="hidden" name="del_id_user" value="" readonly>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Delete</button>
+                    <button type="submit" class="btn btn-primary">Hapus</button>
                 </div>
             </form>
         </div>
