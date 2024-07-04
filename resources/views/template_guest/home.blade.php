@@ -42,6 +42,22 @@
         </script>
 
         <style>
+            .clients .swiper {
+                padding: 10px 0;
+            }
+
+            .clients .swiper-wrapper {
+                height: auto;
+            }
+
+            .clients .swiper-slide img {
+                transition: 0.3s;
+            }
+
+            .clients .swiper-slide img:hover {
+                transform: scale(1.1);
+            }
+
             .splide__pagination__page.is-active {
                 background: #FC8B14;
             }
