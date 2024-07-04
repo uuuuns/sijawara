@@ -94,7 +94,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="row">
-                        <?php $sertif = explode(';', !empty($document->CV) ? $document->CV : '' );
+                        <?php $sertif = explode(';', !empty($document->SERTIFIKAT) ? $document->SERTIFIKAT : '' );
                         foreach ($sertif as $link) { ?>
                             <div class="col-md-4">
                                 <object style="width: 100%; height: 309px;" data="<?= $link ?>">
@@ -226,7 +226,7 @@
     initFileUploader('#cv-section', 1, 'cv')
     initFileUploader('#porto-section', 1, 'porto')
     initFileUploader('#recom-letter-section', 1, 'recom')
-    initFileUploader('#cert-section', 3, 'cert')
+    initFileUploader('#cert-section', 1, 'cert')
 
     document.getElementById('input-file1').addEventListener('change', function () {
         const uploadButton = document.getElementById('upload-button1');
