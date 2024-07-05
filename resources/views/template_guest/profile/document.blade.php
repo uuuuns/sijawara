@@ -94,7 +94,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="row">
-                        <?php $sertif = explode(';', !empty($document->CV) ? $document->CV : '' );
+                        <?php $sertif = explode(';', !empty($document->SERTIFIKAT) ? $document->SERTIFIKAT : '' );
                         foreach ($sertif as $link) { ?>
                             <div class="col-md-4">
                                 <object style="width: 100%; height: 309px;" data="<?= $link ?>">
@@ -109,7 +109,7 @@
         <div id="input-data" class="d-none">
             <form action="/profile/document/change" method="post" enctype="multipart/form-data">
                 @csrf
-                <input id="input-file3" name="file_cert[]" type="file" accept="application/pdf" multiple />
+                <input id="input-file3" name="file_cert" type="file" accept="application/pdf" multiple />
                 <button type="submit" title="Upload selected files" id="upload-button3" style="display: none;"
                     class="btn btn-primary rounded-1 fw-semibold w-7 edit-file mb-2" tabindex="500"><i
                         class="bi-upload"></i> <span class="hidden-xs">Upload</span></button>
@@ -144,7 +144,7 @@
             </div>
         </div>
         <div id="input-data" class="d-none">
-            <form action="profile/document/change" method="post" enctype="multipart/form-data">
+            <form action="/profile/document/change" method="post" enctype="multipart/form-data">
                 @csrf
                 <input id="input-file4" name="file_recom" type="file" accept="application/pdf" />
                 <button type="submit" title="Upload selected files" id="upload-button4" style="display: none;"
@@ -226,7 +226,7 @@
     initFileUploader('#cv-section', 1, 'cv')
     initFileUploader('#porto-section', 1, 'porto')
     initFileUploader('#recom-letter-section', 1, 'recom')
-    initFileUploader('#cert-section', 3, 'cert')
+    initFileUploader('#cert-section', 1, 'cert')
 
     document.getElementById('input-file1').addEventListener('change', function () {
         const uploadButton = document.getElementById('upload-button1');
