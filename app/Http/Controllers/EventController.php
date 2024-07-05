@@ -20,8 +20,9 @@ class EventController extends Controller
     public function index()
     {
         $data['title'] = "Webinar";
-
-        $data['event'] = DB::select("
+        $role = session('user')[0]['ID_ROLE'];
+        if ($role == 1) {
+            $data['event'] = DB::select("
             Select
                 a.* ,
                 e.*
@@ -42,6 +43,20 @@ class EventController extends Controller
             LEFT JOIN instructor_req ir ON
                 ir.ID_USER = u.ID_USER            
         ");
+        } else {
+            $data['event'] = DB::select("
+                Select
+                    a.* ,
+                    e.*
+                FROM
+                    activity a
+                LEFT JOIN event e ON
+                    e.ID_ACTIVITY = a.ID_ACTIVITY
+                WHERE
+                    a.TYPE_ACTIVITY = 2
+                    AND a.ID_USER = '" . session('user')[0]['ID_USER'] . "'    
+                ");
+        }
 
         return
             view('template_main.admin_side.etc.header', $data) .

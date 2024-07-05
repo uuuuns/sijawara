@@ -26,8 +26,10 @@ class CourseController extends Controller
                 c.*
             FROM
                 activity c
+            LEFT JOIN activity a ON
+                a.ID_ACTIVITY = c.ID_ACTIVITY
             WHERE
-                c.TYPE_ACTIVITY = 1
+                a.TYPE_ACTIVITY = 1
             ");
         } else {
             $data['course'] = DB::select("
@@ -35,8 +37,11 @@ class CourseController extends Controller
                     c.*
                 FROM    
                     course c
+                LEFT JOIN activity a ON
+                    a.ID_ACTIVITY = c.ID_ACTIVITY
                 WHERE
-                    c.ID_USER = '" . session('user')[0]->get('ID_USER') . "'
+                    a.ID_USER = '" . session('user')[0]->get('ID_USER') . "'
+                    AND a.TYPE_ACTIVITY = 1
             ");
 
             $data["activity"] = DB::select("

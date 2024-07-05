@@ -171,13 +171,15 @@ class ProfileGuest extends Controller
     {
         $data = array(
             [
-                'FOTO_PROFILE' => FileUpload::S3($request->file('foto_profile'), 'FOTO_PROFILE', 'Foto-Profile-' . strtotime(now())),
                 'EMAIL' => $request->input('email'),
                 'NAME' => $request->input('name_user'),
                 'TELP' => $request->input('no_hp'),
                 'JK' => $request->input('jk'),
             ]
         );
+        if (!empty($request->file('foto_profile'))) {
+            $data[0]['FOTO_PROFILE'] = FileUpload::S3($request->file('foto_profile'), 'FOTO_PROFILE', 'Foto-Profile-' . strtotime(now()));
+        }
         $updateStatus = User::update_profile($data);
         if ($updateStatus) {
             $user_data = collect([
@@ -185,7 +187,6 @@ class ProfileGuest extends Controller
                 'NAME' => $request->input('name_user'),
                 'ID_USER' => session('user')[0]['ID_USER'],
                 'ID_ROLE' => session('user')[0]['ID_ROLE'],
-                'FOTO_PROFILE' => $data[0]['FOTO_PROFILE'],
                 'LOGGED_IN' => TRUE
             ]);
             Session::flush();

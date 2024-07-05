@@ -79,6 +79,7 @@ Route::get('profile/myevents', [ProfileGuest::class, 'myevents']);
 Route::post('profile/update', [ProfileGuest::class, 'update_profile']);
 Route::post('/profile/academic/change', [ProfileGuest::class, 'academic_change']);
 Route::post('/profile/document/change', [ProfileGuest::class, 'doc_up']);
+Route::get('apply_instructor', 'InstructorController@apply_instructor');
 
 //VERIFICATION ACCOUNT
 Route::get('verification/confirm', 'AuthController@verifAccount');

@@ -63,7 +63,6 @@ class User extends Model
                         WHERE
                             mapping_course.ID_USER = "' . session('user')[0]['ID_USER'] . '"
                             AND mapping_course.ID_ACTIVITY = activity.ID_ACTIVITY
-                            AND mapping_course.STATUS = 1
                     ) * 100
                 )
             ) AS PROGRESS

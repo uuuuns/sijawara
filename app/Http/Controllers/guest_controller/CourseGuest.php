@@ -401,7 +401,6 @@ class CourseGuest extends Controller
 								WHERE
 									mapping_course.ID_USER = "' . $id_user . '"
 									AND mapping_course.ID_ACTIVITY = activity.ID_ACTIVITY
-									AND mapping_course.STATUS = 1
 							) * 100
 						)
 					) AS PROGRESS
