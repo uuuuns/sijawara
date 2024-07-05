@@ -158,29 +158,31 @@
                                         </div>
                                     <?php    } ?>
                                 <?php } else { ?>
-                                    <?php if ($document->STATUS == 1) { ?>
-                                        <div class="row">
-                                            <button type="button" class="btn btn-muted rounded-4 fw-semibold w-100 mb-3" disabled>Lamar sebagai instruktur</button>
-                                            <span class="text-success" style="text-align: justify;">Anda sekarang adalah bagian dari tim
-                                                instruktur kami. Terima kasih atas partisipasinya. Pastikan Anda login kembali untuk
-                                                mengakses menu instruktur.</span>
-                                        </div>
-                                    <?php    } else if ($document->STATUS == 2) { ?>
-                                        <div class="row">
-                                            <button type="button" onclick="apply_instructor()"  class="btn btn-main-2 btn-primary rounded rounded-4 fw-semibold w-100 mb-3 btn-instructor">Lamar
-                                                sebagai instruktur</button>
-                                            <span class="text-danger" style="text-align: justify;">Kami mohon maaf telah menolak
-                                                lamaran anda karena ada perbedaan antara 
-                                                dokumen yang anda kirim dan standart dokumen kami. Harap perbaiki data anda
-                                                lagi dan klik tombol diatas untuk mengirimkan lagi..</span>
-                                        </div>
-                                    <?php        } else if ($document->STATUS == 0) { ?>
-                                        <div class="row">
-                                            <button type="button" class="btn btn-muted rounded-4 fw-semibold w-100 mb-3" disabled>Lamar sebagai instruktur</button>
-                                            <span style="color: #edab00; text-align: justify;">Harap bersabar karena kami masih
-                                            mengevaluasi data dan dokumen pribadi Anda.</span>
-                                        </div>
-                                    <?php        } ?>
+                                    <?php if($document != null){ ?>
+                                        <?php if ($document->STATUS == 1) { ?>
+                                            <div class="row">
+                                                <button type="button" class="btn btn-muted rounded-4 fw-semibold w-100 mb-3" disabled>Lamar sebagai instruktur</button>
+                                                <span class="text-success" style="text-align: justify;">Anda sekarang adalah bagian dari tim
+                                                    instruktur kami. Terima kasih atas partisipasinya. Pastikan Anda login kembali untuk
+                                                    mengakses menu instruktur.</span>
+                                            </div>
+                                        <?php    } else if ($document->STATUS == 2) { ?>
+                                            <div class="row">
+                                                <button type="button" onclick="apply_instructor()"  class="btn btn-main-2 btn-primary rounded rounded-4 fw-semibold w-100 mb-3 btn-instructor">Lamar
+                                                    sebagai instruktur</button>
+                                                <span class="text-danger" style="text-align: justify;">Kami mohon maaf telah menolak
+                                                    lamaran anda karena ada perbedaan antara 
+                                                    dokumen yang anda kirim dan standart dokumen kami. Harap perbaiki data anda
+                                                    lagi dan klik tombol diatas untuk mengirimkan lagi..</span>
+                                            </div>
+                                        <?php        } else if ($document->STATUS == 0) { ?>
+                                            <div class="row">
+                                                <button type="button" class="btn btn-muted rounded-4 fw-semibold w-100 mb-3" disabled>Lamar sebagai instruktur</button>
+                                                <span style="color: #edab00; text-align: justify;">Harap bersabar karena kami masih
+                                                mengevaluasi data dan dokumen pribadi Anda.</span>
+                                            </div>
+                                        <?php } ?>
+                                    <?php } ?>
                                 <?php } ?>
                             </div>
                         </div>
