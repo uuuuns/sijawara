@@ -21,7 +21,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-12">
-                            <object style="width: 100%; height: 309px;" data="<?= $document->CV ?>">
+                            <object style="width: 100%; height: 309px;" data="<?= !empty($document->CV) ? $document->CV : '' ?>">
                             Error: Data yang disematkan tidak dapat ditampilkan dalam mode seluler, ubah ke mode dekstop untuk menampilkan file.
                             </object>
                         </div>
@@ -58,7 +58,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-12">
-                            <object style="width: 100%; height: 309px;" data="<?= $document->PORTOFOLIO ?>">
+                            <object style="width: 100%; height: 309px;" data="<?= !empty($document->PORTOFOLIO) ? $document->PORTOFOLIO : '' ?>">
                                 Error: Data yang disematkan tidak dapat ditampilkan dalam mode seluler, ubah ke mode dekstop untuk menampilkan file.
                             </object>
                         </div>
@@ -135,7 +135,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-12">
-                            <object style="width: 100%; height: 309px;" data="<?= $document->SURAT_RECOM ?>">
+                            <object style="width: 100%; height: 309px;" data="<?= !empty($document->SURAT_RECOM) ? $document->SURAT_RECOM : ''?>">
                                 Error: Data yang disematkan tidak dapat ditampilkan dalam mode seluler, ubah ke mode dekstop untuk menampilkan file.
                             </object>
                         </div>
