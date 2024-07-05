@@ -143,10 +143,10 @@
                             <div class="d-flex flex-column align-items-center align-items-sm-start">
                                 <?php $array = (array) $document ?>
                                 <?php $totDoc = (!empty($document)) ? count(array_filter($array)) : 0; ?>
-                                <?php if (session('user')[0]['ID_ROLE'] == 3) { ?>
+                                <?php if (session('user')[0]['ID_ROLE'] == 3 && empty($document->STATUS)) { ?>
                                     <?php if ($totDoc === 11) { ?>
                                         <div class="col-md-12">
-                                            <button type="button" class="btn btn-main-2 btn-primary rounded rounded-4 fw-semibold w-100 btn-instructor">Lamar sebagai
+                                            <button type="button" onclick="apply_instructor()" class="btn btn-main-2 btn-primary rounded rounded-4 fw-semibold w-100 btn-instructor">Lamar sebagai
                                                 Instruktur</button>
                                         </div>
                                     <?php    } else { ?>
@@ -158,23 +158,23 @@
                                         </div>
                                     <?php    } ?>
                                 <?php } else { ?>
-                                    <?php if (isset($document->STATUS) == 1) { ?>
+                                    <?php if ($document->STATUS == 1) { ?>
                                         <div class="row">
                                             <button type="button" class="btn btn-muted rounded-4 fw-semibold w-100 mb-3" disabled>Lamar sebagai instruktur</button>
                                             <span class="text-success" style="text-align: justify;">Anda sekarang adalah bagian dari tim
                                                 instruktur kami. Terima kasih atas partisipasinya. Pastikan Anda login kembali untuk
                                                 mengakses menu instruktur.</span>
                                         </div>
-                                    <?php    } else if (isset($document->STATUS) == 2) { ?>
+                                    <?php    } else if ($document->STATUS == 2) { ?>
                                         <div class="row">
-                                            <button type="button" class="btn btn-main-2 btn-primary rounded rounded-4 fw-semibold w-100 mb-3 btn-instructor">Lamar
+                                            <button type="button" onclick="apply_instructor()"  class="btn btn-main-2 btn-primary rounded rounded-4 fw-semibold w-100 mb-3 btn-instructor">Lamar
                                                 sebagai instruktur</button>
                                             <span class="text-danger" style="text-align: justify;">Kami mohon maaf telah menolak
                                                 lamaran anda karena ada perbedaan antara 
                                                 dokumen yang anda kirim dan standart dokumen kami. Harap perbaiki data anda
                                                 lagi dan klik tombol diatas untuk mengirimkan lagi..</span>
                                         </div>
-                                    <?php        } else if (isset($document->STATUS) == 0) { ?>
+                                    <?php        } else if ($document->STATUS == 0) { ?>
                                         <div class="row">
                                             <button type="button" class="btn btn-muted rounded-4 fw-semibold w-100 mb-3" disabled>Lamar sebagai instruktur</button>
                                             <span style="color: #edab00; text-align: justify;">Harap bersabar karena kami masih
@@ -256,7 +256,7 @@
         innerWrapperSelector: '.sidebar__inner'
     });
 
-    $('.btn-instructor').click(function() {
+    function apply_instructor() {
         Swal.fire({
             title: '<strong class="h4">Are you sure you want to apply as an intructor ?</strong>',
             showDenyButton: true,
@@ -266,8 +266,8 @@
             denyButtonText: `No`,
         }).then((result) => {
             if (result.isConfirmed) {
-                window.location.href = '"profile/apply/instructor?location=" . $this->uri->segment(1) . "/" . $this->uri->segment(2) . "/" . $this->uri->segment(3)) ?>';
+                window.location.href = 'apply_instructor';
             }
         })
-    })
+    }
 </script>

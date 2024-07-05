@@ -171,13 +171,15 @@ class ProfileGuest extends Controller
     {
         $data = array(
             [
-                'FOTO_PROFILE' => FileUpload::S3($request->file('foto_profile'), 'FOTO_PROFILE', 'Foto-Profile-' . strtotime(now())),
                 'EMAIL' => $request->input('email'),
                 'NAME' => $request->input('name_user'),
                 'TELP' => $request->input('no_hp'),
                 'JK' => $request->input('jk'),
             ]
         );
+        if (!empty($request->file('foto_profile'))) {
+            $data[0]['FOTO_PROFILE'] = FileUpload::S3($request->file('foto_profile'), 'FOTO_PROFILE', 'Foto-Profile-' . strtotime(now()));
+        }
         $updateStatus = User::update_profile($data);
         if ($updateStatus) {
             $user_data = collect([
@@ -185,7 +187,6 @@ class ProfileGuest extends Controller
                 'NAME' => $request->input('name_user'),
                 'ID_USER' => session('user')[0]['ID_USER'],
                 'ID_ROLE' => session('user')[0]['ID_ROLE'],
-                'FOTO_PROFILE' => $data[0]['FOTO_PROFILE'],
                 'LOGGED_IN' => TRUE
             ]);
             Session::flush();
@@ -217,30 +218,21 @@ class ProfileGuest extends Controller
     public function doc_up(request $request)
     {
         $userId = session('user')[0]['ID_USER'];
-        // dd($request->file('file_cv'));
+        $data = [];
         if (!empty($request->file('file_cv'))) {
-            $data = [
-                'CV' => FileUpload::S3_PDF($request->file('file_cv'), 'Instructor_CV', 'Curriculum-Vitae-' . strtotime(now()))
-            ];
-        } else if (!empty($request->file('file_porto'))) {
-            $data = [
-                'PORTOFOLIO' => FileUpload::S3_PDF($request->file('file_porto'), 'Instructor_PORTOFOLIO', 'Portfolio-' . strtotime(now()))
-            ];
-        } else if (!empty($request->file('file_cert[]'))) {
-            $data = [
-                'SERTIFIKAT' => FileUpload::S3_PDF($request->file('file_cert[]'), 'Instructor_CERT', 'Certificates-' . strtotime(now()))
-            ];
-        } else if (!empty($request->file('file_recom'))) {
-            $data = [
-                'SURAT_RECOM' => FileUpload::S3_PDF($request->file('file_recom'), 'Instructor_RECOM', 'Recommendation-Letter-' . strtotime(now()))
-            ];
+            $data['CV'] = FileUpload::S3_PDF($request->file('file_cv'), 'Instructor_CV', 'Curriculum-Vitae-' . strtotime(now()));
+        } 
+        if (!empty($request->file('file_porto'))) {
+            $data['PORTOFOLIO'] = FileUpload::S3_PDF($request->file('file_porto'), 'Instructor_PORTOFOLIO', 'Portfolio-' . strtotime(now()));
+        } 
+        if (!empty($request->file('file_cert'))) { // Remove the [] from 'file_cert'
+            $data['SERTIFIKAT'] = FileUpload::S3_PDF($request->file('file_cert'), 'Instructor_CERT', 'Certificates-' . strtotime(now()));
+        } 
+        if (!empty($request->file('file_recom'))) {
+            $data['SURAT_RECOM'] = FileUpload::S3_PDF($request->file('file_recom'), 'Instructor_RECOM', 'Recommendation-Letter-' . strtotime(now()));
         }
         $user = DB::table('user_data')->where('ID_USER', $userId)->first();
-        if ($user) {
-            $updated = DB::table('user_data')->where('ID_USER', $userId)->update($data);
-        } else {
-            $updated = DB::table('user_data')->insert($data);
-        }
+        $updated = DB::table('user_data')->updateOrInsert(['ID_USER' => $userId], $data);
         // $updateStatus = User::updateTableById($data);
         return redirect('/profile/document');
     }

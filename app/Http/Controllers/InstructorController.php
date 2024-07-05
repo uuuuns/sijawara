@@ -40,21 +40,33 @@ class InstructorController extends Controller
             view('template_main.admin_side.etc.footer');
     }
 
+    public function apply_instructor(){
+        if (empty(Session::get('user'))) {
+            redirect('logout');
+        }
+        $data = [
+            'ID_USER' => Session::get('user')[0]['ID_USER'],
+            'STATUS' => 0
+        ];
+        DB::table('instructor_req')->insert($data);
+        return redirect('profile')->with(['succ_msg' => 'Successfully Apply Instructor Waiting for Admin to Confirm', 'location' => 'profile']);
+    }
+
     public function accept(Request $req)
     {
         $accept = [
-            'STATUS' => 2
+            'STATUS' => 1
         ];
 
         DB::table('instructor_req')->WHERE(['ID_USER' => $req->input('acc_id_instructor')])->update($accept);
-
+        DB::table('user')->WHERE(['ID_USER' => $req->input('acc_id_instructor')])->update(['ID_ROLE' => 2]);
         return redirect('instructor')->with(['succ_msg' => 'Successfully Update Data', 'location' => 'instructor']);
     }
 
     public function decline(Request $req)
     {
         $decline = [
-            'STATUS' => 3
+            'STATUS' => 2
         ];
 
         DB::table('instructor_req')->WHERE(['ID_USER' => $req->input('dec_id_instructor')])->update($decline);
