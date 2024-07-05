@@ -397,26 +397,38 @@
             <h3 class="text-center mb-2" style="font-weight:600">Apa Kata Mereka ?</h3>
             <h6 class="text-center" style="font-weight:300;color:#A2A2A2">Testimoni dari beberapa peserta Pelatihan,<br>
                 apakah kamu selanjutnya?</h6>
-            <div class="row">
-                <div class="col-6 col-lg-4 p-4">
-                    <div class="rounded shadow py-4 px-4" style="background-color: #D9D9D9;">
-                        <i>"Lorem ipsum dolor, sit amet consectetur adipisicing elit. Voluptate quaerat soluta eligendi magni cumque iusto."</i>
-                        <div class="mt-3 fw-bold">John Doe</div>
-                    </div>
-                </div>
-                <div class="col-6 col-lg-4 p-4">
-                    <div class="rounded shadow py-4 px-4" style="background-color: #D9D9D9;">
-                        <i>"Lorem ipsum dolor, sit amet consectetur adipisicing elit. Voluptate quaerat soluta eligendi magni cumque iusto."</i>
-                        <div class="mt-3 fw-bold">John Doe</div>
-                    </div>
-                </div>
-                <div class="col-6 col-lg-4 p-4">
-                    <div class="rounded shadow py-4 px-4" style="background-color: #D9D9D9;">
-                        <i>"Lorem ipsum dolor, sit amet consectetur adipisicing elit. Voluptate quaerat soluta eligendi magni cumque iusto."</i>
-                        <div class="mt-3 fw-bold">John Doe</div>
-                    </div>
+            <!-- Carousel Start -->
+            <div class="splide testimonial-carousel" style="margin-top:20px;">
+                <div class="splide__track">
+                    <ul class="splide__list">
+                        <li class="splide__slide">
+                            <div class="col-12 p-4">
+                                <div class="rounded shadow py-4 px-4" style="background-color: #D9D9D9;">
+                                    <i>"Lorem ipsum dolor, sit amet consectetur adipisicing elit. Voluptate quaerat soluta eligendi magni cumque iusto."</i>
+                                    <div class="mt-3 fw-bold">John Doe</div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="splide__slide">
+                            <div class="col-12 p-4">
+                                <div class="rounded shadow py-4 px-4" style="background-color: #D9D9D9;">
+                                    <i>"Lorem ipsum dolor, sit amet consectetur adipisicing elit. Voluptate quaerat soluta eligendi magni cumque iusto."</i>
+                                    <div class="mt-3 fw-bold">John Doe</div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="splide__slide">
+                            <div class="col-12 p-4">
+                                <div class="rounded shadow py-4 px-4" style="background-color: #D9D9D9;">
+                                    <i>"Lorem ipsum dolor, sit amet consectetur adipisicing elit. Voluptate quaerat soluta eligendi magni cumque iusto."</i>
+                                    <div class="mt-3 fw-bold">John Doe</div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
             </div>
+            <!-- Carousel End -->
         </div>
         <div class="row" style="margin-top: 8rem !important;margin-bottom: 8rem !important;">
             <h3 class="text-center" style="font-weight:600">Support By</h3>
@@ -438,3 +450,22 @@
         </div>
     </div>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var testimonialSplide = new Splide('.testimonial-carousel', {
+            type: 'loop',
+            perPage: 3,
+            perMove: 1,
+            autoplay: true,
+            interval: 5000,
+            breakpoints: {
+                991: {
+                    perPage: 2,
+                },
+                767: {
+                    perPage: 1,
+                }
+            }
+        }).mount();
+    });
+</script>
