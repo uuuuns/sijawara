@@ -82,7 +82,12 @@
                             <div class="course-thumbnail">
                                 <img src="<?= $course->IMAGE_ACTIVITY ?>" alt="" class="img-fluid w-100" />
                                 <div class="my-3 fw-bold d-flex align-self-end justify-content-end pe-0 align-items-center text-black">
-                                    Bagikan :<span class="fs-5"> <i class="fab fa-facebook mx-2" style="cursor: pointer"></i><i class="fab fa-twitter me-2" style="cursor: pointer"></i><i class="fab fa-instagram" style="cursor: pointer"></i></span>
+                                    Bagikan :
+                                    <span class="fs-5">
+                                        <a href="{{ url('auth/facebook') }}"><i class="fab fa-facebook mx-2" style="cursor: pointer"></i></a>
+                                        <a href="{{ url('auth/twitter') }}"><i class="fab fa-twitter me-2" style="cursor: pointer"></i></a>
+                                        <a href="{{ url('auth/instagram') }}"><i class="fab fa-instagram" style="cursor: pointer"></i></a>
+                                    </span>
                                 </div>
                             </div>
 

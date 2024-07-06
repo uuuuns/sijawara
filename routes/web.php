@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\guest_controller\ProfileGuest;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SocialController;
 
 /*
 |--------------------------------------------------------------------------
@@ -142,4 +143,14 @@ Route::middleware(['usersession:2,1'])->group(function () {
     Route::post('events/add', 'EventController@store');
     Route::post('events/update', 'EventController@update');
     Route::post('events/delete', 'EventController@delete');
+
+
+    
 });
+
+//Social Media Routes
+Route::get('auth/facebook', [SocialController::class, 'redirectToFacebook']);
+Route::get('auth/facebook/callback', [SocialController::class, 'handleFacebookCallback']);
+
+Route::get('auth/instagram', [SocialController::class, 'redirectToInstagram']);
+Route::get('auth/instagram/callback', [SocialController::class, 'handleInstagramCallback']);
