@@ -22,7 +22,7 @@
                     <div class="tab-content tutori-course-content" id="nav-tabContent">
                         <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
                             <div class="single-course-details">
-                                <h4 class="course-title">Description</h4>
+                                <h4 class="course-title">Deskripsi</h4>
                                 <p>
                                     <?= (!empty($course->DESKRIPSI_COURSE)) ? $course->DESKRIPSI_COURSE : "Tidak ada deskripsi" ?>
                                 </p>
@@ -82,7 +82,7 @@
                             <div class="course-thumbnail">
                                 <img src="<?= $course->IMAGE_ACTIVITY ?>" alt="" class="img-fluid w-100" />
                                 <div class="my-3 fw-bold d-flex align-self-end justify-content-end pe-0 align-items-center text-black">
-                                    Share :<span class="fs-5"> <i class="fab fa-facebook mx-2" style="cursor: pointer"></i><i class="fab fa-twitter me-2" style="cursor: pointer"></i><i class="fab fa-instagram" style="cursor: pointer"></i></span>
+                                    Bagikan :<span class="fs-5"> <i class="fab fa-facebook mx-2" style="cursor: pointer"></i><i class="fab fa-twitter me-2" style="cursor: pointer"></i><i class="fab fa-instagram" style="cursor: pointer"></i></span>
                                 </div>
                             </div>
 
@@ -114,10 +114,10 @@
                 <div class="col-12">
                     <nav class="course-single-tabs learn-press-nav-tabs">
                         <div class="nav nav-tabs course-nav" id="nav-tab" role="tablist">
-                            <a class="nav-item nav-link active" id="nav-course-tab" data-bs-toggle="tab" href="#nav-course" role="tab" aria-controls="nav-course-tab" aria-selected="true">Course</a>
-                            <a class="nav-item nav-link" id="nav-announcement-tab" data-bs-toggle="tab" href="#nav-announcement" role="tab" aria-controls="nav-announcement-tab" aria-selected="false">Announcement</a>
+                            <a class="nav-item nav-link active" id="nav-course-tab" data-bs-toggle="tab" href="#nav-course" role="tab" aria-controls="nav-course-tab" aria-selected="true">Kursus</a>
+                            <a class="nav-item nav-link" id="nav-announcement-tab" data-bs-toggle="tab" href="#nav-announcement" role="tab" aria-controls="nav-announcement-tab" aria-selected="false">Pengumuman</a>
                             <?php if ($tot_proggress == 100) { ?>
-                                <a class="nav-item nav-link" id="nav-sertif-tab" data-bs-toggle="tab" href="#nav-sertif" role="tab" aria-controls="nav-sertif-tab" aria-selected="false">Certificate</a>
+                                <a class="nav-item nav-link" id="nav-sertif-tab" data-bs-toggle="tab" href="#nav-sertif" role="tab" aria-controls="nav-sertif-tab" aria-selected="false">Sertifikat</a>
                             <?php } ?>
                         </div>
                     </nav>
@@ -136,7 +136,7 @@
                                             </button>
                                         <?php } else { ?>
                                             <button class="button <?= ($item->STATUS == 1) ? "btn-main-outline" : "btn-grey" ?> px-4 py-3 mb-3 rounded-3 shadow fw-semibold w-100" id="show-detail-<?= $item->ID_ITEM ?>" data-status="<?= $item->STATUS ?>" data-iditem="<?= $item->ID_ITEM ?>" data-type="<?= $item->TYPE ?>" onclick="ShowDetailItem(this)" <?= ($item->STATUS == 0) ? "disabled" : "" ?>>
-                                                Quiz <?= ++$quiz ?>
+                                                Kuis <?= ++$quiz ?>
                                             </button>
                                     <?php }
                                     } ?>
@@ -144,7 +144,7 @@
                                     $grade = !empty($nilai->NILAI) ? $nilai->NILAI : 0;
                                     if ($tot_proggress == 100) { ?>
                                         <button class="button btn-main-outline px-4 py-3 mb-3 rounded-3 shadow fw-semibold w-100 btn-code" onclick="ShowCertificateCode(this)" data-type="5">
-                                            Show Certificate Code
+                                            Tampilkan Kode Sertifikat
                                         </button>
                                     <?php } ?>
                                 </div>
@@ -154,7 +154,7 @@
                                             <img src="https://icons8.com/preloaders/preloaders/1476/Rocket.gif" alt="Loader.gif" />
                                         </div>
                                         <div class="d-flex justify-content-center pt-4">
-                                            Choose Materi
+                                            Pilih Materi
                                         </div>
                                     </div>
                                 </div>
@@ -175,17 +175,17 @@
                                         </div>
                                         <div class="shadow mx-5 mt-3 rounded-4 box-input d-flex align-items-center">
                                             <div class="mx-4 py-3 bg-white">
-                                                <label>Sertificate Code</label>
+                                                <label>Kode Sertifikat</label>
                                                 <form action="javascript:void(0)">
                                                     <input type="text" class="form-control mb-4" name="" id="input-code">
-                                                    <button type="button" class="btn btn-primary col-md-12 my-3" onclick="DownloadPdf(this)">Download PDF</button>
+                                                    <button type="button" class="btn btn-primary col-md-12 my-3" onclick="DownloadPdf(this)">Unduh PDF</button>
                                                 </form>
                                             </div>
                                         </div>
                                     </div>
                                 <?php } else { ?>
                                     <div class="mx-3 mx-lg-7 my-4 text-muted">
-                                        Please complete the entire course and achieve a score above 75 poin.
+                                        Silakan selesaikan seluruh kursus dan raih skor di atas 75 poin.
                                     </div>
                                 <?php } ?>
                             </div>
