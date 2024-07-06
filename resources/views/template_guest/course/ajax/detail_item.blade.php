@@ -7,7 +7,7 @@
                 <div class="d-flex align-items-center justify-content-center" style="width:600px; height:300px;">
                     <button class="btn bg-white px-3 py-2 rounded-3 shadow fw-semibold" onclick="ShowDocument(this)">
                         <i class="bi bi-file-text me-2" style="font-size: 1.1rem;-webkit-text-stroke: 0.2px;"></i>
-                        Show Document
+                        Tampilkan Dokumen
                     </button>
                 </div>
             </div>
@@ -20,16 +20,16 @@
         </section>
         <hr>
         <section id="video-course">
-            <h6 class="fw-semibold">Course video :</h6>
+            <h6 class="fw-semibold">Video Kursus :</h6>
             <?php
             $pattern = '/(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/';
             $url = $detail_item_course->LINK_YT;
             if (preg_match('/\/d\/(.*?)\//', $url, $matches)) { ?>
                 <button type="button" class="btn btn-main-2 w-100" data-toggle="modal" data-target="#YTModal" onclick=" window.open('<?= $detail_item_course->LINK_YT ?>')">
-                    Open Video </button>
+                    Buka Video </button>
             <?php } else if (preg_match($pattern, $url, $matches)) { ?>
                 <button type="button" class="btn btn-main-2 w-100" data-toggle="modal" data-target="#YTModal" onclick=" window.open('<?= $detail_item_course->LINK_YT ?>')">
-                    Open Video
+                    Buka Video
                 </button>
             <?php } else {
                 echo '<h6>Video cannot be opened. Contact instructor for more information.</h6>';
@@ -68,7 +68,7 @@
         </section>
         <hr>
         <section id="desc-course">
-            <h6 class="fw-semibold">Course Description :</h6>
+            <h6 class="fw-semibold">Deskripsi Kursus :</h6>
             <p class="text-muted">
                 <?= $detail_item_course->DESKRIPSI ?>
             </p>
@@ -78,7 +78,7 @@
     <?php if ($type == 1 && !empty($data_all_mapping) && $last_item[0]->ID_ITEM == $id_item) { ?>
         <div class="mx-4 my-4">
             <button class="btn btn-main-2 mt-4 px-4 py-2 mb-3 rounded-3 shadow fw-semibold w-100" data-iditem="<?= $id_item ?>" data-status="2" data-type="1" onclick="NextItem(this)">
-                Continue
+                Lanjutkan
             </button>
         </div>
     <?php } ?>
@@ -129,7 +129,7 @@
             </div>
             <?php if (!empty($data_all_mapping) && $last_item[0]->ID_ITEM == $id_item) { ?>
                 <button class="btn btn-main-2 mt-4 px-4 py-2 mb-3 rounded-3 shadow fw-semibold w-100" data-iditem="<?= $id_item ?>" data-status="2" data-type="2" onclick="NextItem(this)">
-                    Continue
+                    Lanjutkan
                 </button>
             <?php } ?>
         <?php } else { ?>
@@ -162,7 +162,7 @@
                             </h5>
                         </div>
                         <div class="modal-footer row mx-2 border-0" id="footer_modal_<?= $item->ID_ITEM ?>">
-                            <button type="button" class="btn btn-danger rounded fw-semibold  col" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-danger rounded fw-semibold  col" data-bs-dismiss="modal">Tutup</button>
                             <button type="button" class="btn btn-main-2 rounded fw-semibold col" onclick="submitKuis<?= $item->ID_ITEM ?>(this)">Submit</button>
                         </div>
                     </div>
@@ -198,7 +198,7 @@
             </div>
         <?php } else if ($quiz_grade->NILAI < 75) { ?>
             <button class="btn btn-main-2 px-4 py-2 mb-3 rounded-3 shadow fw-semibold w-100" data-iditem="<?= $id_item ?>" data-status="0" data-type="3" onclick="ShowDetailItem(this)">
-                Try The Quiz Again
+                Ulangi Kuisnya Lagi
             </button>
         <?php } ?>
     </div>
