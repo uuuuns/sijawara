@@ -260,7 +260,7 @@
 
     function apply_instructor() {
         Swal.fire({
-            title: '<strong class="h4">Are you sure you want to apply as an intructor ?</strong>',
+            title: '<strong class="h4">Apakah kamu yakin akan melamar sebagai instruktur ?</strong>',
             showDenyButton: true,
             showCancelButton: false,
             allowOutsideClick: false,
