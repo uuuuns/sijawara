@@ -141,47 +141,39 @@
                         </div>
                         <div class="bg-white shadow rounded-2 overflow-hidden p-3 mt-3" style="height:max-content">
                             <div class="d-flex flex-column align-items-center align-items-sm-start">
-                                <?php $array = (array) $document ?>
+                            <?php 
+                                    $array = (array) $document;
+                                    $status = $document->STATUS === 0 ? false : (!empty($document->STATUS) ? false : true);
+                                ?>
                                 <?php $totDoc = (!empty($document)) ? count(array_filter($array)) : 0; ?>
-                                <?php if (session('user')[0]['ID_ROLE'] == 3 && ($document->STATUS == null || $document == null)) { ?>
+                                <?php if (session('user')[0]['ID_ROLE'] == 3 && $status) { ?>
                                     <?php if ($totDoc === 11) { ?>
                                         <div class="col-md-12">
-                                            <button type="button" onclick="apply_instructor()" class="btn btn-main-2 btn-primary rounded rounded-4 fw-semibold w-100 btn-instructor">Lamar sebagai
-                                                Instruktur</button>
+                                            <button type="button" onclick="apply_instructor()" class="btn btn-primary rounded-4 fw-semibold w-100 btn-instructor">Apply as an Instructor</button>
                                         </div>
-                                    <?php    } else { ?>
+                                    <?php } else { ?>
                                         <div class="row">
-                                            <button type="button" class="btn btn-muted rounded-4 fw-semibold w-100 mb-3" disabled>Lamar sebagai instruktur</button>
-                                            <span class="text-danger" style="text-align: justify;">* Lengkapi data akademik dan
-                                                dokumen pendukung untuk melamar sebagai instruktur di "The Brain & Heart
-                                                Academy".</span>
+                                            <button type="button" class="btn btn-muted rounded-4 fw-semibold w-100 mb-3" disabled>Apply as an Instructor</button>
+                                            <span class="text-danger" style="text-align: justify;">* Complete academic data and supporting documents to apply as an instructor at "The Brain & Heart Academy".</span>
                                         </div>
-                                    <?php    } ?>
+                                    <?php } ?>
                                 <?php } else { ?>
-                                    <?php if($document != null){ ?>
-                                        <?php if ($document->STATUS == 1) { ?>
-                                            <div class="row">
-                                                <button type="button" class="btn btn-muted rounded-4 fw-semibold w-100 mb-3" disabled>Lamar sebagai instruktur</button>
-                                                <span class="text-success" style="text-align: justify;">Anda sekarang adalah bagian dari tim
-                                                    instruktur kami. Terima kasih atas partisipasinya. Pastikan Anda login kembali untuk
-                                                    mengakses menu instruktur.</span>
-                                            </div>
-                                        <?php    } else if ($document->STATUS == 2) { ?>
-                                            <div class="row">
-                                                <button type="button" onclick="apply_instructor()"  class="btn btn-main-2 btn-primary rounded rounded-4 fw-semibold w-100 mb-3 btn-instructor">Lamar
-                                                    sebagai instruktur</button>
-                                                <span class="text-danger" style="text-align: justify;">Kami mohon maaf telah menolak
-                                                    lamaran anda karena ada perbedaan antara 
-                                                    dokumen yang anda kirim dan standart dokumen kami. Harap perbaiki data anda
-                                                    lagi dan klik tombol diatas untuk mengirimkan lagi..</span>
-                                            </div>
-                                        <?php        } else if ($document->STATUS == 0) { ?>
-                                            <div class="row">
-                                                <button type="button" class="btn btn-muted rounded-4 fw-semibold w-100 mb-3" disabled>Lamar sebagai instruktur</button>
-                                                <span style="color: #edab00; text-align: justify;">Harap bersabar karena kami masih
-                                                mengevaluasi data dan dokumen pribadi Anda.</span>
-                                            </div>
-                                        <?php } ?>
+                                    <?php if ($document->STATUS == 1) { ?>
+                                        <div class="row">
+                                            <button type="button" class="btn btn-muted rounded-4 fw-semibold w-100 mb-3" disabled>Apply as an Instructor</button>
+                                            <span class="text-success" style="text-align: justify;">You are now part of our instructor team. Thank you for your participation. Make sure you login again to access the instructor menu.</span>
+                                        </div>
+                                    <?php } else if ($document->STATUS == 2) { ?>
+                                        <div class="row">
+                                            <button type="button" onclick="apply_instructor()" class="btn btn-primary rounded-4 fw-semibold w-100 mb-3 btn-instructor">Apply as an Instructor</button>
+                                            <span class="text-danger" style="text-align: justify;">We are sorry to reject your application because there is a discrepancy between the standard
+                                                documents you submitted and our standard documents. Please correct your data again and click the button above to submit again..</span>
+                                        </div>
+                                    <?php } else if($document->STATUS == 0) { ?>
+                                        <div class="row">
+                                            <button type="button" class="btn btn-muted rounded-4 fw-semibold w-100 mb-3" disabled>Apply as an Instructor</button>
+                                            <span style="color: #edab00; text-align: justify;">Please be patient as we are still evaluating your personal data and documents.</span>
+                                        </div>
                                     <?php } ?>
                                 <?php } ?>
                             </div>
@@ -268,7 +260,7 @@
             denyButtonText: `No`,
         }).then((result) => {
             if (result.isConfirmed) {
-                window.location.href = 'apply_instructor';
+                window.location.href = '<?= url('apply_instructor') ?>';
             }
         })
     }
