@@ -143,7 +143,7 @@
                             <div class="d-flex flex-column align-items-center align-items-sm-start">
                                 <?php $array = (array) $document ?>
                                 <?php $totDoc = (!empty($document)) ? count(array_filter($array)) : 0; ?>
-                                <?php if (session('user')[0]['ID_ROLE'] == 3) { ?>
+                                <?php if (session('user')[0]['ID_ROLE'] == 3 && ($document->STATUS == null || $document == null)) { ?>
                                     <?php if ($totDoc === 11) { ?>
                                         <div class="col-md-12">
                                             <button type="button" class="btn btn-main-2 btn-primary rounded rounded-4 fw-semibold w-100 btn-instructor">Lamar sebagai
