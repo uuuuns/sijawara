@@ -19,10 +19,7 @@
                 <label class="col-sm-2 col-form-label control-label">File Materi</label>
                 <div class="col-md-5">
                     <div class="custom-file">
-                        <input type="file" name="materi_file[]"
-                            accept="application/pdf, application/vnd.ms-powerpoint, application/vnd.openxmlformats-officedocument.presentationml.presentation"
-                            data-allowed-file-extensions="pdf, ppt, pptx" class="custom-file-input file_materi"
-                            required>
+                        <input type="file" name="materi_file[]" accept=".pdf, .ppt, .pptx" class="custom-file-input file_materi" required>
                     </div>
                 </div>
             </div>
@@ -52,8 +49,27 @@
 </div>
 
 <script>
-    // var textarea = document.getElementById('mytextarea_{{ $no }}');
-    // CKEDITOR.replace(textarea);
+    $(document).ready(function() {
+        $('.custom-file-input').on('change', function() {
+            var fileName = $(this).val().split('\\').pop();
+            $(this).next('.custom-file-label').addClass("selected").html(fileName);
+        });
+
+        $('#form-submit').on('submit', function(e) {
+            var fileInput = $('.file_materi')[0];
+            var files = fileInput.files;
+            var allowedExtensions = /(\.pdf|\.ppt|\.pptx)$/i;
+
+            for (var i = 0; i < files.length; i++) {
+                if (!allowedExtensions.exec(files[i].name)) {
+                    alert('Invalid file type. Only PDF, PPT, and PPTX files are allowed.');
+                    fileInput.value = '';
+                    e.preventDefault();
+                    return;
+                }
+            }
+        });
+    });
 
     $(document).ready(function() {
         var $editor = $('#mytextarea_{{ $no }}');
