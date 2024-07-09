@@ -365,6 +365,26 @@ class CourseGuest extends Controller
 	{
 		$condition = (!empty($_POST['category'])) ? "WHERE activity.TYPE_ACTIVITY = 1 AND activity.IS_PUBLIC = 1 AND course.KATEGORI = '" . $_POST['category'] . "'" : "WHERE activity.TYPE_ACTIVITY = 1 AND activity.IS_PUBLIC = 1";
 		$id_user = (session('user') == null) ? null : Session::get('user')[0]->get('ID_USER');
+		//999 is id tab invited
+		if ($_POST['category'] == 999) {
+			$data_id = DB::select("
+				SELECT
+					ID_ACTIVITY
+				FROM
+					tb_invited
+				WHERE
+					ID_USER = '" . $id_user . "'
+			");
+
+			$data_ids = array_map(function($item) {
+				return $item->ID_ACTIVITY;
+			}, $data_id);
+			$placeholders = "'". implode("','", $data_ids) . "'";
+			$condition = "WHERE activity.TYPE_ACTIVITY = 1 AND activity.ID_ACTIVITY IN (".$placeholders.")";
+		}
+
+		$id_user = (session('user') == null) ? null : Session::get('user')[0]->get('ID_USER');
+
 		if ($id_user != null) {
 			$data['course'] = DB::select('
 				SELECT 

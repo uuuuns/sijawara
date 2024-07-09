@@ -51,7 +51,7 @@
             <?php foreach ($kategori as $item_kategori) : ?>
                 <li><a href="#" data-value="<?= $item_kategori->ID_KATEGORI ?>" id="nav-<?= $item_kategori->ID_KATEGORI ?>" onclick="ChangeNav(this, event)"><?= $item_kategori->KATEGORI ?></a></li>
             <?php endforeach;
-            if ($is_invited != null) { ?>
+            if ($is_invited != null && !empty(session('user'))) { ?>
                 <li><a href="#" data-value="999" id="nav-invited" onclick="ChangeNav(this, event)">Invited</a></li>
             <?php } ?>
             </ul>
