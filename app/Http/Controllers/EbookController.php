@@ -62,9 +62,6 @@ class EbookController extends Controller
             'TAHUN'         => $req->input('up_tahun'),
             'PRICE'         => $req->input('up_harga'),
             'LOG_TIME'      => date('Y-m-d H:i:s')
-            // 'IMAGE_EBOOK'   => FileUpload::S3($req->file('image_ebook'), 'IMAGE_EBOOK', 'Image-Ebook-' . strtotime(now())),
-            // 'LINK_EBOOK'    => FileUpload::S3($req->file('frame_ebook'), 'EBOOK', 'Ebook-' . strtotime(now()))
-
         ];
 
         if (!empty($req->file('up_image_ebook'))) {

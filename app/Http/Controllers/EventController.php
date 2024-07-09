@@ -107,30 +107,32 @@ class EventController extends Controller
     public function update(Request $req)
     {
         $activity = [
-            'TITLE_ACTIVITY' => $req->input('title_activity'),
+            'TITLE_ACTIVITY' => $req->input('up_title_activity'),
             'ID_USER' => session('user')[0]['ID_USER'],
-            'PRICE_ACTIVITY' => (int)str_replace(".", "", $req->input('price_activity')),
-            'SERTIF_CODE' => $req->input('sertif_code'),
-            'IMAGE_ACTIVITY' => FileUpload::S3($req->file('image_activity'),'IMAGE_ACTIVITY','Image-Activity-' . strtotime(now())),
-            'TYPE_ACTIVITY' => 2,
-            'DATE_START' => $req->input('date_start'),
+            'PRICE_ACTIVITY' => (int)str_replace(".", "", $req->input('up_price_activity')),
+            'SERTIF_CODE' => $req->input('up_sertif_code'),
+            'DATE_START' => $req->input('up_date_start'),
             'LOG_TIME' => date('Y-m-d H:i:s')
         ];
 
+        if(!empty($req->file('up_image_activity'))) {
+            $activity['IMAGE_ACTIVITY'] = FileUpload::S3($req->file('up_image_activity'),'IMAGE_ACTIVITY','Image-Activity-' . strtotime(now()));
+        }
+
         $event = [
-            'CATEGORY_EVENT'    => $req->input('category'),
-            'LOCATION'          => $req->input('location'),
-            'ORGANIZER'         => $req->input('penyelenggara'),
-            'CONTACT_CUSTOMER'  => $req->input('contact'),
+            'CATEGORY_EVENT'    => $req->input('up_category'),
+            'LOCATION'          => $req->input('up_location'),
+            'ORGANIZER'         => $req->input('up_penyelenggara'),
+            'CONTACT_CUSTOMER'  => $req->input('up_contact'),
             'DESKRIPSI_EVENT'   => $req->input('up_desc_event')
         ];
 
-        if (!empty($req->input('link_zoom'))) {
-            $event['LINK_ZOOM'] = $req->input('link_zoom');
+        if (!empty($req->input('up_link_zoom'))) {
+            $event['LINK_ZOOM'] = $req->input('up_link_zoom');
         }
 
-        DB::table('activity')->WHERE(['ID_ACTIVITY' => $req->input('id_activity')])->update($activity);
-        DB::table('event')->WHERE(['ID_ACTIVITY' => $req->input('id_activity')])->update($event);
+        DB::table('activity')->WHERE(['ID_ACTIVITY' => $req->input('up_id_activity')])->update($activity);
+        DB::table('event')->WHERE(['ID_ACTIVITY' => $req->input('up_id_activity')])->update($event);
 
         return redirect('events')->with(['succ_msg' => 'Successfully Update Events', 'location' => 'events']);
     }

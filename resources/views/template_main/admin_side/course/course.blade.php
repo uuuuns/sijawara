@@ -72,7 +72,6 @@
                                 <td><?= date_format(date_create($item->DATE_END), 'j F Y H:i:s') ?></td>
                                 <td>
                                     <form action="courses/invite" method="GET">
-                                        {{-- @csrf --}}
                                         <input type="hidden" name="id_activity" value="<?= $item->ID_ACTIVITY ?>">
                                         <button type="submit" class="btn btn-primary waves-effect waves-light" style="min-width: 155px !important;">
                                             <i class="bx bx-send font-size-16 align-middle"></i> Undang User
@@ -81,14 +80,14 @@
                                     <form action="courses/edit" method="POST">
                                         @csrf
                                         <input type="hidden" name="id_activity" value="<?= $item->ID_ACTIVITY ?>">
-                                        <button type="submit" class="btn btn-secondary waves-effect waves-light" style="min-width: 155px !important;">
-                                            <i class="bx bx-edit-alt font-size-16 align-middle"></i> Edit
+                                        <button type="submit" class="btn btn-secondary waves-effect waves-light" style="min-width: 155px !important; margin: 5px 0px;">
+                                            <i class="bx bx-edit-alt font-size-16 align-middle"></i> Edit Kursus
                                         </button>
                                     </form>
                                     <button type="button"
                                         onclick="opendeleteModal(`<?= htmlentities(json_encode($item)) ?>`)"
                                         class="btn btn-danger waves-effect waves-light" style="min-width: 155px !important;">
-                                        <i class="bx bx-trash font-size-16 align-middle"></i> Hapus
+                                        <i class="bx bx-trash font-size-16 align-middle"></i> Hapus Kursus
                                     </button>
                                 </td>
                             </tr>
