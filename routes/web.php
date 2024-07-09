@@ -131,6 +131,9 @@ Route::middleware(['usersession:2,1'])->group(function () {
     Route::post('courses/edit', 'CourseController@update_course');
     Route::post('courses/update', 'CourseController@update');
     Route::post('courses/delete', 'CourseController@delete');
+    Route::get('courses/invite', 'CourseController@invite');
+    Route::post('courses/invite_individu', 'CourseController@invite_individu');
+    Route::post('courses/invite_batch', 'CourseController@invite_batch');
     Route::get('courses/add_materi/{id}', 'CourseController@add_materi');
     Route::get('courses/delete_materi/{id}', 'CourseController@delete_materi');
     Route::get('courses/add_quiz/{id}/{no_quiz}', 'CourseController@add_quiz')->name('add_quiz');

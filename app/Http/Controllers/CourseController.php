@@ -248,14 +248,14 @@ class CourseController extends Controller
             FROM
                 course
             WHERE
-                ID_ACTIVITY = '". $req->id_activity ."'
+                ID_ACTIVITY = '" . $req->id_activity . "'
         ");
 
         DB::table('detail_quiz')->WHERE(['ID_COURSE' => $find_id_course->ID_COURSE])->delete();
         DB::table('item_course')->WHERE(['ID_COURSE' => $find_id_course->ID_COURSE])->delete();
         DB::table('course')->WHERE(['ID_COURSE' => $find_id_course->ID_COURSE])->delete();
         DB::table('activity')->WHERE(['ID_ACTIVITY' => $find_id_course->ID_ACTIVITY])->delete();
-        
+
         return redirect('courses')->with(['succ_msg' => 'Successfully Delete Course', 'location' => 'courses']);
     }
 
@@ -265,10 +265,10 @@ class CourseController extends Controller
         $categoryList       = $req->input('type');
         $materiTitleList    = $req->input('materi_title');
         $descMateriList     = $req->input('desc_materi');
-        $file               = $req->file('materi_file');
+        $file               = $req->input('materi_file');
         $linkYT             = $req->input('materi_link');
         $idQuiz          = [];
-        // dd($req);
+
         if (!empty($orderList)) {
             for ($i = 0; $i < count($orderList); $i++) {
                 if ($categoryList[$i] == 1) {
@@ -295,7 +295,7 @@ class CourseController extends Controller
                 $idQuiz[] = DB::table('item_course')->insertGetId($data_item);
             }
         }
-        
+
 
         if (!empty($req->input('question'))) {
             $data['data_item'] = $data_item;
@@ -309,16 +309,13 @@ class CourseController extends Controller
         $jawaban_b              = $req->input('jawaban_b');
         $jawaban_c              = $req->input('jawaban_c');
         $order_list_quiz        = $req->input('order_list_question');
-        $question              = $req->input('question');
+        $question               = $req->input('question');
         $kunci_soal             = $req->input('kunci_soal');
 
-        // $soalformedArray        = $this->transformArray($questions);
-        // $kunciformedArray       = $this->transformArray($kunci_soal);
-        
         $tmpNo = 0;
-        foreach($question AS $i => $questions) {
+        foreach ($question as $i => $questions) {
             $id_quiz = $lastIdQuiz[$tmpNo];
-            for ($j = 0; $j < count($questions); $j++){
+            for ($j = 0; $j < count($questions); $j++) {
                 $quiz = [
                     'ID_QUIZ'       => $id_quiz,
                     'ID_COURSE'     => $data['ID_COURSE'],
@@ -333,27 +330,116 @@ class CourseController extends Controller
         }
     }
 
-    function transformArray($array)
+    public function invite(Request $req)
     {
-        $result = [];
-        foreach ($array as $key => $value) {
-            if (is_array($value)) {
-                $flattened = [];
-                foreach ($value as $subValue) {
-                    if (is_array($subValue)) {
-                        foreach ($subValue as $item) {
-                            $flattened[] = $item;
-                        }
-                    } else {
-                        $flattened[] = $subValue;
-                    }
-                }
-                $result[] = $flattened;
+        $data['title']  = "Undang User";
+
+        $data['users']   = DB::select("
+            SELECT
+                u.*,
+                (SELECT
+                    COUNT(*)
+                FROM
+                    tb_invited i
+                WHERE
+                    i.ID_USER = u.ID_USER
+                AND
+                    i.ID_ACTIVITY = '" . $req->input('id_activity') . "') AS is_invited
+            FROM
+                user u
+            WHERE
+                u.IS_DELETE = 0
+            AND
+                ID_ROLE <> 1
+        ");
+
+        $data['activity'] = DB::Select("
+            SELECT
+                a.*
+            FROM
+                activity a
+            WHERE
+                a.ID_ACTIVITY = '" . $req->input('id_activity') . "'
+        ")[0];
+
+        return
+            view('template_main.admin_side.etc.header', $data) .
+            view('template_main.admin_side.etc.sidebar', $data) .
+            view('template_main.admin_side.course.invite_user', $data) .
+            view('template_main.admin_side.etc.footer');
+    }
+
+    public function invite_individu(Request $req)
+    {
+        $id_user = $req->input('id_user');
+        $id_activity = $req->input('id_activity');
+
+        $cek_data = DB::SelectOne("
+            SELECT
+                *
+            FROM
+                tb_invited
+            WHERE
+                ID_USER = '" . $id_user . "'
+            AND
+                ID_ACTIVITY = '" . $id_activity . "'
+        ");
+
+        if (!empty($cek_data)) {
+            return redirect('courses/invite?id_activity=' . $id_activity)->with(['err_msg' => 'User Already Invited', 'location' => 'courses/invite?id_activity=' . $id_activity]);
+        } else {
+            $invited = [
+                'ID_USER'       => $id_user,
+                'ID_ACTIVITY'   => $id_activity
+            ];
+            DB::table('tb_invited')->insert($invited);
+            return redirect('courses/invite?id_activity=' . $id_activity)->with(['succ_msg' => 'Successfully Invite User', 'courses/invite?id_activity=' . $id_activity]);
+        }
+    }
+
+    public function invite_batch(Request $req)
+    {
+        $id_users = $req->input('id_user');
+        $id_activity = $req->input('id_act');
+
+        // Memastikan $id_logins adalah array
+        if (!is_array($id_users)) {
+            // Jika $id_logins bukan array, kita coba untuk mengonversinya
+            if (is_string($id_users)) {
+                // Jika $id_logins adalah string, kita pecah string tersebut menjadi array
+                $id_users = explode(',', $id_users);
             } else {
-                $result[] = $value;
+                $id_users = [];
             }
         }
-        return $result;
+
+        if (empty($id_users)) {
+            return redirect('courses/invite?id_activity=' . $id_activity)->with(['err_msg' => 'Choose at least one user', 'location' => 'courses/invite?id_activity=' . $id_activity]);
+        }   
+
+        foreach ($id_users as $id_user) {         
+            $cek_data = DB::SelectOne("
+                SELECT
+                    *
+                FROM
+                    tb_invited
+                WHERE
+                    ID_USER = '" . $id_user . "'
+                AND
+                    ID_ACTIVITY = '" . $id_activity . "'
+            ");
+
+            if (!empty($cek_data)) {
+                return redirect('courses/invite?id_activity=' . $id_activity)->with(['err_msg' => 'Choose at least one user', 'location' => 'courses/invite?id_activity=' . $id_activity]);
+            } else {
+                $invited = [
+                    'ID_USER'       => $id_user,
+                    'ID_ACTIVITY'   => $id_activity
+                ];
+                DB::table('tb_invited')->insert($invited);
+            } 
+        }
+        return redirect('courses/invite?id_activity=' . $id_activity)->with(['succ_msg' => 'Successfully Invite User', 'courses/invite?id_activity=' . $id_activity]);
     }
 
     public function GenerateUniqID($prefix, $var)

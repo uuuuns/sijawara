@@ -10,16 +10,26 @@
             </nav>
         </div>
     </div>
-    {{-- <?php if (!empty(session('user') ? session::flash('msg') : '')) { ?>
-    <div class="alert alert-success">
-        <div class="d-flex align-items-center justify-content-start">
-            <span class="alert-icon">
-                <i class="anticon anticon-check-o"></i>
-            </span>
-            <span><?= session('user') ? session::flash('msg') : '' ?></span>
+    <?php if (!empty(session('err_msg'))) { ?>
+        <div class="alert alert-danger">
+            <div class="d-flex align-items-center justify-content-start">
+                <span class="alert-icon">
+                    <i class="anticon anticon-check-o"></i>
+                </span>
+                <span><?= session('err_msg') ?></span>
+            </div>
         </div>
-    </div>
-    <?php } ?> --}}
+        <?php } ?>
+        <?php if (!empty(session('succ_msg'))) { ?>
+        <div class="alert alert-success">
+            <div class="d-flex align-items-center justify-content-start">
+                <span class="alert-icon">
+                    <i class="anticon anticon-check-o"></i>
+                </span>
+                <span><?= session('succ_msg') ?></span>
+            </div>
+        </div>
+        <?php } ?>
     <div class="card">
         <div class="card-body">
             <div class="row">
@@ -39,9 +49,9 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th width="30%">Nama Kursus</th>
+                            <th>Nama Kursus</th>
                             <th>Status</th>
-                            <th>Harga Kursus</th>
+                            <th width="15%">Harga Kursus</th>
                             <th>Tanggal Mulai</th>
                             <th>Tanggal Berakhir</th>
                             <th>Aksi</th>
@@ -61,17 +71,24 @@
                                 <td><?= date_format(date_create($item->DATE_START), 'j F Y H:i:s') ?></td>
                                 <td><?= date_format(date_create($item->DATE_END), 'j F Y H:i:s') ?></td>
                                 <td>
+                                    <form action="courses/invite" method="GET">
+                                        {{-- @csrf --}}
+                                        <input type="hidden" name="id_activity" value="<?= $item->ID_ACTIVITY ?>">
+                                        <button type="submit" class="btn btn-primary waves-effect waves-light" style="min-width: 155px !important;">
+                                            <i class="bx bx-send font-size-16 align-middle"></i> Undang User
+                                        </button>
+                                    </form>
                                     <form action="courses/edit" method="POST">
                                         @csrf
                                         <input type="hidden" name="id_activity" value="<?= $item->ID_ACTIVITY ?>">
-                                        <button type="submit" class="btn btn-subtle-primary waves-effect waves-light">
-                                            <i class="bx bx-edit-alt font-size-16 align-middle"></i>
+                                        <button type="submit" class="btn btn-secondary waves-effect waves-light" style="min-width: 155px !important;">
+                                            <i class="bx bx-edit-alt font-size-16 align-middle"></i> Edit
                                         </button>
                                     </form>
                                     <button type="button"
                                         onclick="opendeleteModal(`<?= htmlentities(json_encode($item)) ?>`)"
-                                        class="btn btn-subtle-danger waves-effect waves-light">
-                                        <i class="bx bx-trash font-size-16 align-middle"></i>
+                                        class="btn btn-danger waves-effect waves-light" style="min-width: 155px !important;">
+                                        <i class="bx bx-trash font-size-16 align-middle"></i> Hapus
                                     </button>
                                 </td>
                             </tr>
@@ -87,7 +104,7 @@
 {{-- Start Modal Delete blom --}}
 <div class="modal fade" id="deleteModal" style="z-index: 1060;" id="exampleModalCenter" data-backdrop="static"
     data-keyboard="false">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Detail Materi</h5>
