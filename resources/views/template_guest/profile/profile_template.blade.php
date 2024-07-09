@@ -141,9 +141,12 @@
                         </div>
                         <div class="bg-white shadow rounded-2 overflow-hidden p-3 mt-3" style="height:max-content">
                             <div class="d-flex flex-column align-items-center align-items-sm-start">
-                            <?php 
+                                <?php 
                                     $array = (array) $document;
-                                    $status = $document->STATUS === 0 ? false : (!empty($document->STATUS) ? false : true);
+                                    $status = true;
+                                    if (!empty($document)) {
+                                        $status = $document->STATUS === 0 ? false : (!empty($document->STATUS) ? false : true);
+                                    }
                                 ?>
                                 <?php $totDoc = (!empty($document)) ? count(array_filter($array)) : 0; ?>
                                 <?php if (session('user')[0]['ID_ROLE'] == 3 && $status) { ?>
