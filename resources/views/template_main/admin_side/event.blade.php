@@ -188,14 +188,14 @@
                 @csrf
                 <div class="modal-body">
                     <div class="hidden">
-                        <input placeholder="Title" type="hidden" name="id_activity" class="form-control" readonly>
+                        <input type="hidden" name="up_id_activity" class="form-control" readonly>
                     </div>
                     <div class="form-group">
                         <label>Kover <span class="text-danger">*</span></label>
                         <div class="custom-file">
                             <input type="file" name="up_image_activity" accept=".jpg, .png"
                                 data-max-file-size="1M" data-allowed-file-extensions="jpg png"
-                                class="custom-file-input dropify" required>
+                                class="custom-file-input dropify">
                         </div>
                     </div>
                     <div class="form-group mb-3">
@@ -385,17 +385,16 @@
         var data = JSON.parse(viewData)
         var price = data.PRICE_ACTIVITY
         var cat = data.CATEGORY_EVENT
+        var img_sc = data.IMAGE_ACTIVITY;
 
-        function initializeDropify(inputName, fileUrl) {
-            var dropifyElement = $('input[name="' + inputName + '"]').dropify();
-            var instance = dropifyElement.data('dropify');
-            instance.resetPreview();
-            instance.clearElement();
-            instance.settings['defaultFile'] = fileUrl;
-            instance.destroy();
-            instance.init();
-        }
-        initializeDropify('up_image_activity', data.IMAGE_ACTIVITY);
+        // Load Image
+        var cover_book = $('input[name="up_image_activity"]').dropify();
+        cover_book = cover_book.data('dropify');
+        cover_book.resetPreview();
+        cover_book.clearElement();
+        cover_book.settings['defaultFile'] = img_sc;
+        cover_book.destroy();
+        cover_book.init();
 
         $('input[name="up_id_activity"]').val(data.ID_ACTIVITY)
         $('input[name="up_title_activity"]').val(data.TITLE_ACTIVITY)

@@ -111,8 +111,11 @@
                                             @endif
                                         </td>
                                         <td>
-                                            <input class="dt-checkbox" type="checkbox"
-                                                value="<?= $item->ID_USER ?>" name="id_user[]" id="check-all">
+                                            @if ($item->is_invited)
+                                            @else
+                                                <input class="dt-checkbox" type="checkbox" value="<?= $item->ID_USER ?>"
+                                                    name="id_user[]" id="check-all">
+                                            @endif
                                         </td>
                                     </tr>
                                 @endforeach
