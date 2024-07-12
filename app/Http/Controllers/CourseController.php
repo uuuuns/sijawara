@@ -319,7 +319,7 @@ class CourseController extends Controller
                     'ID_QUIZ'       => $id_quiz,
                     'ID_COURSE'     => $data['ID_COURSE'],
                     'SOAL'          => $questions[$j],
-                    'PIL_JWB'       => implode(',', [$jawaban_a[$tmpNo], $jawaban_b[$tmpNo], $jawaban_c[$tmpNo]]),
+                    'PIL_JWB'       => implode(';', [$jawaban_a[$tmpNo], $jawaban_b[$tmpNo], $jawaban_c[$tmpNo]]),
                     'KUNCI'         => $kunci_soal[$i][$j],
                     'ORDER_LIST'    => $order_list_quiz[$tmpNo]
                 ];

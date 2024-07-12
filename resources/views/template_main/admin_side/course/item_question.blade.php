@@ -1,6 +1,6 @@
 <div class="form-soal-{{ $no }}{{ $index }}">
     <div class="form-group row">
-        <label class="col-sm-2 col-form-label control-label" id="label_soal">Pertanyaan {{$index}}</label>
+        <label class="col-sm-2 col-form-label control-label" id="label_soal">Pertanyaan</label>
         <input type="hidden" class="form-control" name="order_list_question[]" value="{{ $no }}">
         <input type="hidden" class="form-control" name="no_quiz[]" value="{{ $no_quiz }}">
         <div class="col-md-10">
