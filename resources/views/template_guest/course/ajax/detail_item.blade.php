@@ -13,8 +13,16 @@
             </div>
             <script>
                 function ShowDocument(e) {
-                    $(e).hide()
-                    $('#document-frame').html(`<iframe src="<?= $detail_item_course->FILE ?>#toolbar=0&navpanes=0" style="width:600px; height:500px;" frameborder="0"></iframe>`)
+                    $(e).hide();
+                    const file = '<?= $detail_item_course->FILE ?>';
+
+                    if (!file) {
+                        $('#document-frame').html('<p>Dokumen Tidak ditemukan hubungi Instruktur</p>');
+                    } else {
+                        $('#document-frame').html(
+                            `<iframe src="${file}#toolbar=0&navpanes=0" style="width:600px; height:500px;" frameborder="0"></iframe>`
+                        );
+                    }
                 }
             </script>
         </section>
@@ -87,8 +95,7 @@
         <?php if ($quiz_grade == NULL) {
             $no_soal = 0;
             foreach ($detail_item_course as $item) {
-                $soal = explode(",", $item->PIL_JWB);
-        ?>
+                $soal = explode(";", $item->PIL_JWB);?>
                 <h6 class="fw-semibold mt-5">Kuis :</h6>
                 <div class="d-flex bg-white my-3 p-4 rounded-3 shadow fw-semibold">
                     <?= $item->SOAL ?>

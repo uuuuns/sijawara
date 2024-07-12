@@ -42,8 +42,10 @@
                             <th>No</th>
                             <th style="width: 500px;">Nama Event</th>
                             <th>Status</th>
+                            <th>Kuota Peserta</th>
                             <th>Harga Event</th>
-                            <th>Tanggal</th>
+                            <th>Tanggal Mulai</th>
+                            <th>Tanggal Selesai</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -55,10 +57,12 @@
                             <tr>
                                 <td><?= $number ?></td>
                                 <td><?= $item->TITLE_ACTIVITY ?></td>
-                                <td><?= $item->STATUS ?></td>
+                                <td><?= $item->STATUS == 1 ? '<span class="badge badge-success">Aktif</span>' : '<span class="badge badge-danger">Tidak Aktif</span>' ?></td>
+                                <td><?= empty($item->KUOTA_PESERTA) ? "Tidak Ada batasan" : $item->KUOTA_PESERTA ?></td>
                                 <td><?= $item->PRICE_ACTIVITY == 0 ? '<span class="badge badge-success">Free</span>' : $item->PRICE_ACTIVITY ?>
                                 </td>
                                 <td><?= date_format(date_create($item->DATE_START), 'j F Y H:i:s') ?></td>
+                                <td><?= date_format(date_create($item->DATE_END), 'j F Y H:i:s') ?></td>
                                 <td>
                                     <button type="button"
                                         onclick="openviewModal(`<?= htmlentities(json_encode($item)) ?>`)"
@@ -120,8 +124,12 @@
                         </div>
                     </div>
                     <div class="form-group mb-3">
-                        <label>Tanggal <span class="text-danger">*</span></label>
-                        <input type="datetime-local" class="form-control" name="date_start" placeholder="Date Start">
+                        <label>Tanggal Mulai<span class="text-danger">*</span></label>
+                        <input type="datetime-local" class="form-control" name="date_start" required placeholder="Date Start">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label>Tanggal Selesai<span class="text-danger">*</span></label>
+                        <input type="datetime-local" class="form-control" name="date_end" required placeholder="Date End">
                     </div>
                     <div class="form-group mb-3">
                         <label>Kode Sertifikat <span class="text-danger">*</span></label>
@@ -148,12 +156,27 @@
                             required>
                     </div>
                     <div class="form-group mb-3">
+                        <label>Kuota Peserta <span class="text-danger"></span></label>
+                        <input placeholder="Kosongi apabila tidak ada batasan" type="number" name="kuota_peserta" class="form-control">
+                    </div>
+                    <div class="form-group mb-3">
                         <label>Lokasi <span class="text-danger">*</span></label>
-                        <input placeholder="Location" type="text" name="location" class="form-control" required>
+                        <input placeholder="Location" type="text" name="location" class="form-control">
                     </div>
                     <div class="form-group mb-3">
                         <label>Link Zoom </label>
                         <input placeholder="zoom.com/" type="text" name="link_zoom" class="form-control">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="is_aktif">Status Aktif</label>
+                        <span class="d-flex align-items-center mt-2">
+                            Tidak Aktif
+                            <div class="switch m-r-10" style="margin-left: 7px;">
+                                <input type="checkbox" id="is_aktif" name="status">
+                                <label for="is_aktif"></label>
+                            </div>
+                            Aktif
+                        </span>
                     </div>
                     <div class="form-group mb-3">
                         <label>Deskripsi Event</label>
@@ -217,8 +240,13 @@
                         </div>
                     </div>
                     <div class="form-group mb-3">
-                        <label>Tanggal <span class="text-danger">*</span></label>
+                        <label>Tanggal Mulai<span class="text-danger">*</span></label>
                         <input type="datetime-local" class="form-control" name="up_date_start"
+                            placeholder="Date Start">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label>Tanggal Selesai<span class="text-danger">*</span></label>
+                        <input type="datetime-local" class="form-control" name="up_date_end"
                             placeholder="Date Start">
                     </div>
                     <div class="form-group mb-3">
@@ -246,13 +274,28 @@
                             class="form-control" required>
                     </div>
                     <div class="form-group mb-3">
+                        <label>Kuota Peserta <span class="text-danger">*</span></label>
+                        <input placeholder="Kosongi Apabila Tidak ada batasan peserta" type="number" name="up_kuota_peserta"
+                            class="form-control">
+                    </div>
+                    <div class="form-group mb-3">
                         <label>Lokasi <span class="text-danger">*</span></label>
-                        <input placeholder="Location" type="text" name="up_location" class="form-control"
-                            required>
+                        <input placeholder="Location" type="text" name="up_location" class="form-control">
                     </div>
                     <div class="form-group mb-3">
                         <label>Link Zoom </label>
                         <input placeholder="zoom.com/" type="text" name="up_link_zoom" class="form-control">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="up_status">Status Aktif</label>
+                        <span class="d-flex align-items-center mt-2">
+                            Tidak Aktif
+                            <div class="switch m-r-10" style="margin-left: 7px;">
+                                <input type="checkbox" name="up_status" id="up_status">
+                                <label for="up_status"></label>
+                            </div>
+                            Aktif
+                        </span>
                     </div>
                     <div class="form-group mb-3">
                         <label>Deskripsi Event</label>
@@ -407,11 +450,15 @@
             $('.up_CurrencyInput').prop('readonly', false)
             $('input[name="up_price_activity"]').val(price)
         }
+
+        $('#up_status').prop('checked', data.STATUS == 1 ? true : false);
         $('input[name="up_date_start"]').val(data.DATE_START)
+        $('input[name="up_date_end"]').val(data.DATE_END)
         $('input[name="up_sertif_code"]').val(data.SERTIF_CODE)
         $('select[name="up_category"]').val(cat).change()
         $('input[name="up_contact"]').val(data.CONTACT_CUSTOMER)
         $('input[name="up_penyelenggara"]').val(data.ORGANIZER)
+        $('input[name="up_kuota_peserta"]').val(data.KUOTA_PESERTA)
         $('input[name="up_location"]').val(data.LOCATION)
         $('input[name="up_link_zoom"]').val(data.LINK_ZOOM)
         $.ajax({
@@ -460,9 +507,20 @@
             $('input:text[name="link_zoom"]').val('')
             $('input[name="up_link_zoom"]').prop('disabled', true);
             $('input:text[name="up_link_zoom"]').val('')
+            $('input[name="location"]').prop('disabled', false).prop('required', true);
+            $('input[name="up_location"]').prop('disabled', false).prop('required', true);
+        } else if($(e).val() == 1) {
+            $('input[name="location"]').prop('disabled', true);
+            $('input:text[name="location"]').val('')
+            $('input[name="up_location"]').prop('disabled', true);
+            $('input:text[name="up_location"]').val('')
+            $('input[name="link_zoom"]').prop('disabled', false).prop('required', true);
+            $('input[name="up_link_zoom"]').prop('disabled', false).prop('required', true);
         } else {
-            $('input[name="link_zoom"]').prop('disabled', false);
-            $('input[name="up_link_zoom"]').prop('disabled', false);
+            $('input[name="link_zoom"]').prop('disabled', false).prop('required', true);
+            $('input[name="up_link_zoom"]').prop('disabled', false).prop('required', true);
+            $('input[name="location"]').prop('disabled', false).prop('required', true);
+            $('input[name="up_location"]').prop('disabled', false).prop('required', true);
         }
     }
 
