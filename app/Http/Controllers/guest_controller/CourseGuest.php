@@ -93,8 +93,38 @@ class CourseGuest extends Controller
 				$condition_all_mapping
 		");
 		$data_all_mapping = $this->courseModel->get_counttask($data['id_activity']);
+		
 		$data['tot_proggress'] = (!empty($data['last_item'])) ? (((int) $data_all_mapping[0]->MAPPING_COUNT) / count($data['data_all_mapping'])) * 100 : 0;
 
+		$cek_nilai = DB::selectOne("
+			SELECT 
+				* 
+			FROM 
+				nilai_quiz 
+			WHERE 
+				ID_USER = '" . session('user')[0]->get('ID_USER') . "'
+				AND ID_QUIZ = ".$data['last_item'][0]->ID_ITEM."
+			");
+
+		$cek_quiz = DB::select("
+			SELECT 
+				* 
+			FROM 
+				item_course 
+			WHERE 
+				TYPE = 2
+				AND ID_COURSE = '".$data['course']->ID_COURSE."'
+			");
+
+		if (count($data['last_item']) == count($data['data_all_mapping']) && (!empty($cek_nilai->NILAI) ? $cek_nilai->NILAI == 100 : false)) {
+			$data['tot_proggress'] = 100;
+			DB::table('order')->where('ID_USER', session('user')[0]->get('ID_USER'))->where('ID_PRODUCT', $data['id_activity'])->update(['COURSE_COMPLETED' => 1, 'MAPPING_COUNT' => count($data['data_all_mapping'])]);
+		}
+
+		if (count($data['last_item']) == count($data['data_all_mapping']) && empty($cek_quiz)) {
+			$data['tot_proggress'] = 100;
+			DB::table('order')->where('ID_USER', session('user')[0]->get('ID_USER'))->where('ID_PRODUCT', $data['id_activity'])->update(['COURSE_COMPLETED' => 1, 'MAPPING_COUNT' => count($data['data_all_mapping'])]);
+		}
 		// $sertifCheck = $this->certificateModel->getCertificate($con);
 		$sertifCheck = DB::selectOne("
 			SELECT
@@ -243,6 +273,7 @@ class CourseGuest extends Controller
 			";
 			$data['detail_item_course'] = DB::select($sql);
 		}
+		// dd($data['detail_item_course']);	
 		// $data['quiz_grade'] = $this->courseModel->get_quiz_grade($data['id_item']);
 		// GET NILAI QUIZ
 		$data['quiz_grade'] = DB::selectOne('
@@ -406,15 +437,15 @@ class CourseGuest extends Controller
 						CEIL(
 							(
 								SELECT
-										MAX(o.MAPPING_COUNT)
-									FROM
-										`order` o
-									WHERE
-										o.ID_USER = "' . $id_user . '"
-										AND o.ID_PRODUCT = activity.ID_ACTIVITY
+									MAX(o.MAPPING_COUNT)
+								FROM
+									`order` o
+								WHERE
+									o.ID_USER = "' . $id_user . '"
+									AND o.ID_PRODUCT = activity.ID_ACTIVITY
 							) / 
 							(
-									SELECT
+								SELECT
 									COUNT(*)
 								FROM
 									mapping_course

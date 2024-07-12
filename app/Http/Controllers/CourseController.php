@@ -101,11 +101,10 @@ class CourseController extends Controller
             'IS_PUBLIC'             => $req->input('is_public'),
             'LOG_TIME'              => date('Y-m-d H:i:s')
         ];
-
         if ($req->input('status') == 'on') {
-            $activity['STATUS'] = 0;
-        } else {
             $activity['STATUS'] = 1;
+        } else {
+            $activity['STATUS'] = 0;
         }
 
         $course = [
@@ -265,7 +264,7 @@ class CourseController extends Controller
         $categoryList       = $req->input('type');
         $materiTitleList    = $req->input('materi_title');
         $descMateriList     = $req->input('desc_materi');
-        $file               = $req->input('materi_file');
+        $file               = $req->file('materi_file');
         $linkYT             = $req->input('materi_link');
         $idQuiz          = [];
 

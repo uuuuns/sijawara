@@ -74,7 +74,8 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label control-label">Pengunguman</label>
+                        <label class="col-sm-2 col-form-label control-label">Pengunguman <span
+                        class="text-danger">*</span></label>
                         <div class="col-md-5">
                             <textarea name="announcement" id="announcement" required></textarea>
                         </div>
@@ -94,10 +95,11 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label control-label">Kode Sertifikat</label>
+                        <label class="col-sm-2 col-form-label control-label">Kode Sertifikat <span
+                        class="text-danger">*</span></label>
                         <div class="col-md-5">
                             <input type="text" class="form-control" name="certif_code" placeholder="Kode Sertifikat"
-                                style="text-transform: uppercase">
+                                style="text-transform: uppercase" required>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -124,11 +126,13 @@
                     </div>
                     <div class="form-group row">
                         <label class="col-sm-2 col-form-label control-label">Status</label>
-                        <div class="col-md-5 column">
-                            <div class="switch m-r-10">
+                        <div class="col-md-5 row">
+                            Aktif
+                            <div class="switch m-r-10" style="margin-left: 7px;">
                                 <input type="checkbox" id="switch-1" name="status" checked="">
                                 <label for="switch-1"></label>
                             </div>
+                            Tidak Aktif
                         </div>
                     </div>
                     <div class="accordion materi_form" id="accordion-default">
