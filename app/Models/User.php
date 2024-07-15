@@ -93,7 +93,6 @@ class User extends Model
         // dd($data[0]['EMAIL']);
         if ($user) {
             // Perbarui kolom yang diinginkan
-            $user->FOTO_PROFILE = $data[0]['FOTO_PROFILE'];
             $user->EMAIL = $data[0]['EMAIL'];
             $user->NAME = $data[0]['NAME'];
             $user->TELP = $data[0]['TELP'];
