@@ -25,7 +25,12 @@ class EventController extends Controller
             $data['event'] = DB::select("
             Select
                 a.* ,
-                e.*
+                e.CATEGORY_EVENT,
+                e.LOCATION,
+                e.ORGANIZER,
+                e.CONTACT_CUSTOMER,
+                e.LINK_ZOOM,
+                e.KUOTA_PESERTA
             FROM
                 activity a
             LEFT JOIN event e ON
@@ -47,7 +52,12 @@ class EventController extends Controller
             $data['event'] = DB::select("
                 Select
                     a.* ,
-                    e.*
+                    e.CATEGORY_EVENT,
+                    e.LOCATION,
+                    e.ORGANIZER,
+                    e.CONTACT_CUSTOMER,
+                    e.LINK_ZOOM,
+                    e.KUOTA_PESERTA
                 FROM
                     activity a
                 LEFT JOIN event e ON
@@ -57,7 +67,6 @@ class EventController extends Controller
                     AND a.ID_USER = '" . session('user')[0]['ID_USER'] . "'    
                 ");
         }
-
         return
             view('template_main.admin_side.etc.header', $data) .
             view('template_main.admin_side.etc.sidebar', $data) .
@@ -74,16 +83,12 @@ class EventController extends Controller
             'PRICE_ACTIVITY' => (int)str_replace(".", "", $req->input('price_activity')),
             'SERTIF_CODE' => $req->input('sertif_code'),
             'TYPE_ACTIVITY' => 2,
+            'STATUS' => $req->has('status') ? 1 : 0,
             'IMAGE_ACTIVITY' => FileUpload::S3($req->file('image_activity'), 'IMAGE_ACTIVITY', 'Image-Activity-' . strtotime(now())),
             'DATE_START' => $req->input('date_start'),
+            'DATE_END' => $req->input('date_end'),
             'LOG_TIME' => date('Y-m-d H:i:s')
         ];
-
-        if ($req->input('status') == "on") {
-            $activity['status'] = 0;
-        } else {
-            $activity['status'] = 1;
-        }
 
         $event = [
             'ID_ACTIVITY'       => $activity['ID_ACTIVITY'],
@@ -96,6 +101,9 @@ class EventController extends Controller
 
         if (!empty($req->input('link_zoom'))) {
             $event['LINK_ZOOM'] = $req->input('link_zoom');
+        }
+        if (!empty($req->input('kuota_peserta'))) {
+            $event['KUOTA_PESERTA'] = $req->input('kuota_peserta');
         }
 
         DB::table('activity')->insert($activity);
@@ -112,6 +120,8 @@ class EventController extends Controller
             'PRICE_ACTIVITY' => (int)str_replace(".", "", $req->input('up_price_activity')),
             'SERTIF_CODE' => $req->input('up_sertif_code'),
             'DATE_START' => $req->input('up_date_start'),
+            'DATE_END' => $req->input('up_date_end'),
+            'STATUS' => $req->has('up_status') ? 1 : 0,
             'LOG_TIME' => date('Y-m-d H:i:s')
         ];
 
@@ -129,6 +139,9 @@ class EventController extends Controller
 
         if (!empty($req->input('up_link_zoom'))) {
             $event['LINK_ZOOM'] = $req->input('up_link_zoom');
+        }
+        if (!empty($req->input('up_kuota_peserta'))) {
+            $event['KUOTA_PESERTA'] = $req->input('up_kuota_peserta');
         }
 
         DB::table('activity')->WHERE(['ID_ACTIVITY' => $req->input('up_id_activity')])->update($activity);

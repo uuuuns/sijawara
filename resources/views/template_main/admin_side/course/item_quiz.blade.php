@@ -107,7 +107,7 @@
                     $('#add_new_batch_soal_{{ $no }}').removeClass("is-loading");
                     $('#add_new_soal_{{ $no }}').removeClass("is-loading");
                     no_quiz = no_quiz + index;
-                    $('#total_question_{{ $no }}').val('')
+                    $('#total_question_{{ $no }}').val('');
                 }
             });
         }
