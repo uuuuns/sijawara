@@ -19,15 +19,16 @@
     <input type="hidden" name="desc_materi[]">
     <div id="collapse{{ $no }}" class="collapse show" data-parent="#accordion-default">
         <div class="card-body">
+            <div class="soal_form_{{ $no }}"></div>
             <div class="form-group row">
-                <div class="col-md-12">
-                    <div id="add_new_soal_{{ $no }}" class="btn btn-success col-md-4 float-right mx-2"
+                <div class="col-md-7">
+                    <div id="add_new_soal_{{ $no }}{{ $id_quiz }}" class="btn btn-success col-md-4 float-right mx-2"
                         style="cursor: pointer;">
                         <i class="anticon anticon-loading m-r-5"></i>
-                        <span class="col-md-12">Tambahkan Pertanyaan Baru</span>
+                        <span class="col-md-12">Tambahkan Pertanyaan</span>
 
                     </div>
-                    <div class="row col-md-4 float-left mx-2">
+                    {{-- <div class="row col-md-4 float-left mx-2">
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1">Jumlah Pertanyaan</span>
@@ -35,41 +36,17 @@
                             <input type="number" class="form-control" id="total_question_{{ $no }}"
                                 placeholder="0">
                         </div>
-                    </div>
-                    <div id="add_new_batch_soal_{{ $no }}" class="btn btn-warning col-md-3 float-left mx-2"
+                    </div> --}}
+                    {{-- <div id="add_new_batch_soal_{{ $no }}" class="btn btn-warning col-md-3 float-left mx-2"
                         style="cursor: pointer;">
                         <i class="anticon anticon-loading m-r-5"></i>
                         <span class="col-md-12">Tambahkan Sekumpulan Pertanyaan</span>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
-            <div class="soal_form_{{ $no }}"></div>
         </div>
     </div>
 </div>
-
-{{-- Start Modal Update blom --}}
-{{-- <div class="modal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Detail Materi</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form id="form-user" action="quiz/update" method="POST" enctype="multipart/form-data">
-                @csrf
-                <div class="modal-body"> --}}
-                    {{-- isi --}}
-                {{-- </div>
-            </form>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Simpan Perubahan</button>
-            </div>
-        </div>
-    </div>
-</div> --}}
-{{-- End Modal Update --}}
 
 <script>
     $('#collapse{{ $no }}').collapse('hide')
@@ -81,35 +58,39 @@
     });
 
     var no_quiz = 1;
-    $('#add_new_soal_' + no_quiz).click(function() {
+    $('#add_new_soal_{{ $no }}{{ $id_quiz }}').click(function() {
         $('#add_new_batch_soal_{{ $no }}').toggleClass("is-loading");
         $('#add_new_soal_{{ $no }}').toggleClass("is-loading");
         $.ajax({
-            url: 'add_question/' + {{ $no }} + '/' + no_quiz + '/' + {{ $id_quiz }},
+            url: 'add_question/' + {{ $no }} + '/' + no_quiz,
             success: function(html) {
                 $(".soal_form_{{ $no }}").append(html);
                 $('#add_new_batch_soal_{{ $no }}').removeClass("is-loading");
                 $('#add_new_soal_{{ $no }}').removeClass("is-loading");
                 no_quiz++;
+            },
+            error: function(xhr, status, error) {
+                console.log('Error adding question:', error);
+                console.log(xhr.responseText);
             }
         });
-    })
-
-    $('#add_new_batch_soal_{{ $no }}').click(function() {
-        var tot_question = $('#total_question_{{ $no }}').val()
-        for (let index = 0; index < tot_question; index++) {
-            $('#add_new_batch_soal_{{ $no }}').toggleClass("is-loading");
-            $('#add_new_soal_{{ $no }}').toggleClass("is-loading");
-            $.ajax({
-                url: 'add_question/' + {{ $no }} + '/' + index + '/' + {{ $id_quiz }},
-                success: function(html) {
-                    $(".soal_form_{{ $no }}").append(html);
-                    $('#add_new_batch_soal_{{ $no }}').removeClass("is-loading");
-                    $('#add_new_soal_{{ $no }}').removeClass("is-loading");
-                    no_quiz = no_quiz + index;
-                    $('#total_question_{{ $no }}').val('');
-                }
-            });
-        }
     });
+
+    // $('#add_new_batch_soal_{{ $no }}').click(function() {
+    //     var tot_question = $('#total_question_{{ $no }}').val()
+    //     for (let index = 0; index < tot_question; index++) {
+    //         $('#add_new_batch_soal_{{ $no }}').toggleClass("is-loading");
+    //         $('#add_new_soal_{{ $no }}').toggleClass("is-loading");
+    //         $.ajax({
+    //             url: 'add_question/' + {{ $no }} + '/' + index + '/' + {{ $id_quiz }},
+    //             success: function(html) {
+    //                 $(".soal_form_{{ $no }}").append(html);
+    //                 $('#add_new_batch_soal_{{ $no }}').removeClass("is-loading");
+    //                 $('#add_new_soal_{{ $no }}').removeClass("is-loading");
+    //                 no_quiz = no_quiz + index;
+    //                 $('#total_question_{{ $no }}').val('');
+    //             }
+    //         });
+    //     }
+    // });
 </script>
