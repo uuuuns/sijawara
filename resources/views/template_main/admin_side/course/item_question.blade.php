@@ -2,7 +2,7 @@
     <div class="form-group row">
         <label class="col-sm-2 col-form-label control-label" id="label_soal">Pertanyaan</label>
         <input type="hidden" class="form-control" name="order_list_question[]" value="{{ $no }}">
-        <input type="hidden" class="form-control" name="no_quiz[]" value="{{ $no_quiz }}">
+        <input type="hidden" class="form-control" name="no_quiz[]" value="{{ $index }}">
         <div class="col-md-10">
             <div class="row">
                 <div class="col-md-11">

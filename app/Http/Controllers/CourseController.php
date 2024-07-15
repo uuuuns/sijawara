@@ -144,12 +144,11 @@ class CourseController extends Controller
             view('template_main.admin_side.course.item_quiz', $data);
     }
 
-    public function add_question($id, $index, $id_quiz)
+    public function add_question($id, $index)
     {
-        $id_detailQuiz_Question = $id + 1;
+        $id_detailQuiz_Question = $id;
         $data['no'] = $id_detailQuiz_Question;
         $data['index'] = $index;
-        $data['no_quiz'] = $id_quiz;
 
         return
             view('template_main.admin_side.course.item_question', $data);
@@ -295,7 +294,6 @@ class CourseController extends Controller
             }
         }
 
-
         if (!empty($req->input('question'))) {
             $data['data_item'] = $data_item;
             $this->item_quiz($data, $req, $idQuiz);
@@ -304,6 +302,7 @@ class CourseController extends Controller
 
     public function item_quiz($data, $req, $lastIdQuiz)
     {
+        // dd($req);
         $jawaban_a              = $req->input('jawaban_a');
         $jawaban_b              = $req->input('jawaban_b');
         $jawaban_c              = $req->input('jawaban_c');
@@ -313,8 +312,9 @@ class CourseController extends Controller
 
         $tmpNo = 0;
         foreach ($question as $i => $questions) {
+            // dd($questions);
             $id_quiz = $lastIdQuiz[$tmpNo];
-            for ($j = 0; $j < count($questions); $j++) {
+            for ($j = 1; $j < count($questions); $j++) {
                 $quiz = [
                     'ID_QUIZ'       => $id_quiz,
                     'ID_COURSE'     => $data['ID_COURSE'],

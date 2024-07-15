@@ -138,7 +138,7 @@ Route::middleware(['usersession:2,1'])->group(function () {
     Route::get('courses/delete_materi/{id}', 'CourseController@delete_materi');
     Route::get('courses/add_quiz/{id}/{no_quiz}', 'CourseController@add_quiz')->name('add_quiz');
     Route::get('courses/delete_quiz/{id}', 'CourseController@delete_quiz');
-    Route::get('courses/add_question/{id}/{index}/{id_quiz}', 'CourseController@add_question')->name('add_question');
+    Route::get('courses/add_question/{id}/{index}', 'CourseController@add_question')->name('add_question');
     Route::get('courses/delete_question/{id}', 'CourseController@delete_question');
 
     Route::get('events', 'EventController@index');
