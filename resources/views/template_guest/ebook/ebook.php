@@ -83,7 +83,7 @@
                         <form id="FormBuyNow-info" method="POST" action="<?= base_url('purchase') ?>">
                             <div id="data-input-info"></div>
                             <button type="button" onclick="BuyNow()" class="btn btn-primary rounded-2 " style="height: 35px; width: 150px;">
-                                <p class="m-0 fw-semibold">Beli Sekarang</p>
+                                <p class="m-0 fw-semibold">Ambil Sekarang</p>
                             </button>
                         </form>
                         <div class="ms-3" style="">

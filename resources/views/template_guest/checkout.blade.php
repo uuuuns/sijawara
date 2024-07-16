@@ -12,10 +12,10 @@
         <div class="row justify-content-center">
             <div class="col-12 col-lg-9 pe-3">
                 <div class="title-block">
-                    <h1>Keranjang</h1>
+                    <h1>Agenda</h1>
                     <ul class="header-bradcrumb justify-content-center">
                         <li><a href="{{ url('') }}">Beranda</a></li>
-                        <li class="active" aria-current="page">Keranjang</li>
+                        <li class="active" aria-current="page">Agenda</li>
                     </ul>
                 </div>
             </div>
@@ -275,7 +275,7 @@
             } else {
                 Toast.fire({
                     icon: 'error',
-                    title: '<?= (empty($checkout) != "") ? 'Tidak ada produk di keranjang!' : 'Pilih Produk Terlebih Dulu!' ?>'
+                    title: '<?= (empty($checkout) != "") ? 'Tidak ada produk di Agenda!' : 'Pilih Produk Terlebih Dulu!' ?>'
                 })
             }
         <?php } ?>

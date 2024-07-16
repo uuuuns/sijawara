@@ -41,12 +41,11 @@ class CourseGuest extends Controller
 		$data['checkout'] = $this->checkoutModel->get_all_order($data_user);
 		$data['is_invited'] = DB::select("
 			SELECT
-				id_activity	
+				id_invited	
 			FROM
-				activity
+				tb_invited
 			WHERE
-				TYPE_ACTIVITY = 1
-				AND IS_PUBLIC != 1
+				ID_USER = '" . $data_user . "'
 		");
 
 		return

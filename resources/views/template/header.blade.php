@@ -139,11 +139,10 @@
                     <div class="col-xl-4 col-lg-4 col-sm-6">
                         <div class="header-socials text-center text-lg-end">
                             <ul class="list-inline">
-                                <li class="list-inline-item"><a href="#"><i class="fab fa-facebook-f"></i></a></li>
-                                <li class="list-inline-item"><a href="#"><i class="fab fa-twitter"></i></a></li>
-                                <li class="list-inline-item"><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
-                                <li class="list-inline-item"><a href="#"><i class="fab fa-pinterest"></i></a></li>
-                                <li class="list-inline-item"><a href="#"><i class="fab fa-youtube"></i></a></li>
+                                <li class="list-inline-item"><a target="_blank" href="https://www.facebook.com/uptkukm"><i class="fab fa-facebook-f"></i></a></li>
+                                <li class="list-inline-item"><a target="_blank" href="https://www.instagram.com/uptkukmjatim"><i class="fab fa-instagram"></i></a></li>
+                                <li class="list-inline-item"><a target="_blank" href="https://www.linkedin.com/company/uptkukmjatim"><i class="fab fa-linkedin-in"></i></a></li>
+                                <li class="list-inline-item"><a target="_blank" href="https://www.youtube.com/@UPTPKUKMJATIM"><i class="fab fa-youtube"></i></a></li>
                             </ul>
                         </div>
                     </div>
@@ -178,7 +177,7 @@
 
                             <?php if (!empty(session('user')[0])) { ?>
                                 <li class="d-md-none">
-                                    <a href="#" onclick="$('#form_checkout').submit()">Keranjang</a>
+                                    <a href="#" onclick="$('#form_checkout').submit()">Agenda</a>
                                 </li>
                                 <li class="d-md-none">
                                     <a href="{{ url('profile') }}">Profil</a>
@@ -209,7 +208,7 @@
                             <ul class="primary-menu">
                                 <li class="me-4">
                                     <a href="#" class="nav-link w-100 h-100 d-flex align-items-center position-relative rounded-circle" style="padding-left:12px;padding-right:12px;right:0;margin-right:1px" onclick="$('#form_checkout').submit()">
-                                        <i class="far fa-shopping-cart" style="-webkit-text-stroke: 0.2px;"></i>
+                                        <i class="far fa-calendar"></i>
                                         <?php $totCheckout = (!empty($checkout) ? count($checkout) : 0);
                                         if ($totCheckout > 0) { ?>
                                             <span class="badge bg-danger rounded-circle position-absolute" style="top: 0px; right: -5px;">
@@ -219,7 +218,7 @@
                                     </a>
                                     <?php if ($title != 'Checkout') { ?>
                                         <ul class="submenu" style="left: initial;right:0;width: max-content;">
-                                            <h6 class="title mx-3 fs-5 my-3">Keranjang</h6>
+                                            <h6 class="title mx-3 fs-5 my-3">Agenda</h6>
                                             <hr class="dropdown-divider">
                                             <ul class="p-0 m-2 overflow-auto" style="max-height:300px">
                                                 <?php if (!empty($checkout)) { ?>

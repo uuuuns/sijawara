@@ -44,33 +44,6 @@
                                 </div>
                             </div>
                             <!-- Conurse  instructor end -->
-
-                            <div class="tutori-course-curriculum">
-                                <div class="curriculum-scrollable">
-                                    <ul class="curriculum-sections">
-                                        <li class="section">
-                                            <ul class="section-content">
-                                                <?php if (!empty($item_course)) { ?>
-                                                    <?php foreach ($item_course as $item) :  ?>
-                                                        <li class="course-item has-status">
-                                                            <button class="section-item-link">
-                                                                <span class="item-name"> <?= $item->TITLE ?></span>
-                                                            </button>
-                                                        </li>
-                                                    <?php endforeach; ?>
-                                                <?php } else { ?>
-                                                    <div class="d-flex flex-column align-items-center">
-                                                        <img src="{{ asset('assets_new') }}/images/empty.svg" width="350">
-                                                        <h4 class="font-sm text-center">Tidak ada bab</h4>
-                                                    </div>
-                                                <?php } ?>
-                                            </ul>
-                                        </li>
-
-                                    </ul>
-                                    <!-- Main ul end -->
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
