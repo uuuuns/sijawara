@@ -129,7 +129,7 @@
                     </div>
                     <div class="wc-proceed-to-checkout ms-3">
                         <button type="button" class="checkout-button button alt wc-forward" onclick="CobaPayment()">
-                            Beli Sekarang
+                            Ambil Sekarang
                         </button>
                     </div>
                 </div>

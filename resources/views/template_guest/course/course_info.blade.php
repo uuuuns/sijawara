@@ -126,10 +126,10 @@
                                 <form class="" id="FormBuyNow-info" method="POST" action="<?= url('purchase') ?>">
                                     @csrf
                                     <div id="data-input-info"></div>
-                                    <div class="w-100 button button-enroll-course btn btn-main-2 rounded" onclick="BuyNow()">Beli Sekarang</div>
+                                    <div class="w-100 button button-enroll-course btn btn-main-2 rounded" onclick="BuyNow()">Ambil Sekarang</div>
                                 </form>
                                 <button data-id-activity="<?= $course->ID_ACTIVITY ?>" onclick="AddToCart(this)" class="mt-2 w-100 button button-enroll-course btn btn-secondary btn-sm rounded">
-                                    Tambahkan ke keranjang
+                                    Tambahkan ke Agenda
                                 </button>
                             </div>
                         </div>

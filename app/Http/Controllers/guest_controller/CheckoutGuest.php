@@ -108,7 +108,7 @@ class CheckoutGuest extends Controller
 				->where('ID_PRODUCT', $id_activity)
 				->where('ID_USER', session('user')[0]->get('ID_USER'))
 				->update($data_order);
-				$msg = "Kursus ini sudah ada di keranjang!";
+				$msg = "Kursus ini sudah ada di Agenda!";
 			} else {
 				$data_order = array(
 					"ID_ORDER" => $this->GenerateUniqID_Order(time()),
@@ -119,7 +119,7 @@ class CheckoutGuest extends Controller
 				);
 				// $this->checkoutModel->insert_order($data_order);
 				DB::table("order")->insert($data_order);
-				$msg = "Berhasil menambahkan ke keranjang!";
+				$msg = "Berhasil menambahkan ke Agenda!";
 			}
 		} else {
 			if (!empty($id_activity) && !empty(session('user')[0]->get('ID_USER')) && $type == 1) { //COURSE
@@ -138,7 +138,7 @@ class CheckoutGuest extends Controller
 					->where('ID_USER', session('user')[0]->get('ID_USER'))
 					->update($data_order);
 					
-					$msg = "Kursus ini sudah ada di keranjang!";
+					$msg = "Kursus ini sudah ada di Agenda!";
 				} else {
 					$data_order = array(
 						"ID_ORDER" => $this->GenerateUniqID_Order(time()),
@@ -149,7 +149,7 @@ class CheckoutGuest extends Controller
 					);
 					// $this->checkoutModel->insert_order($data_order);
 					DB::table("order")->insert($data_order);
-					$msg = "Berhasil menambahkan ke keranjang!";
+					$msg = "Berhasil menambahkan ke Agenda!";
 				}
 			} else if (!empty($id_activity) && !empty(session('user')[0]->get('ID_USER')) && $type == 2) { //EVENT
 				$event = $this->eventModel->get_event($id_activity);
@@ -166,7 +166,7 @@ class CheckoutGuest extends Controller
 					->where('ID_PRODUCT', $id_activity)
 					->where('ID_USER', session('user')[0]->get('ID_USER'))
 					->update($data_order);
-					$msg = "Webinar ini sudah ada di keranjang!";
+					$msg = "Webinar ini sudah ada di Agenda!";
 				} else {
 					$data_order = array(
 						"ID_ORDER" => $this->GenerateUniqID_Order(time()),
@@ -177,7 +177,7 @@ class CheckoutGuest extends Controller
 					);
 					// $this->checkoutModel->insert_order($data_order);
 					DB::table("order")->insert($data_order);
-					$msg = "Berhasil menambahkan ke keranjang!";
+					$msg = "Berhasil menambahkan ke Agenda!";
 				}
 			}
 		}

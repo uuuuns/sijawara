@@ -29,12 +29,6 @@ Route::get('course', 'guest_controller\CourseGuest@index');
 Route::get('course/search', 'guest_controller\CourseGuest@SearchCourse');
 Route::post('course/category', 'guest_controller\CourseGuest@getFilterByKat');
 Route::get('course/info/{any}', 'guest_controller\CourseGuest@infoCourse');
-Route::get('course/detail/{any}', 'guest_controller\CourseGuest@detailCourse');
-Route::post('course/item/mapping', 'guest_controller\CourseGuest@getMappingCourse');
-Route::post('course/item', 'guest_controller\CourseGuest@getDetailItemCourse');
-
-Route::post('course/quiz/evaluation', 'guest_controller\CourseGuest@QuizEvaluation');
-
 //END COURSE GUEST
 
 //EVENT GUEST
@@ -44,16 +38,6 @@ Route::get('event/detail', 'guest_controller\EventGuest@detailEvent');
 Route::get('event/detail/{any}', 'guest_controller\EventGuest@detailEvent');
 //END EVENT GUEST
 
-Route::post('checkout', 'guest_controller\CheckoutGuest@index');
-Route::get('checkouts', 'guest_controller\CheckoutGuest@index');
-Route::get('add/order', 'guest_controller\CheckoutGuest@addOrder');
-Route::post('purchase', 'guest_controller\CheckoutGuest@purchase');
-Route::get('delete/order', 'guest_controller\CheckoutGuest@deleteOrder');
-Route::post('delete/pay', 'guest_controller\CheckoutGuest@DeleteTrans');
-Route::post('check_payment_status', 'guest_controller\CheckoutGuest@check_status');
-Route::post('get_order_id', 'guest_controller\CheckoutGuest@get_order_id');
-
-
 Route::get('login', 'AuthController@login');
 Route::post('login/authentication', 'AuthController@login_authentication');
 
@@ -61,26 +45,13 @@ Route::get('register', 'AuthController@register');
 Route::post('register/store', 'AuthController@store');
 
 Route::get('logout', 'AuthController@logout');
+
 //FORGOT PASS
 Route::get('forgot-password', 'AuthController@forgot_password');
 Route::post('forgotPassword', 'AuthController@forgot_password_send');
 Route::get('reset-password', 'AuthController@forgot_password_reset');
 Route::post('resetPassword', 'AuthController@resetPassword');
 //END FORGOT PASS
-
-
-// profile
-Route::get('profile', [ProfileGuest::class, 'profile']);
-Route::get('/profile/overview', [ProfileGuest::class, 'overview']);
-Route::get('profile/myebook', [ProfileGuest::class, 'ebook']);
-Route::get('profile/academic', [ProfileGuest::class, 'academic']);
-Route::get('profile/document', [ProfileGuest::class, 'document']);
-Route::get('profile/mycourses', [ProfileGuest::class, 'mycourses']);
-Route::get('profile/myevents', [ProfileGuest::class, 'myevents']);
-Route::post('profile/update', [ProfileGuest::class, 'update_profile']);
-Route::post('/profile/academic/change', [ProfileGuest::class, 'academic_change']);
-Route::post('/profile/document/change', [ProfileGuest::class, 'doc_up']);
-Route::get('apply_instructor', 'InstructorController@apply_instructor');
 
 //VERIFICATION ACCOUNT
 Route::get('verification/confirm', 'AuthController@verifAccount');
@@ -119,7 +90,38 @@ Route::middleware(['usersession:2'])->group(function () {
 });
 
 // 3 USER
-Route::middleware(['usersession:3'])->group(function () {
+Route::middleware(['usersession:3,2,1'])->group(function () {
+//COURSE
+    Route::get('course/detail/{any}', 'guest_controller\CourseGuest@detailCourse');
+    Route::post('course/item/mapping', 'guest_controller\CourseGuest@getMappingCourse');
+    Route::post('course/item', 'guest_controller\CourseGuest@getDetailItemCourse');
+    Route::post('course/quiz/evaluation', 'guest_controller\CourseGuest@QuizEvaluation');
+//END COURSE
+
+//PAYMENT & CART
+    Route::post('checkout', 'guest_controller\CheckoutGuest@index');
+    Route::get('checkouts', 'guest_controller\CheckoutGuest@index');
+    Route::get('add/order', 'guest_controller\CheckoutGuest@addOrder');
+    Route::post('purchase', 'guest_controller\CheckoutGuest@purchase');
+    Route::get('delete/order', 'guest_controller\CheckoutGuest@deleteOrder');
+    Route::post('delete/pay', 'guest_controller\CheckoutGuest@DeleteTrans');
+    Route::post('check_payment_status', 'guest_controller\CheckoutGuest@check_status');
+    Route::post('get_order_id', 'guest_controller\CheckoutGuest@get_order_id');
+//END PAYMENT & CART
+
+// PROFILE
+    Route::get('profile', [ProfileGuest::class, 'profile']);
+    Route::get('/profile/overview', [ProfileGuest::class, 'overview']);
+    Route::get('profile/myebook', [ProfileGuest::class, 'ebook']);
+    Route::get('profile/academic', [ProfileGuest::class, 'academic']);
+    Route::get('profile/document', [ProfileGuest::class, 'document']);
+    Route::get('profile/mycourses', [ProfileGuest::class, 'mycourses']);
+    Route::get('profile/myevents', [ProfileGuest::class, 'myevents']);
+    Route::post('profile/update', [ProfileGuest::class, 'update_profile']);
+    Route::post('/profile/academic/change', [ProfileGuest::class, 'academic_change']);
+    Route::post('/profile/document/change', [ProfileGuest::class, 'doc_up']);
+    Route::get('apply_instructor', 'InstructorController@apply_instructor');
+//END PROFILE
 });
 
 Route::middleware(['usersession:2,1'])->group(function () {
