@@ -1,5 +1,5 @@
-<div class="col ms-4 px-5 py-5 shadow rounded-3 overflow-hidden bg-white">
-    <h3 class="fw-bold pb-5" style="color:#5580E9">Ganti Kata Sandi</h3>
+<div class="col ms-0 ms-md-4 px-5 py-5 shadow rounded-3 overflow-hidden bg-white">
+    <h3 class="fw-bold pb-5" style="color:#45b104">Ganti Kata Sandi</h3>
     <h5 class="text-black ps-1">Kata Sandi Anda Saat Ini</h5>
     <div class="input-group my-4">
         <input type="password" class="form-control border-bottom border-0 shadow-none rounded-0 ps-1" id="currentPassword" placeholder="Your Current Password" name="password" value="bahagia">

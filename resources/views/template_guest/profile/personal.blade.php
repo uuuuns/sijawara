@@ -8,7 +8,7 @@
         background-color: #F5F5F5;
     }
 </style>
-<div class="col ms-4 px-5 py-5 shadow rounded-3 overflow-hidden bg-white">
+<div class="col ms-0 ms-md-4 px-5 py-5 shadow rounded-3 overflow-hidden bg-white">
 
     <form action="profile/update" method="POST" enctype="multipart/form-data" id="form-profile">
         @csrf
@@ -18,7 +18,7 @@
                 <img class="nav-link rounded-circle mb-2" src="<?= (!empty($data_personal->FOTO_PROFILE) ? $data_personal->FOTO_PROFILE : 'assets/images/person-circle.svg') ?>" id="preview" style="height:150px; width:150px; object-fit: cover;" />
             </button>
         </div>
-        <h3 class="fw-bold py-4" style="color:#5580E9">Data Pribadi</h3>
+        <h3 class="fw-bold py-4" style="color:#45b104">Data Pribadi</h3>
         <h5 class="text-black ps-1">Email</h5>
         <div class="my-3 float-label-control">
             <input type="text" name="email" class="form-control input-text woocommerce-Input woocommerce-Input--text" id="exampleInputEmail1" placeholder="Email" value="<?= $data_personal->EMAIL ?>" aria-describedby="emailHelp" readonly>

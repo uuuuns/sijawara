@@ -1,15 +1,7 @@
+@extends('template_admin.admin_template')
+@section('content')
 <!-- Content Wrapper START -->
-<div class="main-content">
-    <div class="page-header">
-        <h2 class="header-title"><?= $title ?></h2>
-        <div class="header-sub-title">
-            <nav class="breadcrumb breadcrumb-dash">
-                <a href="<?= url('Dashboard') ?>" class="breadcrumb-item"><i
-                        class="anticon anticon-home m-r-5"></i>Home</a>
-                <span class="breadcrumb-item active"><?= $title ?></span>
-            </nav>
-        </div>
-    </div>
+<div class="col ms-0 ms-md-4 p-4 shadow rounded-3 overflow-hidden bg-white">
     {{-- <?php if (!empty($this->session->flashdata('msg'))) { ?>
     <div class="alert alert-success">
         <div class="d-flex align-items-center justify-content-start">
@@ -20,21 +12,21 @@
         </div>
     </div>
     <?php } ?> --}}
-    <div class="card">
+    <div class="">
         <div class="card-body">
             <div class="row">
                 <div class="col-md-6 align-self-center">
-                    <label class="card-title" style="font-size: 20px">E-book</label>
+                    <h3 class="fw-bold" style="color:#45b104">E-book</h3>
                 </div>
                 <div class="col-md-6 d-flex justify-content-md-end justify-content-end align-items-center">
                     <div class="mt-3 mt-md-0">
-                        <button type="button" class="btn btn-primary" onclick="addModal()">
+                        <button type="button" class="btn btn-primary btn-sm-2 rounded" onclick="addModal()">
                             <i class="mdi mdi-plus me-1"></i>
                             Tambah E-book</button>
                     </div>
                 </div>
             </div>
-            <div class="m-t-25">
+            <div class="mt-5">
                 <table class="table mb-0" id="dtTable">
                     <thead>
                         <tr>
@@ -51,28 +43,26 @@
                         <?php $number = 0; ?>
 
                         @foreach ($book as $item)
-                            <?php $number++; ?>
-                            <tr>
-                                <td><?= $number ?></td>
-                                <td><?= $item->JUDUL ?></td>
-                                <td><?= $item->PRICE == 0 ? '<span class="badge badge-success">Free</span>' : $item->PRICE ?>
-                                </td>
-                                <td><?= $item->GENRE ?></td>
-                                <td><?= $item->AUTHOR ?></td>
-                                <td><?= $item->TAHUN ?></td>
-                                <td>
-                                    <button type="button"
-                                        onclick="openviewModal(`<?= htmlentities(json_encode($item)) ?>`)"
-                                        class="btn btn-subtle-primary waves-effect waves-light">
+                        <?php $number++; ?>
+                        <tr>
+                            <td><?= $number ?></td>
+                            <td><?= $item->JUDUL ?></td>
+                            <td><?= $item->PRICE == 0 ? '<span class="badge badge-success">Free</span>' : $item->PRICE ?>
+                            </td>
+                            <td><?= $item->GENRE ?></td>
+                            <td><?= $item->AUTHOR ?></td>
+                            <td><?= $item->TAHUN ?></td>
+                            <td>
+                                <div class="d-flex flex-column gap-2">
+                                    <button type="button" onclick="openviewModal(`<?= htmlentities(json_encode($item)) ?>`)" class="btn btn-warning px-4 py-2 rounded">
                                         <i class="bx bx-edit-alt font-size-16 align-middle"></i>
                                     </button>
-                                    <button type="button"
-                                        onclick="opendeleteModal(`<?= htmlentities(json_encode($item)) ?>`)"
-                                        class="btn btn-subtle-danger waves-effect waves-light">
+                                    <button type="button" onclick="opendeleteModal(`<?= htmlentities(json_encode($item)) ?>`)" class="btn btn-danger px-4 py-2 rounded">
                                         <i class="bx bx-trash font-size-16 align-middle"></i>
                                     </button>
-                                </td>
-                            </tr>
+                                </div>
+                            </td>
+                        </tr>
                         @endforeach
                     </tbody>
                 </table>
@@ -83,14 +73,13 @@
 <!-- Content Wrapper END -->
 
 {{-- Start Modal Add --}}
-<div class="modal" id="addModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog"
-    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal" id="addModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Hapus</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                <h4 class="modal-title">Hapus</h4>
+                <button type="button" class="btn px-2 py-0" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="fs-3">&times;</span>
                 </button>
             </div>
             <form id="form-user" action="ebook/store" method="POST" enctype="multipart/form-data">
@@ -99,8 +88,7 @@
                     <div class="form-group mb-3">
                         <label>Kover <span class="text-danger">*</span></label>
                         <div class="custom-file">
-                            <input type="file" name="image_ebook" accept=".jpg, .png, .jpeg" data-max-file-size="1M"
-                                data-allowed-file-extensions="jpg png" class="custom-file-input dropify" required>
+                            <input type="file" name="image_ebook" accept=".jpg, .png, .jpeg" data-max-file-size="1M" data-allowed-file-extensions="jpg png" class="custom-file-input dropify" required>
                         </div>
                     </div>
                     <div class="form-group mb-3">
@@ -124,12 +112,11 @@
                         <input placeholder="Tahun Terbit" type="text" name="tahun" class="form-control" required>
                     </div>
                     <div class="form-group mb-3">
-                        <input type="file" name="ebook" class="custom-file-input dropify"
-                            data-allowed-file-extensions="pdf" data-max-file-size="10M" data-default-file="">
+                        <input type="file" name="ebook" class="custom-file-input dropify" data-allowed-file-extensions="pdf" data-max-file-size="10M" data-default-file="">
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Tambah</button>
+                    <button type="submit" class="btn btn-primary rounded">Tambah</button>
                 </div>
             </form>
         </div>
@@ -138,14 +125,13 @@
 {{-- End Modal Add --}}
 
 {{-- Start Modal Update --}}
-<div class="modal" id="updateModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog"
-    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal" id="updateModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Detail E-book</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                <h4 class="modal-title">Detail E-book</h4>
+                <button type="button" class="btn px-2 py-0" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="fs-3">&times;</span>
                 </button>
             </div>
             <form id="form-user" action="ebook/update" method="POST" enctype="multipart/form-data">
@@ -154,9 +140,7 @@
                     <div class="form-group mb-3">
                         <label>Cover</label>
                         <div class="custom-file">
-                            <input type="file" name="up_image_ebook" accept=".jpg, .png, .jpeg"
-                                data-max-file-size="1M" data-allowed-file-extensions="jpg png"
-                                class="custom-file-input dropify">
+                            <input type="file" name="up_image_ebook" accept=".jpg, .png, .jpeg" data-max-file-size="1M" data-allowed-file-extensions="jpg png" class="custom-file-input dropify">
                             <input type="hidden" name="up_id_buku" class="form-control">
                         </div>
                     </div>
@@ -178,19 +162,16 @@
                     </div>
                     <div class="form-group mb-3">
                         <label>Tahun Terbit</label>
-                        <input placeholder="Tahun Terbit" type="text" name="up_tahun" class="form-control"
-                            required>
+                        <input placeholder="Tahun Terbit" type="text" name="up_tahun" class="form-control" required>
                     </div>
                     <div class="col mb-3">
                         <label>Ebook</label>
                         <div class="custom-file show-file">
                             {{-- <object width="100%" name="up_ebook" height="512" data="" type="application/pdf"></object> --}}
-                            <iframe width="100%" name="up_ebook" height="512" style="border: 5px #3d3d3d solid;"
-                                seamless="yes" allowfullscreen="yes" frameborder="0"></iframe>
+                            <iframe width="100%" name="up_ebook" height="512" style="border: 5px #3d3d3d solid;" seamless="yes" allowfullscreen="yes" frameborder="0"></iframe>
                         </div>
                         <div class="hidden" style="display: none;">
-                            <input type="file" name="frame_ebook" id="frame_ebook" class="custom-file-input dropify"
-                                data-allowed-file-extensions="pdf" data-max-file-size="10M" data-default-file="">
+                            <input type="file" name="frame_ebook" id="frame_ebook" class="custom-file-input dropify" data-allowed-file-extensions="pdf" data-max-file-size="10M" data-default-file="">
                         </div>
                     </div>
                     <div class="form-group mb-3">
@@ -199,7 +180,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                    <button type="submit" class="btn btn-primary rounded">Simpan Perubahan</button>
                 </div>
             </form>
         </div>
@@ -208,14 +189,13 @@
 {{-- End Modal Update --}}
 
 {{-- Start Modal Delete --}}
-<div class="modal" id="deleteModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog"
-    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal" id="deleteModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Hapus</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                <h4 class="modal-title">Hapus</h4>
+                <button type="button" class="btn px-2 py-0" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="fs-3">&times;</span>
                 </button>
             </div>
             <form id="form-user" action="ebook/delete" method="POST" enctype="multipart/form-data">
@@ -225,7 +205,7 @@
                     <input type="hidden" name="del_id_ebook" value="" readonly>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Hapus</button>
+                    <button type="submit" class="btn btn-primary rounded">Hapus</button>
                 </div>
             </form>
         </div>
@@ -237,6 +217,7 @@
     $('#dtTable').DataTable()
 
     $('#cancel').hide();
+
 
     $('#ganti').click(function(e) {
         $(this).hide();
@@ -306,3 +287,4 @@
         }
     });
 </script>
+@endsection

@@ -90,6 +90,10 @@
 <script src="{{ asset('assets_new') }}/js/script.js"></script>
 
 
+<script>
+    $('#data-table').DataTable();
+    $('.select2').select2();
+</script>
 </body>
 
 </html>

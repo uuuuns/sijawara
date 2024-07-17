@@ -16,7 +16,7 @@ class InstructorController extends Controller
 
     public function index()
     {
-        $data['title'] = "Instructor";
+        $data['title'] = "Instruktur";
 
         $data["instructor"] = DB::select("
         SELECT 
@@ -34,13 +34,13 @@ class InstructorController extends Controller
         ");
 
         return
-            view('template_main.admin_side.etc.header', $data) .
-            view('template_main.admin_side.etc.sidebar', $data) .
-            view('template_main.admin_side.instructor', $data) .
-            view('template_main.admin_side.etc.footer');
+            view('template.header', $data) .
+            view('template_admin/instructor', $data) .
+            view('template.footer', $data);
     }
 
-    public function apply_instructor(){
+    public function apply_instructor()
+    {
         if (empty(Session::get('user'))) {
             redirect('logout');
         }

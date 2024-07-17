@@ -1,7 +1,11 @@
+@extends('template_admin.admin_template')
+@section('content')
 <!-- Content Wrapper START -->
-<div class="main-content">
+<div class="col ms-0 ms-md-4 p-4 shadow rounded-3 overflow-hidden bg-white">
+    <h3 class="fw-bold pb-4" style="color:#45b104">Dashboard</h3>
+
     <div class="row">
-        <div class="col-md-6 col-lg-4">
+        <div class="col-md-12">
             <div class="card">
                 <div class="card-body">
                     <div class="media align-items-center">
@@ -18,8 +22,8 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-6 col-lg-3">
-            <div class="card">
+        <div class="col-md-4">
+            <div class="card my-3 me-2">
                 <div class="card-body">
                     <div class="media align-items-center">
                         <div class="avatar avatar-icon avatar-lg avatar-cyan">
@@ -35,8 +39,8 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-6 col-lg-3">
-            <div class="card">
+        <div class="col-md-4">
+            <div class="card my-3 mx-2">
                 <div class="card-body">
                     <div class="media align-items-center">
                         <div class="avatar avatar-icon avatar-lg avatar-gold">
@@ -53,26 +57,26 @@
             </div>
         </div>
         <?php if (session('user')[0]['ID_ROLE'] == 1) { ?>
-        <div class="col-md-6 col-lg-2">
-            <div class="card">
-                <div class="card-body">
-                    <div class="media align-items-center">
-                        <div class="avatar avatar-icon avatar-lg avatar-purple">
-                            <i class="anticon anticon-user"></i>
-                        </div>
-                        <div class="m-l-15">
-                            <h2 class="m-b-0"><?= $total_user[0]->TOTAL ?></h2>
-                            <p class="m-b-0 text-muted">User</p>
+            <div class="col-md-4">
+                <div class="card my-3 ms-2">
+                    <div class="card-body">
+                        <div class="media align-items-center">
+                            <div class="avatar avatar-icon avatar-lg avatar-purple">
+                                <i class="anticon anticon-user"></i>
+                            </div>
+                            <div class="m-l-15">
+                                <h2 class="m-b-0"><?= $total_user[0]->TOTAL ?></h2>
+                                <p class="m-b-0 text-muted">User</p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
         <?php } ?>
 
     </div>
     <div class="row">
-        <div class="col-md-12 col-lg-8">
+        <div class="col-md-12">
             <div class="card">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
@@ -94,8 +98,8 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-12 col-lg-4">
-            <div class="card">
+        <div class="col-md-12">
+            <div class="card my-3">
                 <div class="card-body">
                     <h5 class="m-b-0">Pelanggan</h5>
                     <div class="m-v-60 text-center" style="height: 200px">
@@ -265,3 +269,4 @@
     }
 </script>
 <!-- Content Wrapper END -->
+@endsection

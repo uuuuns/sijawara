@@ -1,15 +1,7 @@
+@extends('template_admin.admin_template')
+@section('content')
 <!-- Content Wrapper START -->
-<div class="main-content">
-    <div class="page-header">
-        <h2 class="header-title"><?= $title ?></h2>
-        <div class="header-sub-title">
-            <nav class="breadcrumb breadcrumb-dash">
-                <a href="<?= url('dashboard') ?>" class="breadcrumb-item"><i
-                        class="anticon anticon-home m-r-5"></i>Home</a>
-                <span class="breadcrumb-item active"><?= $title ?></span>
-            </nav>
-        </div>
-    </div>
+<div class="col ms-0 ms-md-4 p-4 shadow rounded-3 overflow-hidden bg-white">
     {{-- <?php if (!empty($this->session->flashdata('msg'))) { ?>
     <div class="alert alert-success">
         <div class="d-flex align-items-center justify-content-start">
@@ -20,21 +12,21 @@
         </div>
     </div>
     <?php } ?> --}}
-    <div class="card">
+    <div class="">
         <div class="card-body">
             <div class="row">
                 <div class="col-md-6 align-self-center">
-                    <label class="card-title" style="font-size: 20px">Users</label>
+                    <h3 class="fw-bold" style="color:#45b104">Users</h3>
                 </div>
                 <div class="col-md-6 d-flex justify-content-md-end justify-content-end align-items-center">
                     <div class="mt-3 mt-md-0">
-                        <button type="button" class="btn btn-primary" onclick="openaddModal()">
+                        <button type="button" class="btn btn-primary btn-sm-2 rounded" onclick="openaddModal()">
                             <i class="mdi mdi-plus me-1"></i>
                             Tambah User</button>
                     </div>
                 </div>
             </div>
-            <div class="m-t-25">
+            <div class="mt-5">
                 <table class="table mb-0" id="dtTable">
                     <thead>
                         <tr>
@@ -43,33 +35,31 @@
                             <th>Email</th>
                             <th>No Telepon</th>
                             <th>Jenis Kelamin</th>
-                            <th>Aksi</th>
+                            <th width="100px">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php $number = 0; ?>
 
                         @foreach ($user as $item)
-                            <?php $number++; ?>
-                            <tr>
-                                <td><?= $number ?></td>
-                                <td><?= $item->NAME ?></td>
-                                <td><?= $item->EMAIL ?></td>
-                                <td><?= $item->TELP ?></td>
-                                <td><?= $item->JK ?></td>
-                                <td>
-                                    <button type="button"
-                                        onclick="openviewModal(`<?= htmlentities(json_encode($item)) ?>`)"
-                                        class="btn btn-subtle-primary waves-effect waves-light">
+                        <?php $number++; ?>
+                        <tr>
+                            <td><?= $number ?></td>
+                            <td><?= $item->NAME ?></td>
+                            <td><?= $item->EMAIL ?></td>
+                            <td><?= $item->TELP ?></td>
+                            <td><?= $item->JK ?></td>
+                            <td>
+                                <div class="d-flex flex-column gap-2">
+                                    <button type="button" onclick="openviewModal(`<?= htmlentities(json_encode($item)) ?>`)" class="btn btn-warning px-4 py-2 rounded">
                                         <i class="bx bx-edit-alt font-size-16 align-middle"></i>
                                     </button>
-                                    <button type="button"
-                                        onclick="opendeleteModal(`<?= htmlentities(json_encode($item)) ?>`)"
-                                        class="btn btn-subtle-danger waves-effect waves-light">
+                                    <button type="button" onclick="opendeleteModal(`<?= htmlentities(json_encode($item)) ?>`)" class="btn btn-danger px-4 py-2 rounded">
                                         <i class="bx bx-trash font-size-16 align-middle"></i>
                                     </button>
-                                </td>
-                            </tr>
+                                </div>
+                            </td>
+                        </tr>
                         @endforeach
                     </tbody>
                 </table>
@@ -80,14 +70,13 @@
 <!-- Content Wrapper END -->
 
 {{-- Start Modal Add --}}
-<div class="modal" id="addModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog"
-    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal" id="addModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Tambah User</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                <h4 class="modal-title">Tambah User</h4>
+                <button type="button" class="btn px-2 py-0" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="fs-3">&times;</span>
                 </button>
             </div>
             <form id="form-add" action="user/store" method="POST" enctype="multipart/form-data">
@@ -96,8 +85,7 @@
                     <div class="form-group">
                         <label>Foto Profil <span class="text-danger">*</span></label>
                         <div class="custom-file">
-                            <input type="file" name="foto_profile" class="custom-file-input dropify"
-                                data-allowed-file-extensions="png jpg jpeg" data-max-file-size="1M" required>
+                            <input type="file" name="foto_profile" class="custom-file-input dropify" data-allowed-file-extensions="png jpg jpeg" data-max-file-size="1M" required>
                         </div>
                     </div>
                     <div class="form-group mb-3">
@@ -108,21 +96,18 @@
                         <label>Jenis Kelamin <span class="text-danger">*</span></label>
                         <div class="col-md-5">
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="jk" id="inlineRadio1"
-                                    value="Laki-Laki" checked>
+                                <input class="form-check-input" type="radio" name="jk" id="inlineRadio1" value="Laki-Laki" checked>
                                 <label class="form-check-label" for="inlineRadio1">Laki-laki</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="jk" id="inlineRadio2"
-                                    value="Perempuan">
+                                <input class="form-check-input" type="radio" name="jk" id="inlineRadio2" value="Perempuan">
                                 <label class="form-check-label" for="inlineRadio2">Perempuan</label>
                             </div>
                         </div>
                     </div>
                     <div class="form-group mb-3">
                         <label>Email <span class="text-danger">*</span></label>
-                        <input placeholder="Email@gmail.com" type="text" name="email" class="form-control"
-                            required>
+                        <input placeholder="Email@gmail.com" type="text" name="email" class="form-control" required>
                     </div>
                     <div class="form-group mb-3">
                         <label>Nomor HP <span class="text-danger">*</span></label>
@@ -130,31 +115,26 @@
                     </div>
                     <div class="form-group mb-3">
                         <label>Kata Sandi <span class="text-danger">*</span></label>
-                        <input placeholder="Password" type="password" id="password" name="password"
-                            class="form-control" required>
+                        <input placeholder="Password" type="password" id="password" name="password" class="form-control" required>
                     </div>
                     <div class="form-group mb-3">
                         <label>Konfirmasi Kata Sandi <span class="text-danger">*</span></label>
-                        <input placeholder="Konfirmasi Password" type="password" id="cnfirm_password"
-                            name="cnfirm_password" class="form-control" required>
+                        <input placeholder="Konfirmasi Password" type="password" id="cnfirm_password" name="cnfirm_password" class="form-control" required>
                     </div>
                     <div class="form-group mb-3">
                         <label>Apakah sudah lulus ? <span class="text-danger">*</span></label>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="is_graduated" id="inlineRadio3"
-                                value="0" checked>
+                            <input class="form-check-input" type="radio" name="is_graduated" id="inlineRadio3" value="0" checked>
                             <label class="form-check-label" for="inlineRadio3">Belum</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="is_graduated" id="inlineRadio4"
-                                value="1">
+                            <input class="form-check-input" type="radio" name="is_graduated" id="inlineRadio4" value="1">
                             <label class="form-check-label" for="inlineRadio4">Sudah</label>
                         </div>
                     </div>
                     <div class="form-group mb-3">
                         <label>Universitas <span class="text-danger">*</span></label>
-                        <input placeholder="Universitas ..." type="univ" name="univ" class="form-control"
-                            required>
+                        <input placeholder="Universitas ..." type="univ" name="univ" class="form-control" required>
                     </div>
                     <div class="form-group mb-3">
                         <label>NIM <span class="text-danger">*</span></label>
@@ -162,8 +142,7 @@
                     </div>
                     <div class="form-group mb-3">
                         <label>Program Studi <span class="text-danger">*</span></label>
-                        <input placeholder="Informatika" type="text" name="study" class="form-control"
-                            required>
+                        <input placeholder="Informatika" type="text" name="study" class="form-control" required>
                     </div>
                     <div class="form-group mb-3">
                         <label>Gelar <span class="text-danger">*</span></label>
@@ -175,43 +154,38 @@
                     </div>
                     <div class="form-group mb-3">
                         <label>Semester <span class="text-danger">*</span></label>
-                        <input placeholder="8" type="text" id="semester" name="semester" class="form-control"
-                            required>
+                        <input placeholder="8" type="text" id="semester" name="semester" class="form-control" required>
                     </div>
                     <div class="row">
                         <div class="col">
                             <label><span class="text-danger">*</span>Dokumen CV :</label>
                             <div class="custom-file">
-                                <input type="file" name="cv_doc" class="custom-file-input dropify"
-                                    data-allowed-file-extensions="pdf" data-max-file-size="5M">
+                                <input type="file" name="cv_doc" class="custom-file-input dropify" data-allowed-file-extensions="pdf" data-max-file-size="5M">
                             </div>
                         </div>
                         <div class="col">
                             <label><span class="text-danger">*</span>Dokumen Sertifikat :</label>
                             <div class="custom-file">
-                                <input type="file" name="certi_doc" class="custom-file-input dropify"
-                                    data-allowed-file-extensions="pdf" data-max-file-size="5M">
+                                <input type="file" name="certi_doc" class="custom-file-input dropify" data-allowed-file-extensions="pdf" data-max-file-size="5M">
                             </div>
                         </div>
                         <div class="w-100" style="margin: 20px 0px;"></div>
                         <div class="col">
                             <label><span class="text-danger">*</span>Dokumen Portofolio :</label>
                             <div class="custom-file">
-                                <input type="file" name="portofolio_doc" class="custom-file-input dropify"
-                                    data-allowed-file-extensions="pdf" data-max-file-size="5M">
+                                <input type="file" name="portofolio_doc" class="custom-file-input dropify" data-allowed-file-extensions="pdf" data-max-file-size="5M">
                             </div>
                         </div>
                         <div class="col">
                             <label><span class="text-danger">*</span>Dokumen Surat Rekomendasi :</label>
                             <div class="custom-file">
-                                <input type="file" name="recommend_doc" class="custom-file-input dropify"
-                                    data-allowed-file-extensions="pdf" data-max-file-size="5M">
+                                <input type="file" name="recommend_doc" class="custom-file-input dropify" data-allowed-file-extensions="pdf" data-max-file-size="5M">
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="Submit" class="btn btn-primary">Tambah User</button>
+                    <button type="Submit" class="btn btn-primary rounded">Tambah User</button>
                 </div>
             </form>
         </div>
@@ -220,14 +194,13 @@
 {{-- End Modal Add --}}
 
 {{-- Start Modal Update --}}
-<div class="modal" id="updateModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog"
-    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal" id="updateModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Detail User</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                <h4 class="modal-title">Detail User</h4>
+                <button type="button" class="btn px-2 py-0" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="fs-3">&times;</span>
                 </button>
             </div>
             <form id="form-update" action="user/update" method="POST" enctype="multipart/form-data">
@@ -238,58 +211,48 @@
                         <div class="form-group">
                             <label>Foto Profil</label>
                             <div class="custom-file photo">
-                                <input type="file" name="up_foto_profile" class="custom-file-input dropify"
-                                    data-allowed-file-extensions="png jpg jpeg" data-max-file-size="1M"
-                                    data-default-file="">
+                                <input type="file" name="up_foto_profile" class="custom-file-input dropify" data-allowed-file-extensions="png jpg jpeg" data-max-file-size="1M" data-default-file="">
                             </div>
                         </div>
                         <div class="form-group mb-3">
                             <label>Nama Lengkap</label>
-                            <input placeholder="Nama Lengkap" type="text" name="up_name" class="form-control"
-                                required>
+                            <input placeholder="Nama Lengkap" type="text" name="up_name" class="form-control" required>
                         </div>
                         <div class="form-group mb-3">
                             <label>Jenis Kelamin</label>
                             <div class="col-md-5">
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="up_jk" id="inlineRadio11"
-                                        value="Laki-Laki" checked>
+                                    <input class="form-check-input" type="radio" name="up_jk" id="inlineRadio11" value="Laki-Laki" checked>
                                     <label class="form-check-label" for="inlineRadio11">Laki-laki</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="up_jk" id="inlineRadio22"
-                                        value="Perempuan">
+                                    <input class="form-check-input" type="radio" name="up_jk" id="inlineRadio22" value="Perempuan">
                                     <label class="form-check-label" for="inlineRadio22">Perempuan</label>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group mb-3">
                             <label>Email</label>
-                            <input placeholder="Email@gmail.com" type="text" name="up_email" class="form-control"
-                                required>
+                            <input placeholder="Email@gmail.com" type="text" name="up_email" class="form-control" required>
                         </div>
                         <div class="form-group mb-3">
                             <label>Nomor HP</label>
-                            <input placeholder="085141xxxx" type="text" name="up_contact" class="form-control"
-                                required>
+                            <input placeholder="085141xxxx" type="text" name="up_contact" class="form-control" required>
                         </div>
                         <div class="form-group mb-3">
                             <label>Apakah sudah lulus ?</label>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="up_is_graduated"
-                                    id="inlineRadio33" value="0" checked>
+                                <input class="form-check-input" type="radio" name="up_is_graduated" id="inlineRadio33" value="0" checked>
                                 <label class="form-check-label" for="inlineRadio33">Belum</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="up_is_graduated"
-                                    id="inlineRadio44" value="1">
+                                <input class="form-check-input" type="radio" name="up_is_graduated" id="inlineRadio44" value="1">
                                 <label class="form-check-label" for="inlineRadio44">Sudah</label>
                             </div>
                         </div>
                         <div class="form-group mb-3">
                             <label>Universitas</label>
-                            <input placeholder="Universitas ..." type="univ" name="up_univ" class="form-control"
-                                required>
+                            <input placeholder="Universitas ..." type="univ" name="up_univ" class="form-control" required>
                         </div>
                         <div class="form-group mb-3">
                             <label>NIM</label>
@@ -297,8 +260,7 @@
                         </div>
                         <div class="form-group mb-3">
                             <label>Program Studi</label>
-                            <input placeholder="Informatika" type="text" name="up_study" class="form-control"
-                                required>
+                            <input placeholder="Informatika" type="text" name="up_study" class="form-control" required>
                         </div>
                         <div class="form-group mb-3">
                             <label>Gelar</label>
@@ -310,57 +272,44 @@
                         </div>
                         <div class="form-group mb-3 hide_this">
                             <label>Semester</label>
-                            <input placeholder="8" type="text" id="up_semester" name="up_semester"
-                                class="form-control" required>
+                            <input placeholder="8" type="text" id="up_semester" name="up_semester" class="form-control" required>
                         </div>
                         <div class="row mb-3">
                             <div class="col">
                                 <label>Dokumen CV :</label>
                                 <div class="custom-file show-file">
-                                    <iframe width="100%" height="512" style="border: 5px #3d3d3d solid;"
-                                        name="frame_cv_doc" src=""></iframe>
+                                    <iframe width="100%" height="512" style="border: 5px #3d3d3d solid;" name="frame_cv_doc" src=""></iframe>
                                 </div>
                                 <div class="hidden" style="display: none;">
-                                    <input type="file" name="up_cv_doc" class="custom-file-input dropify"
-                                        data-allowed-file-extensions="pdf" data-max-file-size="5M"
-                                        data-default-file="">
+                                    <input type="file" name="up_cv_doc" class="custom-file-input dropify" data-allowed-file-extensions="pdf" data-max-file-size="5M" data-default-file="">
                                 </div>
                             </div>
                             <div class="col ">
                                 <label>Dokumen Sertifikat :</label>
                                 <div class="custom-file show-file">
-                                    <iframe width="100%" height="512" style="border: 5px #3d3d3d solid;"
-                                        name="frame_certi_doc" src=""></iframe>
+                                    <iframe width="100%" height="512" style="border: 5px #3d3d3d solid;" name="frame_certi_doc" src=""></iframe>
                                 </div>
                                 <div class="hidden" style="display: none;">
-                                    <input type="file" name="up_certi_doc" class="custom-file-input dropify"
-                                        data-allowed-file-extensions="pdf" data-max-file-size="5M"
-                                        data-default-file="">
+                                    <input type="file" name="up_certi_doc" class="custom-file-input dropify" data-allowed-file-extensions="pdf" data-max-file-size="5M" data-default-file="">
                                 </div>
                             </div>
                             <div class="w-100" style="margin: 20px 0px;"></div>
                             <div class="col">
                                 <label>Dokumen Portofolio :</label>
                                 <div class="custom-file show-file">
-                                    <iframe width="100%" height="512" style="border: 5px #3d3d3d solid;"
-                                        name="frame_portofolio_doc" src=""></iframe>
+                                    <iframe width="100%" height="512" style="border: 5px #3d3d3d solid;" name="frame_portofolio_doc" src=""></iframe>
                                 </div>
                                 <div class="hidden" style="display: none;">
-                                    <input type="file" name="up_portofolio_doc" class="custom-file-input dropify"
-                                        data-allowed-file-extensions="pdf" data-max-file-size="5M"
-                                        data-default-file="">
+                                    <input type="file" name="up_portofolio_doc" class="custom-file-input dropify" data-allowed-file-extensions="pdf" data-max-file-size="5M" data-default-file="">
                                 </div>
                             </div>
                             <div class="col">
                                 <label>Dokumen Surat Rekomendasi :</label>
                                 <div class="custom-file show-file">
-                                    <iframe width="100%" height="512" style="border: 5px #3d3d3d solid;"
-                                        name="frame_recommend_doc" src=""></iframe>
+                                    <iframe width="100%" height="512" style="border: 5px #3d3d3d solid;" name="frame_recommend_doc" src=""></iframe>
                                 </div>
                                 <div class="hidden" style="display: none;">
-                                    <input type="file" name="up_recommend_doc" class="custom-file-input dropify"
-                                        data-allowed-file-extensions="pdf" data-max-file-size="5M"
-                                        data-default-file="">
+                                    <input type="file" name="up_recommend_doc" class="custom-file-input dropify" data-allowed-file-extensions="pdf" data-max-file-size="5M" data-default-file="">
                                 </div>
                             </div>
                         </div>
@@ -371,7 +320,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                    <button type="submit" class="btn btn-primary rounded">Simpan Perubahan</button>
                 </div>
             </form>
         </div>
@@ -380,14 +329,13 @@
 {{-- End Modal Update --}}
 
 {{-- Start Modal Delete --}}
-<div class="modal" id="deleteModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog"
-    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal" id="deleteModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content modal lg">
             <div class="modal-header">
-                <h5 class="modal-title">Hapus User</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                <h4 class="modal-title">Hapus User</h4>
+                <button type="button" class="btn px-2 py-0" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="fs-3">&times;</span>
                 </button>
             </div>
             <form id="form-delete" action="user/delete" method="POST" enctype="multipart/form-data">
@@ -397,7 +345,7 @@
                     <input type="hidden" name="del_id_user" value="" readonly>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Hapus</button>
+                    <button type="submit" class="btn btn-primary rounded">Hapus</button>
                 </div>
             </form>
         </div>
@@ -527,3 +475,4 @@
         });
     });
 </script>
+@endsection

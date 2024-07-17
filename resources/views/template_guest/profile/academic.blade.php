@@ -8,10 +8,10 @@
         background-color: #F5F5F5;
     }
 </style>
-<div class="col ms-4 px-5 py-5 shadow rounded-3 overflow-hidden bg-white">
+<div class="col ms-0 ms-md-4 px-5 py-5 shadow rounded-3 overflow-hidden bg-white">
     <form action="/profile/academic/change" id="academic-form" method="POST">
         @csrf
-        <h3 class="fw-bold pb-5" style="color:#5580E9">Data Akademik</h3>
+        <h3 class="fw-bold pb-5" style="color:#45b104">Data Akademik</h3>
         <h5 class="text-black ps-1">Nama Universitas</h5>
         <div class="my-3 float-label-control">
             <input type="text" name="univ" class="form-control input-text woocommerce-Input woocommerce-Input--text" placeholder="Nama Universitas" value="<?= !empty($academic->UNIV) ? $academic->UNIV : ''  ?>" required>

@@ -8,6 +8,7 @@
     <meta name="author" content="dreambuzz">
 
     <title>{{ $title }}</title>
+    <link rel="shortcut icon" href="<?= asset('assets_admin\images\logo\favicon_sijawara.svg') ?>">
 
     <!-- Mobile Specific Meta-->
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -38,6 +39,49 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+    <!-- Select2 css -->
+    <link href="<?= asset('assets_admin/vendors/select2/select2.css') ?>" rel="stylesheet">
+    <!-- DatePicker css -->
+    <link href="<?= asset('assets_admin/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css') ?>" rel="stylesheet">
+    <!-- page css -->
+    <link href="<?= asset('assets_admin/vendors/datatables/dataTables.bootstrap.min.css') ?>" rel="stylesheet">
+    <!-- Dropify css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/css/dropify.min.css" />
+    <!-- Core css -->
+    <!-- <link href="<?= asset('assets_admin/css/app.min.css') ?>" rel="stylesheet"> -->
+    <!-- Icon css -->
+    <link href="https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css" rel="stylesheet">
+
+
+    <!-- Core Vendors JS -->
+    <script src="<?= asset('assets_admin/js/vendors.min.js') ?>"></script>
+    <!-- Select2 JS -->
+    <script src="<?= asset('assets_admin/vendors/select2/select2.min.js') ?>"></script>
+    <!-- Dropify JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Dropify/0.2.2/js/dropify.min.js"></script>
+    <!-- DatePicker JS -->
+    <script src="<?= asset('assets_admin/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js') ?>"></script>
+    <!-- Validate JS -->
+    <script src="<?= asset('assets_admin/vendors/jquery-validation/jquery.validate.min.js') ?>"></script>
+    <!-- include libraries(jQuery, bootstrap) -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <!-- include summernote css/js -->
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+    <!-- Core JS -->
+    <script src="<?= asset('assets_admin/js/app.min.js') ?>"></script>
+    <!-- Vendor Chart -->
+    <script src="<?= asset('assets_admin/vendors/chartjs/Chart.min.js') ?>"></script>
+    <!-- Dashboard JS -->
+    <script src="<?= asset('assets_admin/js/pages/dashboard-default.js') ?>"></script>
+    <!-- DataTable JS -->
+    <script src="<?= asset('assets_admin/vendors/datatables/jquery.dataTables.min.js') ?>"></script>
+    <!-- Core Bootstrap JS -->
+    <script src="<?= asset('assets_admin/vendors/datatables/dataTables.bootstrap.min.js') ?>"></script>
+    <!-- Sweet Alert -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sweetalert2@11.6.6/dist/sweetalert2.all.min.js">
+    </script>
 </head>
 
 <body id="top-header" style="<?= $title == "SIJAWARA+" ? "background-image: url(assets_new/images/new/bg.png);background-size: cover;" : "" ?>">
@@ -124,6 +168,309 @@
 
         .menu-trigger {
             display: none;
+        }
+
+        .btn-check:focus+.btn-primary,
+        .btn-primary:focus {
+            color: #fff;
+            background-color: #307704;
+            border-color: #307704;
+        }
+
+        .select2-container {
+            display: block
+        }
+
+        .select2-container .select2-choice {
+            height: 2.5375rem;
+            border: 1px solid #edf2f9;
+            color: #53535f;
+            line-height: 2.5375rem;
+            background-image: none;
+            background-color: #fff
+        }
+
+        .select2-container .select2-choice .select2-arrow {
+            background-image: none;
+            background-color: #fff;
+            border-left: 0;
+            width: 25px
+        }
+
+        .select2-container .select2-choice .select2-arrow b {
+            background: none
+        }
+
+        .select2-container .select2-choice .select2-arrow b:after {
+            content: "\f078";
+            font-family: "Font Awesome 5 Pro";
+            color: rgba(0, 0, 0, 0.25);
+        }
+
+        .select2-container-active.select2-container {
+            border: 1px solid #45b104;
+            border-radius: .25rem;
+            box-shadow: 0 0 0 2px rgba(63, 135, 245, 0.2)
+        }
+
+        .select2-container-active.select2-container .select2-choice,
+        .select2-container-active.select2-container .select2-choices {
+            box-shadow: none
+        }
+
+        .select2-drop-active {
+            border: 0px
+        }
+
+        .select2-drop {
+            color: #53535f;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15)
+        }
+
+        .select2-drop.select2-drop-above.select2-drop-active {
+            border-top: 0px
+        }
+
+        .select2-results .select2-highlighted {
+            color: #45b104;
+            background-color: rgba(69, 177, 4, 0.1);
+        }
+
+        .select2-results .select2-result-label {
+            padding: 5px 12px
+        }
+
+        .select2-search {
+            padding: 4px
+        }
+
+        .select2-search:after {
+            content: "\f002";
+            font-family: "Font Awesome 5 Pro";
+            color: #53535f;
+            position: absolute;
+            right: 15px;
+            top: 10px
+        }
+
+        .select2-search input {
+            border-color: #edf2f9;
+            background: none;
+            border-radius: .25rem;
+            font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif
+        }
+
+        .select2-dropdown-open.select2-container .select2-choice .select2-arrow b:after {
+            content: "\f077"
+        }
+
+        .select2-dropdown-open.select2-drop-above .select2-choice,
+        .select2-dropdown-open.select2-drop-above .select2-choices {
+            background: none
+        }
+
+        .select2-container-multi .select2-choices {
+            min-height: 2.5375rem;
+            border: 1px solid #edf2f9;
+            background-image: none
+        }
+
+        .select2-container-multi .select2-choices .select2-search-choice {
+            margin: 8px 0 8px 5px;
+            border: 1px solid #e8e8e8;
+            background-color: #fafafa;
+            background-image: none
+        }
+
+        .select2-search-choice-close {
+            background-image: none;
+            color: #72849a;
+            font-size: 12px
+        }
+
+        .select2-search-choice-close:after {
+            content: "\25";
+            font-family: "anticon"
+        }
+
+        .select2-search-choice-close:hover {
+            color: #2a2a2a
+        }
+
+        .switch input[type=checkbox] {
+            opacity: 0;
+            position: absolute
+        }
+
+        .switch input[type=checkbox]+label {
+            position: relative;
+            display: inline-block;
+            transition: 0.4s ease;
+            -webkit-transition: 0.4s ease;
+            -moz-transition: 0.4s ease;
+            -o-transition: 0.4s ease;
+            -ms-transition: 0.4s ease;
+            height: 25px;
+            width: 50px;
+            border: 1px solid #bfbfbf;
+            background-color: #bfbfbf;
+            border-radius: 60px;
+            margin-bottom: 0px;
+            cursor: pointer
+        }
+
+        .switch input[type=checkbox]+label:before {
+            content: "";
+            position: absolute;
+            display: block;
+            transition: 0.2s cubic-bezier(0.24, 0, 0.5, 1);
+            -webkit-transition: 0.2s cubic-bezier(0.24, 0, 0.5, 1);
+            -moz-transition: 0.2s cubic-bezier(0.24, 0, 0.5, 1);
+            -o-transition: 0.2s cubic-bezier(0.24, 0, 0.5, 1);
+            -ms-transition: 0.2s cubic-bezier(0.24, 0, 0.5, 1);
+            height: 25px;
+            width: 50px;
+            top: 0;
+            left: 0;
+            border-radius: 30px
+        }
+
+        .switch input[type=checkbox]+label:after {
+            content: "";
+            position: absolute;
+            display: block;
+            box-shadow: 0 2px 4px 0 rgba(0, 35, 11, 0.2);
+            transition: 0.36s cubic-bezier(0.78, 0.14, 0.15, 0.86);
+            -webkit-transition: 0.36s cubic-bezier(0.78, 0.14, 0.15, 0.86);
+            -moz-transition: 0.36s cubic-bezier(0.78, 0.14, 0.15, 0.86);
+            -o-transition: 0.36s cubic-bezier(0.78, 0.14, 0.15, 0.86);
+            -ms-transition: 0.36s cubic-bezier(0.78, 0.14, 0.15, 0.86);
+            background: #fff;
+            height: 21px;
+            width: 21px;
+            top: 1px;
+            left: 1px;
+            border-radius: 60px
+        }
+
+        .switch input[type=checkbox]:checked+label {
+            background: #45b104;
+            border-color: #45b104
+        }
+
+        .switch input[type=checkbox]:checked+label:before {
+            transition: width 0.2s cubic-bezier(0, 0, 0, 0.1);
+            -webkit-transition: width 0.2s cubic-bezier(0, 0, 0, 0.1);
+            -moz-transition: width 0.2s cubic-bezier(0, 0, 0, 0.1);
+            -o-transition: width 0.2s cubic-bezier(0, 0, 0, 0.1);
+            -ms-transition: width 0.2s cubic-bezier(0, 0, 0, 0.1)
+        }
+
+        .switch input[type=checkbox]:checked+label:after {
+            left: 25px
+        }
+
+        .switch input[type=checkbox]:checked:active:not(:disabled)+label:after {
+            width: 24px;
+            left: 22px
+        }
+
+        .switch input[type=checkbox]:not(:checked):active:not(:disabled)+label:after {
+            width: 24px
+        }
+
+        .switch input[type=checkbox]:disabled+label {
+            opacity: 0.6;
+            cursor: not-allowed
+        }
+
+        .form-control:focus {
+            border-bottom: 2px solid var(--theme-primary-color) !important;
+        }
+
+        .radio {
+            min-height: auto;
+            position: relative
+        }
+
+        .radio label {
+            cursor: pointer
+        }
+
+        .radio input[type=radio] {
+            margin: 0;
+            display: none;
+            width: 1.25rem
+        }
+
+        .radio input[type=radio]+label {
+            padding-left: 0
+        }
+
+        .radio input[type=radio]+label:before {
+            content: "";
+            width: 1.25rem;
+            height: 1.25rem;
+            display: inline-block;
+            margin-right: 10px;
+            border: 2px solid #edf2f9;
+            border-radius: 50%;
+            margin-bottom: 5px;
+            /* font-weight:400; */
+            /* line-height:1.25rem; */
+            vertical-align: bottom;
+            text-align: center;
+            background-color: #fff;
+            color: transparent;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            -webkit-transition: all 0.2s ease-in-out;
+            -moz-transition: all 0.2s ease-in-out;
+            -o-transition: all 0.2s ease-in-out;
+            -ms-transition: all 0.2s ease-in-out
+        }
+
+        .radio input[type=radio]+label:after {
+            content: "";
+            background-color: transparent;
+            border-radius: 50%;
+            width: .625rem;
+            height: .625rem;
+            position: absolute;
+            left: 5px;
+            top: 10px;
+        }
+
+        .radio input[type=radio]:checked+label:before {
+            color: #45b104;
+            border-color: #45b104
+        }
+
+        .radio input[type=radio]:checked+label:after {
+            background-color: #45b104
+        }
+
+        .radio input[type=radio]:disabled+label,
+        .radio input[type=radio].disabled+label {
+            opacity: 0.6;
+            cursor: not-allowed
+        }
+
+        .radio input[type=radio]:disabled+label:before,
+        .radio input[type=radio].disabled+label:before {
+            background-color: #ededed;
+            cursor: not-allowed
+        }
+
+        .radio input[type=radio]:disabled:checked+label:before,
+        .radio input[type=radio].disabled:checked+label:before {
+            background-color: #ededed;
+            border-color: #ededed
+        }
+
+        .radio input[type=radio]:disabled:checked+label:after,
+        .radio input[type=radio].disabled:checked+label:after {
+            background-color: rgba(83, 83, 95, 0.9)
         }
     </style>
     <header class="header-style-1">
@@ -269,7 +616,7 @@
                                     </a>
                                     <ul class="submenu" style="left: initial;right:0">
                                         <?php if (session('user')[0]['ID_ROLE'] == 1) { ?>
-                                            <li><a class="" href="<?= url('dashboard') ?>">Beranda  </a></li>
+                                            <li><a class="" href="<?= url('dashboard') ?>">Beranda </a></li>
                                         <?php    } else { ?>
                                             <li><a class="" href="<?= url('profile') ?>">Profile</a></li>
                                             <li><a class=" " href="<?= url('profile/mycourses') ?>">Kursus Ku</a></li>

@@ -27,10 +27,9 @@ class EbookController extends Controller
         ");
 
         return
-        view('template_main.admin_side.etc.header', $data) .
-        view('template_main.admin_side.etc.sidebar', $data) .
-        view('template_main.admin_side.ebook', $data) .
-        view('template_main.admin_side.etc.footer');
+            view('template.header', $data) .
+            view('template_admin/ebook', $data) .
+            view('template.footer', $data);
     }
 
     public function store(Request $req)
@@ -50,11 +49,11 @@ class EbookController extends Controller
 
         DB::table('ebook')->insert($data);
 
-        return redirect('ebook')->with('succ_msg','Successfully Add New Ebook');
+        return redirect('ebook')->with('succ_msg', 'Successfully Add New Ebook');
     }
 
     public function update(Request $req)
-    {   
+    {
         $data = [
             'JUDUL'         => $req->input('up_judul'),
             'GENRE'         => $req->input('up_genre'),
@@ -74,14 +73,14 @@ class EbookController extends Controller
 
         DB::table('ebook')->where('ID_BUKU', '=', $req->input('up_id_buku'))->update($data);
 
-        return redirect('ebook')->with('succ_msg','Successfully Update Ebook');
+        return redirect('ebook')->with('succ_msg', 'Successfully Update Ebook');
     }
 
     public function delete(Request $req)
     {
         DB::table('ebook')->where('ID_BUKU', '=', $req->input('del_id_ebook'))->delete();
 
-        return redirect('ebook')->with('succ_msg','Successfully Delete Ebook');
+        return redirect('ebook')->with('succ_msg', 'Successfully Delete Ebook');
     }
 
     public function GenerateUniqID($var)

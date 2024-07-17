@@ -37,7 +37,7 @@ class ProfileGuest extends Controller
             SELECT user_data.*, instructor_req.STATUS
             FROM user_data
             LEFT JOIN instructor_req ON instructor_req.ID_USER = user_data.ID_USER
-            WHERE user_data.ID_USER = '". session('user')[0]['ID_USER'] ."';
+            WHERE user_data.ID_USER = '" . session('user')[0]['ID_USER'] . "';
 
         ");
         // dd($data);
@@ -52,13 +52,13 @@ class ProfileGuest extends Controller
             SELECT user_data.*, instructor_req.STATUS
             FROM user_data
             LEFT JOIN instructor_req ON instructor_req.ID_USER = user_data.ID_USER
-            WHERE user_data.ID_USER = '". session('user')[0]['ID_USER'] ."';
+            WHERE user_data.ID_USER = '" . session('user')[0]['ID_USER'] . "';
 
         ");
         $data['title'] = "My Ebook";
         return
             view('template.header', $data) .
-            view('template_guest/profile/myebook',$data) .
+            view('template_guest/profile/myebook', $data) .
             view('template.footer', $data);
     }
     public function academic()
@@ -76,7 +76,7 @@ class ProfileGuest extends Controller
             SELECT user_data.*, instructor_req.STATUS
             FROM user_data
             LEFT JOIN instructor_req ON instructor_req.ID_USER = user_data.ID_USER
-            WHERE user_data.ID_USER = '". session('user')[0]['ID_USER'] ."';
+            WHERE user_data.ID_USER = '" . session('user')[0]['ID_USER'] . "';
 
         ");
         // dd($data);
@@ -92,7 +92,7 @@ class ProfileGuest extends Controller
             SELECT user_data.*, instructor_req.STATUS
             FROM user_data
             LEFT JOIN instructor_req ON instructor_req.ID_USER = user_data.ID_USER
-            WHERE user_data.ID_USER = '". session('user')[0]['ID_USER'] ."';
+            WHERE user_data.ID_USER = '" . session('user')[0]['ID_USER'] . "';
 
         ");
         // dd($data['document']);
@@ -108,7 +108,7 @@ class ProfileGuest extends Controller
             SELECT user_data.*, instructor_req.STATUS
             FROM user_data
             LEFT JOIN instructor_req ON instructor_req.ID_USER = user_data.ID_USER
-            WHERE user_data.ID_USER = '". session('user')[0]['ID_USER'] ."';
+            WHERE user_data.ID_USER = '" . session('user')[0]['ID_USER'] . "';
 
         ");
         // dd($data['document']);
@@ -133,7 +133,7 @@ class ProfileGuest extends Controller
             SELECT user_data.*, instructor_req.STATUS
             FROM user_data
             LEFT JOIN instructor_req ON instructor_req.ID_USER = user_data.ID_USER
-            WHERE user_data.ID_USER = '". session('user')[0]['ID_USER'] ."';
+            WHERE user_data.ID_USER = '" . session('user')[0]['ID_USER'] . "';
 
         ");
         // dd($data);
@@ -158,7 +158,7 @@ class ProfileGuest extends Controller
             SELECT user_data.*, instructor_req.STATUS
             FROM user_data
             LEFT JOIN instructor_req ON instructor_req.ID_USER = user_data.ID_USER
-            WHERE user_data.ID_USER = '". session('user')[0]['ID_USER'] ."';
+            WHERE user_data.ID_USER = '" . session('user')[0]['ID_USER'] . "';
 
         ");
         // dd($data['course']);
@@ -222,13 +222,13 @@ class ProfileGuest extends Controller
 
         if (!empty($request->file('file_cv'))) {
             $data['CV'] = FileUpload::S3_PDF($request->file('file_cv'), 'Instructor_CV', 'Curriculum-Vitae-' . strtotime(now()));
-        } 
+        }
         if (!empty($request->file('file_porto'))) {
             $data['PORTOFOLIO'] = FileUpload::S3_PDF($request->file('file_porto'), 'Instructor_PORTOFOLIO', 'Portfolio-' . strtotime(now()));
-        } 
+        }
         if (!empty($request->file('file_cert'))) { // Remove the [] from 'file_cert'
             $data['SERTIFIKAT'] = FileUpload::S3_PDF($request->file('file_cert'), 'Instructor_CERT', 'Certificates-' . strtotime(now()));
-        } 
+        }
         if (!empty($request->file('file_recom'))) {
             $data['SURAT_RECOM'] = FileUpload::S3_PDF($request->file('file_recom'), 'Instructor_RECOM', 'Recommendation-Letter-' . strtotime(now()));
         }

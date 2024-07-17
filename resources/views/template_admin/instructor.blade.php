@@ -1,15 +1,7 @@
+@extends('template_admin.admin_template')
+@section('content')
 <!-- Content Wrapper START -->
-<div class="main-content">
-    <div class="page-header">
-        <h2 class="header-title"><?= $title ?></h2>
-        <div class="header-sub-title">
-            <nav class="breadcrumb breadcrumb-dash">
-                <a href="<?= url('dashboard') ?>" class="breadcrumb-item"><i
-                        class="anticon anticon-home m-r-5"></i>Home</a>
-                <span class="breadcrumb-item active"><?= $title ?></span>
-            </nav>
-        </div>
-    </div>
+<div class="col ms-0 ms-md-4 p-4 shadow rounded-3 overflow-hidden bg-white">
     {{-- <?php if (!empty($this->session->flashdata('msg'))) { ?>
     <div class="alert alert-success">
         <div class="d-flex align-items-center justify-content-start">
@@ -20,14 +12,14 @@
         </div>
     </div>
     <?php } ?> --}}
-    <div class="card">
+    <div class="">
         <div class="card-body">
             <div class="row">
                 <div class="col-md-6 align-self-center">
-                    <label class="card-title" style="font-size: 20px">Instructor</label>
+                    <h3 class="fw-bold" style="color:#45b104">Instruktur</h3>
                 </div>
             </div>
-            <div class="m-t-25">
+            <div class="mt-5">
                 <table class="table mb-0" id="dtTable">
                     <thead>
                         <tr>
@@ -43,27 +35,25 @@
                         <?php $number = 0; ?>
 
                         @foreach ($instructor as $item)
-                            <?php $number++; ?>
-                            <tr>
-                                <td><?= $number ?></td>
-                                <td><?= $item->NAME ?></td>
-                                <td><?= $item->UNIV ?></td>
-                                <td><?= $item->DEGREE . ' - ' . $item->STUDY ?></td>
-                                <?php if ($item->STATUS == 0) { ?>
-                                <td><span class="badge badge-warning text-dark">Butuh Verifikasi</span></td>
-                                <?php } else if ($item->STATUS == 1) { ?>
-                                <td><span class="badge badge-success">Instruktur</span></td>
-                                <?php } else { ?>
-                                <td><span class="badge badge-danger">Ditolak</span></td>
-                                <?php } ?>
-                                <td>
-                                    <button type="button"
-                                        onclick="openviewModal(`<?= htmlentities(json_encode($item)) ?>`)"
-                                        class="btn btn-subtle-primary waves-effect waves-light">
-                                        <i class="bx bx-edit-alt font-size-16 align-middle"></i>
-                                    </button>
-                                </td>
-                            </tr>
+                        <?php $number++; ?>
+                        <tr>
+                            <td><?= $number ?></td>
+                            <td><?= $item->NAME ?></td>
+                            <td><?= $item->UNIV ?></td>
+                            <td><?= $item->DEGREE . ' - ' . $item->STUDY ?></td>
+                            <?php if ($item->STATUS == 0) { ?>
+                                <td><span class="badge bg-warning text-dark">Butuh Verifikasi</span></td>
+                            <?php } else if ($item->STATUS == 1) { ?>
+                                <td><span class="badge bg-success">Instruktur</span></td>
+                            <?php } else { ?>
+                                <td><span class="badge bg-danger">Ditolak</span></td>
+                            <?php } ?>
+                            <td>
+                                <button type="button" onclick="openviewModal(`<?= htmlentities(json_encode($item)) ?>`)" class="btn btn-warning px-4 py-2 rounded">
+                                    <i class="bx bx-edit-alt font-size-16 align-middle"></i>
+                                </button>
+                            </td>
+                        </tr>
                         @endforeach
                     </tbody>
                 </table>
@@ -74,14 +64,13 @@
 <!-- Content Wrapper END -->
 
 {{-- Start Modal view --}}
-<div class="modal" id="addviewModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog"
-    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal" id="addviewModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Detail Materi</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                <h4 class="modal-title">Detail Materi</h4>
+                <button type="button" class="btn px-2 py-0" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="fs-3">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
@@ -122,24 +111,20 @@
                 <div class="row">
                     <div class="col">
                         <label>Dokumen CV :</label>
-                        <iframe width="100%" height="512" id="cv_doc" style="border: 5px #3d3d3d solid;"
-                            src=""></iframe>
+                        <iframe width="100%" height="512" id="cv_doc" style="border: 5px #3d3d3d solid;" src=""></iframe>
                     </div>
                     <div class="col">
                         <label>Dokumen Sertifikat :</label>
-                        <iframe width="100%" height="512" id="cer_doc" style="border: 5px #3d3d3d solid;"
-                            src=""></iframe>
+                        <iframe width="100%" height="512" id="cer_doc" style="border: 5px #3d3d3d solid;" src=""></iframe>
                     </div>
                     <div class="w-100" style="margin: 20px 0px;"></div>
                     <div class="col">
                         <label>Dokumen Portofolio :</label>
-                        <iframe width="100%" height="512" id="por_doc" style="border: 5px #3d3d3d solid;"
-                            src=""></iframe>
+                        <iframe width="100%" height="512" id="por_doc" style="border: 5px #3d3d3d solid;" src=""></iframe>
                     </div>
                     <div class="col">
                         <label>Dokumen Surat Rekomendasi :</label>
-                        <iframe width="100%" height="512" id="rec_doc" style="border: 5px #3d3d3d solid;"
-                            src=""></iframe>
+                        <iframe width="100%" height="512" id="rec_doc" style="border: 5px #3d3d3d solid;" src=""></iframe>
                     </div>
                 </div>
             </div>
@@ -148,16 +133,14 @@
                 <form id="form-user" action="instructor/decline" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="hidden">
-                        <input placeholder="Title" type="hidden" name="dec_id_instructor" id="dec_id_instructor"
-                            class="form-control" readonly>
+                        <input placeholder="Title" type="hidden" name="dec_id_instructor" id="dec_id_instructor" class="form-control" readonly>
                     </div>
                     <button type="submit" class="btn btn-danger btn-reject">Tolak</button>
                 </form>
                 <form id="form-user" action="instructor/accept" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="hidden">
-                        <input placeholder="Title" type="hidden" name="acc_id_instructor" id="acc_id_instructor"
-                            class="form-control" readonly>
+                        <input placeholder="Title" type="hidden" name="acc_id_instructor" id="acc_id_instructor" class="form-control" readonly>
                     </div>
                     <button type="submit" class="btn btn-success btn-accept">Terima</button>
                 </form>
@@ -195,3 +178,4 @@
         $('#addviewModal').modal('show')
     }
 </script>
+@endsection
