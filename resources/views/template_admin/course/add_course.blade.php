@@ -1,15 +1,33 @@
-<div class="main-content">
-    <div class="page-header">
-        <h2 class="header-title">Tambah <?= $title ?></h2>
-        <div class="header-sub-title">
-            <nav class="breadcrumb breadcrumb-dash">
-                <a href="<?= url('dashboard') ?>" class="breadcrumb-item"><i
-                        class="anticon anticon-home m-r-5"></i>Beranda</a>
-                <a class="breadcrumb-item" href="<?= asset('manage/activity/course') ?>"><?= $title ?></a>
-                <span class="breadcrumb-item active">Tambah <?= $title ?></span>
-            </nav>
-        </div>
-    </div>
+@extends('template_admin.admin_template')
+@section('content')
+<style>
+    .accordion>.card>.card-header>.card-title>a:not(.collapsed):after {
+        transform: rotate(90deg);
+        -webkit-transform: rotate(90deg);
+        -moz-transform: rotate(90deg);
+        -o-transform: rotate(90deg);
+        -ms-transform: rotate(90deg)
+    }
+
+    .accordion>.card>.card-header>.card-title>a:after {
+        content: "\f054";
+        font-family: "Font Awesome 5 Pro";
+        float: left;
+        margin-right: 10px;
+        transition: all 0.3s ease-in-out;
+        -webkit-transition: all 0.3s ease-in-out;
+        -moz-transition: all 0.3s ease-in-out;
+        -o-transition: all 0.3s ease-in-out;
+        -ms-transition: all 0.3s ease-in-out
+    }
+
+    .accordion-link {
+        color: #77838F !important;
+        font-weight: 500;
+    }
+</style>
+
+<div class="col ms-0 ms-md-4 p-4 shadow rounded-3 overflow-hidden bg-white">
     {{-- <?php if (!empty(validation_errors())) { ?>
         <div class="alert alert-warning">
             <div class="d-flex align-items-center justify-content-start">
@@ -20,39 +38,39 @@
             </div>
         </div>
     <?php } ?> --}}
-    <div class="card">
+    <div class="">
         <div class="card-body">
-            <div class="m-t-25">
+            <div class="row px-3">
+                <div class="col-md-6 align-self-center">
+                    <h3 class="fw-bold" style="color:#45b104">Tambah Kursus Baru</h3>
+                </div>
+            </div>
+            <div class="mt-5 px-3">
                 <form id="form-user" action="store" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label control-label">Kover Depan <span
-                                class="text-danger">*</span>
+                        <label class="col-sm-2 col-form-label control-label">Kover Depan <span class="text-danger">*</span>
                         </label>
-                        <div class="col-md-5">
+                        <div class="col-md-10">
                             <div class="custom-file">
-                                <input type="file" name="image_activity" class="custom-file-input dropify"
-                                    accept=".jpg, .png" data-allowed-file-extensions="jpg png" required>
+                                <input type="file" name="image_activity" class="custom-file-input dropify" accept=".jpg, .png" data-allowed-file-extensions="jpg png" required>
                             </div>
                         </div>
                     </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label control-label">Judul Kursus <span
-                                class="text-danger">*</span></label>
-                        <div class="col-md-5">
-                            <input type="text" class="form-control" name="title_activity" placeholder="Judul Kursus"
-                                required>
+                    <div class="form-group row ">
+                        <label class="col-sm-2 col-form-label control-label">Judul Kursus <span class="text-danger">*</span></label>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control" name="title_activity" placeholder="Judul Kursus" required>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-sm-2 col-form-label control-label">
                             Harga <span class="text-danger">*</span>
                         </label>
-                        <div class="col-md-5">
-                            <input type="number" class="form-control CurrencyInput" name="price_course" placeholder="0"
-                                required>
-                            <span class="d-flex align-items-center mt-2">
-                                <div class="switch m-r-10">
+                        <div class="col-md-10">
+                            <input type="number" class="form-control CurrencyInput" name="price_course" placeholder="0" required>
+                            <span class="d-flex align-items-center gap-2 mt-2">
+                                <div class="switch mt-2">
                                     <input type="checkbox" id="setFree">
                                     <label for="setFree"></label>
                                 </div>
@@ -61,51 +79,42 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label control-label">Tanggal <span
-                                class="text-danger">*</span></label>
-                        <div class="col-md-5">
+                        <label class="col-sm-2 col-form-label control-label">Tanggal <span class="text-danger">*</span></label>
+                        <div class="col-md-10">
                             <div class="d-flex align-items-center">
-                                <input type="datetime-local" class="form-control" name="date_start" id="date_start"
-                                    required>
+                                <input type="datetime-local" class="form-control" name="date_start" id="date_start" required>
                                 <span class="p-h-10">sampai</span>
-                                <input type="datetime-local" class="form-control" name="date_end" id="date_end"
-                                    required>
+                                <input type="datetime-local" class="form-control" name="date_end" id="date_end" required>
                             </div>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label control-label">Pengunguman <span
-                        class="text-danger">*</span></label>
-                        <div class="col-md-5">
+                        <label class="col-sm-2 col-form-label control-label">Pengunguman <span class="text-danger">*</span></label>
+                        <div class="col-md-10">
                             <textarea name="announcement" id="announcement" required></textarea>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label control-label">Deskripsi <span
-                                class="text-danger">*</span></label>
-                        <div class="col-md-5">
+                        <label class="col-sm-2 col-form-label control-label">Deskripsi <span class="text-danger">*</span></label>
+                        <div class="col-md-10">
                             <textarea name="desc_course" id="desc_course" rows=11 cols=50 maxlength=250 required></textarea>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label control-label">Apa yang akan dipelajari? <span
-                                class="text-danger">*</span></label>
-                        <div class="col-md-5">
+                        <label class="col-sm-2 col-form-label control-label">Apa yang akan dipelajari? <span class="text-danger">*</span></label>
+                        <div class="col-md-10">
                             <textarea name="desc_what_to_learn" id="desc_what_to_learn" rows=11 cols=50 maxlength=250 required></textarea>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label control-label">Kode Sertifikat <span
-                        class="text-danger">*</span></label>
-                        <div class="col-md-5">
-                            <input type="text" class="form-control" name="certif_code" placeholder="Kode Sertifikat"
-                                style="text-transform: uppercase" required>
+                        <label class="col-sm-2 col-form-label control-label">Kode Sertifikat <span class="text-danger">*</span></label>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control" name="certif_code" placeholder="Kode Sertifikat" style="text-transform: uppercase" required>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label control-label">Tipe Kursus <span
-                                class="text-danger">*</span></label>
-                        <div class="col-md-5">
+                        <label class="col-sm-2 col-form-label control-label">Tipe Kursus <span class="text-danger">*</span></label>
+                        <div class="col-md-10">
                             <select class="select2" name="is_public">
                                 <option value="1">Umum</option>
                                 <option value="0">Pribadi</option>
@@ -113,42 +122,39 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label control-label">Kategori <span
-                                class="text-danger">*</span></label>
-                        <div class="col-md-5">
+                        <label class="col-sm-2 col-form-label control-label">Kategori <span class="text-danger">*</span></label>
+                        <div class="col-md-10">
                             <select class="select2" name="category">
                                 @foreach ($kategori as $item)
-                                    <option value="<?= $item->ID_KATEGORI ?>"><?= $item->KATEGORI ?>
-                                    </option>
+                                <option value="<?= $item->ID_KATEGORI ?>"><?= $item->KATEGORI ?>
+                                </option>
                                 @endforeach
                             </select>
                         </div>
                     </div>
-                    <div class="form-group row">
+                    <div class="form-group row gap-2">
                         <label class="col-sm-2 col-form-label control-label">Status</label>
-                        <div class="col-md-5 row">
+                        <div class="col-md-5 row fw-600">
                             Tidak Aktif
-                            <div class="switch m-r-10" style="margin-left: 7px;">
+                            <div class="switch w-auto" style="margin-left: 12px;margin-right: 12px;">
                                 <input type="checkbox" id="switch-1" name="status" checked="">
                                 <label for="switch-1"></label>
                             </div>
                             Aktif
                         </div>
                     </div>
-                    <div class="accordion materi_form" id="accordion-default">
+                    <div class="accordion d-flex flex-column gap-3 materi_form" id="accordion-default">
 
                     </div>
-                    <div class="form-group row">
+                    <div class="form-group row mt-4">
                         <div class="col-md-12">
-                            <div data-toggle="modal" id="add_item" data-target="#exampleModalCenter"
-                                class="btn btn-primary m-r-5 col-md-12" style="cursor: pointer;">
-                                <i class="anticon anticon-loading m-r-5"></i>
+                            <div data-bs-toggle="modal" id="add_item" data-bs-target="#exampleModalCenter" class="btn btn-primary btn-sm rounded col-md-12" style="cursor: pointer;">
                                 <span class="col-md-12">Tambahkan Bab atau Kuis</span>
                             </div>
                         </div>
                     </div>
-                    <div class="form-group text-right mt-5">
-                        <button type="submit" class="btn btn-primary btn-submit-form">Submit</button>
+                    <div class="form-group text-end mt-5">
+                        <button type="submit" class="btn btn-primary rounded btn-submit-form">Submit</button>
                     </div>
                 </form>
             </div>
@@ -157,25 +163,22 @@
 </div>
 
 {{-- Start Add Item --}}
-<div class="modal fade" style="z-index: 1060;" id="exampleModalCenter" data-backdrop="static"
-    data-keyboard="false">
+<div class="modal fade" style="z-index: 1060;" id="exampleModalCenter" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalCenterTitle">Tambahkan Bab atau Kuis?</h5>
-                <button type="button" class="close" data-dismiss="modal">
-                    <i class="anticon anticon-close"></i>
+                <h4 class="modal-title" id="exampleModalCenterTitle">Tambahkan Bab atau Kuis?</h4>
+                <button type="button" class="btn px-2 py-0" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="fs-3">&times;</span>
                 </button>
             </div>
             <div class="modal-body row">
-                <div class="col-md-12 text-center d-flex justify-content-around">
-                    <a href="javascript.void(0)" id="add_materi" data-dismiss="modal"
-                        class="btn btn-success col-md-5 py-5 h-100">
-                        <h1><i class="anticon anticon-book text-white"></i></h1> BAB
+                <div class="col-md-12 text-center d-flex justify-content-around py-4">
+                    <a href="javascript.void(0)" id="add_materi" data-bs-dismiss="modal" class="rounded btn btn-success col-md-5 py-5 h-100 text-white">
+                        <h1><i class="far fa-book text-white"></i></h1> BAB
                     </a>
-                    <a href="javascript.void(0)" id="add_quiz" data-dismiss="modal"
-                        class="btn btn-danger col-md-5 py-5 h-100">
-                        <h1><i class="anticon anticon-trophy text-white"></i></h1> KUIS
+                    <a href="javascript.void(0)" id="add_quiz" data-bs-dismiss="modal" class="rounded btn btn-danger col-md-5 py-5 h-100">
+                        <h1><i class="far fa-trophy text-white"></i></h1> KUIS
                     </a>
                 </div>
             </div>
@@ -187,7 +190,7 @@
 <script>
     var i = 0;
     var id_quiz = 1;
-    var limit = 0;    
+    var limit = 0;
 
     $(document).ready(function() {
         var $editor = $('#desc_course');
@@ -322,12 +325,14 @@
     });
 
     $('#add_materi').click(function(e) {
-        $("#add_item").toggleClass("is-loading");
+        $("#add_item").addClass("disabled");
+        $("#add_item").html("Loading...");
         $.ajax({
             url: 'add_materi/' + i,
             success: function(html) {
                 $(".materi_form").append(html);
-                $("#add_item").removeClass("is-loading");
+                $("#add_item").removeClass("disabled");
+                $("#add_item").html("Tambahkan Bab atau Kuis");
                 i++;
                 limit++;
             }
@@ -336,12 +341,14 @@
     });
 
     $('#add_quiz').click(function(e) {
-        $("#add_item").toggleClass("is-loading");
+        $("#add_item").addClass("disabled");
+        $("#add_item").html("Loading...");
         $.ajax({
             url: 'add_quiz/' + i + '/' + id_quiz,
             success: function(html) {
                 $(".materi_form").append(html);
-                $("#add_item").removeClass("is-loading");
+                $("#add_item").removeClass("disabled");
+                $("#add_item").html("Tambahkan Bab atau Kuis");
                 i++;
                 limit++;
                 id_quiz++;
@@ -359,3 +366,4 @@
         }
     });
 </script>
+@endsection

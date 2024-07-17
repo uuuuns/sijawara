@@ -1,15 +1,7 @@
+@extends('template_admin.admin_template')
+@section('content')
 <!-- Content Wrapper START -->
-<div class="main-content">
-    <div class="page-header">
-        <h2 class="header-title"><?= $title ?></h2>
-        <div class="header-sub-title">
-            <nav class="breadcrumb breadcrumb-dash">
-                <a href="<?= url('dashboard') ?>" class="breadcrumb-item"><i
-                        class="anticon anticon-home m-r-5"></i>Home</a>
-                <span class="breadcrumb-item active"><?= $title ?></span>
-            </nav>
-        </div>
-    </div>
+<div class="col ms-0 ms-md-4 p-4 shadow rounded-3 overflow-hidden bg-white">
     {{-- <?php if (!empty($this->session->flashdata('msg'))) { ?>
     <div class="alert alert-success">
         <div class="d-flex align-items-center justify-content-start">
@@ -20,21 +12,21 @@
         </div>
     </div>
     <?php } ?> --}}
-    <div class="card">
+    <div class="">
         <div class="card-body">
             <div class="row">
                 <div class="col-md-6 align-self-center">
-                    <label class="card-title" style="font-size: 20px">Promo</label>
+                    <h3 class="fw-bold" style="color:#45b104">Promo</h3>
                 </div>
                 <div class="col-md-6 d-flex justify-content-md-end justify-content-end align-items-center">
                     <div class="mt-3 mt-md-0">
-                        <button type="button" class="btn btn-primary" onclick="addModal()">
+                        <button type="button" class="btn btn-primary btn-sm-2 rounded" onclick="addModal()">
                             <i class="mdi mdi-plus me-1"></i>
                             Tambah Promo</button>
                     </div>
                 </div>
             </div>
-            <div class="m-t-25">
+            <div class="mt-5">
                 <table class="table mb-0" id="dtTable">
                     <thead>
                         <tr>
@@ -42,32 +34,30 @@
                             <th>Name</th>
                             <th>Diskon</th>
                             <th>Masa Berlaku</th>
-                            <th>Aksi</th>
+                            <th width="100px">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php $number = 0; ?>
 
                         @foreach ($promo as $item)
-                            <?php $number++; ?>
-                            <tr>
-                                <td><?= $number ?></td>
-                                <td><?= $item->PROMO_NAME ?></td>
-                                <td><?= $item->AMMOUNT ?></td>
-                                <td><?= $item->EXP_DATE ?></td>
-                                <td>
-                                    <button type="button"
-                                        onclick="openviewModal(`<?= htmlentities(json_encode($item)) ?>`)"
-                                        class="btn btn-subtle-primary waves-effect waves-light">
+                        <?php $number++; ?>
+                        <tr>
+                            <td><?= $number ?></td>
+                            <td><?= $item->PROMO_NAME ?></td>
+                            <td><?= $item->AMMOUNT ?></td>
+                            <td><?= $item->EXP_DATE ?></td>
+                            <td>
+                                <div class="d-flex flex-row gap-2">
+                                    <button type="button" onclick="openviewModal(`<?= htmlentities(json_encode($item)) ?>`)" class="btn btn-warning px-4 py-2 rounded">
                                         <i class="bx bx-edit-alt font-size-16 align-middle"></i>
                                     </button>
-                                    <button type="button"
-                                        onclick="opendeleteModal(`<?= htmlentities(json_encode($item)) ?>`)"
-                                        class="btn btn-subtle-danger waves-effect waves-light">
+                                    <button type="button" onclick="opendeleteModal(`<?= htmlentities(json_encode($item)) ?>`)" class="btn btn-danger px-4 py-2 rounded">
                                         <i class="bx bx-trash font-size-16 align-middle"></i>
                                     </button>
-                                </td>
-                            </tr>
+                                </div>
+                            </td>
+                        </tr>
                         @endforeach
                     </tbody>
                 </table>
@@ -78,14 +68,13 @@
 <!-- Content Wrapper END -->
 
 {{-- Start Modal Add blom --}}
-<div class="modal" id="addModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog"
-    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal" id="addModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Hapus</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                <h4 class="modal-title">Hapus</h4>
+                <button type="button" class="btn px-2 py-0" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="fs-3">&times;</span>
                 </button>
             </div>
             <form id="form-user" action="promo/store" method="POST" enctype="multipart/form-data">
@@ -105,7 +94,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Tambah</button>
+                    <button type="submit" class="btn btn-primary rounded">Tambah</button>
                 </div>
             </form>
         </div>
@@ -114,14 +103,13 @@
 {{-- End Modal Add --}}
 
 {{-- Start Modal Update --}}
-<div class="modal" id="updateModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog"
-    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal" id="updateModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Detail Promo</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                <h4 class="modal-title">Detail Promo</h4>
+                <button type="button" class="btn px-2 py-0" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="fs-3">&times;</span>
                 </button>
             </div>
             <form id="form-user" action="promo/update" method="POST" enctype="multipart/form-data">
@@ -142,7 +130,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                    <button type="submit" class="btn btn-primary rounded">Simpan Perubahan</button>
                 </div>
             </form>
         </div>
@@ -151,14 +139,13 @@
 {{-- End Modal Update --}}
 
 {{-- Start Modal Delete blom --}}
-<div class="modal" id="deleteModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog"
-    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal" id="deleteModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Hapus</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                <h4 class="modal-title">Hapus</h4>
+                <button type="button" class="btn px-2 py-0" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="fs-3">&times;</span>
                 </button>
             </div>
             <form id="form-user" action="promo/delete" method="POST" enctype="multipart/form-data">
@@ -168,7 +155,7 @@
                     <input type="hidden" name="id_promo" value="" readonly>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Hapus</button>
+                    <button type="submit" class="btn btn-primary rounded">Hapus</button>
                 </div>
             </form>
         </div>
@@ -179,7 +166,7 @@
 <script>
     $('#dtTable').DataTable()
 
-    function addModal(){
+    function addModal() {
         $('#addModal').modal('show')
     }
 
@@ -198,3 +185,4 @@
         $('#deleteModal').modal('show')
     }
 </script>
+@endsection

@@ -17,7 +17,7 @@
     <h5 class="py-2 fw-semibold">Profil</h5>
     <hr class="opacity-25">
     <div class="container-fluid">
-        <div class="row main-content">
+        <div class="row main-content flex-column-reverse flex-md-row">
             <div class="col-md-3 sidebar">
                 <div class="sidebar__inner">
                     <div class="px-0" style="z-index: 0;">
@@ -26,7 +26,7 @@
                                 <ul class="sidebar-profile nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start w-100" id="menu">
                                     <li class="nav-item w-100 pt-2">
                                         <a href="/profile" class=" {{ request()->is('profile') ? 'active' : '' }}  .  nav-link d-flex align-middle px-4 py-3 rounded-0">
-                                            <i class="fs-6 d-flex align-items-center far fa-user"></i> <span class="ms-1 ps-2 fs-6 align-self-center d-none d-sm-inline">Data
+                                            <i class="fs-6 d-flex align-items-center far fa-user"></i> <span class="ms-1 ps-2 fs-6 align-self-center ">Data
                                                 Pribadi</span>
                                         </a>
                                     </li>
@@ -39,7 +39,7 @@
                                     <?php if (session('user')[0]['ID_ROLE'] == 2) { ?>
                                         <li class="nav-item w-100">
                                             <a href="/profile/overview" class="overview  nav-link d-flex align-middle px-4 py-3 rounded-0">
-                                                <i class="fs-6 d-flex align-items-center far fa-bookmark"></i> <span class="ms-1 ps-2 fs-6 align-self-center d-none d-sm-inline">Ringkasan
+                                                <i class="fs-6 d-flex align-items-center far fa-bookmark"></i> <span class="ms-1 ps-2 fs-6 align-self-center ">Ringkasan
                                                     Penjualan</span>
                                             </a>
                                         </li>
@@ -48,7 +48,7 @@
                                         </li>
                                         <li class="nav-item w-100">
                                             <a href="/dashboard" class="nav-link d-flex align-middle px-4 py-3 rounded-0">
-                                                <i class="fs-6 d-flex align-items-center far fa-book-medical"></i> <span class="ms-1 ps-2 fs-6 align-self-center d-none d-sm-inline">Buat
+                                                <i class="fs-6 d-flex align-items-center far fa-book-medical"></i> <span class="ms-1 ps-2 fs-6 align-self-center ">Buat
                                                     Aktifitas</span>
                                             </a>
                                         </li>
@@ -62,7 +62,7 @@
                                     <li class="nav-item w-100">
                                         <a data-bs-toggle="collapse" data-bs-target="#submenu" aria-expanded="true" aria-controls="submenu" class="nav-link d-flex align-middle px-4 py-3 rounded-0" style="cursor: pointer;">
                                             <i class="fs-6 d-flex align-items-center far fa-book-open"></i>
-                                            <span class="ms-1 ps-2 fs-6 align-self-center d-none d-sm-inline">Aktifitas Saya</span>
+                                            <span class="ms-1 ps-2 fs-6 align-self-center ">Aktifitas Saya</span>
                                             <svg class="svg-inline--fa fa-chevron-down ms-auto" style="width: 18px" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-down" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="">
                                                 <path fill="currentColor" d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
                                                 </path>
@@ -71,7 +71,7 @@
                                         <ul class="nav nav-list collapse" id="submenu">
                                             <li class="nav-item w-100">
                                                 <a href="/profile/mycourses" class="nav-link d-flex align-middle px-4 py-3 rounded-0">
-                                                    <span class="ms-3 ps-3 fs-6 align-self-center d-none d-sm-inline">Kursus Ku</span>
+                                                    <span class="ms-3 ps-3 fs-6 align-self-center ">Kursus Ku</span>
                                                 </a>
                                             </li>
                                             <li class="w-100">
@@ -79,7 +79,7 @@
                                             </li>
                                             <li class="nav-item w-100">
                                                 <a href="/profile/myevents" class="nav-link d-flex align-middle px-4 py-3 rounded-0">
-                                                    <span class="ms-3 ps-3 fs-6 align-self-center d-none d-sm-inline">Webinar Ku</span>
+                                                    <span class="ms-3 ps-3 fs-6 align-self-center ">Webinar Ku</span>
                                                 </a>
                                             </li>
                                         </ul>
@@ -89,7 +89,7 @@
                                     </li>
                                     <li class="nav-item w-100">
                                         <a href="/profile/myebook" class="nav-link  d-flex align-middle px-4 py-3 rounded-0">
-                                            <i class="fs-6 d-flex align-items-center far fa-book"></i> <span class="ms-1 ps-2 fs-6 align-self-center d-none d-sm-inline">My
+                                            <i class="fs-6 d-flex align-items-center far fa-book"></i> <span class="ms-1 ps-2 fs-6 align-self-center ">My
                                                 Ebook</span>
                                         </a>
                                     </li>
@@ -98,7 +98,7 @@
                                     </li>
                                     <li class="nav-item w-100">
                                         <a href="/profile/academic" class="nav-link  d-flex align-middle px-4 py-3 rounded-0">
-                                            <i class="fs-6 d-flex align-items-center far fa-file-alt"></i> <span class="ms-1 ps-2 fs-6 align-self-center d-none d-sm-inline">Data
+                                            <i class="fs-6 d-flex align-items-center far fa-file-alt"></i> <span class="ms-1 ps-2 fs-6 align-self-center ">Data
                                                 Akademik</span>
                                         </a>
                                     </li>
@@ -107,7 +107,7 @@
                                     </li>
                                     <li class="nav-item w-100">
                                         <a href="/profile/document" class="nav-link d-flex align-middle px-4 py-3 rounded-0">
-                                            <i class="fs-6 d-flex align-items-center far fa-building"></i> <span class="ms-1 ps-2 fs-6 align-self-center d-none d-sm-inline">Dokumen
+                                            <i class="fs-6 d-flex align-items-center far fa-building"></i> <span class="ms-1 ps-2 fs-6 align-self-center ">Dokumen
                                                 Pendukung</span>
                                         </a>
                                     </li>
@@ -121,7 +121,7 @@
                                         @csrf
                                         <li class="nav-item w-100">
                                             <a href="#" class="nav-link  d-flex align-middle px-4 py-3 rounded-0" onclick="forgot()">
-                                                <i class="fs-6 d-flex align-items-center far fa-lock"></i> <span class="ms-1 ps-2 fs-6 align-self-center d-none d-sm-inline">Reset
+                                                <i class="fs-6 d-flex align-items-center far fa-lock"></i> <span class="ms-1 ps-2 fs-6 align-self-center ">Reset
                                                     Kata Sandi</span>
                                             </a>
                                         </li>
@@ -132,8 +132,8 @@
                                     </li>
                                     <li class="nav-item w-100 pb-3">
                                         <a href="<?= url('logout') ?>" class="nav-link d-flex align-middle px-4 py-3 rounded-0">
-                                            <i class="fs-6 d-flex align-items-center far fa-arrow-alt-to-left"></i> <span class="ms-1 ps-2 fs-6 align-self-center d-none d-sm-inline">Keluar
-                                                </span>
+                                            <i class="fs-6 d-flex align-items-center far fa-arrow-alt-to-left"></i> <span class="ms-1 ps-2 fs-6 align-self-center ">Keluar
+                                            </span>
                                         </a>
                                     </li>
                                 </ul>
@@ -141,12 +141,12 @@
                         </div>
                         <div class="bg-white shadow rounded-2 overflow-hidden p-3 mt-3" style="height:max-content">
                             <div class="d-flex flex-column align-items-center align-items-sm-start">
-                                <?php 
-                                    $array = (array) $document;
-                                    $status = true;
-                                    if (!empty($document)) {
-                                        $status = $document->STATUS === 0 ? false : (!empty($document->STATUS) ? false : true);
-                                    }
+                                <?php
+                                $array = (array) $document;
+                                $status = true;
+                                if (!empty($document)) {
+                                    $status = $document->STATUS === 0 ? false : (!empty($document->STATUS) ? false : true);
+                                }
                                 ?>
                                 <?php $totDoc = (!empty($document)) ? count(array_filter($array)) : 0; ?>
                                 <?php if (session('user')[0]['ID_ROLE'] == 3 && $status) { ?>
@@ -172,7 +172,7 @@
                                             <span class="text-danger" style="text-align: justify;">We are sorry to reject your application because there is a discrepancy between the standard
                                                 documents you submitted and our standard documents. Please correct your data again and click the button above to submit again..</span>
                                         </div>
-                                    <?php } else if($document->STATUS == 0) { ?>
+                                    <?php } else if ($document->STATUS == 0) { ?>
                                         <div class="row">
                                             <button type="button" class="btn btn-muted rounded-4 fw-semibold w-100 mb-3" disabled>Apply as an Instructor</button>
                                             <span style="color: #edab00; text-align: justify;">Please be patient as we are still evaluating your personal data and documents.</span>
@@ -184,7 +184,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-9 content">
+            <div class="col-12 col-md-9 content py-4 py-md-0">
                 <!-- Page -->
                 @yield('content')
             </div>

@@ -4,13 +4,12 @@
         <input type="hidden" class="form-control" name="order_list_question[]" value="{{ $no }}">
         <input type="hidden" class="form-control" name="no_quiz[]" value="{{ $index }}">
         <div class="col-md-10">
-            <div class="row">
-                <div class="col-md-11">
+            <div class="d-flex flex-row">
+                <div class="pe-3 flex-1 w-100">
                     <input type="text" class="form-control" name="question[{{ $no }}][{{ $index }}]">
                 </div>
-                <div id="delete_question_{{ $no }}{{ $index }}" class="btn btn-danger px-1 py-0 float-right d-flex align-items-center" style="cursor: pointer;">
-                    <i class="anticon anticon-loading"></i>
-                    <span><i class="anticon anticon-close"></i> </span>
+                <div id="delete_question_{{ $no }}{{ $index }}" class="justify-content-center rounded btn btn-danger px-3 py-0 float-end d-flex align-items-center" style="cursor: pointer;">
+                    <span><i class="far fa-times"></i> </span>
                 </div>
             </div>
         </div>
@@ -23,27 +22,27 @@
                 <div class="row">
                     <input id="radio1{{ $no }}{{ $index }}" name="kunci_soal[{{ $no }}][{{ $index }}]" type="radio" value="a" checked="">
                     <label for="radio1{{ $no }}{{ $index }}" class="mr-1">A. </label>
-                    <input type="text" class="form-control col-md-10" name="jawaban_a[]">
+                    <input type="text" class="form-control col-md-10 mt-2" name="jawaban_a[]">
                 </div>
             </div>
             <div class="radio col-md-12 mb-2">
                 <div class="row">
                     <input id="radio2{{ $no }}{{ $index }}" name="kunci_soal[{{ $no }}][{{ $index }}]" type="radio" value="b">
                     <label for="radio2{{ $no }}{{ $index }}" class="mr-1">B. </label>
-                    <input type="text" class="form-control col-md-10" name="jawaban_b[]">
+                    <input type="text" class="form-control col-md-10 mt-2" name="jawaban_b[]">
                 </div>
             </div>
             <div class="radio col-md-12 mb-2">
                 <div class="row">
                     <input id="radio3{{ $no }}{{ $index }}" name="kunci_soal[{{ $no }}][{{ $index }}]" type="radio" value="c">
                     <label for="radio3{{ $no }}{{ $index }}" class="mr-1">C. </label>
-                    <input type="text" class="form-control col-md-10" name="jawaban_c[]">
+                    <input type="text" class="form-control col-md-10 mt-2" name="jawaban_c[]">
                 </div>
             </div>
         </div>
-        
+
     </div>
-</div> 
+</div>
 
 <script>
     $('#delete_question_{{ $no }}{{ $index }}').click(function(e) {

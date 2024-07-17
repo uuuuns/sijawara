@@ -62,10 +62,9 @@ class CourseController extends Controller
         ");
 
         return
-            view('template_main.admin_side.etc.header', $data) .
-            view('template_main.admin_side.etc.sidebar', $data) .
-            view('template_main.admin_side.course.course', $data) .
-            view('template_main.admin_side.etc.footer');
+            view('template.header', $data) .
+            view('template_admin/course/course', $data) .
+            view('template.footer', $data);
     }
 
     public function add_course()
@@ -80,10 +79,9 @@ class CourseController extends Controller
         ");
 
         return
-            view('template_main.admin_side.etc.header', $data) .
-            view('template_main.admin_side.etc.sidebar', $data) .
-            view('template_main.admin_side.course.add_course', $data) .
-            view('template_main.admin_side.etc.footer');
+            view('template.header', $data) .
+            view('template_admin/course/add_course', $data) .
+            view('template.footer', $data);
     }
 
     public function store(Request $req)
@@ -131,7 +129,7 @@ class CourseController extends Controller
         $data['no'] = $id_detailCourse;
 
         return
-            view('template_main.admin_side.course.item_materi', $data);
+            view('template_admin.course.item_materi', $data);
     }
 
     public function add_quiz($j, $id_quiz)
@@ -141,7 +139,7 @@ class CourseController extends Controller
         $data['id_quiz'] = $id_quiz;
 
         return
-            view('template_main.admin_side.course.item_quiz', $data);
+            view('template_admin.course.item_quiz', $data);
     }
 
     public function add_question($id, $index)
@@ -151,7 +149,7 @@ class CourseController extends Controller
         $data['index'] = $index;
 
         return
-            view('template_main.admin_side.course.item_question', $data);
+            view('template_admin.course.item_question', $data);
     }
 
     public function update_course(Request $req)
@@ -190,10 +188,9 @@ class CourseController extends Controller
         ")[0];
 
         return
-            view('template_main.admin_side.etc.header', $data) .
-            view('template_main.admin_side.etc.sidebar', $data) .
-            view('template_main.admin_side.course.update_course', $data) .
-            view('template_main.admin_side.etc.footer');
+            view('template.header', $data) .
+            view('template_admin/course/update_course', $data) .
+            view('template.footer', $data);
     }
 
     public function get_course_item($id_course, $id_materi)
@@ -362,10 +359,9 @@ class CourseController extends Controller
         ")[0];
 
         return
-            view('template_main.admin_side.etc.header', $data) .
-            view('template_main.admin_side.etc.sidebar', $data) .
-            view('template_main.admin_side.course.invite_user', $data) .
-            view('template_main.admin_side.etc.footer');
+            view('template.header', $data) .
+            view('template_admin/course/invite_user', $data) .
+            view('template.footer', $data);
     }
 
     public function invite_individu(Request $req)
@@ -414,9 +410,9 @@ class CourseController extends Controller
 
         if (empty($id_users)) {
             return redirect('courses/invite?id_activity=' . $id_activity)->with(['err_msg' => 'Choose at least one user', 'location' => 'courses/invite?id_activity=' . $id_activity]);
-        }   
+        }
 
-        foreach ($id_users as $id_user) {         
+        foreach ($id_users as $id_user) {
             $cek_data = DB::SelectOne("
                 SELECT
                     *
@@ -436,7 +432,7 @@ class CourseController extends Controller
                     'ID_ACTIVITY'   => $id_activity
                 ];
                 DB::table('tb_invited')->insert($invited);
-            } 
+            }
         }
         return redirect('courses/invite?id_activity=' . $id_activity)->with(['succ_msg' => 'Successfully Invite User', 'courses/invite?id_activity=' . $id_activity]);
     }

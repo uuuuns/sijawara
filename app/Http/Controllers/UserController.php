@@ -41,10 +41,9 @@ class UserController extends Controller
         ");
 
         return
-            view('template_main.admin_side.etc.header', $data) .
-            view('template_main.admin_side.etc.sidebar', $data) .
-            view('template_main.admin_side.user', $data) .
-            view('template_main.admin_side.etc.footer');
+            view('template.header', $data) .
+            view('template_admin/user', $data) .
+            view('template.footer', $data);
     }
 
     public function store(Request $req)
@@ -74,7 +73,7 @@ class UserController extends Controller
         if (!empty($req->file('cv_doc'))) {
             $userdata['CV']             = FileUpload::S3($req->file('cv_doc'), 'DOCUMENT_CV', 'Image-Activity-' . strtotime(now()));
         }
-        
+
         if (!empty($req->file('certi_doc'))) {
             $userdata['PORTOFOLIO']     = FileUpload::S3($req->file('certi_doc'), 'DOCUMENT_CERTIFICATE', 'Image-Activity-' . strtotime(now()));
         }
@@ -117,7 +116,7 @@ class UserController extends Controller
         if (!empty($req->file('up_cv_doc'))) {
             $userdata['CV']     = FileUpload::S3($req->file('up_cv_doc'), 'DOCUMENT_CV', 'Image-Activity-' . strtotime(now()));
         }
-        
+
         if (!empty($req->file('up_certi_doc'))) {
             $userdata['PORTOFOLIO']    = FileUpload::S3($req->file('up_certi_doc'), 'DOCUMENT_CERTIFICATE', 'Image-Activity-' . strtotime(now()));
         }

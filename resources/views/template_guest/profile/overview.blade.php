@@ -1,7 +1,7 @@
 @extends('template_guest.profile.profile_template')
 @section('content')
-<div class="col ms-4 px-5 py-5 shadow rounded-3 overflow-hidden bg-white">
-    <h3 class="fw-bold pb-2" style="color:#5580E9">Ringkasan</h3>
+<div class="col ms-0 ms-md-4 px-5 py-5 shadow rounded-3 overflow-hidden bg-white">
+    <h3 class="fw-bold pb-2" style="color:#45b104">Ringkasan</h3>
     <div class="row my-4">
         <div class="col-6">
             <div class="card mx-2 border-0 shadow rounded-4">

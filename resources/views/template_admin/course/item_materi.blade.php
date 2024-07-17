@@ -1,14 +1,12 @@
 <div class="card" id="materi_item_{{ $no }}">
     <div class="card-header">
-        <h5 class="card-title d-flex align-items-center row">
-            <a data-toggle="collapse" href="#collapse{{ $no }}" class="col-md-12">
+        <h5 class="card-title d-flex align-items-center row my-1">
+            <a data-toggle="collapse" href="#collapse{{ $no }}" class="col-md-12 accordion-link">
                 <span class="col-md-11">Detail - Materi</span>
                 <input type="hidden" class="form-control" name="order_list[]" value="{{ $no }}" required>
                 <input type="hidden" class="form-control" name="type[]" value="1" required>
-                <div id="delete_materi_{{ $no }}" class="btn btn-danger px-1 py-0 float-right"
-                    style="cursor: pointer;">
-                    <i class="anticon anticon-loading"></i>
-                    <span><i class="anticon anticon-close"></i> </span>
+                <div id="delete_materi_{{ $no }}" class="btn btn-danger px-1 py-0 float-end" style="cursor: pointer;">
+                    <span><i class="far fa-times"></i> </span>
                 </div>
             </a>
         </h5>
@@ -17,7 +15,7 @@
         <div class="card-body">
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label control-label">File Materi</label>
-                <div class="col-md-5">
+                <div class="col-md-10">
                     <div class="custom-file">
                         <input type="file" name="materi_file[]" accept=".pdf, .ppt, .pptx" class="custom-file-input file_materi" required>
                     </div>
@@ -25,13 +23,13 @@
             </div>
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label control-label" required>Nama Materi</label>
-                <div class="col-md-5">
+                <div class="col-md-10">
                     <input type="text" class="form-control" name="materi_title[]" required>
                 </div>
             </div>
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label control-label">Link Youtube</label>
-                <div class="col-md-5">
+                <div class="col-md-10">
                     <input type="text" class="form-control" name="materi_link[]" required>
                     <span class="text-danger">* Unggah video tautan di Google Drive dan kirimkan tautan di kolom ini.
                         Contoh link harus berisi d/id_video_anda seperti ini
@@ -40,7 +38,7 @@
             </div>
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label control-label">Deskripsi Materi</label>
-                <div class="col-md-5">
+                <div class="col-md-10">
                     <textarea name="desc_materi[]" id="mytextarea_{{ $no }}" required></textarea>
                 </div>
             </div>

@@ -10,7 +10,6 @@ class DashboardController extends Controller
 {
     public function index()
     {
-
     }
 
     public function admin_index()
@@ -53,7 +52,7 @@ class DashboardController extends Controller
                 FROM
                     transaction t
                 WHERE
-                    t.ID_USER = '".session('user')[0]->get('ID_USER')."'
+                    t.ID_USER = '" . session('user')[0]->get('ID_USER') . "'
                 
             ");
 
@@ -64,7 +63,7 @@ class DashboardController extends Controller
                     activity a
                 WHERE
                     a.TYPE_ACTIVITY = 1
-                    AND a.ID_USER = '".session('user')[0]->get('ID_USER')."'
+                    AND a.ID_USER = '" . session('user')[0]->get('ID_USER') . "'
             ");
 
             $data['total_event'] = DB::select("
@@ -73,15 +72,13 @@ class DashboardController extends Controller
                 FROM
                     activity a
                 WHERE
-                    a.ID_USER = '".session('user')[0]->get('ID_USER')."'
+                    a.ID_USER = '" . session('user')[0]->get('ID_USER') . "'
             ");
         }
-        
 
         return
-            view('template_main.admin_side.etc.header', $data).
-            view('template_main.admin_side.etc.sidebar', $data).
-            view('template_main.admin_side.dashboard', $data).
-            view('template_main.admin_side.etc.footer', $data);
+            view('template.header', $data) .
+            view('template_admin/dashboard', $data) .
+            view('template.footer', $data);
     }
 }

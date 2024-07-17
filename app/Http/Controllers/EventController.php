@@ -39,7 +39,7 @@ class EventController extends Controller
                 a.TYPE_ACTIVITY = 2
         ");
 
-        $data['instruktur'] = DB::select("
+            $data['instruktur'] = DB::select("
             SELECT
                 u.ID_USER ,
                 u.NAME
@@ -67,11 +67,11 @@ class EventController extends Controller
                     AND a.ID_USER = '" . session('user')[0]['ID_USER'] . "'    
                 ");
         }
+
         return
-            view('template_main.admin_side.etc.header', $data) .
-            view('template_main.admin_side.etc.sidebar', $data) .
-            view('template_main.admin_side.event', $data) .
-            view('template_main.admin_side.etc.footer');
+            view('template.header', $data) .
+            view('template_admin/event', $data) .
+            view('template.footer', $data);
     }
 
     public function store(Request $req)
@@ -125,8 +125,8 @@ class EventController extends Controller
             'LOG_TIME' => date('Y-m-d H:i:s')
         ];
 
-        if(!empty($req->file('up_image_activity'))) {
-            $activity['IMAGE_ACTIVITY'] = FileUpload::S3($req->file('up_image_activity'),'IMAGE_ACTIVITY','Image-Activity-' . strtotime(now()));
+        if (!empty($req->file('up_image_activity'))) {
+            $activity['IMAGE_ACTIVITY'] = FileUpload::S3($req->file('up_image_activity'), 'IMAGE_ACTIVITY', 'Image-Activity-' . strtotime(now()));
         }
 
         $event = [

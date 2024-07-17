@@ -125,6 +125,7 @@ Route::middleware(['usersession:3,2,1'])->group(function () {
 });
 
 Route::middleware(['usersession:2,1'])->group(function () {
+    // Route::get('dashboard', 'DashboardController@admin_index');
     Route::get('dashboard', 'DashboardController@admin_index');
 
     Route::get('courses', 'CourseController@index');

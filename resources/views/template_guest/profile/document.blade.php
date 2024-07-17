@@ -1,7 +1,7 @@
 @extends('template_guest.profile.profile_template')
 @section('content')
-<div class="col ms-4 px-5 py-5 shadow rounded-3 overflow-hidden bg-white">
-    <h3 class="fw-bold pb-5" style="color:#5580E9">Dokumen Pendukung</h3>
+<div class="col ms-0 ms-md-4 px-5 py-5 shadow rounded-3 overflow-hidden bg-white">
+    <h3 class="fw-bold pb-5" style="color:#45b104">Dokumen Pendukung</h3>
 
     <section id="cv-section">
         <div class="dropzone-container">

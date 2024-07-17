@@ -1,5 +1,5 @@
-<div class="col ms-4 px-5 py-5 shadow rounded-3 overflow-hidden bg-white">
-    <h3 class="fw-bold pb-4" style="color:#5580E9">Kursus</h3>
+<div class="col ms-0 ms-md-4 px-5 py-5 shadow rounded-3 overflow-hidden bg-white">
+    <h3 class="fw-bold pb-4" style="color:#45b104">Kursus</h3>
     <table class="table" style="color: #8A8A8E">
         <thead>
             <tr class="fw-normal text-black">

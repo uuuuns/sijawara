@@ -23,13 +23,12 @@ class CategoryController extends Controller
                 k.*
             FROM
                 kategori k
-        ");       
+        ");
 
         return
-            view('template_main.admin_side.etc.header', $data) .
-            view('template_main.admin_side.etc.sidebar', $data) .
-            view('template_main.admin_side.category', $data) .
-            view('template_main.admin_side.etc.footer');
+            view('template.header', $data) .
+            view('template_admin/category', $data) .
+            view('template.footer', $data);
     }
 
     public function store(Request $req)
