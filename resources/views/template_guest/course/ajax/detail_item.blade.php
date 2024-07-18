@@ -123,14 +123,14 @@
                     </script>
                 </div>
             <?php }
-        } else if ($quiz_grade->NILAI == 100) { ?>
+        } else if ($quiz_grade->NILAI >= 75) { ?>
             <div class="col" id="detail-item">
                 <div class="py-5">
                     <div class="d-flex justify-content-center">
                         <img class="nav-link rounded-circle" src="https://img.freepik.com/free-vector/completed-concept-illustration_114360-3891.jpg" style="width: 40%;height:50%;background-size:cover"></img>
                     </div>
                     <div class="d-flex justify-content-center pt-4">
-                        <h6>Anda Sudah Menyelesaikan Quiz dan Mendapatkan Nilai 100</h6>
+                        <h6>Anda Sudah Menyelesaikan Quiz dan Mendapatkan Nilai {{$quiz_grade->NILAI}}</h6>
                     </div>
                 </div>
             </div>
