@@ -1,21 +1,11 @@
 @extends('template_admin.admin_template')
 @section('content')
 <div class="col ms-0 ms-md-4 p-4 shadow rounded-3 overflow-hidden bg-white">
-    {{-- <?php if (!empty(validation_errors())) { ?>
-        <div class="alert alert-warning">
-            <div class="d-flex align-items-center justify-content-start">
-                <span class="alert-icon">
-                    <i class="anticon anticon-exclamation-o"></i>
-                </span>
-                <span><?= validation_errors() ?></span>
-            </div>
-        </div>
-    <?php } ?> --}}
     <div class="">
         <div class="card-body">
             <div class="row">
                 <div class="col-md-6 align-self-center">
-                    <h3 class="fw-bold" style="color:#45b104">Ubah Kursus {{ $data->TITLE_ACTIVITY }}</h3>
+                    <h3 class="fw-bold" style="color:#45b104">Ubah Kursus </h3>
                 </div>
             </div>
             <div class="mt-5">
@@ -26,14 +16,14 @@
                         </label>
                         <div class="col-md-10">
                             <div class="custom-file">
-                                <input type="file" name="image_activity" class="custom-file-input dropify" accept=".jpg, .png" data-allowed-file-extensions="jpg png" required>
+                                <input type="file" name="image_activity" class="custom-file-input dropify" accept=".jpg, .png" data-allowed-file-extensions="jpg png">
                             </div>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-sm-2 col-form-label control-label">Judul <span class="text-danger">*</span></label>
                         <div class="col-md-10">
-                            <input type="text" class="form-control" name="title_activity" placeholder="Judul Kursus" required>
+                            <input type="text" class="form-control" name="title_activity" required>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -62,21 +52,15 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label control-label">Pengumuman</label>
-                        <div class="col-md-10">
-                            <textarea name="announcement" id="editor"></textarea>
-                        </div>
-                    </div>
-                    <div class="form-group row">
                         <label class="col-sm-2 col-form-label control-label">Deskripsi<span class="text-danger">*</span></label>
                         <div class="col-md-10">
-                            <textarea name="desc_course" id="editor" rows=11 cols=50 maxlength=250 required></textarea>
+                            <textarea name="desc_course" id="desc_course" rows=11 cols=50 maxlength=250 required></textarea>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label control-label">List Materi<span class="text-danger">*</span></label>
+                        <label class="col-sm-2 col-form-label control-label">Benefit<span class="text-danger">*</span></label>
                         <div class="col-md-10">
-                            <textarea name="desc_what_to_learn" id="editor" rows=11 cols=50 maxlength=250 required></textarea>
+                            <textarea name="benefit" id="benefit" required></textarea>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -154,9 +138,104 @@
     var j = 0;
     var limit = 0;
 
-    CKEDITOR.replace('announcement');
-    CKEDITOR.replace('desc_course');
-    CKEDITOR.replace('desc_what_to_learn');
+    var data = {!! $jsonData !!};
+    var price = data.PRICE_ACTIVITY;
+
+    $('input[name="title_activity"]').val(data.TITLE_ACTIVITY);
+    if (price == 0) {
+        $('input[name="price_course"]').val(price);
+        $('#setFree').prop('checked', true);
+    } else {
+        $('input[name="price_course"]').val(price);
+        $('#setFree').prop('checked', false);
+    }
+    $('input[name="date_start"]').val(data.DATE_START);
+    $('input[name="date_end"]').val(data.DATE_END);
+    $('input[name="benefit"]').val(data.BENEFIT);
+    $('input[name="certif_code"]').val(data.SERTIF_CODE);
+    $('input[name="is_public"]').val(data.STATUS ? '1' : '0');
+    $('input[name="category"]').val(data.KATEGORI);
+    $('input[name="status"]').prop('checked', data.STATUS);
+    $('input[name="desc_course"]').summernote('code', data.DESKRIPSI_COURSE);
+    $.ajax({
+        url: 'courses/get/' + data.ID_ACTIVITY,
+        method: 'GET',
+        dataType: 'JSON',
+        success: function(response) {
+            if(response.desc) {
+                $('input[name="benefit"]').summernote('code', response.desc.BENEFIT);
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error(error);
+        }
+    });
+
+    $(document).ready(function() {
+        var $editor = $('#desc_course');
+        $editor.summernote({
+            height: 200,
+            callbacks: {
+                onPaste: function(e) {
+                    console.log('Called event paste', e);
+                },
+                onImageUpload: function(files) {
+                    console.log(files);
+                    $summernote.summernote('insertNode', imgNode);
+                }
+            },
+            toolbar: [
+                ['style', ['bold', 'italic', 'underline']],
+                ['fontsize', ['fontsize']],
+                ['color', ['color']],
+                ['height', ['height']],
+                ['operation', ['undo', 'redo']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['object', ['link']]
+            ]
+        });
+
+        $('#insert-btn').click(() => {
+            $editor.summernote('insertParagraph');
+        });
+
+        $('#bold-btn').click(() => {
+            $editor.summernote('bold');
+        });
+    });
+
+    $(document).ready(function() {
+        var $editor = $('#benefit');
+        $editor.summernote({
+            height: 200,
+            callbacks: {
+                onPaste: function(e) {
+                    console.log('Called event paste', e);
+                },
+                onImageUpload: function(files) {
+                    console.log(files);
+                    $summernote.summernote('insertNode', imgNode);
+                }
+            },
+            toolbar: [
+                ['style', ['bold', 'italic', 'underline']],
+                ['fontsize', ['fontsize']],
+                ['color', ['color']],
+                ['height', ['height']],
+                ['operation', ['undo', 'redo']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['object', ['link']]
+            ]
+        });
+
+        $('#insert-btn').click(() => {
+            $editor.summernote('insertParagraph');
+        });
+
+        $('#bold-btn').click(() => {
+            $editor.summernote('bold');
+        });
+    });
 
     $('#setFree').change(function() {
         if ($(this).prop('checked')) {
@@ -199,9 +278,6 @@
         });
         e.preventDefault();
     });
-
-    //GET ALL MATERI
-    //Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eius corrupti mollitia magni aut consequuntur esse, est labore omnis corporis, libero ea incidunt quasi excepturi molestiae id ut quaerat ab quo reiciendis aperiam in perferendis reprehenderit tenetur quos. Saepe ipsum natus unde quisquam ab, fuga odit vel eligendi eveniet tempora possimus illo incidunt ipsa corrupti inventore accusantium quia voluptate. Facere nam libero, eaque magni fuga quae sit delectus accusamus. Est, molestias animi magni non ex maiores dicta nemo. Laboriosam distinctio, enim vel qui voluptatem veniam modi eligendi? Earum autem, recusandae aliquid deleniti, consequatur sed veritatis totam laborum dolores facere, tempore eligendi quos ipsam sint fuga voluptatem quo ab ad aperiam suscipit. Nisi praesentium quia tempore accusantium omnis repellat? Quod perferendis impedit facilis nulla nemo. Iste nostrum facilis quis, ad placeat dolores nobis repudiandae cupiditate tempora quos officia laboriosam minus dolorum, quas consequuntur possimus distinctio cumque, in amet odio suscipit nemo? Cum nisi itaque sit ad architecto obcaecati consequatur, nobis ipsum, quod officiis cupiditate labore vitae! Alias omnis quisquam deleniti iste veritatis eum! Debitis nobis iure rem fugit fugiat facilis inventore tempora libero amet commodi! Omnis dolorem deserunt aliquam, illo eos expedita quos cupiditate recusandae atque itaque dicta repellat nostrum nesciunt doloribus commodi molestiae? Exercitationem, reiciendis sint. Culpa fugit quae qui, eos, voluptatibus id voluptatem, modi eius nam numquam eveniet! Doloremque delectus, in ipsam ullam odio fugit veritatis labore quidem saepe enim repellat id ea quo perspiciatis voluptates modi ex nobis a aliquid quam, aut facere minus. Voluptate pariatur eos dicta blanditiis deserunt quisquam quo quam consequuntur inventore vitae a nihil corrupti, odit illo officiis eius fuga similique modi quod sit repellat omnis tempore hic? Itaque quidem quas necessitatibus tempora amet laborum molestias, dolorem eos, non unde harum exercitationem nostrum? Neque obcaecati, exercitationem at ea sequi dolores quam deleniti harum necessitatibus voluptatum quas, maiores, minima similique repellat incidunt eius. Ratione quidem temporibus, quae quos amet dolorum explicabo hic, maiores natus velit aliquam quaerat tempore officiis delectus vitae. Quidem perferendis unde eaque praesentium, minus quo facere perspiciatis ullam atque asperiores qui repudiandae accusantium inventore! Accusamus, quos modi. Minus magni ullam magnam quia error corporis libero similique incidunt necessitatibus! Sit, quisquam harum consequatur enim fugit eius tempore dolorum! Error, voluptates fugit reprehenderit eligendi sequi blanditiis iure provident dolore dolorem quae quam maxime sapiente, corrupti est odit odio eaque placeat recusandae cum nulla, officia possimus quisquam officiis? Voluptatum expedita ea neque necessitatibus aliquid unde. Neque sunt illum odit, iusto velit numquam cumque tenetur molestiae non laborum vel reiciendis nam quis fuga molestias maiores excepturi adipisci, quae, blanditiis tempora sequi provident consequatur enim alias. Quibusdam molestias libero asperiores explicabo provident quisquam ratione obcaecati commodi dolor ullam, harum quia nihil consequuntur ducimus facere nesciunt animi culpa adipisci repellendus a corrupti accusamus enim sequi excepturi. Quisquam, consequuntur expedita beatae voluptates in maiores suscipit dolor veritatis sunt ipsum labore amet iure, dicta incidunt distinctio repudiandae voluptatem qui sed. Delectus magni laboriosam nemo ea tempora. Blanditiis porro nobis rerum quo eveniet at quidem praesentium repudiandae repellendus ex hic libero in, dolor ducimus sit non itaque? Quisquam ipsam ipsum in dicta non veritatis fuga omnis recusandae laboriosam aut? Enim omnis officia ipsa quo illum obcaecati aperiam exercitationem sed esse, dolorum, eaque laudantium officiis eveniet fugit nemo hic doloribus tenetur provident porro fugiat labore quos? Magni dolor sed ab corrupti esse tempora accusantium nemo, consectetur ut neque! Esse odio praesentium similique reiciendis quaerat officia! Impedit quod itaque nostrum delectus eos magni placeat. Officiis veritatis adipisci sapiente necessitatibus laboriosam modi officia soluta iure dolores fugiat labore a quibusdam ipsa similique, alias in reprehenderit aut? Exercitationem distinctio ratione ipsa accusantium. Eligendi quo quidem magnam provident earum reiciendis minima, vitae illum, autem officia repellat sunt, tempore necessitatibus error sed iure nam incidunt illo minus. Dolorem in, ut molestias eaque assumenda velit ea itaque, rerum nobis, aliquid porro voluptas molestiae soluta dolore doloremque cum dicta quaerat sunt ullam accusantium qui! Recusandae odit explicabo mollitia voluptatibus magnam velit a doloribus quam, eius porro id earum ducimus fugit minima placeat sunt aut illum enim? Ab cumque dignissimos quam doloremque, voluptatem velit hic temporibus asperiores, maxime eligendi recusandae deserunt! Iusto quis quae maiores enim qui eos excepturi vel, eaque ex temporibus mollitia deserunt quo delectus soluta impedit consequatur ratione at? Unde obcaecati autem sed hic exercitationem voluptates magni iure dolores eum. Consequuntur esse ullam facere, delectus fugiat adipisci ratione magnam dignissimos est! Dolorum, eos! Eaque ullam laboriosam inventore doloremque minima, sapiente ex tenetur voluptatem eius atque hic quia quibusdam voluptas nulla quod ab aliquam tempora quis ut facilis error cupiditate enim adipisci. Sint, aliquid distinctio accusantium nam nobis rerum. Molestiae quibusdam temporibus sapiente earum aut, praesentium tempore dolorem ipsa eaque in nostrum consequatur nesciunt rem deserunt commodi reiciendis magnam doloremque harum placeat! Fuga, qui labore ad pariatur tempore iusto dolor, enim doloribus amet porro nobis! Similique officiis omnis distinctio, animi sunt iusto sapiente, accusamus officia ratione quidem iste, quam tempore velit error eius laborum dicta? Nobis iste quasi earum impedit consequatur nam ipsa aliquam, id perferendis. Quibusdam possimus atque, aliquam reiciendis ex reprehenderit. Eligendi vitae magnam magni harum officia vel dolor quam similique consectetur consequuntur, placeat itaque voluptatibus minus sapiente explicabo distinctio aliquam unde necessitatibus, blanditiis animi? Molestias quia nesciunt optio voluptatibus fuga quibusdam animi delectus. Ea tempora molestiae quae quam, hic quia quibusdam ullam doloribus eaque in adipisci unde labore porro suscipit ratione dolore, fugiat qui modi! Nihil veritatis deserunt voluptatum laudantium dolorem doloribus suscipit corrupti, recusandae et, itaque harum vitae unde provident omnis! Voluptates quae provident dolorem eveniet ratione sapiente sed. Tenetur alias voluptates, quam ad sequi beatae consequatur blanditiis, minus iure voluptatem eveniet, molestias explicabo! Aut saepe doloremque a harum debitis dignissimos quasi corporis, voluptate quae vel nisi voluptates molestiae corrupti veritatis sequi delectus sint accusantium ipsum nam praesentium deserunt enim aspernatur? Nemo in minima consectetur eius, itaque quis cupiditate voluptas nulla perferendis. Esse beatae molestias in saepe. Quidem eos nesciunt nam, amet tenetur aut maxime eveniet sint quaerat minus totam veniam iure quam ipsam, blanditiis nihil voluptatibus omnis beatae! Natus, repudiandae. Earum obcaecati doloribus non?
 
     $(document).ready(function() {
         $('.dropify').dropify({

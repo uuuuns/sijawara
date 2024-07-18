@@ -28,16 +28,6 @@
 </style>
 
 <div class="col ms-0 ms-md-4 p-4 shadow rounded-3 overflow-hidden bg-white">
-    {{-- <?php if (!empty(validation_errors())) { ?>
-        <div class="alert alert-warning">
-            <div class="d-flex align-items-center justify-content-start">
-                <span class="alert-icon">
-                    <i class="anticon anticon-exclamation-o"></i>
-                </span>
-                <span><?= validation_errors() ?></span>
-            </div>
-        </div>
-    <?php } ?> --}}
     <div class="">
         <div class="card-body">
             <div class="row px-3">
@@ -89,27 +79,15 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label control-label">Pengunguman <span class="text-danger">*</span></label>
-                        <div class="col-md-10">
-                            <textarea name="announcement" id="announcement" required></textarea>
-                        </div>
-                    </div>
-                    <div class="form-group row">
                         <label class="col-sm-2 col-form-label control-label">Deskripsi <span class="text-danger">*</span></label>
                         <div class="col-md-10">
                             <textarea name="desc_course" id="desc_course" rows=11 cols=50 maxlength=250 required></textarea>
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label control-label">Apa yang akan dipelajari? <span class="text-danger">*</span></label>
+                        <label class="col-sm-2 col-form-label control-label">Benefit <span class="text-danger">*</span></label>
                         <div class="col-md-10">
-                            <textarea name="desc_what_to_learn" id="desc_what_to_learn" rows=11 cols=50 maxlength=250 required></textarea>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label control-label">Kode Sertifikat <span class="text-danger">*</span></label>
-                        <div class="col-md-10">
-                            <input type="text" class="form-control" name="certif_code" placeholder="Kode Sertifikat" style="text-transform: uppercase" required>
+                            <textarea name="benefit" id="benefit" rows=11 cols=50 maxlength=250 required></textarea>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -226,7 +204,7 @@
     });
 
     $(document).ready(function() {
-        var $editor = $('#announcement');
+        var $editor = $('#benefit');
         $editor.summernote({
             height: 200,
             callbacks: {
@@ -237,40 +215,7 @@
                     console.log(files);
                     $summernote.summernote('insertNode', imgNode);
                 }
-            },
-            toolbar: [
-                ['style', ['bold', 'italic', 'underline']],
-                ['fontsize', ['fontsize']],
-                ['color', ['color']],
-                ['height', ['height']],
-                ['operation', ['undo', 'redo']],
-                ['para', ['ul', 'ol', 'paragraph']],
-                ['object', ['link']]
-            ]
-        });
-
-        $('#insert-btn').click(() => {
-            $editor.summernote('insertParagraph');
-        });
-
-        $('#bold-btn').click(() => {
-            $editor.summernote('bold');
-        });
-    });
-
-    $(document).ready(function() {
-        var $editor = $('#desc_what_to_learn');
-        $editor.summernote({
-            height: 200,
-            callbacks: {
-                onPaste: function(e) {
-                    console.log('Called event paste', e);
-                },
-                onImageUpload: function(files) {
-                    console.log(files);
-                    $summernote.summernote('insertNode', imgNode);
-                }
-            },
+            },  
             toolbar: [
                 ['style', ['bold', 'italic', 'underline']],
                 ['fontsize', ['fontsize']],

@@ -108,9 +108,8 @@ class CourseController extends Controller
         $course = [
             'ID_COURSE'             => $this->GenerateUniqID('ACT', $req->input('announcement')),
             'ID_ACTIVITY'           => $activity['ID_ACTIVITY'],
-            'PENGUMUMAN'            => $req->input('announcement'),
             'DESKRIPSI_COURSE'      => $req->input('desc_course'),
-            'DESKRIPSI_COURSE_ITEM' => $req->input('desc_what_to_learn'),
+            'BENEFIT'               => $req->input('benefit'),
             'KATEGORI'              => $req->input('category'),
         ];
 
@@ -121,6 +120,24 @@ class CourseController extends Controller
         $this->item_materi($data, $req);
 
         return redirect('courses')->with(['succ_msg' => 'Successfully Add New Course', 'location' => 'courses']);
+    }
+
+    public function deskripsi_get($id)
+    {
+        $desc = DB::selectOne("
+            SELECT
+                *
+            FROM
+                activity
+            WHERE
+                ID_ACTIVITY = '$id'
+        ");
+
+        return response([
+            'status_code'       => 200,
+            'status_message'    => 'Data diterima',
+            $desc
+        ], 200);
     }
 
     public function add_materi($i)
@@ -156,15 +173,16 @@ class CourseController extends Controller
     {
         $data['title'] = "Edit Kursus";
 
-        $data["kategori"] = DB::select("
+        $kategori = DB::select("
             SELECT
                 k.*
             FROM
                 kategori k
         ");
 
-        $data['data'] = DB::Select("
+        $data_course = DB::Select("
             SELECT
+                a.ID_ACTIVITY ,
                 a.IMAGE_ACTIVITY ,
                 a.TITLE_ACTIVITY ,
                 a.PRICE_ACTIVITY ,
@@ -187,9 +205,11 @@ class CourseController extends Controller
                 a.ID_ACTIVITY = '" . $req->input('id_activity') . "'
         ")[0];
 
+        $jsonData = json_encode($data_course);
+
         return
             view('template.header', $data) .
-            view('template_admin/course/update_course', $data) .
+            view('template_admin/course/update_course', compact('kategori', 'jsonData')) .
             view('template.footer', $data);
     }
 

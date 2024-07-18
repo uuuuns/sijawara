@@ -2,17 +2,26 @@
 @section('content')
 <!-- Content Wrapper START -->
 <div class="col ms-0 ms-md-4 p-4 shadow rounded-3 overflow-hidden bg-white">
-    {{-- <?php if (!empty($this->session->flashdata('msg'))) { ?>
-    <div class="alert alert-success">
-        <div class="d-flex align-items-center justify-content-start">
-            <span class="alert-icon">
-                <i class="anticon anticon-check-o"></i>
-            </span>
-            <span><?= $this->session->flashdata('msg') ?></span>
+    <?php if (!empty(session('err_msg'))) { ?>
+        <div class="alert alert-danger">
+            <div class="d-flex align-items-center justify-content-start">
+                <span class="alert-icon">
+                    <i class="anticon anticon-check-o"></i>
+                </span>
+                <span><?= session('err_msg') ?></span>
+            </div>
         </div>
-    </div>
-    <?php } ?> --}}
-
+    <?php } ?>
+    <?php if (!empty(session('succ_msg'))) { ?>
+        <div class="alert alert-success">
+            <div class="d-flex align-items-center justify-content-start">
+                <span class="alert-icon">
+                    <i class="anticon anticon-check-o"></i>
+                </span>
+                <span><?= session('succ_msg') ?></span>
+            </div>
+        </div>
+    <?php } ?>
     <div class="">
         <div class="card-body">
             <div class="row">
