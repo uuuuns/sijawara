@@ -61,13 +61,11 @@ class EventGuest extends Controller
 									(SELECT 
 										COUNT(*) 
 									FROM 
-										payment p 
-									LEFT JOIN `order` o ON 
-										o.ID_PAY = p.ID_PAY 
+										`order` o
 									WHERE 
 										o.ID_USER = ? 
 										AND o.ID_PRODUCT = activity.ID_ACTIVITY 
-										AND p.DATE_PAY IS NOT NULL) as DATA_CHECKING, 
+										) as DATA_CHECKING, 
 										(DATEDIFF(CURDATE(), activity.DATE_START) >= 1) as EXPIRED', [session('user')[0]->get('ID_USER')])
 					->leftJoin('event', 'event.ID_ACTIVITY', '=', 'activity.ID_ACTIVITY')
 					->where('activity.TYPE_ACTIVITY', 2)
@@ -91,7 +89,7 @@ class EventGuest extends Controller
 			WHERE
 				ID_USER = '". session('user')[0]->get('ID_USER') ."'
 			AND
-				ID_PRODUCT = '". $req->input('id_activity') ."'
+				ID_PRODUCT = '". $req->input('id_event;]') ."'
 		");
 
 		if (empty($check_data)) {
