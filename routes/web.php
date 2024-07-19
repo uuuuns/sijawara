@@ -106,18 +106,10 @@ Route::middleware(['usersession:3,2,1'])->group(function () {
     Route::post('course/item/mapping', 'guest_controller\CourseGuest@getMappingCourse');
     Route::post('course/item', 'guest_controller\CourseGuest@getDetailItemCourse');
     Route::post('course/quiz/evaluation', 'guest_controller\CourseGuest@QuizEvaluation');
+    Route::post('course/add', 'guest_controller\CourseGuest@add_event');
 //END COURSE
 
-//PAYMENT & CART
-    Route::post('checkout', 'guest_controller\CheckoutGuest@index');
-    Route::get('checkouts', 'guest_controller\CheckoutGuest@index');
-    Route::get('add/order', 'guest_controller\CheckoutGuest@addOrder');
-    Route::post('purchase', 'guest_controller\CheckoutGuest@purchase');
-    Route::get('delete/order', 'guest_controller\CheckoutGuest@deleteOrder');
-    Route::post('delete/pay', 'guest_controller\CheckoutGuest@DeleteTrans');
-    Route::post('check_payment_status', 'guest_controller\CheckoutGuest@check_status');
-    Route::post('get_order_id', 'guest_controller\CheckoutGuest@get_order_id');
-//END PAYMENT & CART
+    Route::post('event/add', 'guest_controller\EventGuest@add_event');
 
 // PROFILE
     Route::get('profile', [ProfileGuest::class, 'profile']);

@@ -140,14 +140,12 @@
                                 </li>
                             </ul>
                             <div class="">
-                                <form class="" id="FormBuyNow-info" method="POST" action="<?= url('purchase') ?>">
+                                <form class="" id="FormBuyNow-info" method="POST" action="<?= url('course/add') ?>">
                                     @csrf
                                     <div id="data-input-info"></div>
-                                    <div class="w-100 button button-enroll-course btn btn-main-2 rounded" onclick="BuyNow()">Ambil Sekarang</div>
+                                    <input type="hidden" name="id_activity" value="<?= $course->ID_ACTIVITY ?>">
+                                    <button type="submit">Ambil Sekarang</button>
                                 </form>
-                                <button data-id-activity="<?= $course->ID_ACTIVITY ?>" onclick="AddToCart(this)" class="mt-2 w-100 button button-enroll-course btn btn-secondary btn-sm rounded">
-                                    Tambahkan ke Agenda
-                                </button>
                             </div>
                         </div>
                     </div>

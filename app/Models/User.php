@@ -34,26 +34,15 @@ class User extends Model
             `kategori`.`KATEGORI`, 
             `course`.`DESKRIPSI_COURSE`, 
             (
-                SELECT 
-                    COUNT(*) 
-                FROM 
-                    payment p 
-                    LEFT JOIN `order` o ON o.ID_PAY = p.ID_PAY 
-                WHERE 
-                    o.ID_USER = "' . session('user')[0]['ID_USER'] . '"
-                    AND o.ID_PRODUCT = `activity`.ID_ACTIVITY 
-                    AND p.DATE_PAY IS NOT NULL
-            ) AS DATA_CHECKING, 
-            (
                 CEIL(
                     (
                         SELECT
-                                MAX(o.MAPPING_COUNT)
-                            FROM
-                                `order` o
-                            WHERE
-                                o.ID_USER = "' . session('user')[0]['ID_USER'] . '"
-                                AND o.ID_PRODUCT = activity.ID_ACTIVITY
+                            MAX(o.MAPPING_COUNT)
+                        FROM
+                            `order` o
+                        WHERE
+                            o.ID_USER = "' . session('user')[0]['ID_USER'] . '"
+                            AND o.ID_PRODUCT = activity.ID_ACTIVITY
                     ) / 
                     (
                             SELECT
@@ -70,8 +59,11 @@ class User extends Model
             `activity` 
             LEFT JOIN `course` ON `course`.`ID_ACTIVITY` = `activity`.`ID_ACTIVITY` 
             LEFT JOIN `kategori` ON `kategori`.`ID_KATEGORI` = `course`.`KATEGORI` 
+            LEFT JOIN `order` ON `order`.`ID_PRODUCT` = `activity`.`ID_ACTIVITY` 
         WHERE 
             `activity`.`TYPE_ACTIVITY` = 1
+        AND
+            `order`.`ID_USER` = "' . session('user')[0]['ID_USER'] . '"
         ');
         return $sql;
     }
