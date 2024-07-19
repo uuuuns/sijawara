@@ -102,8 +102,8 @@
 
                     <div class="tab-content tutori-course-content" id="nav-tabContent">
                         <div class="tab-pane fade show active" id="nav-course" role="tabpanel" aria-labelledby="nav-course-tab" tabindex="0">
-                            <div class="row flex-row gap-3">
-                                <div class="col-3 mb-4 d-none d-lg-block">
+                            <div class="flex-column flex-md-row gap-3 row">
+                                <div class="col-12 col-md-3 mb-4">
                                     <?php
                                     $quiz = 0;
                                     $materi = 0;
@@ -128,7 +128,7 @@
                                 </div>
                                 <div class="col bg-white shadow rounded" id="detail-item">
                                     <div class="py-5">
-                                        <div class="d-flex justify-content-center">
+                                        <div class="d-flex justify-content-center py-4">
                                             <img src="https://icons8.com/preloaders/preloaders/1476/Rocket.gif" alt="Loader.gif" />
                                         </div>
                                         <div class="d-flex justify-content-center pt-4">
@@ -148,7 +148,7 @@
                             <div class="tab-pane fade" id="nav-sertif" role="tabpanel" aria-labelledby="nav-sertif-tab" tabindex="0">
                                 <?php if ($grade > 75) { ?>
                                     <div class="d-flex justify-content-center">
-                                        <div class="blurred-image" style="pointer-events: none">
+                                        <div class="blurred-image d-none d-lg-block" style="pointer-events: none">
                                             <embed class="overlay" style="width:600px; height:500px; pointer-events: none;" src="<?= $sertif->FILE_SERTIFIKAT ?>#toolbar=0&navpanes=0&scrollbar=0&statusbar=0&messages=0&scrollbar=0" type="text/plain"></emb>
                                         </div>
                                         <div class="shadow mx-5 mt-3 rounded-4 box-input d-flex align-items-center">
@@ -156,7 +156,7 @@
                                                 <label>Kode Sertifikat</label>
                                                 <form action="javascript:void(0)">
                                                     <input type="text" class="form-control mb-4" name="" id="input-code">
-                                                    <button type="button" class="btn btn-primary col-md-12 my-3" onclick="DownloadPdf(this)">Unduh PDF</button>
+                                                    <button type="button" class="btn btn-primary rounded col-md-12 my-3" onclick="DownloadPdf(this)">Unduh PDF</button>
                                                 </form>
                                             </div>
                                         </div>
@@ -234,8 +234,8 @@
         <?php endforeach; ?>
         $(e).removeClass('btn-main-outline')
         $(e).addClass('btn-main-2')
-        $("#detail-item").html('<div class="d-flex justify-content-center align-items-center h-100"><img src="https://icons8.com/preloaders/preloaders/1476/Rocket.gif" alt="Loader.gif" /></div>');
-        $("#detail-item").html(`<div class="d-flex justify-content-center align-items-center h-100">
+        $("#detail-item").html('<div class="d-flex justify-content-center align-items-center h-100 py-4"><img src="https://icons8.com/preloaders/preloaders/1476/Rocket.gif" alt="Loader.gif" /></div>');
+        $("#detail-item").html(`<div class="d-flex justify-content-center align-items-center h-100 py-4">
                 <div class="bg-white px-3 py-2 rounded-3 shadow fw-semibold text-center">
                     <i class="bi bi-file-text me-2" style="font-size: 1.1rem; -webkit-text-stroke: 0.2px;"></i>
                     Your Certificate Code :
@@ -325,7 +325,7 @@
     function GetItemCourse(e) {
         $(e).removeClass('btn-main-outline');
         $(e).addClass('btn-main-2');
-        $("#detail-item").html('<div class="d-flex justify-content-center align-items-center h-100"><img src="https://icons8.com/preloaders/preloaders/1476/Rocket.gif" alt="Loader.gif" /></div>');
+        $("#detail-item").html('<div class="d-flex justify-content-center align-items-center h-100 py-4"><img src="https://icons8.com/preloaders/preloaders/1476/Rocket.gif" alt="Loader.gif" /></div>');
 
         var csrfToken = $('meta[name="csrf-token"]').attr('content');
 
