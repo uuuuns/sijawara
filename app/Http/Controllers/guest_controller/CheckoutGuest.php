@@ -593,7 +593,6 @@ class CheckoutGuest extends Controller
 					"STATUS" => 0
 				);
 			}
-			// $this->checkoutModel->insert_mapping($data_mapping);
 			DB::table('mapping_course')->insert($data_mapping);
 		}
 	}
