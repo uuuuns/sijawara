@@ -4,7 +4,7 @@
             <div class="col-12 col-lg-7 py-2 px-4">
                 <h1 class="fw-bold">Selamat Datang di SIJAWARA+</h1>
                 <p class="fw-600 text-dark pt-3">SIJAWARA adalah akronim dari Sistem Informasi Pembelajaran dan Peningkatan Wawasan Perkoperasian. Melalui sijawara, sobat bisa mempelajari secara mandiri ilmu perkoperasian. Tak hanya itu, sobat sijawara bisa juga mempelajari ilmu terkait pengembangan UMKM. </p>
-                <svg width="375" height="34" viewBox="0 0 487 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg class="w-100" width="375" height="34" viewBox="0 0 487 34" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M4 30C73.6307 10.3798 266.914 -17.0885 483 30" stroke="#45B104" stroke-width="8" stroke-linecap="round" />
                 </svg>
                 <p class="py-3" style="font-size:14px;color:#505050;font-weight:500">
@@ -432,7 +432,7 @@
         </div>
         <div class="row" style="margin-top: 8rem !important;margin-bottom: 8rem !important;">
             <h3 class="text-center" style="font-weight:600">Support By</h3>
-            <div class="mx-5 pt-4 text-center">
+            <div class=" pt-4 text-center">
                 <img src="{{ asset('assets_new') }}/images/new/sponsor/jatim.png" class="img-fluid px-2" />
                 <img src="{{ asset('assets_new') }}/images/new/sponsor/kemenkop.png" class="img-fluid px-2" />
                 <img src="{{ asset('assets_new') }}/images/new/sponsor/diskop.png" class="img-fluid px-2" />

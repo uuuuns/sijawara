@@ -37,7 +37,8 @@ class GuestController extends Controller
 		// dd($data);
 		return
 			view('template.header', $data) .
-			view('template_guest.home', $data);
+			view('template_guest.home', $data) .
+			view('template.footer', $data);
 	}
 	public function courseCategories(Request $req)
 	{
