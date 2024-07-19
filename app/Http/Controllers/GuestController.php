@@ -29,6 +29,20 @@ class GuestController extends Controller
 			FROM
 				kategori
 		');
+
+		$data['carousel'] = DB::select('
+			SELECT
+				*
+			FROM
+				tb_carousel
+		');
+
+		$data['testimoni'] = DB::select('
+			SELECT
+				*
+			FROM
+				tb_testimoni
+		');
 		$data_user =  (session('user') == null) ? null : Session::get('user')[0]->get('ID_USER');
 		$checkoutModel = new Checkout();
 		$data['checkout'] = $checkoutModel->get_all_order($data_user);

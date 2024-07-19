@@ -92,9 +92,10 @@ class EventGuest extends Controller
 		}
 		$con = ['ID_ACTIVITY = "'.$id_activity.'"'];
         // $sertifCheck = $this->certificateModel->getCertificate($con);
-		$sertifCheck = DB::select("
+		$sertifCheck = DB::selectOne("
 			SELECT
-				ID_SERTIFIKAT
+				ID_SERTIFIKAT,
+				FILE_SERTIFIKAT
 			FROM
 				sertifikat_activity
 			WHERE
