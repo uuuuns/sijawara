@@ -1,11 +1,11 @@
 <!-- Login -->
 <div class="mb-5">
-    <div class="container d-grid d-md-flex p-4 p-md-0 position-relative">
+    <div class="container d-grid d-md-flex p-0 p-md-4 p-md-0 position-relative">
         <div class="w-100">
             <div class="d-none d-lg-block">
                 <img src="<?= asset('assets/images/login-1.png') ?>" class="float-end d-block img-fluid rounded-5 rounded-start h-auto ">
             </div>
-            <div class="col-12 col-lg-6 h-100 p-4 pe-5 bg-white rounded-5 position-absolute" id="formLogin">
+            <div class="col-12 col-lg-6 h-100 p-4 pe-4 pe-md-5 bg-white rounded-5 position-absolute" id="formLogin">
                 <div class="d-flex ps-md-4 flex-column justify-content-center h-100">
                     {{--
                         msg error
