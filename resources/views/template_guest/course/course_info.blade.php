@@ -18,8 +18,9 @@
                             <a class="nav-item nav-link active" id="nav-home-tab" data-bs-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home-tab" aria-selected="true">Ringkasan</a>
                             <?php if (!empty(session('user'))) : ?>
                                 <a class="nav-item nav-link" id="nav-topics-tab" data-bs-toggle="tab" href="#nav-topics" role="tab" aria-controls="nav-topics-tab" aria-selected="false">Kurikulum</a>
-                            <?php endif ?>
-                            <a class="nav-item nav-link" id="nav-instructor-tab" data-bs-toggle="tab" href="#nav-instructor" role="tab" aria-controls="nav-instructor-tab" aria-selected="false">Instruktur</a>
+                                <?php endif ?>
+                                <a class="nav-item nav-link" id="nav-instructor-tab" data-bs-toggle="tab" href="#nav-instructor" role="tab" aria-controls="nav-instructor-tab" aria-selected="false">Instruktur</a>
+                                <a class="nav-item nav-link" id="nav-benefit-tab" data-bs-toggle="tab" href="#nav-benefit" role="tab" aria-controls="nav-benefit-tab" aria-selected="true">Benefit</a>
                         </div>
                     </nav>
 
@@ -81,6 +82,22 @@
                                 </div>
                             </div>
                             <!-- Conurse  instructor end -->
+                        </div>
+                        <div class="tab-pane fade" id="nav-benefit" role="tabpanel" aria-labelledby="nav-benefit-tab">
+                            <!-- Course benefit start -->
+                            <div class="courses-benefit">
+                                <div class="single-benefit-box">
+                                    <div class="row align-items-center">
+
+                                        <div class="col-lg-8 col-md-8">
+                                            <div class="benefit-content">
+                                                <h4><?= $course->BENEFIT ?></h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Conurse  benefit end -->
                         </div>
                     </div>
                 </div>

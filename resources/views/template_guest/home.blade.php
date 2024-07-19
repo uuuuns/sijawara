@@ -341,30 +341,14 @@
             <div class="splide img-header" style="margin-top:120px; overflow:hidden;border-radius:1rem;max-width: 1208px;max-height: 400px;">
                 <div class="splide__track" style="aspect-ratio:151/50;">
                     <ul class="splide__list">
+                        @foreach ($carousel as $item)
                         <li class="splide__slide">
-                            <section class="bg-fixed division" style="background-size:cover;aspect-ratio:151/50;
-                                background-image: url('{{ asset('assets_new') }}/images/new/1.png   ');
+                            <section class="bg-fixed division" onclick="window.open('<?=$item->link?>', '_blank')" style="background-size:cover;aspect-ratio:151/50;
+                                background-image: url(<?=$item->gambar?>);
                                 width: 100%; height: 100%;">
                             </section>
                         </li>
-                        <li class="splide__slide">
-                            <section class="bg-fixed division" style="background-size:cover;aspect-ratio:151/50;
-                                background-image: url('{{ asset('assets_new') }}/images/new/2.png   ');
-                                width: 100%; height: 100%;">
-                            </section>
-                        </li>
-                        <li class="splide__slide">
-                            <section class="bg-fixed division" style="background-size:cover;aspect-ratio:151/50;
-                                background-image: url('{{ asset('assets_new') }}/images/new/3.png   ');
-                                width: 100%; height: 100%;">
-                            </section>
-                        </li>
-                        <li class="splide__slide">
-                            <section class="bg-fixed division" style="background-size:cover;aspect-ratio:151/50;
-                                background-image: url('{{ asset('assets_new') }}/images/new/4.png   ');
-                                width: 100%; height: 100%;">
-                            </section>
-                        </li>
+                        @endforeach
                     </ul>
                 </div>
             </div>
@@ -401,30 +385,16 @@
             <div class="splide testimonial-carousel" style="margin-top:20px;">
                 <div class="splide__track">
                     <ul class="splide__list">
+                        @foreach ($testimoni as $item)
                         <li class="splide__slide">
                             <div class="col-12 p-4">
                                 <div class="rounded shadow py-4 px-4" style="background-color: #D9D9D9;">
-                                    <i>"Lorem ipsum dolor, sit amet consectetur adipisicing elit. Voluptate quaerat soluta eligendi magni cumque iusto."</i>
-                                    <div class="mt-3 fw-bold">John Doe</div>
+                                    <i><?= $item->testimoni?></i>
+                                    <div class="mt-3 fw-bold"><?= $item->nama?></div>
                                 </div>
                             </div>
                         </li>
-                        <li class="splide__slide">
-                            <div class="col-12 p-4">
-                                <div class="rounded shadow py-4 px-4" style="background-color: #D9D9D9;">
-                                    <i>"Lorem ipsum dolor, sit amet consectetur adipisicing elit. Voluptate quaerat soluta eligendi magni cumque iusto."</i>
-                                    <div class="mt-3 fw-bold">John Doe</div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="splide__slide">
-                            <div class="col-12 p-4">
-                                <div class="rounded shadow py-4 px-4" style="background-color: #D9D9D9;">
-                                    <i>"Lorem ipsum dolor, sit amet consectetur adipisicing elit. Voluptate quaerat soluta eligendi magni cumque iusto."</i>
-                                    <div class="mt-3 fw-bold">John Doe</div>
-                                </div>
-                            </div>
-                        </li>
+                        @endforeach
                     </ul>
                 </div>
             </div>

@@ -82,6 +82,16 @@ Route::middleware(['usersession:1'])->group(function () {
     Route::get('instructor', 'InstructorController@index');
     Route::post('instructor/accept', 'InstructorController@accept');
     Route::post('instructor/decline', 'InstructorController@decline');
+    
+    Route::get('setting', 'SettingController@index');
+    Route::post('carousel/store', 'SettingController@addCarousel');
+    Route::post('carousel/delete', 'SettingController@deleteCarousel');
+    Route::post('carousel/edit', 'SettingController@editCarousel');
+
+    Route::get('testimoni', 'SettingController@testimoni_index');
+    Route::post('testimoni/store', 'SettingController@addTestimoni');
+    Route::post('testimoni/delete', 'SettingController@deleteTestimoni');
+    Route::post('testimoni/edit', 'SettingController@editTestimoni');
 });
 
 //2 INSTRUKTUR
