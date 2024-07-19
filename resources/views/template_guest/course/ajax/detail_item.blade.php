@@ -28,15 +28,15 @@
         </section>
         <hr>
         <section id="video-course">
-            <h6 class="fw-semibold">Video Kursus :</h6>
+            <h6 class="fw-semibold pb-3">Video Kursus :</h6>
             <?php
             $pattern = '/(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/';
             $url = $detail_item_course->LINK_YT;
             if (preg_match('/\/d\/(.*?)\//', $url, $matches)) { ?>
-                <button type="button" class="btn btn-main-2 w-100" data-toggle="modal" data-target="#YTModal" onclick=" window.open('<?= $detail_item_course->LINK_YT ?>')">
+                <button type="button" class="btn btn-main-2 rounded w-100" data-toggle="modal" data-target="#YTModal" onclick=" window.open('<?= $detail_item_course->LINK_YT ?>')">
                     Buka Video </button>
             <?php } else if (preg_match($pattern, $url, $matches)) { ?>
-                <button type="button" class="btn btn-main-2 w-100" data-toggle="modal" data-target="#YTModal" onclick=" window.open('<?= $detail_item_course->LINK_YT ?>')">
+                <button type="button" class="btn btn-main-2 rounded w-100" data-toggle="modal" data-target="#YTModal" onclick=" window.open('<?= $detail_item_course->LINK_YT ?>')">
                     Buka Video
                 </button>
             <?php } else {
@@ -95,7 +95,7 @@
         <?php if ($quiz_grade == NULL) {
             $no_soal = 0;
             foreach ($detail_item_course as $item) {
-                $soal = explode(";", $item->PIL_JWB);?>
+                $soal = explode(";", $item->PIL_JWB); ?>
                 <h6 class="fw-semibold mt-5">Kuis :</h6>
                 <div class="d-flex bg-white my-3 p-4 rounded-3 shadow fw-semibold">
                     <?= $item->SOAL ?>
@@ -142,8 +142,8 @@
         <?php } else { ?>
             <div class="col" id="detail-item">
                 <div class="py-5">
-                    <div class="d-flex justify-content-center">
-                        <img src="https://img.freepik.com/free-vector/hr-management-hiring-employees-people-cv_107791-11222.jpg" alt="Loader.gif" style="max-width: 50%;">
+                    <div class="d-flex justify-content-center py-4">
+                        <img src=" https://img.freepik.com/free-vector/hr-management-hiring-employees-people-cv_107791-11222.jpg" alt="Loader.gif" style="max-width: 50%;">
                     </div>
                     <div class="d-flex justify-content-center pt-4">
                         <h6>Anda Sudah Menyelesaikan Quiz dan Mendapatkan Nilai : <?= $quiz_grade->NILAI ?></h6>
@@ -184,7 +184,7 @@
                             return this.value;
                         }).get();
 
-                        $("#body-detail").html('<div class="d-flex justify-content-center align-items-center h-100 mt-40"><img src="https://icons8.com/preloaders/preloaders/1476/Rocket.gif" alt="Loader.gif" /></div>');
+                        $("#body-detail").html('<div class="d-flex justify-content-center align-items-center h-100 mt-40 py-4"><img src="https://icons8.com/preloaders/preloaders/1476/Rocket.gif" alt="Loader.gif" /></div>');
                         $("#footer_modal_<?= $item->ID_ITEM ?>").html("");
                         jQuery.ajax({
                             url: "<?= Request::segment(0) ?>/course/quiz/evaluation/",
