@@ -13,7 +13,7 @@
     <!-- Mobile Specific Meta-->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- bootstrap.min css -->
-    <link rel="stylesheet" href="{{ asset('assets_new') }}/vendors/bootstrap/bootstrap.css">
+    <link rel="stylesheet" href="{{ asset('assets_new') }}/css/bootstrap.css">
     <!-- Iconfont Css -->
     <link rel="stylesheet" href="{{ asset('assets_new') }}/vendors/awesome/css/fontawesome-all.min.css">
     <link rel="stylesheet" href="{{ asset('assets_new') }}/vendors/flaticon/flaticon.css">
