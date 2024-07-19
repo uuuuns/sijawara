@@ -20,43 +20,45 @@
                 </div>
             </div>
             <div class="mt-5">
-                <table class="table mb-0" id="dtTable">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Nama User</th>
-                            <th>Universitas</th>
-                            <th>Studi</th>
-                            <th>Status</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php $number = 0; ?>
+                <div class="table-responsive">
+                    <table class="table mb-0" id="dtTable">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Nama User</th>
+                                <th>Universitas</th>
+                                <th>Studi</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php $number = 0; ?>
 
-                        @foreach ($instructor as $item)
-                        <?php $number++; ?>
-                        <tr>
-                            <td><?= $number ?></td>
-                            <td><?= $item->NAME ?></td>
-                            <td><?= $item->UNIV ?></td>
-                            <td><?= $item->DEGREE . ' - ' . $item->STUDY ?></td>
-                            <?php if ($item->STATUS == 0) { ?>
-                                <td><span class="badge bg-warning text-dark">Butuh Verifikasi</span></td>
-                            <?php } else if ($item->STATUS == 1) { ?>
-                                <td><span class="badge bg-success">Instruktur</span></td>
-                            <?php } else { ?>
-                                <td><span class="badge bg-danger">Ditolak</span></td>
-                            <?php } ?>
-                            <td>
-                                <button type="button" onclick="openviewModal(`<?= htmlentities(json_encode($item)) ?>`)" class="btn btn-warning px-4 py-2 rounded">
-                                    <i class="bx bx-edit-alt font-size-16 align-middle"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                            @foreach ($instructor as $item)
+                            <?php $number++; ?>
+                            <tr>
+                                <td><?= $number ?></td>
+                                <td><?= $item->NAME ?></td>
+                                <td><?= $item->UNIV ?></td>
+                                <td><?= $item->DEGREE . ' - ' . $item->STUDY ?></td>
+                                <?php if ($item->STATUS == 0) { ?>
+                                    <td><span class="badge bg-warning text-dark">Butuh Verifikasi</span></td>
+                                <?php } else if ($item->STATUS == 1) { ?>
+                                    <td><span class="badge bg-success">Instruktur</span></td>
+                                <?php } else { ?>
+                                    <td><span class="badge bg-danger">Ditolak</span></td>
+                                <?php } ?>
+                                <td>
+                                    <button type="button" onclick="openviewModal(`<?= htmlentities(json_encode($item)) ?>`)" class="btn btn-warning px-4 py-2 rounded">
+                                        <i class="bx bx-edit-alt font-size-16 align-middle"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

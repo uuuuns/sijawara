@@ -27,42 +27,44 @@
                 </div>
             </div>
             <div class="mt-5">
-                <table class="table mb-0" id="dtTable">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Nama User</th>
-                            <th>Email</th>
-                            <th>No Telepon</th>
-                            <th>Jenis Kelamin</th>
-                            <th width="100px">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php $number = 0; ?>
+                <div class="table-responsive">
+                    <table class="table mb-0" id="dtTable">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Nama User</th>
+                                <th>Email</th>
+                                <th>No Telepon</th>
+                                <th>Jenis Kelamin</th>
+                                <th width="100px">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php $number = 0; ?>
 
-                        @foreach ($user as $item)
-                        <?php $number++; ?>
-                        <tr>
-                            <td><?= $number ?></td>
-                            <td><?= $item->NAME ?></td>
-                            <td><?= $item->EMAIL ?></td>
-                            <td><?= $item->TELP ?></td>
-                            <td><?= $item->JK ?></td>
-                            <td>
-                                <div class="d-flex flex-column gap-2">
-                                    <button type="button" onclick="openviewModal(`<?= htmlentities(json_encode($item)) ?>`)" class="btn btn-warning px-4 py-2 rounded">
-                                        <i class="bx bx-edit-alt font-size-16 align-middle"></i>
-                                    </button>
-                                    <button type="button" onclick="opendeleteModal(`<?= htmlentities(json_encode($item)) ?>`)" class="btn btn-danger px-4 py-2 rounded">
-                                        <i class="bx bx-trash font-size-16 align-middle"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                            @foreach ($user as $item)
+                            <?php $number++; ?>
+                            <tr>
+                                <td><?= $number ?></td>
+                                <td><?= $item->NAME ?></td>
+                                <td><?= $item->EMAIL ?></td>
+                                <td><?= $item->TELP ?></td>
+                                <td><?= $item->JK ?></td>
+                                <td>
+                                    <div class="d-flex flex-column gap-2">
+                                        <button type="button" onclick="openviewModal(`<?= htmlentities(json_encode($item)) ?>`)" class="btn btn-warning px-4 py-2 rounded">
+                                            <i class="bx bx-edit-alt font-size-16 align-middle"></i>
+                                        </button>
+                                        <button type="button" onclick="opendeleteModal(`<?= htmlentities(json_encode($item)) ?>`)" class="btn btn-danger px-4 py-2 rounded">
+                                            <i class="bx bx-trash font-size-16 align-middle"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

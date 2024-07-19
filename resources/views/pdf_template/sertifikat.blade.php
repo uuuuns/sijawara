@@ -34,6 +34,7 @@
         .text {
             width: 580px;
         }
+
         .number {
             font-size: 22px;
             font-weight: bold;
@@ -42,7 +43,7 @@
             margin-top: -3%;
         }
 
-        .box .valign-middle .name{
+        .box .valign-middle .name {
             padding: 19% 0px;
         }
 
@@ -84,47 +85,53 @@
         </div>
 
         <div class="box">
-            <table class="valign-middle">
-                <tr>
-                    <th class="text-align-center">
-                        <div class="text number">
-                            <?= $NO_SERTIF ?>
-                        </div>
-                    </th>
-                </tr>
-            </table>
+            <div class="table-responsive">
+                <table class="valign-middle">
+                    <tr>
+                        <th class="text-align-center">
+                            <div class="text number">
+                                <?= $NO_SERTIF ?>
+                            </div>
+                        </th>
+                    </tr>
+                </table>
+            </div>
         </div>
 
 
         <div class="box">
-            <table class="valign-middle">
-                <tr>
-                    <th class="text-align-center">
-                        <div class="text name">
-                            <?= $NAME ?>
-                        </div>
-                    </th>
-                </tr>
-            </table>
+            <div class="table-responsive">
+                <table class="valign-middle">
+                    <tr>
+                        <th class="text-align-center">
+                            <div class="text name">
+                                <?= $NAME ?>
+                            </div>
+                        </th>
+                    </tr>
+                </table>
+            </div>
         </div>
 
         <div class="box">
-            <table class="valign-middle">
-                <tr>
-                    <th class="text-align-center">
-                        <div class="text description">
-                            Congratulations on joining the <?= ($TYPE == "CRS") ? "course" : "event"; ?> entitled
-                        </div>
-                    </th>
-                </tr>
-                <tr>
-                    <th class="text-align-center">
-                        <div class="text detail-description">
-                            <?= $ACTIVITY ?>
-                        </div>
-                    </th>
-                </tr>
-            </table>
+            <div class="table-responsive">
+                <table class="valign-middle">
+                    <tr>
+                        <th class="text-align-center">
+                            <div class="text description">
+                                Congratulations on joining the <?= ($TYPE == "CRS") ? "course" : "event"; ?> entitled
+                            </div>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th class="text-align-center">
+                            <div class="text detail-description">
+                                <?= $ACTIVITY ?>
+                            </div>
+                        </th>
+                    </tr>
+                </table>
+            </div>
         </div>
     </div>
 </body>
