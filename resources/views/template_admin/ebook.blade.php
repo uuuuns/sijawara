@@ -27,45 +27,47 @@
                 </div>
             </div>
             <div class="mt-5">
-                <table class="table mb-0" id="dtTable">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Judul</th>
-                            <th>Harga</th>
-                            <th>Genre</th>
-                            <th>Author</th>
-                            <th>Tahun</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php $number = 0; ?>
+                <div class="table-responsive">
+                    <table class="table mb-0" id="dtTable">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Judul</th>
+                                <th>Harga</th>
+                                <th>Genre</th>
+                                <th>Author</th>
+                                <th>Tahun</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php $number = 0; ?>
 
-                        @foreach ($book as $item)
-                        <?php $number++; ?>
-                        <tr>
-                            <td><?= $number ?></td>
-                            <td><?= $item->JUDUL ?></td>
-                            <td><?= $item->PRICE == 0 ? '<span class="badge badge-success">Free</span>' : $item->PRICE ?>
-                            </td>
-                            <td><?= $item->GENRE ?></td>
-                            <td><?= $item->AUTHOR ?></td>
-                            <td><?= $item->TAHUN ?></td>
-                            <td>
-                                <div class="d-flex flex-column gap-2">
-                                    <button type="button" onclick="openviewModal(`<?= htmlentities(json_encode($item)) ?>`)" class="btn btn-warning px-4 py-2 rounded">
-                                        <i class="bx bx-edit-alt font-size-16 align-middle"></i>
-                                    </button>
-                                    <button type="button" onclick="opendeleteModal(`<?= htmlentities(json_encode($item)) ?>`)" class="btn btn-danger px-4 py-2 rounded">
-                                        <i class="bx bx-trash font-size-16 align-middle"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                            @foreach ($book as $item)
+                            <?php $number++; ?>
+                            <tr>
+                                <td><?= $number ?></td>
+                                <td><?= $item->JUDUL ?></td>
+                                <td><?= $item->PRICE == 0 ? '<span class="badge badge-success">Free</span>' : $item->PRICE ?>
+                                </td>
+                                <td><?= $item->GENRE ?></td>
+                                <td><?= $item->AUTHOR ?></td>
+                                <td><?= $item->TAHUN ?></td>
+                                <td>
+                                    <div class="d-flex flex-column gap-2">
+                                        <button type="button" onclick="openviewModal(`<?= htmlentities(json_encode($item)) ?>`)" class="btn btn-warning px-4 py-2 rounded">
+                                            <i class="bx bx-edit-alt font-size-16 align-middle"></i>
+                                        </button>
+                                        <button type="button" onclick="opendeleteModal(`<?= htmlentities(json_encode($item)) ?>`)" class="btn btn-danger px-4 py-2 rounded">
+                                            <i class="bx bx-trash font-size-16 align-middle"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

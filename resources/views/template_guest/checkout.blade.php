@@ -27,7 +27,7 @@
         <div class="row">
             <div class="col-12 col-lg-9">
                 <div class="woocommerce-cart">
-                    <div class="woocommerce-cart-form">
+                    <div class="woocommerce-cart-form table-responsive">
                         <table class="shop_table shop_table_responsive cart woocommerce-cart-form__contents table-responsive w-100" cellspacing="0">
                             <thead>
                                 <tr class="fw-normal">
@@ -45,9 +45,11 @@
                                             <td scope="row" class="text-center align-items-center">
                                                 <input class="form-check-input" type="checkbox" name="cb_order" value="<?= $item->ID_ORDER ?>" data-price="<?= $item->PRICE_ORDER ?>" style="cursor: pointer;" onchange="CountTotalPrice(this)">
                                             </td>
-                                            <td class="flex-row d-flex align-items-center">
-                                                <img src="<?= (!empty($item->IMAGE_ACTIVITY)) ? $item->IMAGE_ACTIVITY : $item->IMAGE_EBOOK; ?>" class="d-block img-fluid rounded-2 w-25">
-                                                <span class="ms-2"><?= (!empty($item->TITLE_ACTIVITY)) ? $item->TITLE_ACTIVITY : $item->JUDUL; ?></span>
+                                            <td>
+                                                <div class="flex-row d-flex align-items-center" style="width: max-content;">
+                                                    <img src="<?= (!empty($item->IMAGE_ACTIVITY)) ? $item->IMAGE_ACTIVITY : $item->IMAGE_EBOOK; ?>" class="d-block img-fluid rounded-2 w-25">
+                                                    <span class="ms-2"><?= (!empty($item->TITLE_ACTIVITY)) ? $item->TITLE_ACTIVITY : $item->JUDUL; ?></span>
+                                                </div>
                                             </td>
                                             <td class="align-items-center product-subtotal">
                                                 <?= ($item->PRICE_ORDER <> 0) ? "Rp " . number_format($item->PRICE_ORDER, 2, ',', '.') : 'Free' ?>
@@ -98,20 +100,23 @@
                 <div class="cart-collaterals">
                     <div class="cart_totals ">
                         <h2>Ringkasan Pesanan</h2>
-                        <table cellspacing="0" class="shop_table shop_table_responsive">
-                            <tbody>
-                                <tr class="order-total">
-                                    <th>Total</th>
-                                    <td data-title="Total">
-                                        <strong>
-                                            <span class="woocommerce-Price-amount amount" id="total_pay">
-                                                Rp 0,00
-                                            </span>
-                                        </strong>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <div class="table-responsive">
+                            <table cellspacing="0" class="shop_table shop_table_responsive">
+                                <tbody>
+                                    <tr class="order-total">
+                                        <th>Total</th>
+                                        <td data-title="Total">
+                                            <strong>
+                                                <span class="woocommerce-Price-amount amount" id="total_pay">
+                                                    Rp 0,00
+                                                </span>
+                                            </strong>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
                         <form id="FormBuyNow" method="POST" action="<?= url('purchase') ?>">
                             @csrf
                             <div id="data-input"></div>
