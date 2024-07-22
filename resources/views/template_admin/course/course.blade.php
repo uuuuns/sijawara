@@ -42,8 +42,8 @@
                         <tr>
                             <th>No</th>
                             <th>Nama Kursus</th>
-                            <th>Status</th>
-                            <th width="15%">Harga Kursus</th>
+                            <th>Status Aktif</th>
+                            <th width="15%">Status Private</th>
                             <th>Tanggal Mulai</th>
                             <th>Tanggal Berakhir</th>
                             <th>Aksi</th>
@@ -57,8 +57,12 @@
                         <tr>
                             <td><?= $number ?></td>
                             <td><?= $item->TITLE_ACTIVITY ?></td>
-                            <td><?= $item->STATUS ?> </td>
-                            <td><?= $item->PRICE_ACTIVITY == 0 ? '<span class="badge badge-success">Gratis</span>' : 'Rp ' . number_format($item->PRICE_ACTIVITY, 0, '.', '.') ?>
+                            <td><span class="badge {{ $item->STATUS == 0 ? 'bg-danger' : 'bg-success' }}">
+                                    {{ $item->STATUS == 0 ? 'Tidak Aktif' : 'Aktif' }}
+                                </span></td>
+                            <td><span class="badge {{ $item->IS_PUBLIC == 0 ? 'bg-danger' : 'bg-success' }}">
+                                    {{ $item->IS_PUBLIC == 0 ? 'Private' : 'Public' }}
+                                </span>
                             </td>
                             <td><?= date_format(date_create($item->DATE_START), 'j F Y H:i:s') ?></td>
                             <td><?= date_format(date_create($item->DATE_END), 'j F Y H:i:s') ?></td>

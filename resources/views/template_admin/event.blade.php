@@ -44,7 +44,6 @@
                             <th style="width: 500px;">Nama Event</th>
                             <th>Status</th>
                             <th>Kuota Peserta</th>
-                            <th>Harga Event</th>
                             <th>Tanggal Mulai</th>
                             <th>Tanggal Selesai</th>
                             <th>Aksi</th>
@@ -58,9 +57,8 @@
                         <tr>
                             <td><?= $number ?></td>
                             <td><?= $item->TITLE_ACTIVITY ?></td>
-                            <td><?= $item->STATUS == 1 ? '<span class="badge badge-success">Aktif</span>' : '<span class="badge badge-danger">Tidak Aktif</span>' ?></td>
+                            <td><?= $item->STATUS == 1 ? '<span class="badge bg-success">Aktif</span>' : '<span class="badge bg-danger">Tidak Aktif</span>' ?></td>
                             <td><?= empty($item->KUOTA_PESERTA) ? "Tidak Ada batasan" : $item->KUOTA_PESERTA ?></td>
-                            <td><?= $item->PRICE_ACTIVITY == 0 ? '<span class="badge badge-success">Free</span>' : $item->PRICE_ACTIVITY ?>
                             </td>
                             <td><?= date_format(date_create($item->DATE_START), 'j F Y H:i:s') ?></td>
                             <td><?= date_format(date_create($item->DATE_END), 'j F Y H:i:s') ?></td>
