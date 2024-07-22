@@ -37,49 +37,45 @@
                 </div>
             </div>
             <div class="mt-5">
-                <div class="table-responsive">
-                    <table class="table mb-0" id="dtTable">
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th style="width: 500px;">Nama Event</th>
-                                <th>Status</th>
-                                <th>Kuota Peserta</th>
-                                <th>Harga Event</th>
-                                <th>Tanggal Mulai</th>
-                                <th>Tanggal Selesai</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php $number = 0; ?>
+                <table class="table mb-0" id="dtTable">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th style="width: 500px;">Nama Event</th>
+                            <th>Status</th>
+                            <th>Kuota Peserta</th>
+                            <th>Tanggal Mulai</th>
+                            <th>Tanggal Selesai</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php $number = 0; ?>
 
-                            @foreach ($event as $item)
-                            <?php $number++; ?>
-                            <tr>
-                                <td><?= $number ?></td>
-                                <td><?= $item->TITLE_ACTIVITY ?></td>
-                                <td><?= $item->STATUS == 1 ? '<span class="badge badge-success">Aktif</span>' : '<span class="badge badge-danger">Tidak Aktif</span>' ?></td>
-                                <td><?= empty($item->KUOTA_PESERTA) ? "Tidak Ada batasan" : $item->KUOTA_PESERTA ?></td>
-                                <td><?= $item->PRICE_ACTIVITY == 0 ? '<span class="badge badge-success">Free</span>' : $item->PRICE_ACTIVITY ?>
-                                </td>
-                                <td><?= date_format(date_create($item->DATE_START), 'j F Y H:i:s') ?></td>
-                                <td><?= date_format(date_create($item->DATE_END), 'j F Y H:i:s') ?></td>
-                                <td>
-                                    <div class="d-flex flex-column gap-2">
-                                        <button type="button" onclick="openviewModal(`<?= htmlentities(json_encode($item)) ?>`)" class="btn btn-warning px-4 py-2 rounded">
-                                            <i class="bx bx-edit-alt font-size-16 align-middle"></i>
-                                        </button>
-                                        <button type="button" onclick="opendeleteModal(`<?= htmlentities(json_encode($item)) ?>`)" class="btn btn-danger px-4 py-2 rounded">
-                                            <i class="bx bx-trash font-size-16 align-middle"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
+                        @foreach ($event as $item)
+                        <?php $number++; ?>
+                        <tr>
+                            <td><?= $number ?></td>
+                            <td><?= $item->TITLE_ACTIVITY ?></td>
+                            <td><?= $item->STATUS == 1 ? '<span class="badge bg-success">Aktif</span>' : '<span class="badge bg-danger">Tidak Aktif</span>' ?></td>
+                            <td><?= empty($item->KUOTA_PESERTA) ? "Tidak Ada batasan" : $item->KUOTA_PESERTA ?></td>
+                            </td>
+                            <td><?= date_format(date_create($item->DATE_START), 'j F Y H:i:s') ?></td>
+                            <td><?= date_format(date_create($item->DATE_END), 'j F Y H:i:s') ?></td>
+                            <td>
+                                <div class="d-flex flex-column gap-2">
+                                    <button type="button" onclick="openviewModal(`<?= htmlentities(json_encode($item)) ?>`)" class="btn btn-warning px-4 py-2 rounded">
+                                        <i class="bx bx-edit-alt font-size-16 align-middle"></i>
+                                    </button>
+                                    <button type="button" onclick="opendeleteModal(`<?= htmlentities(json_encode($item)) ?>`)" class="btn btn-danger px-4 py-2 rounded">
+                                        <i class="bx bx-trash font-size-16 align-middle"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

@@ -37,48 +37,40 @@
                 </div>
             </div>
             <div class="mt-5">
-                <div class="table-responsive">
-                    <table class="table mb-0" id="dtTable">
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Nama Kursus</th>
-                                <th>Status</th>
-                                <th width="15%">Harga Kursus</th>
-                                <th>Tanggal Mulai</th>
-                                <th>Tanggal Berakhir</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php $number = 0; ?>
+                <table class="table mb-0" id="dtTable">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Nama Kursus</th>
+                            <th>Status Aktif</th>
+                            <th width="15%">Status Private</th>
+                            <th>Tanggal Mulai</th>
+                            <th>Tanggal Berakhir</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php $number = 0; ?>
 
-                            @foreach ($activity as $item)
-                            <?php $number++; ?>
-                            <tr>
-                                <td><?= $number ?></td>
-                                <td><?= $item->TITLE_ACTIVITY ?></td>
-                                <td><?= $item->STATUS ?> </td>
-                                <td><?= $item->PRICE_ACTIVITY == 0 ? '<span class="badge badge-success">Gratis</span>' : 'Rp ' . number_format($item->PRICE_ACTIVITY, 0, '.', '.') ?>
-                                </td>
-                                <td><?= date_format(date_create($item->DATE_START), 'j F Y H:i:s') ?></td>
-                                <td><?= date_format(date_create($item->DATE_END), 'j F Y H:i:s') ?></td>
-                                <td>
-                                    <form action="courses/invite" method="GET">
-                                        <input type="hidden" name="id_activity" value="<?= $item->ID_ACTIVITY ?>">
-                                        <button type="submit" class="btn btn-primary btn-sm-2 w-100 fs-8 rounded waves-effect waves-light px-2" style="min-width: 155px !important;">
-                                            <i class="bx bx-send font-size-16 align-middle"></i> Undang User
-                                        </button>
-                                    </form>
-                                    <form action="courses/edit" method="POST">
-                                        @csrf
-                                        <input type="hidden" name="id_activity" value="<?= $item->ID_ACTIVITY ?>">
-                                        <button type="submit" class="btn btn-dark btn-sm-2 w-100 fs-8 rounded waves-effect waves-light px-2" style="min-width: 155px !important; margin: 5px 0px;">
-                                            <i class="bx bx-edit-alt font-size-16 align-middle"></i> Edit Kursus
-                                        </button>
-                                    </form>
-                                    <button type="button" onclick="opendeleteModal(`<?= htmlentities(json_encode($item)) ?>`)" class="btn btn-danger btn-sm-2 w-100 fs-8 rounded waves-effect waves-light px-2" style="min-width: 155px !important;">
-                                        <i class="bx bx-trash font-size-16 align-middle"></i> Hapus Kursus
+                        @foreach ($activity as $item)
+                        <?php $number++; ?>
+                        <tr>
+                            <td><?= $number ?></td>
+                            <td><?= $item->TITLE_ACTIVITY ?></td>
+                            <td><span class="badge {{ $item->STATUS == 0 ? 'bg-danger' : 'bg-success' }}">
+                                    {{ $item->STATUS == 0 ? 'Tidak Aktif' : 'Aktif' }}
+                                </span></td>
+                            <td><span class="badge {{ $item->IS_PUBLIC == 0 ? 'bg-danger' : 'bg-success' }}">
+                                    {{ $item->IS_PUBLIC == 0 ? 'Private' : 'Public' }}
+                                </span>
+                            </td>
+                            <td><?= date_format(date_create($item->DATE_START), 'j F Y H:i:s') ?></td>
+                            <td><?= date_format(date_create($item->DATE_END), 'j F Y H:i:s') ?></td>
+                            <td>
+                                <form action="courses/invite" method="GET">
+                                    <input type="hidden" name="id_activity" value="<?= $item->ID_ACTIVITY ?>">
+                                    <button type="submit" class="btn btn-primary btn-sm-2 w-100 fs-8 rounded waves-effect waves-light px-2" style="min-width: 155px !important;">
+                                        <i class="bx bx-send font-size-16 align-middle"></i> Undang User
                                     </button>
                                 </td>
                             </tr>
