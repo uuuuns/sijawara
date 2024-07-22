@@ -26,21 +26,19 @@
                                     Bagikan :<span class="fs-5"> <i class="fab fa-facebook mx-2" style="cursor: pointer"></i><i class="fab fa-twitter me-2" style="cursor: pointer"></i><i class="fab fa-instagram" style="cursor: pointer"></i></span>
                                 </div>
                                 <?php if ($event->DATA_CHECKING == 0 && $event->EXPIRED != 1) : ?>
-                                <div class="price-header mb-3">
-                                    <h2 class="course-price">
-                                        <?= ($event->PRICE_ACTIVITY == 0) ? "Free" : "Rp " . number_format($event->PRICE_ACTIVITY, 2, ',', '.') ?>
-                                    </h2>
-                                </div>
-                                <div class="">
-                                    <form class="" id="FormBuyNow-info" method="POST" action="<?= url('purchase') ?>">
-                                    @csrf
-                                        <div id="data-input-info"></div>
-                                        <div class="w-100 button button-enroll-course btn btn-main-2 rounded" onclick="BuyNow()">Ambil Sekarang</div>
-                                    </form>
-                                    <button data-id-activity="<?= $event->ID_ACTIVITY ?>" onclick="AddToCart(this)" class="mt-2 w-100 button button-enroll-course btn btn-secondary btn-sm rounded">
-                                        Tambahkan ke Agenda
-                                    </button>
-                                </div>
+                                    <div class="price-header mb-3">
+                                        <h2 class="course-price">
+                                            <?= ($event->PRICE_ACTIVITY == 0) ? "Free" : "Rp " . number_format($event->PRICE_ACTIVITY, 2, ',', '.') ?>
+                                        </h2>
+                                    </div>
+                                    <div class="">
+                                        <form class="" id="FormBuyNow-info" method="POST" action="<?= url('event/add') ?>">
+                                            @csrf
+                                            <div id="data-input-info"></div>
+                                            <input type="hidden" name="id_event" value="<?= $event->ID_ACTIVITY ?>">
+                                            <button type="submit">Ambil Sekarang</button>
+                                        </form>
+                                    </div>
                                 <?php endif ?>
                             </div>
 
@@ -135,7 +133,7 @@
                                                 <div class="instructor-content">
                                                     <?php if (date('Y-m-d h:i:s') < $event->DATE_END) { ?>
 
-                                                        <div class="blurred-image" style="pointer-events: none">
+                                                        <div class="blurred-image d-none d-lg-block" style="pointer-events: none">
                                                             <embed class="overlay" style="width:200px; height:352px; pointer-events: none;" src="<?= $sertif->FILE_SERTIFIKAT ?>#toolbar=0&navpanes=0&scrollbar=0&statusbar=0&messages=0&scrollbar=0" type="text/plain"></embed>
                                                         </div>
                                                         <div class="mt-3 rounded-4 d-flex align-items-center">

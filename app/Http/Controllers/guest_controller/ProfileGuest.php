@@ -121,7 +121,6 @@ class ProfileGuest extends Controller
     {
         $data['title'] = "Webinar Ku";
         $user = new User();
-        // $data['data_personal'] = $user->get_user(session('user')[0]['ID_USER']);
         $data['event'] = [];
         $mycourse = $user->get_my_product2();
         foreach ($mycourse as $item) {
@@ -136,7 +135,7 @@ class ProfileGuest extends Controller
             WHERE user_data.ID_USER = '" . session('user')[0]['ID_USER'] . "';
 
         ");
-        // dd($data);
+        
         return
             view('template.header', $data) .
             view('template_guest/profile/myevents', $data) .
@@ -146,22 +145,17 @@ class ProfileGuest extends Controller
     {
         $data['title'] = "Kursus Ku";
         $user = new User();
-        // dd($data);
         $data['course'] = [];
         $mycourse = $user->get_my_product();
         foreach ($mycourse as $item) {
-            if ($item->DATA_CHECKING == 1) {
-                array_push($data['course'], $item);
-            }
+            array_push($data['course'], $item);
         }
         $data['document'] = DB::selectOne("
             SELECT user_data.*, instructor_req.STATUS
             FROM user_data
             LEFT JOIN instructor_req ON instructor_req.ID_USER = user_data.ID_USER
             WHERE user_data.ID_USER = '" . session('user')[0]['ID_USER'] . "';
-
         ");
-        // dd($data['course']);
         return
             view('template.header', $data) .
             view('template_guest/profile/mycourses', $data) .

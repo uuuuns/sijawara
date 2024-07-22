@@ -524,10 +524,19 @@
 
                             <?php if (!empty(session('user')[0])) { ?>
                                 <li class="d-md-none">
-                                    <a href="#" onclick="$('#form_checkout').submit()">Agenda</a>
+                                    <a href="{{ url('profile') }}">Profil</a>
                                 </li>
                                 <li class="d-md-none">
-                                    <a href="{{ url('profile') }}">Profil</a>
+                                    <a href="{{ url('profile/mycourses') }}">Kursus Ku</a>
+                                </li>
+                                <li class="d-md-none">
+                                    <a href="{{ url('profile/myevents') }}">Webinar Ku</a>
+                                </li>
+                                <li class="d-md-none">
+                                    <a href="{{ url('profile/myebook') }}">Ebook Ku</a>
+                                </li>
+                                <li class="d-md-none">
+                                    <a href="{{ url('logout') }}">Keluar</a>
                                 </li>
                             <?php } else { ?>
                                 <li class="d-md-none">
@@ -553,55 +562,6 @@
                     <?php if (!empty(session('user')[0])) { ?>
                         <nav class="header-btn d-none d-md-block">
                             <ul class="primary-menu">
-                                <li class="me-4">
-                                    <a href="#" class="nav-link w-100 h-100 d-flex align-items-center position-relative rounded-circle" style="padding-left:12px;padding-right:12px;right:0;margin-right:1px" onclick="$('#form_checkout').submit()">
-                                        <i class="far fa-calendar"></i>
-                                        <?php $totCheckout = (!empty($checkout) ? count($checkout) : 0);
-                                        if ($totCheckout > 0) { ?>
-                                            <span class="badge bg-danger rounded-circle position-absolute" style="top: 0px; right: -5px;">
-                                                <?= count($checkout) ?>
-                                            </span>
-                                        <?php    } ?>
-                                    </a>
-                                    <?php if ($title != 'Checkout') { ?>
-                                        <ul class="submenu" style="left: initial;right:0;width: max-content;">
-                                            <h6 class="title mx-3 fs-5 my-3">Agenda</h6>
-                                            <hr class="dropdown-divider">
-                                            <ul class="p-0 m-2 overflow-auto" style="max-height:300px">
-                                                <?php if (!empty($checkout)) { ?>
-                                                    <?php foreach ($checkout as $item) : ?>
-                                                        <li class="dropdown-item" style="pointer-events: none;">
-                                                            <div class="d-flex dropdown-item align-items-center">
-                                                                <div class="img col-2">
-                                                                    <img src="<?= (!empty($item->IMAGE_ACTIVITY)) ? $item->IMAGE_ACTIVITY : $item->IMAGE_EBOOK; ?>" alt="Image" class="img-fluid" style="width:50px;height:50px" />
-                                                                </div>
-                                                                <div class="col-7 ms-2" style="white-space:normal">
-                                                                    <?= (!empty($item->TITLE_ACTIVITY)) ? $item->TITLE_ACTIVITY : $item->JUDUL; ?>
-                                                                </div>
-                                                                <div class="col-3 ms-2" style="white-space:normal">
-                                                                    <?= ($item->PRICE_ORDER <> 0) ? "Rp " . number_format($item->PRICE_ORDER, 2, ',', '.') : 'Free' ?>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                    <?php endforeach; ?>
-                                                <?php        } else { ?>
-                                                    <tr>
-                                                        <td colspan="5">
-                                                            <div class="d-flex justify-content-center">
-                                                                <img src="https://img.freepik.com/free-vector/empty-concept-illustration_114360-1253.jpg" height="210">
-                                                            </div>
-                                                            <p class="text-center">Tidak ada produk</p>
-                                                        </td>
-                                                    </tr>
-                                                <?php        } ?>
-                                            </ul>
-                                            <hr class="dropdown-divider">
-                                            <p class="text-center m-0 p-0 mt-2"><a href="#" onclick="$('#form_checkout').submit()" class="small">Lihat Semua</a>
-                                            </p>
-
-                                        </ul>
-                                    <?php    } ?>
-                                </li>
                                 <li>
                                     <a href="#">
                                         <?php if (empty(session('user')[0]['PROFILE_PICTURE'])) { ?>

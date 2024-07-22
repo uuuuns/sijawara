@@ -10,7 +10,7 @@ use App\Models\Category;
 use App\Models\Certificate;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 
 
 class CourseGuest extends Controller
@@ -335,6 +335,72 @@ class CourseGuest extends Controller
 			view('template_guest.course.course_info', $data) .
 			view('template.footer', $data);
 	}
+
+	public function add_event(Request $req)
+	{
+		$check_data = DB::select("
+			SELECT
+				*
+			FROM
+				`order`
+			WHERE
+				ID_USER = '". session('user')[0]->get('ID_USER') ."'
+			AND
+				ID_PRODUCT = '". $req->input('id_activity') ."'
+		");
+
+		$activity = DB::selectone("
+			SELECT
+				TYPE_ACTIVITY
+			FROM
+				activity
+			WHERE
+				ID_ACTIVITY = '". $req->input('id_activity') ."'
+		");
+
+		if (empty($check_data)) {
+			$order = [
+				'ID_ORDER'             	=> $this->GenerateUniqID_Order(time()),
+				'ID_PRODUCT'           	=> $req->input('id_activity'),
+				'ID_USER'		     	=> session('user')[0]->get('ID_USER'),
+				'LOG_TIME'				=> date('Y-m-d H:i:s')
+			];
+	
+			if ($activity->TYPE_ACTIVITY == 1 ) {
+				$this->InsertDataMapping($req->input('id_activity'));
+			}
+	
+			DB::table('order')->insert($order);
+			return redirect('profile/mycourses')->with(['succ_msg' => 'Berhasil join kursus', 'location' => 'profile/mycourses']);
+		} else {
+			return redirect('profile/mycourses')->with(['err_msg' => 'Sudah mengambil join Kursus ini', 'location' => 'profile/mycourses']);
+		}
+	}
+
+	public function InsertDataMapping($item)
+	{
+		$data_course = $this->courseModel->get_course($item);
+		$condition = "item_course.ID_COURSE = '".$data_course->ID_COURSE."'";
+		$data_itemCourse = $this->courseModel->get_item_course($condition);
+		for ($i = 0; $i < count($data_itemCourse); $i++) {
+			if ($i == 0) {
+				$data_mapping = array(
+					"ID_USER" => session('user')[0]->get('ID_USER'),
+					"ID_ACTIVITY" => $item,
+					"ID_ITEM" => $data_itemCourse[$i]->ID_ITEM,
+					"STATUS" => 1
+				);
+			} else {
+				$data_mapping = array(
+					"ID_USER" => session('user')[0]->get('ID_USER'),
+					"ID_ACTIVITY" => $item,
+					"ID_ITEM" => $data_itemCourse[$i]->ID_ITEM,
+					"STATUS" => 0
+				);
+			}
+			DB::table('mapping_course')->insert($data_mapping);
+		}
+	}
 	public function QuizEvaluation()
 	{
 		$id_quiz = $_POST['id_quiz'];
@@ -424,13 +490,10 @@ class CourseGuest extends Controller
 						SELECT
 							COUNT(*)
 						FROM
-							payment p
-						LEFT JOIN `order` o ON
-							o.ID_PAY = p.ID_PAY
+							`order` o
 						WHERE
 							o.ID_USER = "' . $id_user . '"
-							AND o.ID_PRODUCT = activity.ID_ACTIVITY
-							AND p.DATE_PAY IS NOT NULL
+							AND o.ID_PRODUCT = activity.ID_ACTIVITY	
 					) AS DATA_CHECKING,
 					(
 						CEIL(
@@ -474,6 +537,16 @@ class CourseGuest extends Controller
 		}
 		return
 			view('template_guest.course.ajax.course_by_category', $data);
+	}
+
+	public function GenerateUniqID_Order($var)
+	{
+		$string = preg_replace('/[^a-z]/i', '', $var);
+		$vocal  = array("a", "e", "i", "o", "u", "A", "E", "I", "O", "U", " ");
+		$scrap  = str_replace($vocal, "", $string);
+		$begin  = substr($scrap, 0, 6);
+		$uniqid = strtoupper($begin);
+		return "ORD_" . $uniqid . substr(md5(time()), 0, 6);
 	}
 	// END COURSE CONTROLLER
 }

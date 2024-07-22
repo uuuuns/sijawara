@@ -9,7 +9,7 @@ use App\Models\Event;
 use App\Models\Certificate;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 
 
 class EventGuest extends Controller
@@ -61,13 +61,11 @@ class EventGuest extends Controller
 									(SELECT 
 										COUNT(*) 
 									FROM 
-										payment p 
-									LEFT JOIN `order` o ON 
-										o.ID_PAY = p.ID_PAY 
+										`order` o
 									WHERE 
 										o.ID_USER = ? 
 										AND o.ID_PRODUCT = activity.ID_ACTIVITY 
-										AND p.DATE_PAY IS NOT NULL) as DATA_CHECKING, 
+										) as DATA_CHECKING, 
 										(DATEDIFF(CURDATE(), activity.DATE_START) >= 1) as EXPIRED', [session('user')[0]->get('ID_USER')])
 					->leftJoin('event', 'event.ID_ACTIVITY', '=', 'activity.ID_ACTIVITY')
 					->where('activity.TYPE_ACTIVITY', 2)
@@ -79,6 +77,34 @@ class EventGuest extends Controller
 			view('template.header', $data) .
 			view('template_guest.event.event', compact('events', 'totalRows')) .
 			view('template.footer', $data);
+	}
+
+	public function add_event(Request $req)
+	{
+		$check_data = DB::select("
+			SELECT
+				*
+			FROM
+				`order`
+			WHERE
+				ID_USER = '". session('user')[0]->get('ID_USER') ."'
+			AND
+				ID_PRODUCT = '". $req->input('id_event;]') ."'
+		");
+
+		if (empty($check_data)) {
+			$order = [
+				'ID_ORDER'             	=> $this->GenerateUniqID_Order(time()),
+				'ID_PRODUCT'           	=> $req->input('id_event'),
+				'ID_USER'		     	=> session('user')[0]->get('ID_USER'),
+				'LOG_TIME'				=> date('Y-m-d H:i:s')
+			];
+	
+			DB::table('order')->insert($order);
+			return redirect('event')->with(['succ_msg' => 'Berhasil join webinar', 'location' => 'event']);
+		} else {
+			return redirect('event')->with(['err_msg' => 'Sudah mengambil join webinar ini', 'location' => 'event']);
+		}
 	}
 	public function detailEvent()
 	{
@@ -136,6 +162,16 @@ class EventGuest extends Controller
 
 		return
 			view('template_guest.event.ajax.item_search', $data);
+	}
+
+	public function GenerateUniqID_Order($var)
+	{
+		$string = preg_replace('/[^a-z]/i', '', $var);
+		$vocal  = array("a", "e", "i", "o", "u", "A", "E", "I", "O", "U", " ");
+		$scrap  = str_replace($vocal, "", $string);
+		$begin  = substr($scrap, 0, 6);
+		$uniqid = strtoupper($begin);
+		return "ORD_" . $uniqid . substr(md5(time()), 0, 6);
 	}
 	// END EVENT CONTROLLER
 }

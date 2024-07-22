@@ -32,7 +32,7 @@
                 <form id="form-purchase" method="POST" action="<?= url('check_payment_status') ?>">
                     @csrf
                     <div class="woocommerce-cart">
-                        <div class="woocommerce-cart-form">
+                        <div class="woocommerce-cart-form table-responsive">
                             <table class="shop_table shop_table_responsive cart woocommerce-cart-form__contents table-responsive w-100" cellspacing="0">
                                 <thead>
                                     <tr class="fw-normal">
@@ -50,11 +50,12 @@
                                     ?>
                                         <tr class="">
                                             <td class="flex-row d-flex align-items-center">
-                                                <img src="<?= (!empty($item->IMAGE_ACTIVITY)) ? $item->IMAGE_ACTIVITY : $item->IMAGE_EBOOK; ?>" class="d-block img-fluid rounded-2 w-25">
-                                                <span class="ms-2"><?= (!empty($item->TITLE_ACTIVITY)) ? $item->TITLE_ACTIVITY : $item->JUDUL; ?></span>
+                                                <div class="flex-row d-flex align-items-center" style="width: max-content;">
+                                                    <img src="<?= (!empty($item->IMAGE_ACTIVITY)) ? $item->IMAGE_ACTIVITY : $item->IMAGE_EBOOK; ?>" class="d-block img-fluid rounded-2 w-25">
+                                                    <span class="ms-2"><?= (!empty($item->TITLE_ACTIVITY)) ? $item->TITLE_ACTIVITY : $item->JUDUL; ?></span>
+                                                </div>
                                             </td>
-                                            <td>
-                                            </td>
+                                            <td></td>
                                             <td></td>
                                             <td class="product-subtotal"><?= "Rp " . number_format($item->PRICE_ORDER, 2, ',', '.') ?></td>
                                         </tr>
@@ -68,41 +69,43 @@
                     </div>
                     <hr>
                     <div class="d-flex flex-column-reverse">
-                        <table class="table table-borderless">
-                            <thead>
-                                <?php if (!empty($promo['AMMOUNT'])) { ?>
-                                    <tr class="fw-semibold">
-                                        <td scope="col" width="61%"></td>
-                                        <td class="text-left product-subtotal" scope="col" width="18%">Sub Total</td>
-                                        <td scope="col" width="18%">
-                                            <s><?= "Rp " . number_format($TotalBayar, 2, ',', '.') ?></s>
-                                        </td>
-                                    </tr>
-                                    <tr class="fw-semibold">
-                                        <td scope="col" width="61%"></td>
-                                        <td class="text-left" scope="col" width="18%"></td>
-                                        <td scope="col" width="18%" class="product-subtotal">
-                                            <?php
-                                            $NewTotBayar = $TotalBayar - ($TotalBayar * ($promo['AMMOUNT'] / 100));
-                                            echo "Rp " . number_format($NewTotBayar, 2, ',', '.')
-                                            ?>
-                                        </td>
-                                        <input type="hidden" name="total_bayar" id="total_bayar" value="<?= $NewTotBayar ?>">
-                                        <input type="hidden" name="id_promo_code" value="<?= $promo['ID_PROMO'] ?>">
-                                    </tr>
-                                <?php } else { ?>
-                                    <tr class="fw-semibold">
-                                        <td scope="col" width="61%"></td>
-                                        <td class="text-left product-subtotal" scope="col" width="18%">Total</td>
-                                        <td scope="col" width="18%" class="product-subtotal">
-                                            <?= "Rp " . number_format($TotalBayar, 2, ',', '.') ?>
-                                        </td>
-                                        <input type="hidden" name="total_bayar" id="total_bayar" value="<?= $TotalBayar ?>">
-                                        <input type="hidden" name="id_promo_code" value="">
-                                    </tr>
-                                <?php } ?>
-                            </thead>
-                        </table>
+                        <div class="table-responsive">
+                            <table class="table table-borderless">
+                                <thead>
+                                    <?php if (!empty($promo['AMMOUNT'])) { ?>
+                                        <tr class="fw-semibold">
+                                            <td scope="col" width="61%"></td>
+                                            <td class="text-left product-subtotal" scope="col" width="18%">Sub Total</td>
+                                            <td scope="col" width="18%">
+                                                <s><?= "Rp " . number_format($TotalBayar, 2, ',', '.') ?></s>
+                                            </td>
+                                        </tr>
+                                        <tr class="fw-semibold">
+                                            <td scope="col" width="61%"></td>
+                                            <td class="text-left" scope="col" width="18%"></td>
+                                            <td scope="col" width="18%" class="product-subtotal">
+                                                <?php
+                                                $NewTotBayar = $TotalBayar - ($TotalBayar * ($promo['AMMOUNT'] / 100));
+                                                echo "Rp " . number_format($NewTotBayar, 2, ',', '.')
+                                                ?>
+                                            </td>
+                                            <input type="hidden" name="total_bayar" id="total_bayar" value="<?= $NewTotBayar ?>">
+                                            <input type="hidden" name="id_promo_code" value="<?= $promo['ID_PROMO'] ?>">
+                                        </tr>
+                                    <?php } else { ?>
+                                        <tr class="fw-semibold">
+                                            <td scope="col" width="61%"></td>
+                                            <td class="text-left product-subtotal" scope="col" width="18%">Total</td>
+                                            <td scope="col" width="18%" class="product-subtotal">
+                                                <?= "Rp " . number_format($TotalBayar, 2, ',', '.') ?>
+                                            </td>
+                                            <input type="hidden" name="total_bayar" id="total_bayar" value="<?= $TotalBayar ?>">
+                                            <input type="hidden" name="id_promo_code" value="">
+                                        </tr>
+                                    <?php } ?>
+                                </thead>
+                            </table>
+                        </div>
                     </div>
                     <input type="hidden" name="id_trans" value="<?= $id_trans ?>">
                     <input type="hidden" name="id_pay" value="<?= $id_trans ?>">
@@ -153,7 +156,7 @@
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
-                url: '<?= Request::segment(0)?>/get_order_id', 
+                url: '<?= Request::segment(0) ?>/get_order_id',
                 type: "POST",
                 data: {
                     TotPrice: <?= (!empty($promo['AMMOUNT'])) ? ($TotalBayar - ($TotalBayar * ($promo['AMMOUNT'] / 100))) : $TotalBayar ?>,

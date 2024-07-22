@@ -72,22 +72,12 @@
                                     <button type="submit" class="btn btn-primary btn-sm-2 w-100 fs-8 rounded waves-effect waves-light px-2" style="min-width: 155px !important;">
                                         <i class="bx bx-send font-size-16 align-middle"></i> Undang User
                                     </button>
-                                </form>
-                                <form action="courses/edit" method="POST">
-                                    @csrf
-                                    <input type="hidden" name="id_activity" value="<?= $item->ID_ACTIVITY ?>">
-                                    <button type="submit" class="btn btn-dark btn-sm-2 w-100 fs-8 rounded waves-effect waves-light px-2" style="min-width: 155px !important; margin: 5px 0px;">
-                                        <i class="bx bx-edit-alt font-size-16 align-middle"></i> Edit Kursus
-                                    </button>
-                                </form>
-                                <button type="button" onclick="opendeleteModal(`<?= htmlentities(json_encode($item)) ?>`)" class="btn btn-danger btn-sm-2 w-100 fs-8 rounded waves-effect waves-light px-2" style="min-width: 155px !important;">
-                                    <i class="bx bx-trash font-size-16 align-middle"></i> Hapus Kursus
-                                </button>
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

@@ -47,13 +47,13 @@
     <div>
         <div class="filter-wrap text-center">
             <ul class="course-filter ">
-                <li><a href="#" data-value="0" id="nav-all" onclick="ChangeNav(this, event)">Lihat Semua</a></li>
-            <?php foreach ($kategori as $item_kategori) : ?>
-                <li><a href="#" data-value="<?= $item_kategori->ID_KATEGORI ?>" id="nav-<?= $item_kategori->ID_KATEGORI ?>" onclick="ChangeNav(this, event)"><?= $item_kategori->KATEGORI ?></a></li>
-            <?php endforeach;
-            if ($is_invited != null && !empty(session('user'))) { ?>
-                <li><a href="#" data-value="999" id="nav-invited" onclick="ChangeNav(this, event)">Invited</a></li>
-            <?php } ?>
+                <li class="py-2 py-md-0"><a href="#" data-value="0" id="nav-all" onclick="ChangeNav(this, event)">Lihat Semua</a></li>
+                <?php foreach ($kategori as $item_kategori) : ?>
+                    <li class="py-2 py-md-0"><a href="#" data-value="<?= $item_kategori->ID_KATEGORI ?>" id="nav-<?= $item_kategori->ID_KATEGORI ?>" onclick="ChangeNav(this, event)"><?= $item_kategori->KATEGORI ?></a></li>
+                <?php endforeach;
+                if ($is_invited != null && !empty(session('user'))) { ?>
+                    <li class="py-2 py-md-0"><a href="#" data-value="999" id="nav-invited" onclick="ChangeNav(this, event)">Invited</a></li>
+                <?php } ?>
             </ul>
         </div>
         <div class="container-fluid container-padding">
@@ -123,7 +123,7 @@
     function GetCourse(category) {
         $('#nav-content-item').html(`<div class="col-12 col-lg-12 px-3 py-3 py-lg-0 pb-lg-3 d-flex justify-content-center">
             <div class=" rounded-5 p-3 pb-4 h-auto d-flex flex-column">
-                <div class="d-flex justify-content-center">
+                <div class="d-flex justify-content-center py-4">
                     <img src="https://icons8.com/preloaders/preloaders/1476/Rocket.gif" alt="Loader.gif" />
                 </div>
             </div>
