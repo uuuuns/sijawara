@@ -89,7 +89,6 @@ class CourseController extends Controller
             'ID_ACTIVITY'           => $this->GenerateUniqID('ACT', $req->input('title_activity')),
             'TITLE_ACTIVITY'        => $req->input('title_activity'),
             'ID_USER'               => session('user')[0]['ID_USER'],
-            'PRICE_ACTIVITY'        => $req->input('price_course'),
             'IMAGE_ACTIVITY'        => FileUpload::S3($req->file('image_activity'), 'IMAGE_ACTIVITY', 'Image-Activity-' . strtotime(now())),
             'TYPE_ACTIVITY'         => 1,
             'SERTIF_CODE'           => $req->input('certif_code'),
@@ -125,11 +124,14 @@ class CourseController extends Controller
     {
         $desc = DB::selectOne("
             SELECT
-                *
+                c.DESKRIPSI_COURSE ,
+                c.BENEFIT
             FROM
-                activity
+                activity a
+            LEFT JOIN course c ON
+                c.ID_ACTIVITY = a.ID_ACTIVITY
             WHERE
-                ID_ACTIVITY = '$id'
+                a.ID_ACTIVITY = '$id'
         ");
 
         return response([
@@ -193,7 +195,7 @@ class CourseController extends Controller
                 c.DESKRIPSI_COURSE ,
                 c.DESKRIPSI_COURSE_ITEM ,
                 a.SERTIF_CODE ,
-                k.KATEGORI
+                k.ID_KATEGORI 
             FROM
                 activity a
             LEFT JOIN course c ON

@@ -54,21 +54,6 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label control-label">
-                            Harga <span class="text-danger">*</span>
-                        </label>
-                        <div class="col-md-10">
-                            <input type="number" class="form-control CurrencyInput" name="price_course" placeholder="0" required>
-                            <span class="d-flex align-items-center gap-2 mt-2">
-                                <div class="switch mt-2">
-                                    <input type="checkbox" id="setFree">
-                                    <label for="setFree"></label>
-                                </div>
-                                Gratis
-                            </span>
-                        </div>
-                    </div>
-                    <div class="form-group row">
                         <label class="col-sm-2 col-form-label control-label">Tanggal <span class="text-danger">*</span></label>
                         <div class="col-md-10">
                             <div class="d-flex align-items-center">
@@ -88,6 +73,12 @@
                         <label class="col-sm-2 col-form-label control-label">Benefit <span class="text-danger">*</span></label>
                         <div class="col-md-10">
                             <textarea name="benefit" id="benefit" rows=11 cols=50 maxlength=250 required></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label control-label">Kode Sertifikat<span class="text-danger">*</span></label>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control" name="certif_code" placeholder="Certificate Code" style="text-transform: uppercase" required>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -235,16 +226,6 @@
             $editor.summernote('bold');
         });
     });
-
-    $('#setFree').change(function() {
-        if ($(this).prop('checked')) {
-            $('.CurrencyInput').prop('readonly', true)
-            $('.CurrencyInput').val(0)
-        } else {
-            $('.CurrencyInput').prop('readonly', false)
-            $('.CurrencyInput').val('')
-        }
-    })
 
     const dateStartInput = document.getElementById('date_start');
     const dateEndInput = document.getElementById('date_end');

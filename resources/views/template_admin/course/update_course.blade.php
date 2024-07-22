@@ -27,21 +27,6 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label control-label">
-                            Harga <span class="text-danger">*</span>
-                        </label>
-                        <div class="col-md-10">
-                            <input type="number" class="form-control CurrencyInput" name="price_course" placeholder="0">
-                            <span class="d-flex align-items-center gap-2 mt-2">
-                                <div class="switch mt-2">
-                                    <input type="checkbox" id="setFree">
-                                    <label for="setFree"></label>
-                                </div>
-                                Gratis
-                            </span>
-                        </div>
-                    </div>
-                    <div class="form-group row">
                         <label class="col-sm-2 col-form-label control-label">Tanggal Kursus<span class="text-danger">*</span></label>
                         <div class="col-md-10">
                             <div class="d-flex align-items-center">
@@ -67,6 +52,15 @@
                         <label class="col-sm-2 col-form-label control-label">Kode Sertifikat<span class="text-danger">*</span></label>
                         <div class="col-md-10">
                             <input type="text" class="form-control" name="certif_code" placeholder="Certificate Code" style="text-transform: uppercase" required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label control-label">Tipe Kursus <span class="text-danger">*</span></label>
+                        <div class="col-md-10">
+                            <select class="select2" name="is_public">
+                                <option value="1">Umum</option>
+                                <option value="0">Pribadi</option>
+                            </select>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -139,32 +133,31 @@
     var limit = 0;
 
     var data = {!! $jsonData !!};
-    var price = data.PRICE_ACTIVITY;
+
+    // Load Image
+    var cover_book = $('input[name="image_activity"]').dropify();
+    cover_book = cover_book.data('dropify');
+    cover_book.resetPreview();
+    cover_book.clearElement();
+    cover_book.settings['defaultFile'] = data.IMAGE_ACTIVITY;
+    cover_book.destroy();
+    cover_book.init();
 
     $('input[name="title_activity"]').val(data.TITLE_ACTIVITY);
-    if (price == 0) {
-        $('input[name="price_course"]').val(price);
-        $('#setFree').prop('checked', true);
-    } else {
-        $('input[name="price_course"]').val(price);
-        $('#setFree').prop('checked', false);
-    }
     $('input[name="date_start"]').val(data.DATE_START);
     $('input[name="date_end"]').val(data.DATE_END);
-    $('input[name="benefit"]').val(data.BENEFIT);
     $('input[name="certif_code"]').val(data.SERTIF_CODE);
-    $('input[name="is_public"]').val(data.STATUS ? '1' : '0');
-    $('input[name="category"]').val(data.KATEGORI);
+    $('select[name="is_public"]').val(data.STATUS ? '1' : '0');
+    $('select[name="category"]').val(data.ID_KATEGORI);
     $('input[name="status"]').prop('checked', data.STATUS);
     $('input[name="desc_course"]').summernote('code', data.DESKRIPSI_COURSE);
     $.ajax({
-        url: 'courses/get/' + data.ID_ACTIVITY,
+        url: 'get/' + data.ID_ACTIVITY,
         method: 'GET',
         dataType: 'JSON',
         success: function(response) {
-            if(response.desc) {
-                $('input[name="benefit"]').summernote('code', response.desc.BENEFIT);
-            }
+            $('#desc_course').summernote('code', response[0].DESKRIPSI_COURSE);
+            $('#benefit').summernote('code', response[0].BENEFIT);
         },
         error: function(xhr, status, error) {
             console.error(error);
@@ -236,16 +229,6 @@
             $editor.summernote('bold');
         });
     });
-
-    $('#setFree').change(function() {
-        if ($(this).prop('checked')) {
-            $('.CurrencyInput').prop('readonly', true)
-            $('.CurrencyInput').val(0)
-        } else {
-            $('.CurrencyInput').prop('readonly', false)
-            $('.CurrencyInput').val('')
-        }
-    })
 
     $('#add_materi').click(function(e) {
         $("#add_item").addClass("disabled");
