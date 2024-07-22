@@ -80,7 +80,6 @@ class EventController extends Controller
             'ID_ACTIVITY' => $this->GenerateUniqID('ACT', $req->input('title_activity')),
             'TITLE_ACTIVITY' => $req->input('title_activity'),
             'ID_USER' => session('user')[0]['ID_USER'],
-            'PRICE_ACTIVITY' => (int)str_replace(".", "", $req->input('price_activity')),
             'SERTIF_CODE' => $req->input('sertif_code'),
             'TYPE_ACTIVITY' => 2,
             'STATUS' => $req->has('status') ? 1 : 0,
@@ -117,7 +116,6 @@ class EventController extends Controller
         $activity = [
             'TITLE_ACTIVITY' => $req->input('up_title_activity'),
             'ID_USER' => session('user')[0]['ID_USER'],
-            'PRICE_ACTIVITY' => (int)str_replace(".", "", $req->input('up_price_activity')),
             'SERTIF_CODE' => $req->input('up_sertif_code'),
             'DATE_START' => $req->input('up_date_start'),
             'DATE_END' => $req->input('up_date_end'),
