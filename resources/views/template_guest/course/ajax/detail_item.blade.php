@@ -103,7 +103,7 @@
                 <div class="my-4 d-flex d-lg-block flex-column">
                     <?php $no = 0;
                     foreach ($soal as $soal_item) : ?>
-                        <button class="btn btn-outline-dark me-3 mb-3 py-2 px-3 rounded-3 shadow fw-semibold" data-value="<?= ($no == 0) ? "a" : (($no == 1) ? "b" : "c") ?>" id="jwbn_<?= $item->ID_DETAIL . '' . ++$no ?>" onclick="SelectJwbn<?= $item->ID_DETAIL . '' . $item->ORDER_LIST ?>(this)">
+                        <button class="btn btn-outline-dark me-3 mb-3 py-2 px-3 rounded-3 shadow fw-semibold" data-value="<?= (($no == 0) ? "a" : (($no == 1) ? "b" : (($no == 3) ? "c" : "d" ))) ?>" id="jwbn_<?= $item->ID_DETAIL . '' . ++$no ?>" onclick="SelectJwbn<?= $item->ID_DETAIL . '' . $item->ORDER_LIST ?>(this)">
                             <?= $soal_item ?>
                         </button>
                     <?php endforeach; ?>
@@ -117,6 +117,7 @@
                             $("#jwbn_<?= $item->ID_DETAIL . '1' ?>").removeClass("btn-main-2")
                             $("#jwbn_<?= $item->ID_DETAIL . '2' ?>").removeClass("btn-main-2")
                             $("#jwbn_<?= $item->ID_DETAIL . '3' ?>").removeClass("btn-main-2")
+                            $("#jwbn_<?= $item->ID_DETAIL . '4' ?>").removeClass("btn-main-2")
                             $('input[name="jwbn[]"]').eq(<?= $no_soal++ ?>).val($(e).data("value"))
                             $(e).addClass("btn-main-2")
                         }

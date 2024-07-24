@@ -39,6 +39,13 @@
                     <input type="text" class="form-control col-md-10 mt-2" name="jawaban_c[]">
                 </div>
             </div>
+            <div class="radio col-md-12 mb-2">
+                <div class="row">
+                    <input id="radio3{{ $no }}{{ $index }}" name="kunci_soal[{{ $no }}][{{ $index }}]" type="radio" value="d">
+                    <label for="radio3{{ $no }}{{ $index }}" class="mr-1">D. </label>
+                    <input type="text" class="form-control col-md-10 mt-2" name="jawaban_d[]">
+                </div>
+            </div>
         </div>
 
     </div>
