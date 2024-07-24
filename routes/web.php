@@ -127,25 +127,26 @@ Route::middleware(['usersession:3,2,1'])->group(function () {
 });
 
 Route::middleware(['usersession:2,1'])->group(function () {
-    // Route::get('dashboard', 'DashboardController@admin_index');
     Route::get('dashboard', 'DashboardController@admin_index');
 
     Route::get('courses', 'CourseController@index');
     Route::get('courses/add', 'CourseController@add_course');
-    Route::post('courses/store', 'CourseController@store');
-    Route::post('courses/edit', 'CourseController@update_course');
-    Route::post('courses/update', 'CourseController@update');
-    Route::post('courses/delete', 'CourseController@delete');
-    Route::get('courses/invite', 'CourseController@invite');
-    Route::post('courses/invite_individu', 'CourseController@invite_individu');
-    Route::post('courses/invite_batch', 'CourseController@invite_batch');
     Route::get('courses/add_materi/{id}', 'CourseController@add_materi');
     Route::get('courses/delete_materi/{id}', 'CourseController@delete_materi');
     Route::get('courses/add_quiz/{id}/{no_quiz}', 'CourseController@add_quiz')->name('add_quiz');
     Route::get('courses/delete_quiz/{id}', 'CourseController@delete_quiz');
     Route::get('courses/add_question/{id}/{index}', 'CourseController@add_question')->name('add_question');
     Route::get('courses/delete_question/{id}', 'CourseController@delete_question');
-    Route::get('courses/get/{id}', 'CourseController@deskripsi_get');
+    Route::post('courses/store', 'CourseController@store');
+    Route::post('courses/edit', 'CourseController@update_course'); // open page
+    Route::get('courses/get/{id}', 'CourseController@deskripsi_get'); // get desc
+    Route::get('courses/get_course_item/{id}/{materi}', 'CourseController@get_course_item'); // get materi / quiz
+    Route::post('courses/update', 'CourseController@update'); // update kursus
+    Route::post('courses/delete', 'CourseController@delete');
+    
+    Route::get('courses/invite', 'CourseController@invite');
+    Route::post('courses/invite_individu', 'CourseController@invite_individu');
+    Route::post('courses/invite_batch', 'CourseController@invite_batch');
 
     Route::get('events', 'EventController@index');
     Route::get('events/get/{id}', 'EventController@deskripsi_get');
