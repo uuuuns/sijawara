@@ -80,7 +80,7 @@
                                         <i class="bx bx-edit-alt font-size-16 align-middle"></i> Edit Kursus
                                     </button>
                                 </form>
-                                <button type="button" onclick="opendeleteModal(<?= htmlentities(json_encode($item)) ?>)" class="btn btn-danger btn-sm-2 w-100 fs-8 rounded waves-effect waves-light px-2" style="min-width: 155px !important;">
+                                <button type="button" onclick="opendeleteModal('<?= $item->ID_ACTIVITY ?>')" class="btn btn-danger btn-sm-2 w-100 fs-8 rounded waves-effect waves-light px-2" style="min-width: 155px !important;">
                                     <i class="bx bx-trash font-size-16 align-middle"></i> Hapus Kursus
                                 </button>
                             </td>
@@ -124,10 +124,8 @@
 <script>
     $('#dtTable').DataTable()
 
-    function opendeleteModal(viewData) {
-        var data = JSON.parse(viewData)
-
-        $('input[name="id_activity"]').val(data.ID_ACTIVITY)
+    function opendeleteModal(id_activity) {
+        $('input[name="id_activity"]').val(id_activity)
         $('#deleteModal').modal('show')
     }
 </script>

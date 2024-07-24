@@ -107,6 +107,7 @@ Route::middleware(['usersession:3,2,1'])->group(function () {
     Route::post('course/item', 'guest_controller\CourseGuest@getDetailItemCourse');
     Route::post('course/quiz/evaluation', 'guest_controller\CourseGuest@QuizEvaluation');
     Route::post('course/add', 'guest_controller\CourseGuest@add_event');
+    Route::post('course/detail/addkomen', 'SocialController@addkomen');
 //END COURSE
 
     Route::post('event/add', 'guest_controller\EventGuest@add_event');

@@ -117,7 +117,6 @@ class Course extends Model
         course.PENGUMUMAN,
         course.DESKRIPSI_COURSE,
         course.DESKRIPSI_COURSE_ITEM,
-        course.KOMENTAR,
         course.BENEFIT,
         user.NAME,
         user.FOTO_PROFILE,
