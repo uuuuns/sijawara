@@ -214,39 +214,63 @@ class CourseController extends Controller
             view('template.footer', $data);
     }
 
-    public function get_course_item($id_course, $id_materi)
+    public function get_course_item($id_course, $materi)
     {
-        // $id_detailCourse = $id_materi;
-        // $data['id_item'] = $id_detailCourse;
-        // // $data['data_materi'] = $this->Course->get_all_materi($_GET['ID_COURSE']);
-        // $data['data_materi'] = DB::select("
-        //     SELECT
-        //         *
-        //     FROM
-        //         item_course
-        //     WHERE
-        //         ID_COURSE = $id_course
-        // ");
-        // $data['no'] = 1;
-        // foreach ($data['data_materi'] as $item_data) {
-        //     $data['item']['ID_ITEM'] = $item_data['ID_ITEM'];
-        //     if ($item_data['TYPE'] == 1) {
-        //         $data['item'] = array(
-        //             'FILE'      => $item_data['FILE'],
-        //             'TITLE'     => $item_data['TITLE'],
-        //             'LINK_YT'   => $item_data['LINK_YT'],
-        //             'DESKRIPSI' => $item_data['DESKRIPSI']
-        //         );
-        //         $this->load->view('admin/activity/course/materi/item_materi_update', $data);
-        //     } else {
-        //         $this->load->view('admin/activity/course/quiz/item_quiz_update', $data);
-        //     }
-        //     $data['no']++;
-        // }
+        $id_detailCourse = $materi;
+        $data['id_item'] = $id_detailCourse;
+        $data['data_materi'] = DB::select("
+        SELECT
+            *
+        FROM
+            item_course
+        WHERE
+            ID_COURSE = '" . $id_course . "'
+        ORDER BY
+            ORDER_LIST ASC
+    ");
+
+        $data['items'] = [];
+        $data['quizzes'] = [];
+        $allView = "";
+
+        foreach ($data['data_materi'] as $key => $item_data) {
+            $data['no'] = $key + 1;
+            if ($item_data->TYPE == 1) {
+                $data['item'] = [
+                    'ID_ITEM'   => $item_data->ID_ITEM,
+                    'FILE'      => $item_data->FILE,
+                    'TITLE'     => $item_data->TITLE,
+                    'LINK_YT'   => $item_data->LINK_YT,
+                    'DESKRIPSI' => $item_data->DESKRIPSI,
+                    'ORDER_LIST' => $item_data->ORDER_LIST
+                ];
+                // $data['items'][] = $data['item'];
+                $allView .= view('template_admin.course.update_materi', $data)->render();
+            } else {
+                $data['quiz'] = [
+                    'ID_ITEM' => $item_data->ID_ITEM,
+                    'TITLE'   => $item_data->TITLE,
+                    'QUESTIONS' => DB::select("
+                        SELECT
+                            *
+                        FROM
+                            detail_quiz
+                        WHERE
+                            ID_COURSE = '" . $id_course . "'
+                "),
+                    'ORDER_LIST' => $item_data->ORDER_LIST
+                ];
+                // $data['quizzes'][] = $data['quiz'];
+                $allView .= view('template_admin.course.update_quiz', $data)->render();
+            }
+        }
+
+        return $allView;
     }
 
     public function update(Request $req)
     {
+        dd($req);
         $data = [
             '' => $req->input('')
         ];
@@ -320,7 +344,6 @@ class CourseController extends Controller
 
     public function item_quiz($data, $req, $lastIdQuiz)
     {
-        // dd($req);
         $jawaban_a              = $req->input('jawaban_a');
         $jawaban_b              = $req->input('jawaban_b');
         $jawaban_c              = $req->input('jawaban_c');
@@ -330,7 +353,6 @@ class CourseController extends Controller
 
         $tmpNo = 0;
         foreach ($question as $i => $questions) {
-            // dd($questions);
             $id_quiz = $lastIdQuiz[$tmpNo];
             for ($j = 1; $j < count($questions); $j++) {
                 $quiz = [

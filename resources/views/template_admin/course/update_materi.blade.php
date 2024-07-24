@@ -2,12 +2,12 @@
     <div class="card-header">
         <h5 class="card-title d-flex row">
             <a data-toggle="collapse" href="#collapse{{ $no }}" class="col-md-12">
-                <span class="col-md-11">Detail - Materi</span>
+                <span class="col-md-11">Detail - Materi <?= $item['TITLE'] ?></span>
                 <input type="hidden" class="form-control" name="order_list[]" value="{{ $no }}" required>
                 <input type="hidden" class="form-control" name="type[]" value="1" required>
-                <div id="delete_materi_{{ $no }}" class="btn btn-danger px-1 py-0 float-right" style="cursor: pointer;">
-                    <i class="anticon anticon-loading"></i>
-                    <span><i class="anticon anticon-close"></i> </span>
+                <div id="delete_materi_{{ $no }}" class="btn btn-danger px-1 py-0 float-end"
+                    style="cursor: pointer;">
+                    <span><i class="far fa-times"></i> </span>
                 </div>
             </a>
         </h5>
@@ -18,35 +18,44 @@
                 <label class="col-sm-2 col-form-label control-label">File Materi</label>
                 <div class="col-md-5">
                     <div class="custom-file">
-                        <input type="file" name="materi_file[]" class="custom-file-input file_materi" accept=".pdf" data-allowed-file-extensions="pdf" data-default-file="<?= $item['FILE'] ?>">
-                        <input type="hidden" class="form-control" name="old_file[]" value="<?= $item['FILE'] ?>" required>
+                        <input type="file" name="materi_file[]" accept=".pdf, .ppt, .pptx"
+                            class="custom-file-input file_materi">
                     </div>
                 </div>
             </div>
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label control-label" required>Nama Materi</label>
-                <div class="col-md-5">
-                    <input type="text" class="form-control" name="materi_title[]" value="<?= $item['TITLE'] ?>" required>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" name="materi_title[]" value="<?= $item['TITLE'] ?>"
+                        required>
                 </div>
             </div>
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label control-label">Link Youtube</label>
                 <div class="col-md-5">
-                    <input type="text" class="form-control" name="materi_link[]" value="<?= $item['LINK_YT'] ?>" required>
+                    <input type="text" class="form-control" name="materi_link[]" value="<?= $item['LINK_YT'] ?>"
+                        required>
                 </div>
             </div>
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label control-label">Deskripsi Materi</label>
                 <div class="col-md-5">
-                    <textarea name="desc_materi[]" id="mytextarea_<?= $no; ?>" required>
-                        <?= $item['DESKRIPSI'] ?>
-                    </textarea>
+                    <textarea name="desc_materi[]" id="mytextarea_<?= $no ?>" required>
+                    {{ $item['DESKRIPSI'] }}</textarea>
                 </div>
             </div>
         </div>
     </div>
 </div>
 <script>
+    var cover_book = $('input[name="materi_file[]"]').dropify();
+    cover_book = cover_book.data('dropify');
+    cover_book.resetPreview();
+    cover_book.clearElement();
+    cover_book.settings['defaultFile'] = "{{ $item['FILE'] }}";
+    cover_book.destroy();
+    cover_book.init();
+
     $(document).ready(function() {
         var $editor = $('#mytextarea_{{ $no }}');
         $editor.summernote({
@@ -91,7 +100,7 @@
         });
     });
 
-    $('#collapse<?= $no; ?>').collapse('hide')
+    $('#collapse<?= $no ?>').collapse('hide')
 
     $('#delete_materi_{{ $no }}').click(function(e) {
         $(this).toggleClass("is-loading");

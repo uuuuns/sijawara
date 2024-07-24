@@ -9,7 +9,7 @@
                 </div>
             </div>
             <div class="mt-5">
-                <form id="form-user" action="store" method="POST" enctype="multipart/form-data">
+                <form id="form-user" action="update" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group row">
                         <label class="col-sm-2 col-form-label control-label">Kover Depan <span class="text-danger">*</span>
@@ -128,8 +128,8 @@
 {{-- End add Item --}}
 
 <script>
-    var i = 0;
-    var j = 0;
+    var i = 1;
+    var id_quiz = 1;
     var limit = 0;
 
     var data = {!! $jsonData !!};
@@ -169,11 +169,7 @@
         $editor.summernote({
             height: 200,
             callbacks: {
-                onPaste: function(e) {
-                    console.log('Called event paste', e);
-                },
                 onImageUpload: function(files) {
-                    console.log(files);
                     $summernote.summernote('insertNode', imgNode);
                 }
             },
@@ -202,11 +198,7 @@
         $editor.summernote({
             height: 200,
             callbacks: {
-                onPaste: function(e) {
-                    console.log('Called event paste', e);
-                },
                 onImageUpload: function(files) {
-                    console.log(files);
                     $summernote.summernote('insertNode', imgNode);
                 }
             },
@@ -250,16 +242,30 @@
         $("#add_item").addClass("disabled");
         $("#add_item").html("Loading...");
         $.ajax({
-            url: 'add_quiz/' + j,
+            url: 'add_quiz/' + i + '/' + id_quiz,
             success: function(html) {
                 $(".materi_form").append(html);
                 $("#add_item").removeClass("disabled");
                 $("#add_item").html("Tambahkan Bab atau Kuis");
                 i++;
                 limit++;
+                id_quiz++;
             }
         });
         e.preventDefault();
+    });
+
+    $.ajax({
+        url: 'get_course_item/' + data.ID_COURSE + '/' + i,
+        type: "GET",
+        beforeSend: function() {
+            $('#add_item').toggleClass("is-loading");
+        },
+        success: function(html) {
+            $("#add_item").removeClass("is-loading");
+            $(".materi_form").append(html);
+            limit = i;
+        }
     });
 
     $(document).ready(function() {
