@@ -231,7 +231,7 @@ class CourseGuest extends Controller
 
 		$data_all_mapping = $this->courseModel->get_counttask($_POST['id_activity']);
 		$count = ['MAPPING_COUNT' => ((int) $data_all_mapping[0]->MAPPING_COUNT) + 1];
-		if ($data['type'] = 1) {
+		if ($data['type'] == 1) {
 			DB::table("order")
 				->where('ID_USER', session('user')[0]->get('ID_USER'))
 				->where('ID_PRODUCT', $_POST['id_activity'])
@@ -257,6 +257,7 @@ class CourseGuest extends Controller
 				->where('ID_ITEM', $data['data_all_mapping'][0]->ID_ITEM)
 				->update($data_mapping);
 		}
+		
 		// GET ID_ITEM DARI LAST ITEM YANG DI TELAH DIBUKA
 		$data['last_item'] = DB::select('
 			SELECT

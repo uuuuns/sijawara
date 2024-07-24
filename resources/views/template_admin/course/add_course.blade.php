@@ -43,7 +43,7 @@
                         </label>
                         <div class="col-md-10">
                             <div class="custom-file">
-                                <input type="file" name="image_activity" class="custom-file-input dropify" accept=".jpg, .png" data-allowed-file-extensions="jpg png" required>
+                                <input type="file" name="image_activity" class="custom-file-input dropify" accept=".jpg, .png, .jpeg" data-allowed-file-extensions="jpg png jpeg" required>
                             </div>
                         </div>
                     </div>

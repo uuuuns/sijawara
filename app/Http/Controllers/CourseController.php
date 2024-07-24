@@ -348,6 +348,7 @@ class CourseController extends Controller
         $jawaban_a              = $req->input('jawaban_a');
         $jawaban_b              = $req->input('jawaban_b');
         $jawaban_c              = $req->input('jawaban_c');
+        $jawaban_d              = $req->input('jawaban_d');
         $order_list_quiz        = $req->input('order_list_question');
         $question               = $req->input('question');
         $kunci_soal             = $req->input('kunci_soal');
@@ -360,7 +361,7 @@ class CourseController extends Controller
                     'ID_QUIZ'       => $id_quiz,
                     'ID_COURSE'     => $data['ID_COURSE'],
                     'SOAL'          => $questions[$j],
-                    'PIL_JWB'       => implode(';', [$jawaban_a[$tmpNo], $jawaban_b[$tmpNo], $jawaban_c[$tmpNo]]),
+                    'PIL_JWB'       => implode(';', [$jawaban_a[$tmpNo], $jawaban_b[$tmpNo], $jawaban_c[$tmpNo], $jawaban_d[$tmpNo]]),
                     'KUNCI'         => $kunci_soal[$i][$j],
                     'ORDER_LIST'    => $order_list_quiz[$tmpNo]
                 ];
