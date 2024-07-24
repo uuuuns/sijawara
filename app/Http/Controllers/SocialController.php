@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\DB;
 use Facebook\Facebook;
 
 class SocialController extends Controller
@@ -49,5 +51,17 @@ class SocialController extends Controller
         $user = Socialite::driver('instagram')->user();
 
         //API instagram perlu third party services.
+    }
+
+    public function addKomen(Request $request)
+    {
+        $data = [
+            'ID_USER' => $request->input('id_user'),
+            'ID_ACTIVITY' => $request->input('id_activity'),
+            'komentar' => $request->input('komentar'),
+            'LOG_TIME' => date('Y-m-d H:i:s'),
+        ];
+        DB::table('tb_komentar')->insert($data);
+        return redirect()->back();
     }
 }

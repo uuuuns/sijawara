@@ -54,14 +54,14 @@
                         <div class="course-widget course-details-info">
                             <div class="course-thumbnail">
                                 <img src="<?= $course->IMAGE_ACTIVITY ?>" alt="" class="img-fluid w-100" />
-                                <div class="my-3 fw-bold d-flex align-self-end justify-content-end pe-0 align-items-center text-black">
+                                <!-- <div class="my-3 fw-bold d-flex align-self-end justify-content-end pe-0 align-items-center text-black">
                                     Bagikan :
                                     <span class="fs-5">
                                         <a href="{{ url('auth/facebook') }}"><i class="fab fa-facebook mx-2" style="cursor: pointer"></i></a>
                                         <a href="{{ url('auth/twitter') }}"><i class="fab fa-twitter me-2" style="cursor: pointer"></i></a>
                                         <a href="{{ url('auth/instagram') }}"><i class="fab fa-instagram" style="cursor: pointer"></i></a>
                                     </span>
-                                </div>
+                                </div> -->
                             </div>
 
                             <ul class="course-sidebar-list">
@@ -96,6 +96,7 @@
                             <a class="nav-item nav-link" id="nav-announcement-tab" data-bs-toggle="tab" href="#nav-announcement" role="tab" aria-controls="nav-announcement-tab" aria-selected="false">Pengumuman</a>
                             <?php if ($tot_proggress == 100) { ?>
                                 <a class="nav-item nav-link" id="nav-sertif-tab" data-bs-toggle="tab" href="#nav-sertif" role="tab" aria-controls="nav-sertif-tab" aria-selected="false">Sertifikat</a>
+                                <a class="nav-item nav-link" id="nav-komen-tab" data-bs-toggle="tab" href="#nav-komen" role="tab" aria-controls="nav-komen-tab" aria-selected="false">Komentar</a>
                             <?php } ?>
                         </div>
                     </nav>
@@ -166,6 +167,54 @@
                                         Silakan selesaikan seluruh kursus dan raih skor di atas 75 poin.
                                     </div>
                                 <?php } ?>
+                            </div>
+                            <div class="tab-pane fade" id="nav-komen" role="tabpanel" aria-labelledby="nav-komen-tab" tabindex="0">
+                                <div style="display: flex; justify-content: center; width: 100%;">
+                                    <form action="addkomen" method="POST" style="width: 100%; max-width: 800px;">
+                                        @csrf
+                                        <input type="hidden" name="id_activity" value="<?=$id_activity?>">
+                                        <input type="hidden" name="id_user" value="<?= session('user')[0]['ID_USER']?>">
+                                        <div style="box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); margin: 1rem auto; border-radius: 0.5rem; padding: 1rem; display: flex; flex-direction: column; align-items: center;">
+                                            <div style="width: 100%; padding: 1rem;">
+                                                <label for="komentar">Komentar</label>
+                                                <textarea class="form-control mb-4" rows="4" name="komentar" id="komentar" required style="width: 100%;"></textarea>
+                                                <div style="display: flex; justify-content: flex-end;">
+                                                    <button type="submit" class="btn btn-primary" style="width: 20%;">Kirim</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+
+                                <div class="container my-2 py-2">
+                                    <div class="row d-flex justify-content-center">
+                                        <div class="col-md-12 col-lg-10">
+                                            <div class="card text-body">
+                                                @foreach ($komentar as $item)
+                                                <div class="card-body p-4">
+                                                    <div class="d-flex flex-start">
+                                                        <img class="rounded-circle shadow-1-strong me-3"
+                                                        src="<?= $item->FOTO_PROFILE == null ? 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973461_1280.png' : $item->FOTO_PROFILE ?>"
+                                                        alt="avatar" width="60" height="60" />
+                                                        <div>
+                                                            <h6 class="fw-bold mb-1"><?=$item->NAME?></h6>
+                                                            <div class="d-flex align-items-center mb-3">
+                                                                <p class="mb-0">
+                                                                    <?=date('F d, Y', strtotime($item->LOG_TIME))?>
+                                                                </p>
+                                                            </div>
+                                                            <p class="mb-0">
+                                                            <?= $item->komentar?>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <hr class="my-0" />
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         <?php } ?>
                     </div>
@@ -271,7 +320,6 @@
                         }
                     }).then((result) => {
                         GetItemCourse(e)
-                        // location.reload()
                     })
                 }
             })

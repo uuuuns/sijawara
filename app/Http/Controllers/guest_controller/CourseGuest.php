@@ -62,11 +62,10 @@ class CourseGuest extends Controller
 
 		$data['id_activity'] = $_GET['id_activity'];
 		$data['course'] = $this->courseModel->get_course($data['id_activity']);
-		$condition = "item_course.ID_COURSE = '" . $data['course']->ID_COURSE ."'".
+		$condition = "item_course.ID_COURSE = '" . $data['course']->ID_COURSE . "'" .
 			" AND mapping_course.ID_USER = '" . session('user')[0]->get('ID_USER') . "'";
 		$this->courseModel->updateMappingIndex($data['course']->ID_COURSE, $data['id_activity']);
 		$data['item_course'] = $this->courseModel->get_item_course($condition);
-		// $data['last_item'] = $this->courseModel->get_last_item_course($data['id_activity']);
 		$data['last_item'] = DB::select('
 			SELECT
 				*
@@ -92,7 +91,7 @@ class CourseGuest extends Controller
 				$condition_all_mapping
 		");
 		$data_all_mapping = $this->courseModel->get_counttask($data['id_activity']);
-		
+
 		$data['tot_proggress'] = (!empty($data['last_item'])) ? (((int) $data_all_mapping[0]->MAPPING_COUNT) / count($data['data_all_mapping'])) * 100 : 0;
 
 		$cek_nilai = DB::selectOne("
@@ -102,7 +101,7 @@ class CourseGuest extends Controller
 				nilai_quiz 
 			WHERE 
 				ID_USER = '" . session('user')[0]->get('ID_USER') . "'
-				AND ID_QUIZ = ".$data['last_item'][0]->ID_ITEM."
+				AND ID_QUIZ = " . $data['last_item'][0]->ID_ITEM . "
 			");
 
 		$cek_quiz = DB::select("
@@ -112,19 +111,16 @@ class CourseGuest extends Controller
 				item_course 
 			WHERE 
 				TYPE = 2
-				AND ID_COURSE = '".$data['course']->ID_COURSE."'
+				AND ID_COURSE = '" . $data['course']->ID_COURSE . "'
 			");
-
 		if (count($data['last_item']) == count($data['data_all_mapping']) && (!empty($cek_nilai->NILAI) ? $cek_nilai->NILAI == 100 : false)) {
 			$data['tot_proggress'] = 100;
 			DB::table('order')->where('ID_USER', session('user')[0]->get('ID_USER'))->where('ID_PRODUCT', $data['id_activity'])->update(['COURSE_COMPLETED' => 1, 'MAPPING_COUNT' => count($data['data_all_mapping'])]);
 		}
-
 		if (count($data['last_item']) == count($data['data_all_mapping']) && empty($cek_quiz)) {
 			$data['tot_proggress'] = 100;
 			DB::table('order')->where('ID_USER', session('user')[0]->get('ID_USER'))->where('ID_PRODUCT', $data['id_activity'])->update(['COURSE_COMPLETED' => 1, 'MAPPING_COUNT' => count($data['data_all_mapping'])]);
 		}
-		// $sertifCheck = $this->certificateModel->getCertificate($con);
 		$sertifCheck = DB::selectOne("
 			SELECT
 				ID_SERTIFIKAT,
@@ -172,6 +168,21 @@ class CourseGuest extends Controller
 				ID_USER = '" . session('user')[0]->get('ID_USER') . "'
 		");
 		$data['checkout'] = $this->checkoutModel->get_all_order(session('user')[0]->get('ID_USER'));
+
+		// KOMENTAR
+		$data['komentar'] = DB::select("
+			SELECT
+				tk.komentar,
+				u.NAME,
+				u.FOTO_PROFILE,
+				tk.LOG_TIME
+			FROM
+				tb_komentar tk
+			LEFT JOIN user u ON
+				u.ID_USER = tk.ID_USER
+			WHERE
+				tk.ID_ACTIVITY = '" . $data['id_activity'] . "'
+		");
 		return view('template.header', $data) .
 			view('template_guest.course.course_detail', $data) .
 			view('template.footer', $data);
@@ -205,23 +216,47 @@ class CourseGuest extends Controller
 			WHERE
 				" . implode('AND ', $condition_all_mapping) . "
 		");
+
+		// GET NILAI QUIZ
+		$data['quiz_grade'] = DB::selectOne('
+			SELECT
+				NILAI
+			FROM
+				nilai_quiz
+			WHERE
+				ID_USER = "' . session('user')[0]->get('ID_USER') . '"
+				AND 
+				ID_QUIZ = ' . $data['id_item'] . '
+		');
+
+		$data_all_mapping = $this->courseModel->get_counttask($_POST['id_activity']);
+		$count = ['MAPPING_COUNT' => ((int) $data_all_mapping[0]->MAPPING_COUNT) + 1];
+		if ($data['type'] = 1) {
+			DB::table("order")
+				->where('ID_USER', session('user')[0]->get('ID_USER'))
+				->where('ID_PRODUCT', $_POST['id_activity'])
+				->update($count);
+		}
+
 		if ($data['status'] == 2) {
-			$data_all_mapping = $this->courseModel->get_counttask($_POST['id_activity']);
+			$data['next_quiz_grade'] = DB::selectOne('
+				SELECT
+					NILAI
+				FROM
+					nilai_quiz
+				WHERE
+					ID_USER = "' . session('user')[0]->get('ID_USER') . '"
+					AND 
+					ID_QUIZ = ' . $data['data_all_mapping'][0]->ID_ITEM . '
+			');
 			$data_mapping = ['STATUS' => 1];
-			$count = ['MAPPING_COUNT' => ((int) $data_all_mapping[0]->MAPPING_COUNT)+1];
-			// $this->courseModel->UpdateMapping($data_mapping, $condition_update_mapping);
 			//UPDATE STATUS MAPPING LAST ITEM COURSE
 			DB::table("mapping_course")
 				->where('ID_USER', session('user')[0]->get('ID_USER'))
 				->where('ID_ACTIVITY', $_POST['id_activity'])
 				->where('ID_ITEM', $data['data_all_mapping'][0]->ID_ITEM)
 				->update($data_mapping);
-			DB::table("order")
-				->where('ID_USER', session('user')[0]->get('ID_USER'))
-				->where('ID_PRODUCT', $_POST['id_activity'])
-				->update($count);
 		}
-		// $data['last_item'] = $this->courseModel->get_last_item_course($_POST['id_activity'])[0];
 		// GET ID_ITEM DARI LAST ITEM YANG DI TELAH DIBUKA
 		$data['last_item'] = DB::select('
 			SELECT
@@ -234,9 +269,7 @@ class CourseGuest extends Controller
 				AND STATUS = 1
 			ORDER BY ID_ITEM DESC
 		');
-		$limit_question = empty($data['last_item'][0]->LIMIT_QUESTION) ? 0 : $data['last_item'][0]->LIMIT_QUESTION;
 		$condition = ['tc.ID_ITEM = ' . $data['id_item']];
-		// $data['detail_item_course'] = $this->courseModel->get_detail_item_course($condition, $data['type']);
 		// GET DATA UNTUK MATERI, ELSE QUIZ
 		$sql = "
 			SELECT
@@ -267,23 +300,11 @@ class CourseGuest extends Controller
 			LEFT JOIN detail_quiz dq ON
 				dq.ID_QUIZ = tc.ID_ITEM
 			WHERE
-				".implode('AND ', $condition)."
+				" . implode('AND ', $condition) . "
 			ORDER BY RAND()
 			";
 			$data['detail_item_course'] = DB::select($sql);
 		}
-		// dd($data['detail_item_course']);	
-		// $data['quiz_grade'] = $this->courseModel->get_quiz_grade($data['id_item']);
-		// GET NILAI QUIZ
-		$data['quiz_grade'] = DB::selectOne('
-			SELECT
-				NILAI
-			FROM
-				nilai_quiz
-			WHERE
-				ID_USER = "' . session('user')[0]->get('ID_USER') . '"
-				AND ID_QUIZ = ' . $data['id_item'] . '
-		');
 		return view('template_guest.course.ajax.detail_item', $data);
 	}
 	public function getMappingCourse()
@@ -310,7 +331,7 @@ class CourseGuest extends Controller
 		$id_activity = $_GET['id_activity'];
 		$data['checking_trans'] = $this->checkoutModel->get_trans($data_user);
 		$data['course'] = $this->courseModel->get_course($id_activity);
-		$condition = "item_course.ID_COURSE = '" . $data['course']->ID_COURSE."'";
+		$condition = "item_course.ID_COURSE = '" . $data['course']->ID_COURSE . "'";
 		$data_itemCourse = $this->courseModel->get_item_course($condition);
 		$data['item_course'] = array();
 		$data['total_item'] = array(
@@ -329,6 +350,20 @@ class CourseGuest extends Controller
 			}
 		}
 
+		$data['komentar'] = DB::select("
+			SELECT
+				tk.komentar,
+				u.NAME,
+				u.FOTO_PROFILE,
+				tk.LOG_TIME
+			FROM
+				tb_komentar tk
+			LEFT JOIN user u ON
+				u.ID_USER = tk.ID_USER
+			WHERE
+				tk.ID_ACTIVITY = '" . $id_activity . "'
+		");
+
 		$data['checkout'] = $this->checkoutModel->get_all_order($data_user);
 		return
 			view('template.header', $data) .
@@ -344,9 +379,9 @@ class CourseGuest extends Controller
 			FROM
 				`order`
 			WHERE
-				ID_USER = '". session('user')[0]->get('ID_USER') ."'
+				ID_USER = '" . session('user')[0]->get('ID_USER') . "'
 			AND
-				ID_PRODUCT = '". $req->input('id_activity') ."'
+				ID_PRODUCT = '" . $req->input('id_activity') . "'
 		");
 
 		$activity = DB::selectone("
@@ -355,21 +390,21 @@ class CourseGuest extends Controller
 			FROM
 				activity
 			WHERE
-				ID_ACTIVITY = '". $req->input('id_activity') ."'
+				ID_ACTIVITY = '" . $req->input('id_activity') . "'
 		");
 
 		if (empty($check_data)) {
 			$order = [
-				'ID_ORDER'             	=> $this->GenerateUniqID_Order(time()),
-				'ID_PRODUCT'           	=> $req->input('id_activity'),
-				'ID_USER'		     	=> session('user')[0]->get('ID_USER'),
-				'LOG_TIME'				=> date('Y-m-d H:i:s')
+				'ID_ORDER' => $this->GenerateUniqID_Order(time()),
+				'ID_PRODUCT' => $req->input('id_activity'),
+				'ID_USER' => session('user')[0]->get('ID_USER'),
+				'LOG_TIME' => date('Y-m-d H:i:s')
 			];
-	
-			if ($activity->TYPE_ACTIVITY == 1 ) {
+
+			if ($activity->TYPE_ACTIVITY == 1) {
 				$this->InsertDataMapping($req->input('id_activity'));
 			}
-	
+
 			DB::table('order')->insert($order);
 			return redirect('profile/mycourses')->with(['succ_msg' => 'Berhasil join kursus', 'location' => 'profile/mycourses']);
 		} else {
@@ -380,7 +415,7 @@ class CourseGuest extends Controller
 	public function InsertDataMapping($item)
 	{
 		$data_course = $this->courseModel->get_course($item);
-		$condition = "item_course.ID_COURSE = '".$data_course->ID_COURSE."'";
+		$condition = "item_course.ID_COURSE = '" . $data_course->ID_COURSE . "'";
 		$data_itemCourse = $this->courseModel->get_item_course($condition);
 		for ($i = 0; $i < count($data_itemCourse); $i++) {
 			if ($i == 0) {
@@ -409,7 +444,6 @@ class CourseGuest extends Controller
 		$id_user = session('user')[0]->get('ID_USER');
 		$jml_jwbn_benar = 0;
 		for ($i = 0; $i < count($id_detail); $i++) {
-			// $jml_jwbn_benar += $this->courseModel->get_correct_answer_item_course($id_detail[$i], $pilih_jwbn[$i]);
 			$data_sum = DB::selectOne("
 			SELECT
 				COUNT(ID_DETAIL) AS TOT
@@ -422,8 +456,6 @@ class CourseGuest extends Controller
 			$jml_jwbn_benar += $data_sum->TOT;
 		}
 		$nilai = ($jml_jwbn_benar / count($id_detail)) * 100;
-
-		// $this->courseModel->save_quiz_grade($id_quiz, $nilai);
 		$data['total_data'] = DB::select("
 			SELECT
 				ID_QUIZ
@@ -431,7 +463,8 @@ class CourseGuest extends Controller
 				nilai_quiz
 			WHERE
 				ID_QUIZ = " . $id_quiz . "
-				AND ID_USER = '" . $id_user . "'
+				AND 
+				ID_USER = '" . $id_user . "'
 		");
 
 		$data_quiz = [
@@ -446,6 +479,25 @@ class CourseGuest extends Controller
 				->update($data_quiz);
 		} else {
 			DB::table('nilai_quiz')->insert($data_quiz);
+		}
+
+		$dataActivity = DB::selectOne("
+			SELECT
+				c.ID_ACTIVITY
+			FROM 
+				item_course ic
+			LEFT JOIN course c ON
+				c.ID_COURSE = ic.ID_COURSE
+			WHERE 
+				ic.ID_ITEM = $id_quiz
+		");
+		$data_all_mapping = $this->courseModel->get_counttask($dataActivity->ID_ACTIVITY);
+		$count = ['MAPPING_COUNT' => ((int) $data_all_mapping[0]->MAPPING_COUNT) + 1];
+		if ($nilai >= 75) {
+			DB::table("order")
+				->where('ID_USER', session('user')[0]->get('ID_USER'))
+				->where('ID_PRODUCT', $dataActivity->ID_ACTIVITY)
+				->update($count);
 		}
 
 		echo $nilai;
@@ -472,11 +524,11 @@ class CourseGuest extends Controller
 					ID_USER = '" . $id_user . "'
 			");
 
-			$data_ids = array_map(function($item) {
+			$data_ids = array_map(function ($item) {
 				return $item->ID_ACTIVITY;
 			}, $data_id);
-			$placeholders = "'". implode("','", $data_ids) . "'";
-			$condition = "WHERE activity.TYPE_ACTIVITY = 1 AND activity.ID_ACTIVITY IN (".$placeholders.")";
+			$placeholders = "'" . implode("','", $data_ids) . "'";
+			$condition = "WHERE activity.TYPE_ACTIVITY = 1 AND activity.ID_ACTIVITY IN (" . $placeholders . ")";
 		}
 
 		$id_user = (session('user') == null) ? null : Session::get('user')[0]->get('ID_USER');
@@ -521,7 +573,7 @@ class CourseGuest extends Controller
 					activity
 				LEFT JOIN course ON
 					course.ID_ACTIVITY = activity.ID_ACTIVITY
-				'.$condition.'
+				' . $condition . '
 				');
 		} else {
 			$data['course'] = DB::select('
@@ -542,9 +594,9 @@ class CourseGuest extends Controller
 	public function GenerateUniqID_Order($var)
 	{
 		$string = preg_replace('/[^a-z]/i', '', $var);
-		$vocal  = array("a", "e", "i", "o", "u", "A", "E", "I", "O", "U", " ");
-		$scrap  = str_replace($vocal, "", $string);
-		$begin  = substr($scrap, 0, 6);
+		$vocal = array("a", "e", "i", "o", "u", "A", "E", "I", "O", "U", " ");
+		$scrap = str_replace($vocal, "", $string);
+		$begin = substr($scrap, 0, 6);
 		$uniqid = strtoupper($begin);
 		return "ORD_" . $uniqid . substr(md5(time()), 0, 6);
 	}

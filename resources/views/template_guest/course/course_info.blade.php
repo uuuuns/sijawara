@@ -16,11 +16,8 @@
                     <nav class="course-single-tabs learn-press-nav-tabs">
                         <div class="nav nav-tabs course-nav" id="nav-tab" role="tablist">
                             <a class="nav-item nav-link active" id="nav-home-tab" data-bs-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home-tab" aria-selected="true">Ringkasan</a>
-                            <?php if (!empty(session('user'))) : ?>
-                                <a class="nav-item nav-link" id="nav-topics-tab" data-bs-toggle="tab" href="#nav-topics" role="tab" aria-controls="nav-topics-tab" aria-selected="false">Kurikulum</a>
-                                <?php endif ?>
-                                <a class="nav-item nav-link" id="nav-instructor-tab" data-bs-toggle="tab" href="#nav-instructor" role="tab" aria-controls="nav-instructor-tab" aria-selected="false">Instruktur</a>
-                                <a class="nav-item nav-link" id="nav-benefit-tab" data-bs-toggle="tab" href="#nav-benefit" role="tab" aria-controls="nav-benefit-tab" aria-selected="true">Benefit</a>
+                            <a class="nav-item nav-link" id="nav-benefit-tab" data-bs-toggle="tab" href="#nav-benefit" role="tab" aria-controls="nav-benefit-tab" aria-selected="true">Benefit</a>
+                            <a class="nav-item nav-link" id="nav-komentar-tab" data-bs-toggle="tab" href="#nav-komentar" role="tab" aria-controls="nav-komentar-tab" aria-selected="true">Komentar</a>
                         </div>
                     </nav>
 
@@ -98,6 +95,58 @@
                                 </div>
                             </div>
                             <!-- Conurse  benefit end -->
+                        </div>
+                        <div class="tab-pane fade" id="nav-komentar" role="tabpanel" aria-labelledby="nav-komentar-tab">
+                            <!-- Course Komentar start -->
+                            <div class="courses-komentar">
+                                <div class="single-komentar-box">
+                                    <div class="row align-items-center">
+
+                                        <div class="col-lg-12 col-md-8">
+                                            <div class="komentar-content">
+                                                @if ($komentar == null)
+                                                <div class="d-flex flex-column align-items-center">
+                                                    <img src="{{ asset('assets_new') }}/images/empty.svg" width="350">
+                                                    <h4 class="font-sm text-center">Belum Ada Komentar</h4>
+                                                </div>
+                                                @endif
+                                                @if ($komentar != null)
+                                                    <div class="container my-2 py-2">
+                                                        <div class="row d-flex justify-content-center">
+                                                            <div class="col-md-12 col-lg-10">
+                                                                <div class="card text-body">
+                                                                    @foreach ($komentar as $item)
+                                                                    <div class="card-body p-4">
+                                                                        <div class="d-flex flex-start">
+                                                                            <img class="rounded-circle shadow-1-strong me-3"
+                                                                            src="<?= $item->FOTO_PROFILE == null ? 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973461_1280.png' : $item->FOTO_PROFILE ?>"
+                                                                            alt="avatar" width="60" height="60" />
+                                                                            <div>
+                                                                                <h6 class="fw-bold mb-1"><?=$item->NAME?></h6>
+                                                                                <div class="d-flex align-items-center mb-3">
+                                                                                    <p class="mb-0">
+                                                                                        <?=date('F d, Y', strtotime($item->LOG_TIME))?>
+                                                                                    </p>
+                                                                                </div>
+                                                                                <p class="mb-0">
+                                                                                <?= $item->komentar?>
+                                                                                </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <hr class="my-0" />
+                                                                    @endforeach
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Conurse Komentar end -->
                         </div>
                     </div>
                 </div>

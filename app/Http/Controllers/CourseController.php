@@ -116,7 +116,6 @@ class CourseController extends Controller
 
         $data['ID_COURSE'] = $course['ID_COURSE'];
         $this->item_materi($data, $req);
-
         return redirect('courses')->with(['succ_msg' => 'Successfully Add New Course', 'location' => 'courses']);
     }
 
@@ -266,12 +265,14 @@ class CourseController extends Controller
             WHERE
                 ID_ACTIVITY = '" . $req->id_activity . "'
         ");
-
-        DB::table('detail_quiz')->WHERE(['ID_COURSE' => $find_id_course->ID_COURSE])->delete();
+        DB::statement('SET FOREIGN_KEY_CHECKS=0');
+        DB::table('detail_quiz')->where('ID_COURSE', $find_id_course->ID_COURSE)->whereNotNull('ID_COURSE')->delete();
+        DB::table('tb_komentar')->WHERE(['ID_ACTIVITY' => $find_id_course->ID_ACTIVITY])->delete();
+        DB::table('mapping_course')->WHERE(['ID_ACTIVITY' => $find_id_course->ID_ACTIVITY])->delete();
         DB::table('item_course')->WHERE(['ID_COURSE' => $find_id_course->ID_COURSE])->delete();
         DB::table('course')->WHERE(['ID_COURSE' => $find_id_course->ID_COURSE])->delete();
         DB::table('activity')->WHERE(['ID_ACTIVITY' => $find_id_course->ID_ACTIVITY])->delete();
-
+        DB::statement('SET FOREIGN_KEY_CHECKS=1');
         return redirect('courses')->with(['succ_msg' => 'Successfully Delete Course', 'location' => 'courses']);
     }
 
@@ -297,6 +298,7 @@ class CourseController extends Controller
                         'ORDER_LIST'    => $orderList[$i],
                         'TYPE'          => $categoryList[$i]
                     ];
+                    DB::table('item_course')->insert($data_item);
                 } else {
                     $data_item = [
                         'ID_COURSE'     => $data['ID_COURSE'],
@@ -307,11 +309,10 @@ class CourseController extends Controller
                         'ORDER_LIST'    => $orderList[$i],
                         'TYPE'          => $categoryList[$i]
                     ];
+                    $idQuiz[] = DB::table('item_course')->insertGetId($data_item);
                 }
-                $idQuiz[] = DB::table('item_course')->insertGetId($data_item);
             }
         }
-
         if (!empty($req->input('question'))) {
             $data['data_item'] = $data_item;
             $this->item_quiz($data, $req, $idQuiz);
@@ -330,7 +331,6 @@ class CourseController extends Controller
 
         $tmpNo = 0;
         foreach ($question as $i => $questions) {
-            // dd($questions);
             $id_quiz = $lastIdQuiz[$tmpNo];
             for ($j = 1; $j < count($questions); $j++) {
                 $quiz = [
