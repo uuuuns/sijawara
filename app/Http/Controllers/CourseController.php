@@ -20,7 +20,7 @@ class CourseController extends Controller
     {
         $data['title'] = "Kursus";
 
-        if (session('user')[0]->get('ID_ROLE') == 1) {
+        if (session('user')[0]->get('ID_ROLE') == 1 || session('user')[0]->get('ID_ROLE') == 4){
             $data["activity"] = DB::select("
             SELECT
                 c.*

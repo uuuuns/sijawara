@@ -58,7 +58,7 @@
                                             </li>
                                         </ul>
                                     </li>
-                                    <?php if ((session('user')[0]['ID_ROLE']) == 1) { ?>
+                                    <?php if ((session('user')[0]['ID_ROLE']) == 1 || (session('user')[0]['ID_ROLE']) == 4) { ?>
                                         <li class="w-100">
                                             <hr class="my-0 border border-1 mx-3">
                                         </li>

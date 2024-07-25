@@ -56,7 +56,7 @@
                 </div>
             </div>
         </div>
-        <?php if (session('user')[0]['ID_ROLE'] == 1) { ?>
+        <?php if (session('user')[0]['ID_ROLE'] == 1 || session('user')[0]['ID_ROLE'] == 4) { ?>
             <div class="col-md-4">
                 <div class="card my-3 ms-2">
                     <div class="card-body">

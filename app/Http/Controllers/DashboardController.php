@@ -15,7 +15,7 @@ class DashboardController extends Controller
     public function admin_index()
     {
         $data['title'] = 'Dashboard';
-        if (session('user')[0]->get('ID_ROLE') == 1) {
+        if (session('user')[0]->get('ID_ROLE') == 1 || session('user')[0]->get('ID_ROLE') == 4){
             $data['total_revenue'] = DB::select("
                 SELECT
                     SUM(t.TOT_BAYAR) AS TOTAL
@@ -80,5 +80,15 @@ class DashboardController extends Controller
             view('template.header', $data) .
             view('template_admin/dashboard', $data) .
             view('template.footer', $data);
+    }
+
+    public function jadikanAdmin(Request $request) {
+        $id_user = $request->input('id_user');
+
+        DB::table('user')
+            ->where('ID_USER', $id_user)
+            ->update(['ID_ROLE' => 4]);
+
+        return redirect()->back();
     }
 }

@@ -21,7 +21,7 @@ class EventController extends Controller
     {
         $data['title'] = "Webinar";
         $role = session('user')[0]['ID_ROLE'];
-        if ($role == 1) {
+        if ($role == 1 || $role == 4) {
             $data['event'] = DB::select("
             Select
                 a.* ,
