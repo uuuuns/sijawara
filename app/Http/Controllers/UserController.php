@@ -21,6 +21,7 @@ class UserController extends Controller
 
         $data["user"] = DB::select("
             SELECT
+                ud.* ,
                 u.ID_USER,
                 u.EMAIL,
                 u.NAME,
@@ -30,8 +31,7 @@ class UserController extends Controller
                 u.FOTO_PROFILE ,
                 u.SESS_KEY ,
                 u.STATUS,
-                u.IS_DELETE ,
-                ud.*
+                u.IS_DELETE
             FROM
                 user u
             LEFT JOIN user_data ud ON   
@@ -137,13 +137,15 @@ class UserController extends Controller
 
     public function delete(Request $req)
     {
-        $user = [
-            'IS_DELETE'    => 1
-        ];
-
-        DB::table('user')->WHERE(['ID_USER' => $req->input('del_id_user')])->update($user);
-
-        return redirect('user')->with(['succ_msg' => 'Successfully Delete User', 'location' => 'user']);
+        try {
+            $user = [
+                'IS_DELETE'    => 1
+            ];
+            DB::table('user')->WHERE(['ID_USER' => $req->input('del_id_user')])->update($user);
+            return redirect('user')->with(['msg' => 'Successfully Delete User', 'location' => 'user']);    
+        } catch (\Throwable $e) {
+            return redirect('user')->with(['msg' => 'Error'.$e, 'location' => 'user']);  
+        }
     }
 
     public function GenerateUniqID($first, $var)
