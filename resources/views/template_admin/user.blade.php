@@ -2,16 +2,16 @@
 @section('content')
 <!-- Content Wrapper START -->
 <div class="col ms-0 ms-md-4 p-4 shadow rounded-3 overflow-hidden bg-white">
-    {{-- <?php if (!empty($this->session->flashdata('msg'))) { ?>
+    <?php if (!empty(session('msg'))) { ?>
     <div class="alert alert-success">
         <div class="d-flex align-items-center justify-content-start">
             <span class="alert-icon">
                 <i class="anticon anticon-check-o"></i>
             </span>
-            <span><?= $this->session->flashdata('msg') ?></span>
+            <span><?= session('msg') ?></span>
         </div>
     </div>
-    <?php } ?> --}}
+    <?php } ?>
     <div class="">
         <div class="card-body">
             <div class="row">
@@ -40,12 +40,9 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <?php $number = 0; ?>
-
-                            @foreach ($user as $item)
-                            <?php $number++; ?>
+                            @foreach ($user as $key => $item)
                             <tr>
-                                <td><?= $number ?></td>
+                                <td><?= ($key + 1) ?></td>
                                 <td><?= $item->NAME ?></td>
                                 <td><?= $item->EMAIL ?></td>
                                 <td><?= $item->TELP ?></td>
@@ -55,7 +52,7 @@
                                         <button type="button" onclick="openviewModal(`<?= htmlentities(json_encode($item)) ?>`)" class="btn btn-warning px-4 py-2 rounded">
                                             <i class="bx bx-edit-alt font-size-16 align-middle"></i>
                                         </button>
-                                        <button type="button" onclick="opendeleteModal(`<?= htmlentities(json_encode($item)) ?>`)" class="btn btn-danger px-4 py-2 rounded">
+                                        <button type="button" onclick="opendeleteModal('<?= $item->ID_USER?>')" class="btn btn-danger px-4 py-2 rounded">
                                             <i class="bx bx-trash font-size-16 align-middle"></i>
                                         </button>
                                     </div>
@@ -464,9 +461,9 @@
         $('#updateModal').modal('show')
     }
 
-    function opendeleteModal(viewData) {
-        var data = JSON.parse(viewData)
-        $('input[name="del_id_user"]').val(data.ID_USER)
+    function opendeleteModal(id_user) {
+        console.log(id_user);
+        $('input[name="del_id_user"]').val(id_user)
         $('#deleteModal').modal('show')
     }
 
