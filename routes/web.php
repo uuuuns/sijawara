@@ -57,7 +57,7 @@ Route::post('resetPassword', 'AuthController@resetPassword');
 Route::get('verification/confirm', 'AuthController@verifAccount');
 
 // 1 Admin
-Route::middleware(['usersession:1'])->group(function () {
+Route::middleware(['usersession:4,1'])->group(function () {
 
     Route::get('ebook', 'EbookController@index');
     Route::post('ebook/store', 'EbookController@store');
@@ -100,7 +100,7 @@ Route::middleware(['usersession:2'])->group(function () {
 });
 
 // 3 USER
-Route::middleware(['usersession:3,2,1'])->group(function () {
+Route::middleware(['usersession:4,3,2,1'])->group(function () {
 //COURSE
     Route::get('course/detail/{any}', 'guest_controller\CourseGuest@detailCourse');
     Route::post('course/item/mapping', 'guest_controller\CourseGuest@getMappingCourse');
@@ -154,6 +154,8 @@ Route::middleware(['usersession:2,1'])->group(function () {
     Route::post('events/add', 'EventController@store');
     Route::post('events/update', 'EventController@update');
     Route::post('events/delete', 'EventController@delete');
+    
+    Route::post('user/jadikanAdmin', 'DashboardController@jadikanAdmin');
 });
 
 //Social Media Routes (Under Progress)

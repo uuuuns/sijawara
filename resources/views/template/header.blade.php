@@ -575,7 +575,7 @@
                                         </span>
                                     </a>
                                     <ul class="submenu" style="left: initial;right:0">
-                                        <?php if (session('user')[0]['ID_ROLE'] == 1) { ?>
+                                        <?php if (session('user')[0]['ID_ROLE'] == 1 || session('user')[0]['ID_ROLE'] == 4) { ?>
                                             <li><a class="" href="<?= url('dashboard') ?>">Beranda </a></li>
                                         <?php    } else { ?>
                                             <li><a class="" href="<?= url('profile') ?>">Profile</a></li>

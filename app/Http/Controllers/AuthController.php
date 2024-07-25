@@ -38,6 +38,8 @@ class AuthController extends Controller
             return redirect('/');
         } else if (!empty(session('user')[0]['ID_ROLE']) && session('user')[0]['ID_ROLE'] == 3) {
             return redirect('/');
+        } else if (!empty(session('user')[0]['ID_ROLE']) && session('user')[0]['ID_ROLE'] == 4) {
+            return redirect('dashboard');
         }
 
         return
@@ -98,6 +100,19 @@ class AuthController extends Controller
                 Session::push('user', $user_data);
                 return redirect('/');
             } elseif ($auth->ID_ROLE == 3) {
+
+                $user_data = collect([
+                    'ID_USER' => $auth->ID_USER,
+                    'NAME' => $auth->NAME,
+                    'ID_ROLE' => $auth->ID_ROLE,
+                    'FOTO_PROFILE' => $auth->FOTO_PROFILE,
+                    'EMAIL' => $auth->EMAIL,
+                    'LOGGED_IN' => TRUE
+                ]);
+
+                Session::push('user', $user_data);
+                return redirect('/');
+            } elseif ($auth->ID_ROLE == 4) {
 
                 $user_data = collect([
                     'ID_USER' => $auth->ID_USER,

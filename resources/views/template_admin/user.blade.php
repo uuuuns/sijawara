@@ -322,6 +322,9 @@
                     </div>
                 </div>
                 <div class="modal-footer">
+                    @if (session('user')[0]['ID_ROLE'] == 1)
+                        <button type="button" onclick="jadikanAdmin()" class="btn btn-primary rounded">Jadikan Admin</button>
+                    @endif
                     <button type="submit" class="btn btn-primary rounded">Simpan Perubahan</button>
                 </div>
             </form>
@@ -354,6 +357,7 @@
     </div>
 </div>
 {{-- End Modal Delete --}}
+<meta name="csrf-token" content="{{ csrf_token() }}">
 
 <script>
     $('#dtTable').DataTable();
@@ -464,6 +468,27 @@
         var data = JSON.parse(viewData)
         $('input[name="del_id_user"]').val(data.ID_USER)
         $('#deleteModal').modal('show')
+    }
+
+    function jadikanAdmin() {
+        var id_user = $('input[name="up_id_user"]').val()
+        var csrfToken = $('meta[name="csrf-token"]').attr('content');
+        $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken
+                }
+            });
+        $.ajax({
+            url: 'user/jadikanAdmin',
+            type: 'POST',
+            data: {
+                id_user: id_user,
+            },
+            success: function(data) {
+                $('#updateModal').modal('hide')
+                location.reload()
+            }
+        })
     }
 
     $(document).ready(function() {
