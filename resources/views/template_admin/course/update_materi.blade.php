@@ -48,13 +48,22 @@
     </div>
 </div>
 <script>
-    var cover_book = $('input[name="materi_file[]"]').dropify();
-    cover_book = cover_book.data('dropify');
-    cover_book.resetPreview();
-    cover_book.clearElement();
-    cover_book.settings['defaultFile'] = "{{ $item['FILE'] }}";
-    cover_book.destroy();
-    cover_book.init();
+    $('input[name="materi_file[]"]').each(function() {
+        if ($(this).attr('type') === 'hidden') {
+            var dropifyInstance = $(this).data('dropify');
+            if (dropifyInstance) {
+                dropifyInstance.destroy();
+            }
+        } else {
+            var dropifyElement = $(this).dropify();
+            var dropifyInstance = dropifyElement.data('dropify');
+            dropifyInstance.resetPreview();
+            dropifyInstance.clearElement();
+            dropifyInstance.settings['defaultFile'] = "{{ $item['FILE'] }}";
+            dropifyInstance.destroy();
+            dropifyInstance.init();
+        }
+    });
 
     $(document).ready(function() {
         var $editor = $('#mytextarea_{{ $no }}');
