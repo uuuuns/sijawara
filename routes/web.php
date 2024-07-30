@@ -142,6 +142,7 @@ Route::middleware(['usersession:2,1'])->group(function () {
     Route::post('courses/edit', 'CourseController@update_course'); // open page
     Route::get('courses/get/{id}', 'CourseController@deskripsi_get'); // get desc
     Route::get('courses/get_course_item/{id}/{materi}', 'CourseController@get_course_item'); // get materi / quiz
+    Route::post('courses/get_quiz/{id}', 'CourseController@send_question');
     Route::post('courses/update', 'CourseController@update'); // update kursus
     Route::post('courses/delete', 'CourseController@delete');
     

@@ -20,7 +20,7 @@ class CourseController extends Controller
     {
         $data['title'] = "Kursus";
 
-        if (session('user')[0]->get('ID_ROLE') == 1 || session('user')[0]->get('ID_ROLE') == 4){
+        if (session('user')[0]->get('ID_ROLE') == 1 || session('user')[0]->get('ID_ROLE') == 4) {
             $data["activity"] = DB::select("
             SELECT
                 c.*
@@ -218,18 +218,18 @@ class CourseController extends Controller
         $id_detailCourse = $materi;
         $data['id_item'] = $id_detailCourse;
         $data['data_materi'] = DB::select("
-        SELECT
-            *
-        FROM
-            item_course
-        WHERE
-            ID_COURSE = '" . $id_course . "'
-        ORDER BY
-            ORDER_LIST ASC
-    ");
+            SELECT
+                *
+            FROM
+                item_course
+            WHERE
+                ID_COURSE = '" . $id_course . "'
+            ORDER BY
+                ORDER_LIST ASC
+        ");
 
         $data['items'] = [];
-        $data['quizzes'] = [];
+        $data['quiz'] = [];
         $allView = "";
 
         foreach ($data['data_materi'] as $key => $item_data) {
@@ -243,28 +243,56 @@ class CourseController extends Controller
                     'DESKRIPSI' => $item_data->DESKRIPSI,
                     'ORDER_LIST' => $item_data->ORDER_LIST
                 ];
-                // $data['items'][] = $data['item'];
                 $allView .= view('template_admin.course.update_materi', $data)->render();
             } else {
-                $data['quiz'] = [
-                    'ID_ITEM' => $item_data->ID_ITEM,
-                    'TITLE'   => $item_data->TITLE,
-                    'QUESTIONS' => DB::select("
-                        SELECT
-                            *
-                        FROM
-                            detail_quiz
-                        WHERE
-                            ID_COURSE = '" . $id_course . "'
-                "),
-                    'ORDER_LIST' => $item_data->ORDER_LIST
-                ];
-                // $data['quizzes'][] = $data['quiz'];
+                $data['id_quiz'] = $item_data->ID_ITEM;
+                $dataquiz = DB::select("
+                    SELECT
+                        *
+                    FROM
+                        detail_quiz
+                    WHERE
+                        ID_QUIZ = '" . $item_data->ID_ITEM . "'
+                ");
+
+                $data['quiz'] = [];
+                foreach($dataquiz as $quiz){
+                    list($quiz->PIL_A, $quiz->PIL_B, $quiz->PIL_C, $quiz->PIL_D) = explode(";", $quiz->PIL_JWB);
+                    $data['quiz'][$quiz->ID_QUIZ][] = [
+                        'ID_QUIZ'    => $quiz->ID_QUIZ,
+                        'ID_COURSE'  => $quiz->ID_COURSE,
+                        'SOAL'       => $quiz->SOAL,
+                        'PIL_A'      => $quiz->PIL_A,
+                        'PIL_B'      => $quiz->PIL_B,
+                        'PIL_C'      => $quiz->PIL_C,
+                        'PIL_D'      => $quiz->PIL_D,
+                        'KUNCI'      => $quiz->KUNCI,
+                        'ORDER_LIST' => $quiz->ORDER_LIST
+                    ];
+                }
                 $allView .= view('template_admin.course.update_quiz', $data)->render();
             }
         }
-
         return $allView;
+    }
+
+    public function send_question(Request $request)
+    {
+        $validated = $request->validate([
+            'id_quiz' => 'required|integer',
+            'quizData' => 'required|array'
+        ]);
+
+        // Ambil data dari request
+        $id_quiz = $validated['id_quiz'];
+        $quizData = $validated['quizData'];
+
+        // Logika untuk memproses data kuis
+        // Misalnya, kita mengembalikan HTML untuk pertanyaan kuis
+        $html = ''; // Buat atau ambil HTML berdasarkan $id_quiz dan $quizData
+        
+        // Kembalikan response
+        return response()->json(['html' => $html]);
     }
 
     public function update(Request $req)

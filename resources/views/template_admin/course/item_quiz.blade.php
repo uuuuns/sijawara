@@ -5,7 +5,8 @@
                 <span class="col-md-11">Detail - Kuis</span>
                 <input type="hidden" class="form-control" name="order_list[]" value="{{ $no }}">
                 <input type="hidden" class="form-control" name="type[]" value="2">
-                <div id="delete_quiz_{{ $no }}" class="btn btn-danger px-1 py-0 float-end" style="cursor: pointer;">
+                <div id="delete_quiz_{{ $no }}" class="btn btn-danger px-1 py-0 float-end"
+                    style="cursor: pointer;">
                     <span><i class="far fa-times"></i> </span>
                 </div>
             </a>
@@ -20,27 +21,14 @@
             <div class="soal_form_{{ $no }}"></div>
             <div class="form-group row">
                 <div class="col-md-7">
-                    <div id="add_new_soal_{{ $no }}{{ $id_quiz }}" class="btn btn-success rounded col-md-4 float-end mx-2" style="cursor: pointer;">
+                    <div id="add_new_soal_{{ $no }}{{ $id_quiz }}"
+                        class="btn btn-success rounded col-md-4 float-end mx-2" style="cursor: pointer;">
                         <span class="col-md-12 text-white">Tambahkan Pertanyaan</span>
                     </div>
-                    {{-- <div class="row col-md-4 float-left mx-2">
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="basic-addon1">Jumlah Pertanyaan</span>
-                            </div>
-                            <input type="number" class="form-control" id="total_question_{{ $no }}"
-                    placeholder="0">
                 </div>
-            </div> --}}
-            {{-- <div id="add_new_batch_soal_{{ $no }}" class="btn btn-warning col-md-3 float-left mx-2"
-            style="cursor: pointer;">
-            <i class="anticon anticon-loading m-r-5"></i>
-            <span class="col-md-12">Tambahkan Sekumpulan Pertanyaan</span>
-        </div> --}}
+            </div>
+        </div>
     </div>
-</div>
-</div>
-</div>
 </div>
 
 <script>
@@ -57,7 +45,7 @@
         $('#add_new_batch_soal_{{ $no }}').toggleClass("is-loading");
         $('#add_new_soal_{{ $no }}').toggleClass("is-loading");
         $.ajax({
-            url: 'add_question/{{$no}}/' + no_quiz,
+            url: 'add_question/{{ $no }}/' + no_quiz,
             success: function(html) {
                 $(".soal_form_{{ $no }}").append(html);
                 $('#add_new_batch_soal_{{ $no }}').removeClass("is-loading");
@@ -70,22 +58,4 @@
             }
         });
     });
-
-    // $('#add_new_batch_soal_{{ $no }}').click(function() {
-    //     var tot_question = $('#total_question_{{ $no }}').val()
-    //     for (let index = 0; index < tot_question; index++) {
-    //         $('#add_new_batch_soal_{{ $no }}').toggleClass("is-loading");
-    //         $('#add_new_soal_{{ $no }}').toggleClass("is-loading");
-    //         $.ajax({
-    //             url: 'add_question/' + {{ $no }} + '/' + index + '/' + {{ $id_quiz }},
-    //             success: function(html) {
-    //                 $(".soal_form_{{ $no }}").append(html);
-    //                 $('#add_new_batch_soal_{{ $no }}').removeClass("is-loading");
-    //                 $('#add_new_soal_{{ $no }}').removeClass("is-loading");
-    //                 no_quiz = no_quiz + index;
-    //                 $('#total_question_{{ $no }}').val('');
-    //             }
-    //         });
-    //     }
-    // });
 </script>
