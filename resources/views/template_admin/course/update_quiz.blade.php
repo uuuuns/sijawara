@@ -21,55 +21,61 @@
             <div class="soal_form_{{ $no }}"></div>
             <div class="form-group row">
                 <div class="col-md-7">
-                    <div id="add_new_soal_{{ $no }}"
-                        class="btn btn-success rounded col-md-4 float-end mx-2" style="cursor: pointer;">
+                    <div id="add_new_soal_{{ $no }}" class="btn btn-success rounded col-md-4 float-end mx-2"
+                        style="cursor: pointer;">
                         <span class="col-md-12 text-white">Tambahkan Pertanyaan</span>
                     </div>
+                    {{-- <input type="text" value="{{ $no }}"> --}}
                 </div>
             </div>
         </div>
     </div>
 </div>
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <script>
-    console.log(<?= json_encode($quiz[$id_quiz]) ?>);
-    $(document).ready(function() {
-        var i_question_{{ $no }} = 0;
-        var quizData = <?= json_encode($quiz[$id_quiz]) ?>;
-        
-        $('#collapse{{ $no }}').collapse('hide')
+    var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': csrfToken
+        }
+    });
 
+    var i_question_{{ $no }} = 0;
+    var quizData = <?= json_encode($quiz[$id_quiz]) ?>;
+
+    $('#collapse{{ $no }}').collapse('hide')
+
+    $.ajax({
+        url: 'get_quiz',
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify({
+            quizData: quizData
+        }),
+        beforeSend: function() {
+            $('#add_new_soal_{{ $no }}').toggleClass("is-loading");
+        },
+        success: function(response) {
+            console.log(response);
+            $(".soal_form_{{ $no }}").append(response.html);
+            $('#add_new_soal_{{ $no }}').removeClass("is-loading");
+        },
+        error: function(xhr, status, error) {
+            console.error("AJAX Error: " + status + ": " + error);
+            $('#add_new_soal_{{ $no }}').removeClass("is-loading");
+        }
+    });
+
+    $('#add_new_soal_{{ $no }}').click(function() {
+        $('#add_new_soal_{{ $no }}').toggleClass("is-loading");
         $.ajax({
-            url: 'get_quiz' + {{$no}},
-            type: "POST",
-            contentType: "application/json",
-            data: JSON.stringify({
-                id_quiz: {{ $no }},
-                quizData: quizData
-            }),
-            beforeSend: function() {
-                $('#add_new_soal_{{ $no }}').toggleClass("is-loading");
-            },
+            url: 'add_quiz_question?id_quiz=' + {{ $no }},
             success: function(html) {
                 $(".soal_form_{{ $no }}").append(html);
+                $('#add_new_batch_soal_{{ $no }}').removeClass("is-loading");
                 $('#add_new_soal_{{ $no }}').removeClass("is-loading");
-            },
-            error: function(xhr, status, error) {
-                console.error("AJAX Error: " + status + ": " + error);
-                $('#add_new_soal_{{ $no }}').removeClass("is-loading");
+                i_question_{{ $no }}++;
             }
         });
-
-        $('#add_new_soal_{{ $no }}').click(function() {
-            $('#add_new_soal_{{ $no }}').toggleClass("is-loading");
-            $.ajax({
-                url: 'add_quiz_question?id_quiz=' + {{$no}},
-                success: function(html) {
-                    $(".soal_form_{{ $no }}").append(html);
-                    $('#add_new_batch_soal_{{ $no }}').removeClass("is-loading");
-                    $('#add_new_soal_{{ $no }}').removeClass("is-loading");
-                    i_question_{{ $no }}++;
-                }
-            });
-        })
-    });
+    })
 </script>
