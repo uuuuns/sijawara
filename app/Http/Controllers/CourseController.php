@@ -256,7 +256,8 @@ class CourseController extends Controller
                 ");
 
                 $data['quiz'] = [];
-                foreach($dataquiz as $quiz){
+                $no = 1;
+                foreach ($dataquiz as $quiz) {
                     list($quiz->PIL_A, $quiz->PIL_B, $quiz->PIL_C, $quiz->PIL_D) = explode(";", $quiz->PIL_JWB);
                     $data['quiz'][$quiz->ID_QUIZ][] = [
                         'ID_QUIZ'    => $quiz->ID_QUIZ,
@@ -267,9 +268,11 @@ class CourseController extends Controller
                         'PIL_C'      => $quiz->PIL_C,
                         'PIL_D'      => $quiz->PIL_D,
                         'KUNCI'      => $quiz->KUNCI,
-                        'ORDER_LIST' => $quiz->ORDER_LIST
+                        'ORDER_LIST' => $quiz->ORDER_LIST,
+                        'NO'         => $no
                     ];
                 }
+                // dd($data['quiz'][$quiz->ID_QUIZ]);
                 $allView .= view('template_admin.course.update_quiz', $data)->render();
             }
         }
@@ -278,26 +281,23 @@ class CourseController extends Controller
 
     public function send_question(Request $request)
     {
-        $validated = $request->validate([
-            'id_quiz' => 'required|integer',
-            'quizData' => 'required|array'
+        $quizData = $request->input('quizData');
+
+        $html = '';
+
+        foreach ($quizData as $question) {
+            $html .= view('template_admin.course.update_question', ['item' => $question])->render();
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Data received successfully!',
+            'html' => $html
         ]);
-
-        // Ambil data dari request
-        $id_quiz = $validated['id_quiz'];
-        $quizData = $validated['quizData'];
-
-        // Logika untuk memproses data kuis
-        // Misalnya, kita mengembalikan HTML untuk pertanyaan kuis
-        $html = ''; // Buat atau ambil HTML berdasarkan $id_quiz dan $quizData
-        
-        // Kembalikan response
-        return response()->json(['html' => $html]);
     }
 
     public function update(Request $req)
     {
-        dd($req);
         $data = [
             '' => $req->input('')
         ];
