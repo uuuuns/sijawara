@@ -523,9 +523,11 @@
                             </li>
 
                             <?php if (!empty(session('user')[0])) { ?>
-                                <li class="d-md-none">
-                                    <a href="{{ url('profile') }}">Profil</a>
-                                </li>
+                                @if (session('user')[0]['ID_ROLE'] != 1)
+                                    <li class="d-md-none">
+                                        <a href="{{ url('profile') }}">Profil</a>
+                                    </li>
+                                @endif
                                 <li class="d-md-none">
                                     <a href="{{ url('profile/mycourses') }}">Kursus Ku</a>
                                 </li>
