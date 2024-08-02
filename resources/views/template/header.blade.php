@@ -84,7 +84,7 @@
     </script>
 </head>
 
-<body id="top-header" style="<?= $title == "SIJAWARA+" ? "background-image: url(assets_new/images/new/bg.png);background-size: cover;" : "" ?>">
+<body id="top-header" style="<?= $title == "SIJAWARA+" ? "background-image: url(assets_new/images/new/bg.png);background-size: auto;" : "" ?>">
     <style>
         :root {
             --theme-heading-font: "Poppins", sans-serif;
@@ -472,13 +472,39 @@
         .radio input[type=radio].disabled:checked+label:after {
             background-color: rgba(83, 83, 95, 0.9)
         }
+
+        .offcanvas-icon .nav-toggler {
+            background: var(--theme-primary-color);
+            color: #fff;
+        }
+
+        .logo-img {
+            height: 50px;
+        }
+
+        @media (min-width: 576px) {
+            .logo-img {
+                height: 60px;
+            }
+        }
+
+        @media (max-width: 575.98px) {
+            .header-text {
+                font-size: 14px;
+            }
+        }
+
+        .scroll-to-top {
+            background: var(--theme-primary-color) !important;
+            color: #fff !important;
+        }
     </style>
     <header class="header-style-1">
         <div class="header-topbar topbar-style-1">
             <div class="container">
                 <div class="row justify-content-between align-items-center">
                     <div class="col-xl-8 col-lg-8 col-sm-6">
-                        <div class="header-contact text-center text-sm-start text-lg-start">
+                        <div class="header-contact text-center text-sm-start text-lg-start header-text" style="line-height: 1.5;">
                             <a href="#">Jl. Raya Ki Ageng Gribig, Madyopuro, Kec. Kedungkandang, Kota Malang, Jawa Timur 65139 </a>
                         </div>
                     </div>
@@ -497,12 +523,12 @@
             </div>
         </div>
 
-        <div class="header-navbar navbar-sticky">
+        <div class="header-navbar navbar-sticky py-3">
             <div class="container">
                 <div class="d-flex align-items-center justify-content-between">
                     <div class="site-logo">
                         <a href="{{ url('') }}" class="d-flex">
-                            <img class="" style="width: auto; height: 60px;" src="<?= asset('assets_new\images\new\sponsor\sijawara.png') ?>" alt="">
+                            <img class="logo-img" style="width: auto;" src="<?= asset('assets_new\images\new\sponsor\sijawara.png') ?>" alt="">
                             <!-- <img class="ms-3" style="width: auto; height: 35px;" src="<?= asset('assets_admin\images\logo\Logo MBKM.png') ?>" alt="">
                             <img class="ms-3" style="width: auto; height: 35px;" src="<?= asset('assets_admin\images\logo\logo-STIKI-PNG.png') ?>" alt=""> -->
                         </a>
@@ -524,9 +550,9 @@
 
                             <?php if (!empty(session('user')[0])) { ?>
                                 @if (session('user')[0]['ID_ROLE'] != 1)
-                                    <li class="d-md-none">
-                                        <a href="{{ url('profile') }}">Profil</a>
-                                    </li>
+                                <li class="d-md-none">
+                                    <a href="{{ url('profile') }}">Profil</a>
+                                </li>
                                 @endif
                                 <li class="d-md-none">
                                     <a href="{{ url('profile/mycourses') }}">Kursus Ku</a>

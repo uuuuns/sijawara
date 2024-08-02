@@ -15,7 +15,7 @@
                     <button class="btn btn-main-outline py-2 px-4 rounded" onclick="window.location.href = '/register'">Daftar</button>
                 </div>
             </div>
-            <div class="col-0 col-lg-5 text-end">
+            <div class="col-0 col-lg-5 text-end d-none d-sm-block">
                 <img src="{{ asset('assets_new') }}/images/new/ANIMASI.png" style="max-width: 90%;height: auto;" />
             </div>
         </div>
@@ -36,6 +36,11 @@
         </script>
 
         <style>
+            .splide__arrow:hover {
+                border-color: var(--theme-primary-color) !important;
+                background: transparent !important
+            }
+
             .splide__pagination__page.is-active {
                 background: #FC8B14;
             }
@@ -48,7 +53,7 @@
             }
 
             .splide__arrow:hover {
-                border: 2px;
+                border: 4px;
                 border-style: solid;
                 border-color: #bbb;
                 opacity: 1;
@@ -59,7 +64,7 @@
             }
 
             .splide__arrow svg {
-                fill: #bbb;
+                fill: var(--theme-primary-color) !important;
             }
 
             .splide__arrow--prev svg {
@@ -131,7 +136,7 @@
                 }
 
                 .splide__arrow:hover {
-                    border: 2px;
+                    border: 4px;
                     border-style: solid;
                     border-color: #bbb;
                     opacity: 1;
@@ -343,8 +348,8 @@
                     <ul class="splide__list">
                         @foreach ($carousel as $item)
                         <li class="splide__slide">
-                            <section class="bg-fixed division" onclick="window.open('<?=$item->link?>', '_blank')" style="background-size:cover;aspect-ratio:151/50;
-                                background-image: url(<?=$item->gambar?>);
+                            <section class="bg-fixed division" onclick="window.open('<?= $item->link ?>', '_blank')" style="background-size:cover;aspect-ratio:151/50;
+                                background-image: url(<?= $item->gambar ?>);
                                 width: 100%; height: 100%;">
                             </section>
                         </li>
@@ -364,13 +369,13 @@
                         <a href="{{ url('course') }}">
                             <img src="{{ asset('assets_new') }}/images/new/event.png" style="max-width: 85%;height: auto;" />
                         </a>
-                        <h3 class="fw-semibold" style="margin-top:-40px">Belajar Mandiri</h3>
+                        <h4 class="fw-semibold pt-2" style="margin-top:-40px">Belajar Mandiri</h4>
                     </div>
-                    <div class="col-12 col-lg-6 text-center">
+                    <div class="col-12 col-lg-6 text-center pt-4 pt-sm-0">
                         <a href="{{ url('event') }}">
                             <img src="{{ asset('assets_new') }}/images/new/webinar.png" style="max-width: 85%;height: auto; margin-top: -11px;" />
                         </a>
-                        <h3 class="fw-semibold" style="margin-top:-53px">Webinar</h3>
+                        <h4 class="fw-semibold pt-2" style="margin-top:-53px">Webinar</h4>
                     </div>
                 </div>
             </div>
@@ -389,8 +394,8 @@
                         <li class="splide__slide">
                             <div class="col-12 p-4">
                                 <div class="rounded shadow py-4 px-4" style="background-color: #D9D9D9;">
-                                    <i><?= $item->testimoni?></i>
-                                    <div class="mt-3 fw-bold"><?= $item->nama?></div>
+                                    <i><?= $item->testimoni ?></i>
+                                    <div class="mt-3 fw-bold"><?= $item->nama ?></div>
                                 </div>
                             </div>
                         </li>
@@ -403,19 +408,19 @@
         <div class="row" style="margin-top: 8rem !important;margin-bottom: 8rem !important;">
             <h3 class="text-center" style="font-weight:600">Support By</h3>
             <div class=" pt-4 text-center">
-                <img src="{{ asset('assets_new') }}/images/new/sponsor/jatim.png" class="img-fluid px-2" />
-                <img src="{{ asset('assets_new') }}/images/new/sponsor/kemenkop.png" class="img-fluid px-2" />
-                <img src="{{ asset('assets_new') }}/images/new/sponsor/diskop.png" class="img-fluid px-2" />
-                <img src="{{ asset('assets_new') }}/images/new/sponsor/uptp.png" class="img-fluid px-2" />
-                <img src="{{ asset('assets_new') }}/images/new/sponsor/perpustakaan.png" class="img-fluid px-2" />
-                <img src="{{ asset('assets_new') }}/images/new/sponsor/bankjatim.png" class="img-fluid px-2" />
-                <img src="{{ asset('assets_new') }}/images/new/sponsor/stiki.png" class="img-fluid px-2" style="width:140px" />
-                <img src="{{ asset('assets_new') }}/images/new/sponsor/machung.png" class="img-fluid px-2" />
-                <img src="{{ asset('assets_new') }}/images/new/sponsor/its.png" class="img-fluid px-2" />
-                <img src="{{ asset('assets_new') }}/images/new/sponsor/uin.png" class="img-fluid px-2" />
-                <img src="{{ asset('assets_new') }}/images/new/sponsor/linkaja.png" class="img-fluid px-2" />
-                <img src="{{ asset('assets_new') }}/images/new/sponsor/sijawara.png" class="img-fluid px-2" />
-                <img src="{{ asset('assets_new') }}/images/new/sponsor/eperpus.png" class="img-fluid px-2" />
+                <img src="{{ asset('assets_new') }}/images/new/sponsor/jatim.png" class="img-fluid px-2 py-2" />
+                <img src="{{ asset('assets_new') }}/images/new/sponsor/kemenkop.png" class="img-fluid px-2 py-2" />
+                <img src="{{ asset('assets_new') }}/images/new/sponsor/diskop.png" class="img-fluid px-2 py-2" />
+                <img src="{{ asset('assets_new') }}/images/new/sponsor/uptp.png" class="img-fluid px-2 py-2" />
+                <img src="{{ asset('assets_new') }}/images/new/sponsor/perpustakaan.png" class="img-fluid px-2 py-2" />
+                <img src="{{ asset('assets_new') }}/images/new/sponsor/bankjatim.png" class="img-fluid px-2 py-2" />
+                <img src="{{ asset('assets_new') }}/images/new/sponsor/stiki.png" class="img-fluid px-2 py-2" style="width:140px" />
+                <img src="{{ asset('assets_new') }}/images/new/sponsor/machung.png" class="img-fluid px-2 py-2" />
+                <img src="{{ asset('assets_new') }}/images/new/sponsor/its.png" class="img-fluid px-2 py-2" />
+                <img src="{{ asset('assets_new') }}/images/new/sponsor/uin.png" class="img-fluid px-2 py-2" />
+                <img src="{{ asset('assets_new') }}/images/new/sponsor/linkaja.png" class="img-fluid px-2 py-2" />
+                <img src="{{ asset('assets_new') }}/images/new/sponsor/sijawara.png" class="img-fluid px-2 py-2" />
+                <img src="{{ asset('assets_new') }}/images/new/sponsor/eperpus.png" class="img-fluid px-2 py-2" />
             </div>
         </div>
     </div>
