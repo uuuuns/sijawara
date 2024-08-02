@@ -32,7 +32,7 @@ class InstructorController extends Controller
         ORDER BY
             ir.STATUS ASC
         ");
-
+        $data['admin'] = true;
         return
             view('template.header', $data) .
             view('template_admin/instructor', $data) .

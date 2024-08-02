@@ -45,9 +45,20 @@ class EventGuest extends Controller
 		// Data event untuk halaman saat ini
 		if (empty(session('user'))) {
 			$events = DB::table('activity')
-				->selectRaw('activity.*, (DATEDIFF(CURDATE(), activity.DATE_START) >= 1) as EXPIRED')
-				->where('TYPE_ACTIVITY', 2)
-				->Paginate($perPage, ['*'], 'page', $currentPage);
+					->selectRaw('activity.*, 
+								event.KUOTA_PESERTA,
+								(
+									SELECT 
+										COUNT(*) 
+									FROM 
+										`order` o
+									WHERE 
+										o.ID_PRODUCT = activity.ID_ACTIVITY 
+								) as participant, 
+								(DATEDIFF(CURDATE(), activity.DATE_START) >= 1) as EXPIRED')
+					->leftJoin('event', 'event.ID_ACTIVITY', '=', 'activity.ID_ACTIVITY')
+					->where('TYPE_ACTIVITY', 2)
+					->Paginate($perPage, ['*'], 'page', $currentPage);
 			}else {
 				$events = DB::table('activity')
 					->selectRaw('activity.*, 
@@ -58,15 +69,25 @@ class EventGuest extends Controller
 								event.CONTACT_CUSTOMER, 
 								event.DESKRIPSI_EVENT, 
 								event.LINK_ZOOM, 
-									(SELECT 
+								event.KUOTA_PESERTA, 
+								(
+									SELECT 
 										COUNT(*) 
 									FROM 
 										`order` o
 									WHERE 
 										o.ID_USER = ? 
 										AND o.ID_PRODUCT = activity.ID_ACTIVITY 
-										) as DATA_CHECKING, 
-										(DATEDIFF(CURDATE(), activity.DATE_START) >= 1) as EXPIRED', [session('user')[0]->get('ID_USER')])
+								) as DATA_CHECKING, 
+								(
+									SELECT 
+										COUNT(*) 
+									FROM 
+										`order` o
+									WHERE 
+										o.ID_PRODUCT = activity.ID_ACTIVITY 
+								) as participant, 
+								(DATEDIFF(CURDATE(), activity.DATE_START) >= 1) as EXPIRED', [session('user')[0]->get('ID_USER')])
 					->leftJoin('event', 'event.ID_ACTIVITY', '=', 'activity.ID_ACTIVITY')
 					->where('activity.TYPE_ACTIVITY', 2)
 					->paginate($perPage, ['*'], 'page', $currentPage);

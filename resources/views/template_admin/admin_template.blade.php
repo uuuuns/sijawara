@@ -71,13 +71,6 @@
                                         <li class="w-100">
                                             <hr class="my-0 border border-1 mx-3">
                                         </li>
-                                        <li class="nav-item w-100">
-                                            <a href="/promo" class="nav-link  {{ request()->is('promo') ? 'active' : '' }}  d-flex align-middle px-4 py-3 rounded-0">
-                                                <i class="fs-6 d-flex align-items-center far fa-tags"></i> <span class="ms-1 ps-2 fs-6 align-self-center ">
-                                                    Kode Promo
-                                                </span>
-                                            </a>
-                                        </li>
                                         <li class="w-100">
                                             <hr class="my-0 border border-1 mx-3">
                                         </li>

@@ -39,7 +39,7 @@ class UserController extends Controller
             WHERE
                 u.IS_DELETE = 0
         ");
-
+        $data['admin'] = true;
         return
             view('template.header', $data) .
             view('template_admin/user', $data) .

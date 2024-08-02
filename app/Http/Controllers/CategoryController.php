@@ -24,7 +24,7 @@ class CategoryController extends Controller
             FROM
                 kategori k
         ");
-
+        $data['admin'] = true;
         return
             view('template.header', $data) .
             view('template_admin/category', $data) .

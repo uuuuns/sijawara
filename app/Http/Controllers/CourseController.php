@@ -60,6 +60,7 @@ class CourseController extends Controller
             FROM
                 kategori k
         ");
+        $data['admin'] = true;
         return
             view('template.header', $data) .
             view('template_admin/course/course', $data) .

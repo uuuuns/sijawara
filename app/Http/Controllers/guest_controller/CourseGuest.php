@@ -578,6 +578,14 @@ class CourseGuest extends Controller
 							AND o.ID_PRODUCT = activity.ID_ACTIVITY	
 					) AS DATA_CHECKING,
 					(
+						SELECT
+							COUNT(o.ID_ORDER)
+						FROM
+							`order` o
+						WHERE
+							o.ID_PRODUCT = activity.ID_ACTIVITY 
+					) AS participant,
+					(
 						CEIL(
 							(
 								SELECT
@@ -609,7 +617,15 @@ class CourseGuest extends Controller
 			$data['course'] = DB::select('
 				SELECT 
 					activity.*, 
-					course.DESKRIPSI_COURSE
+					course.DESKRIPSI_COURSE,
+					(
+						SELECT
+							COUNT(o.ID_ORDER)
+						FROM
+							`order` o
+						WHERE
+							o.ID_PRODUCT = activity.ID_ACTIVITY 
+					) AS participant
 				FROM 
 					activity
 				LEFT JOIN 

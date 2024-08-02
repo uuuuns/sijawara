@@ -75,7 +75,7 @@ class DashboardController extends Controller
                     a.ID_USER = '" . session('user')[0]->get('ID_USER') . "'
             ");
         }
-
+            $data['admin'] = true;
         return
             view('template.header', $data) .
             view('template_admin/dashboard', $data) .

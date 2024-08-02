@@ -25,7 +25,7 @@ class EbookController extends Controller
             FROM
                 ebook e
         ");
-
+        $data['admin'] = true;
         return
             view('template.header', $data) .
             view('template_admin/ebook', $data) .

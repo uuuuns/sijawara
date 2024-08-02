@@ -1,3 +1,4 @@
+@if (!isset($admin))
 <section class="footer <?= $title == 'SIJAWARA+' ? 'pt-200' : '' ?>">
     <div class="footer-mid">
         <div class="container">
@@ -70,7 +71,7 @@
     </div>
 
 </section>
-
+@endif
 <!-- Bootstrap 5:0 -->
 <script src="{{ asset('assets_new') }}/vendors/bootstrap/popper.min.js"></script>
 <script src="{{ asset('assets_new') }}/vendors/bootstrap/bootstrap.js"></script>
