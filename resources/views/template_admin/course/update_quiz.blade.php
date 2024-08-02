@@ -5,6 +5,7 @@
                 <span class="col-md-11">Detail - Quiz</span>
                 <input type="hidden" class="form-control" name="order_list[]" value="{{ $no }}">
                 <input type="hidden" class="form-control" name="type[]" value="2">
+                <input type="hidden" name="ID_ITEM[]" value="<?= $ID_ITEM ?>">
                 <div id="delete_quiz_{{ $no }}" class="btn btn-danger px-1 py-0 float-end"
                     style="cursor: pointer;">
                     <span><i class="far fa-times"></i> </span>
@@ -43,6 +44,10 @@
     var i_question_{{ $no }} = 0;
     var quizData = <?= json_encode($quiz[$id_quiz]) ?>;
 
+    console.log(quizData[0]);
+
+    $('input[name="ID_ITEM[]"]').val()
+
     $('#collapse{{ $no }}').collapse('hide')
 
     $.ajax({
@@ -56,12 +61,10 @@
             $('#add_new_soal_{{ $no }}').toggleClass("is-loading");
         },
         success: function(response) {
-            console.log(response);
             $(".soal_form_{{ $no }}").append(response.html);
             $('#add_new_soal_{{ $no }}').removeClass("is-loading");
         },
         error: function(xhr, status, error) {
-            console.error("AJAX Error: " + status + ": " + error);
             $('#add_new_soal_{{ $no }}').removeClass("is-loading");
         }
     });
