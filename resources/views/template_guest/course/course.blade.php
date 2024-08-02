@@ -59,7 +59,7 @@
         <div class="container-fluid container-padding">
             <div class="row course-gallery justify-content-center">
                 <div class="tab-content" id="nav-tabContent">
-                    <div class="tab-pane fade show pt-4 active show" id="nav-content" role="tabpanel" aria-labelledby="nav-content-tab" tabindex="0">
+                    <div class="tab-pane fade show active show" id="nav-content" role="tabpanel" aria-labelledby="nav-content-tab" tabindex="0">
                         <div class="row justify-content-center" id="nav-content-item">
                             <h3 class="font-sm text-center">Tidak ada kursus tersedia</h2>
                         </div>

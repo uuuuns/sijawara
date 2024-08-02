@@ -24,7 +24,7 @@
 </section>
 
 <section class="section-padding page">
-    <div class="course-top-wrap pb-50">
+    <div class="course-top-wrap">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-8">
@@ -48,34 +48,37 @@
                 <div class="col-12 col-lg bg-white row">
                     <?php foreach ($events as $item) : ?>
                         <div class="col-xl-4 col-lg-6 col-md-6">
-                            <div class="course-grid course-style-4 bg-white mb-80 mb-xl-0">
-                                <div class="course-header">
-                                    <div class="course-thumb">
-                                        <img src="<?= $item->IMAGE_ACTIVITY ?>" alt="" class="" style="width: 100%; height: 300px; object-fit: cover;">
+                            <div class="px-0 px-sm-3">
+                                <div class="course-grid course-style-4 bg-white" style="padding: 30px 30px 10px 30px;">
+                                    <div class="course-header">
+                                        <div class="">
+                                            <img src="<?= $item->IMAGE_ACTIVITY ?>" alt="" class="" style="width: 100%; height: 300px; object-fit: cover;">
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="course-content">
-                                    <div>
-                                        <span class="course-price <?= ($item->PRICE_ACTIVITY == 0) ? "bg-success" : "bg-primary" ?>" style="<?= $item->EXPIRED == 1 ? "right: 135px;" : '' ?>">
-                                            <?= (!empty(session('user')) && $item->DATA_CHECKING <> 0) ? "PARTICIPATED" : (($item->participant == 0) ? "Ayo Segera Join!" : $item->participant." / ".$item->KUOTA_PESERTA."<i class='fas fa-user-friends' style='margin-left: 3px;'></i>") ?>
-                                        </span>
-                                        <?php if ($item->EXPIRED == 1) : ?>
-                                            <span class="course-price" style="right: 10px;">EXPIRED</span>
-                                        <?php endif; ?>
+                                    <div class="course-content">
+                                        <div>
+                                            <span class="course-price <?= ($item->PRICE_ACTIVITY == 0) ? "bg-success" : "bg-primary" ?>" style="<?= $item->EXPIRED == 1 ? "right: 135px;" : '' ?>">
+                                                <?= (!empty(session('user')) && $item->DATA_CHECKING <> 0) ? "PARTICIPATED" : (($item->participant == 0) ? "Ayo Segera Join!" : $item->participant . " / " . $item->KUOTA_PESERTA . "<i class='fas fa-user-friends' style='margin-left: 3px;'></i>") ?>
+                                            </span>
+                                            <?php if ($item->EXPIRED == 1) : ?>
+                                                <span class="course-price" style="right: 10px;">EXPIRED</span>
+                                            <?php endif; ?>
+                                        </div>
+                                        <h3 class="course-title mb-0"> <a href="<?= url('event/detail/' . preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $item->TITLE_ACTIVITY))) . '?id_activity=' . $item->ID_ACTIVITY ?>"><?= $item->TITLE_ACTIVITY ?> </a> </h3>
                                     </div>
-                                    <h3 class="course-title mb-0"> <a href="<?= url('event/detail/' . preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $item->TITLE_ACTIVITY))) . '?id_activity=' . $item->ID_ACTIVITY ?>"><?= $item->TITLE_ACTIVITY ?> </a> </h3>
-                                </div>
-                                <div class="course-meta mb-3">
-                                    <div class="text-muted m-0 pt-2 fs-6" style="overflow: hidden !important;
+                                    <div class="course-meta mb-3">
+                                        <div class="text-muted m-0 pt-2 fs-6" style="overflow: hidden !important;
                                     text-overflow: ellipsis !important;
                                     display: -webkit-box !important;
                                     -webkit-line-clamp: 2 !important;
                                     -webkit-box-orient: vertical !important;">
-                                        <?= date_format(date_create($item->DATE_START), 'j F Y') ?>
+                                            <?= date_format(date_create($item->DATE_START), 'j F Y') ?>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+
                         </div>
                     <?php endforeach; ?>
                 </div>
