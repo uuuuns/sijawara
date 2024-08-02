@@ -3,12 +3,8 @@
     <div class="tutori-course-content">
         <div class="container">
             <?php if ($event->EXPIRED == 1) { ?>
-                <div class="alert alert-danger " role="alert">
-                    <div class="position-relative">
-                        <div class="position-absolute top-50 start-50 translate-middle">
-                            <h5 class="py-2">Webinar telah dilaksanakan</h5>
-                        </div>
-                    </div>
+                <div class="alert alert-danger text-center" role="alert">
+                    <h5 class="py-2">Webinar telah dilaksanakan</h5>
                 </div>
             <?php } ?>
             <div class="row pt-3">
@@ -17,11 +13,14 @@
                     <div class="course-sidebar course-sidebar-2 mt-5 mt-lg-0">
                         <div class="">
                             <div class="course-thumbnail d-flex justify-content-center">
-                                <img src="<?= $event->IMAGE_ACTIVITY ?>" class="d-block img-fluid h-auto w-75">
+                                <div class="pe-0 pe-sm-5 rounded-1">
+                                    <img src="<?= $event->IMAGE_ACTIVITY ?>" class="d-block img-fluid h-auto ">
+
+                                </div>
 
                             </div>
 
-                            <div class="container container-padding">
+                            <div class="container">
                                 <div class="my-3 fw-bold d-flex align-self-start justify-content-start pe-0 align-items-center text-black">
                                     Bagikan :<span class="fs-5"> <i class="fab fa-facebook mx-2" style="cursor: pointer"></i><i class="fab fa-twitter me-2" style="cursor: pointer"></i><i class="fab fa-instagram" style="cursor: pointer"></i></span>
                                 </div>
@@ -72,7 +71,7 @@
                             <div class="single-course-details">
                                 <h4 class="event-title mb-0">Tempat</h4>
                                 <p>
-                                    <?= $event->LOCATION ?>
+                                    <?= $event->LOCATION ? $event->LOCATION : "-" ?>
                                 </p>
 
                                 <h4 class="course-title mb-0">Tanggal</h4>
@@ -98,7 +97,7 @@
                             <div class="courses-instructor">
                                 <div class="single-instructor-box">
                                     <div class="row align-items-center">
-                                        <div class="col-lg-8 col-md-8">
+                                        <div class="col-12">
                                             <div class="instructor-content">
                                                 <?= ($event->DESKRIPSI_EVENT <> NULL || $event->DESKRIPSI_EVENT <> "") ? $event->DESKRIPSI_EVENT : "Tidak Ada Deskripsi" ?>
                                             </div>
@@ -113,7 +112,7 @@
                                     <div class="single-instructor-box">
                                         <div class="row align-items-center">
 
-                                            <div class="col-lg-8 col-md-8">
+                                            <div class="col-12">
                                                 <div class="instructor-content">
                                                     <a class="pe-4" href="<?= ($event->LINK_ZOOM <> NULL || $event->LINK_ZOOM <> "") ? $event->LINK_ZOOM : "#" ?>" style="color: #000EFF; word-wrap: break-word;">
                                                         <?= ($event->LINK_ZOOM <> NULL || $event->LINK_ZOOM <> "") ? $event->LINK_ZOOM : "Tidak Ada Link" ?>
@@ -129,7 +128,7 @@
                                 <div class="courses-instructor">
                                     <div class="single-instructor-box">
                                         <div class="row align-items-center">
-                                            <div class="col-lg-8 col-md-8">
+                                            <div class="col-12">
                                                 <div class="instructor-content">
                                                     <?php if (date('Y-m-d h:i:s') < $event->DATE_END) { ?>
 
@@ -168,20 +167,23 @@
                 <div class="row course-gallery ">
                     <?php foreach ($other_event as $item) : ?>
                         <div class="course-item cat1 cat5 col-lg-6 col-md-6">
-                            <div class="single-course style-2 bg-shade border-0">
-                                <div class="row g-0 align-items-center">
-                                    <div class="col-xl-5">
-                                        <div class="course-thumb" style="min-height: 150px !important;background:url(<?= str_replace(' ', '%20', $item->IMAGE_ACTIVITY) ?>)">
+                            <div class="px-0 px-sm-3">
+                                <div class="single-course style-2 bg-shade border-0">
+                                    <div class="row g-0 align-items-center">
+                                        <div class="col-xl-5">
+                                            <div class="course-thumb" style="min-height: 150px !important;background:url(<?= str_replace(' ', '%20', $item->IMAGE_ACTIVITY) ?>)">
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-xl-7">
-                                        <div class="course-content">
-                                            <div class="course-price"><?= date_format(date_create($item->LOG_TIME), 'j F Y') ?></div>
-                                            <h3 class="course-title"> <a href="<?= ('event/detail/' . preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $item->TITLE_ACTIVITY))) . '?id_activity=' . $item->ID_ACTIVITY ?>"><?= $item->TITLE_ACTIVITY ?> </a> </h3>
+                                        <div class="col-xl-7">
+                                            <div class="course-content">
+                                                <div class="course-price"><?= date_format(date_create($item->LOG_TIME), 'j F Y') ?></div>
+                                                <h3 class="course-title"> <a href="<?= ('event/detail/' . preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $item->TITLE_ACTIVITY))) . '?id_activity=' . $item->ID_ACTIVITY ?>"><?= $item->TITLE_ACTIVITY ?> </a> </h3>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
                         </div>
                     <?php endforeach; ?>
                 </div>
