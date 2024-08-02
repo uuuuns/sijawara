@@ -5,6 +5,7 @@
                 <span class="col-md-11">Detail - Materi <?= $item['TITLE'] ?></span>
                 <input type="hidden" class="form-control" name="order_list[]" value="{{ $no }}" required>
                 <input type="hidden" class="form-control" name="type[]" value="1" required>
+                <input type="hidden" name="ID_ITEM[]" value="<?= $item['ID_ITEM'] ?>">
                 <div id="delete_materi_{{ $no }}" class="btn btn-danger px-1 py-0 float-end"
                     style="cursor: pointer;">
                     <span><i class="far fa-times"></i> </span>
@@ -15,7 +16,7 @@
     <div id="collapse{{ $no }}" class="collapse show" data-parent="#accordion-default">
         <div class="card-body">
             <div class="form-group row">
-                <label class="col-sm-2 col-form-label control-label">File Materi</label>
+                <label class="col-sm-2 col-form-label control-label">File Materi<span class="text-danger">*</span></label>
                 <div class="col-md-5">
                     <div class="custom-file">
                         <input type="file" name="materi_file[]" accept=".pdf, .ppt, .pptx"
@@ -24,21 +25,21 @@
                 </div>
             </div>
             <div class="form-group row">
-                <label class="col-sm-2 col-form-label control-label" required>Nama Materi</label>
+                <label class="col-sm-2 col-form-label control-label" required>Nama Materi<span class="text-danger">*</span></label>
                 <div class="col-md-10">
                     <input type="text" class="form-control" name="materi_title[]" value="<?= $item['TITLE'] ?>"
                         required>
                 </div>
             </div>
             <div class="form-group row">
-                <label class="col-sm-2 col-form-label control-label">Link Youtube</label>
+                <label class="col-sm-2 col-form-label control-label">Link Youtube<span class="text-danger">*</span></label>
                 <div class="col-md-5">
                     <input type="text" class="form-control" name="materi_link[]" value="<?= $item['LINK_YT'] ?>"
                         required>
                 </div>
             </div>
             <div class="form-group row">
-                <label class="col-sm-2 col-form-label control-label">Deskripsi Materi</label>
+                <label class="col-sm-2 col-form-label control-label">Deskripsi Materi<span class="text-danger">*</span></label>
                 <div class="col-md-5">
                     <textarea name="desc_materi[]" id="mytextarea_<?= $no ?>" required>
                     {{ $item['DESKRIPSI'] }}</textarea>

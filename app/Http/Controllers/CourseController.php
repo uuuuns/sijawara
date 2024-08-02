@@ -108,7 +108,7 @@ class CourseController extends Controller
             'ID_ACTIVITY'           => $activity['ID_ACTIVITY'],
             'DESKRIPSI_COURSE'      => $req->input('desc_course'),
             'BENEFIT'               => $req->input('benefit'),
-            'KATEGORI'              => $req->input('category'),
+            'KATEGORI'              => $req->input('category')
         ];
 
         DB::table('activity')->insert($activity);
@@ -216,7 +216,6 @@ class CourseController extends Controller
     public function get_course_item($id_course, $materi)
     {
         $id_detailCourse = $materi;
-        $data['id_item'] = $id_detailCourse;
         $data['data_materi'] = DB::select("
             SELECT
                 *
@@ -260,6 +259,7 @@ class CourseController extends Controller
                 foreach ($dataquiz as $quiz) {
                     list($quiz->PIL_A, $quiz->PIL_B, $quiz->PIL_C, $quiz->PIL_D) = explode(";", $quiz->PIL_JWB);
                     $data['quiz'][$quiz->ID_QUIZ][] = [
+                        'ID_DETAIL'  => $quiz->ID_DETAIL,
                         'ID_QUIZ'    => $quiz->ID_QUIZ,
                         'ID_COURSE'  => $quiz->ID_COURSE,
                         'SOAL'       => $quiz->SOAL,
@@ -271,8 +271,12 @@ class CourseController extends Controller
                         'ORDER_LIST' => $quiz->ORDER_LIST,
                         'NO'         => $no
                     ];
+
+                    foreach ($data['quiz'][$quiz->ID_QUIZ] AS $ID_ITEM){
+                        $data['ID_ITEM'] = $ID_ITEM['ID_QUIZ'];
+                    }
+                    $no++;
                 }
-                // dd($data['quiz'][$quiz->ID_QUIZ]);
                 $allView .= view('template_admin.course.update_quiz', $data)->render();
             }
         }
@@ -284,10 +288,12 @@ class CourseController extends Controller
         $quizData = $request->input('quizData');
 
         $html = '';
-
+        
         foreach ($quizData as $question) {
             $html .= view('template_admin.course.update_question', ['item' => $question])->render();
         }
+
+        // dd($html);
 
         return response()->json([
             'success' => true,
@@ -298,13 +304,89 @@ class CourseController extends Controller
 
     public function update(Request $req)
     {
-        $data = [
-            '' => $req->input('')
+        $activity = [
+            'TITLE_ACTIVITY'        => $req->input('title_activity'),
+            'ID_USER'               => session('user')[0]['ID_USER'],
+            'SERTIF_CODE'           => $req->input('certif_code'),
+            'DATE_START'            => $req->input('date_start'),
+            'DATE_END'              => $req->input('date_end'),
+            'IS_PUBLIC'             => $req->input('is_public'),
+            'LOG_TIME'              => date('Y-m-d H:i:s')
         ];
 
-        DB::table('')->WHERE(['' => $req->input('')])->update($data);
+        if(!empty($req->file('image_activity'))){
+            $activity['IMAGE_ACTIVITY'] = FileUpload::S3($req->file('image_activity'), 'IMAGE_ACTIVITY', 'Image-Activity-' . strtotime(now()));
+        }
 
-        return redirect('courses')->with(['succ_msg' => 'Successfully Add New Course', 'location' => 'courses']);
+        if ($req->input('status') == 'on') {
+            $activity['STATUS'] = 1;
+        } else {
+            $activity['STATUS'] = 0;
+        }
+
+        $course = [
+            'ID_ACTIVITY'           => $req->input('ID_ACTIVITY'),
+            'DESKRIPSI_COURSE'      => $req->input('desc_course'),
+            'BENEFIT'               => $req->input('benefit'),
+            'KATEGORI'              => $req->input('category')
+        ];
+
+        DB::table('activity')->WHERE(['ID_ACTIVITY' => $req->input('ID_ACTIVITY')])->update($activity);
+        DB::table('course')->WHERE(['ID_ACTIVITY' => $req->input('ID_ACTIVITY')])->update($course);
+
+        $this->update_materi($req);
+
+        return redirect('courses')->with(['succ_msg' => 'Successfully Update New Course', 'location' => 'courses']);
+    }
+
+    public function update_materi($req)
+    {
+        // dd($req);
+        $id_item            = $req->input('ID_ITEM');
+        $orderList          = $req->input('order_list');
+        $categoryList       = $req->input('type');
+        $materiTitleList    = $req->input('materi_title');
+        $descMateriList     = $req->input('desc_materi');
+        $linkYT             = $req->input('materi_link');
+
+        if (!empty($req->file('materi_file'))){
+            $file           = $req->file('materi_file');
+        }
+
+        if (!empty($orderList)) {
+            for ($i = 0; $i < count($orderList); $i++) {
+                if ($categoryList[$i] == 1) {
+                    $data_item = [
+                        'TITLE'         => $materiTitleList[$i],
+                        'FILE'          => !empty($file[$i]) ? FileUpload::S3($file[$i], 'MATERI_FILE', 'Materi-' . strtotime(now())) : null,
+                        'LINK_YT'       => $linkYT[$i],
+                        'DESKRIPSI'     => $descMateriList[$i],
+                        'ORDER_LIST'    => $orderList[$i],
+                        'TYPE'          => $categoryList[$i]
+                    ];
+                    DB::table('item_course')->WHERE(['ID_ITEM' => $id_item[$i]])->update($data_item);
+                } else {
+                    $data_item = [
+                        'TITLE'         => null,
+                        'FILE'          => null,
+                        'LINK_YT'       => null,
+                        'DESKRIPSI'     => null,
+                        'ORDER_LIST'    => $orderList[$i],
+                        'TYPE'          => $categoryList[$i]
+                    ];
+                    DB::table('item_course')->WHERE(['ID_ITEM' => $id_item[$i]])->update($data_item);
+                }
+            }
+        }
+        // dd($req);
+        if (!empty($req->input('question'))) {
+            $this->update_quiz($req);
+        }
+    }
+
+    public function update_quiz($req)
+    {
+
     }
 
     public function delete(Request $req)

@@ -11,6 +11,8 @@
             <div class="mt-5">
                 <form id="form-user" action="update" method="POST" enctype="multipart/form-data">
                     @csrf
+                    <input type="hidden" name="ID_ACTIVITY">
+                    <input type="hidden" name="ID_COURSE">
                     <div class="form-group row">
                         <label class="col-sm-2 col-form-label control-label">Kover Depan <span class="text-danger">*</span>
                         </label>
@@ -45,7 +47,7 @@
                     <div class="form-group row">
                         <label class="col-sm-2 col-form-label control-label">Benefit<span class="text-danger">*</span></label>
                         <div class="col-md-10">
-                            <textarea name="benefit" id="benefit" required></textarea>
+                            <textarea name="benefit" id="benefit" rows=11 cols=50 maxlength=250 required></textarea>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -143,6 +145,10 @@
     cover_book.destroy();
     cover_book.init();
 
+    var id_act = data.ID_ACTIVITY;
+
+    $('input[name="ID_ACTIVITY"]').val(id_act);
+    $('input[name="ID_COURSE"]').val(data.ID_COURSE);
     $('input[name="title_activity"]').val(data.TITLE_ACTIVITY);
     $('input[name="date_start"]').val(data.DATE_START);
     $('input[name="date_end"]').val(data.DATE_END);
@@ -152,7 +158,7 @@
     $('input[name="status"]').prop('checked', data.STATUS);
     $('input[name="desc_course"]').summernote('code', data.DESKRIPSI_COURSE);
     $.ajax({
-        url: 'get/' + data.ID_ACTIVITY,
+        url: 'get/' + id_act,
         method: 'GET',
         dataType: 'JSON',
         success: function(response) {

@@ -14,7 +14,7 @@
     <div id="collapse{{ $no }}" class="collapse show" data-parent="#accordion-default">
         <div class="card-body">
             <div class="form-group row">
-                <label class="col-sm-2 col-form-label control-label">File Materi</label>
+                <label class="col-sm-2 col-form-label control-label">File Materi<span class="text-danger">*</span></label>
                 <div class="col-md-10">
                     <div class="custom-file">
                         <input type="file" name="materi_file[]" accept=".pdf, .ppt, .pptx" class="custom-file-input file_materi" required>
@@ -22,13 +22,13 @@
                 </div>
             </div>
             <div class="form-group row">
-                <label class="col-sm-2 col-form-label control-label" required>Nama Materi</label>
+                <label class="col-sm-2 col-form-label control-label" required>Nama Materi<span class="text-danger">*</span></label>
                 <div class="col-md-10">
                     <input type="text" class="form-control" name="materi_title[]" required>
                 </div>
             </div>
             <div class="form-group row">
-                <label class="col-sm-2 col-form-label control-label">Link Youtube</label>
+                <label class="col-sm-2 col-form-label control-label">Link Youtube<span class="text-danger">*</span></label>
                 <div class="col-md-10">
                     <input type="text" class="form-control" name="materi_link[]" required>
                     <span class="text-danger">* Unggah video tautan di Google Drive dan kirimkan tautan di kolom ini.
@@ -37,7 +37,7 @@
                 </div>
             </div>
             <div class="form-group row">
-                <label class="col-sm-2 col-form-label control-label">Deskripsi Materi</label>
+                <label class="col-sm-2 col-form-label control-label">Deskripsi Materi<span class="text-danger">*</span></label>
                 <div class="col-md-10">
                     <textarea name="desc_materi[]" id="mytextarea_{{ $no }}" required></textarea>
                 </div>
