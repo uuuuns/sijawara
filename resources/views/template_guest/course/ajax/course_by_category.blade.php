@@ -35,23 +35,21 @@
                 <div class="col-xl-4 col-lg-6 col-md-6">
                     <div class="course-grid course-style-4 bg-white mb-80 mb-xl-0">
                         <div class="course-header">
-                            <div class="course-thumb">
-                            <a href="<?= url('course/info/' . preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $item->TITLE_ACTIVITY)) . '?id_activity=' . $item->ID_ACTIVITY) ?>">
-                                <img src="<?= $item->IMAGE_ACTIVITY ?>" alt="" style="width: 100%; height: 300px; object-fit: cover;">
-                            </a>
+                            <div class="course-thumb" style="width: 100%; height: 300px; overflow: hidden;">
+                                <a href="<?= url('course/info/' . preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $item->TITLE_ACTIVITY)) . '?id_activity=' . $item->ID_ACTIVITY) ?>">
+                                    <img src="<?= $item->IMAGE_ACTIVITY ?>" alt="" style="width: 100%; height: 100%; object-fit: cover;">
+                                </a>
                             </div>
                         </div>
 
                         <div class="course-content">
-                            <span class="course-price <?= ($item->PRICE_ACTIVITY == 0) ? "bg-success" : "bg-primary" ?>"><?= ($item->PRICE_ACTIVITY == 0) ? "Free" : "Rp " . number_format($item->PRICE_ACTIVITY, 2, ',', '.') ?></span>
-                            <h3 class="course-title"> <a href="<?= url('course/info/' . preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $item->TITLE_ACTIVITY)) . '?id_activity=' . $item->ID_ACTIVITY) ?>"><?= $item->TITLE_ACTIVITY ?> </a> </h3>
+                            <span class="course-price <?= ($item->participant == 0) ? 'bg-success' : 'bg-primary' ?>"><?= ($item->participant == 0) ? 'Ayo Segera Ikuti!' : $item->participant.' Orang' ?></span>
+                            <h3 class="course-title">
+                                <a href="<?= url('course/info/' . preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $item->TITLE_ACTIVITY)) . '?id_activity=' . $item->ID_ACTIVITY) ?>"><?= $item->TITLE_ACTIVITY ?></a>
+                            </h3>
                         </div>
                         <div class="course-meta">
-                            <div class="text-muted m-0 pt-2 fs-6" style="overflow: hidden !important;
-                                text-overflow: ellipsis !important;
-                                display: -webkit-box !important;
-                                -webkit-line-clamp: 2 !important;
-                                -webkit-box-orient: vertical !important;">
+                            <div class="text-muted m-0 pt-2 fs-6" style="overflow: hidden !important; text-overflow: ellipsis !important; display: -webkit-box !important; -webkit-line-clamp: 2 !important; -webkit-box-orient: vertical !important;">
                                 <?= $item->DESKRIPSI_COURSE ?>
                             </div>
                         </div>

@@ -67,12 +67,14 @@
                             <td><?= date_format(date_create($item->DATE_START), 'j F Y H:i:s') ?></td>
                             <td><?= date_format(date_create($item->DATE_END), 'j F Y H:i:s') ?></td>
                             <td>
-                                <form action="courses/invite" method="GET">
-                                    <input type="hidden" name="id_activity" value="<?= $item->ID_ACTIVITY ?>">
-                                    <button type="submit" class="btn btn-primary btn-sm-2 w-100 fs-8 rounded waves-effect waves-light px-2" style="min-width: 155px !important;">
-                                        <i class="bx bx-send font-size-16 align-middle"></i> Undang User
-                                    </button>
-                                </form>
+                                @if ($item->IS_PUBLIC == 0)
+                                    <form action="courses/invite" method="GET">
+                                        <input type="hidden" name="id_activity" value="<?= $item->ID_ACTIVITY ?>">
+                                        <button type="submit" class="btn btn-primary btn-sm-2 w-100 fs-8 rounded waves-effect waves-light px-2" style="min-width: 155px !important;">
+                                            <i class="bx bx-send font-size-16 align-middle"></i> Undang User
+                                        </button>
+                                    </form>
+                                @endif
                                 <form action="courses/edit" method="POST">
                                     @csrf
                                     <input type="hidden" name="id_activity" value="<?= $item->ID_ACTIVITY ?>">

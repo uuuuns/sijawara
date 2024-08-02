@@ -21,7 +21,7 @@ class SettingController extends Controller
             FROM 
                 tb_carousel
         ");
-
+        $data['admin'] = true;
         return
             view('template.header', $data) .
             view('template_admin.setting_carousel', $data) .
@@ -74,7 +74,7 @@ class SettingController extends Controller
             FROM 
                 tb_testimoni
         ");
-
+        $data['admin'] = true;
         return
             view('template.header', $data) .
             view('template_admin.setting_testimoni', $data) .

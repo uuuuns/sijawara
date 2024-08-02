@@ -67,7 +67,7 @@ class EventController extends Controller
                     AND a.ID_USER = '" . session('user')[0]['ID_USER'] . "'    
                 ");
         }
-
+        $data['admin'] = true;
         return
             view('template.header', $data) .
             view('template_admin/event', $data) .

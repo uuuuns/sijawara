@@ -58,7 +58,7 @@
                                 <div class="course-content">
                                     <div>
                                         <span class="course-price <?= ($item->PRICE_ACTIVITY == 0) ? "bg-success" : "bg-primary" ?>" style="<?= $item->EXPIRED == 1 ? "right: 135px;" : '' ?>">
-                                            <?= (!empty(session('user')) && $item->DATA_CHECKING <> 0) ? "PARTICIPATED" : (($item->PRICE_ACTIVITY == 0) ? "FREE" : "PAID") ?>
+                                            <?= (!empty(session('user')) && $item->DATA_CHECKING <> 0) ? "PARTICIPATED" : (($item->participant == 0) ? "Ayo Segera Join!" : $item->participant." / ".$item->KUOTA_PESERTA."<i class='fas fa-user-friends' style='margin-left: 3px;'></i>") ?>
                                         </span>
                                         <?php if ($item->EXPIRED == 1) : ?>
                                             <span class="course-price" style="right: 10px;">EXPIRED</span>

@@ -9,13 +9,13 @@
             <div class="col-12 col-lg-6 h-100 p-4 bg-white rounded-5 position-absolute" id="formLogin">
                 <div class="d-flex ps-md-4 flex-column justify-content-center h-100">
                     <h4 class="ps-1 fw-semibold">Daftar Sebagai Peserta</h4>
-                    <form class="fw-normal" action="<?= url('register/store') ?>" method="POST">
+                    <form class="fw-normal" id="form_regist" action="<?= url('register/store') ?>" method="POST">
                         @csrf
                         <div id="form-1">
                             <div class="my-4 float-label-control">
                                 <input type="text"
                                     class="form-control input-text woocommerce-Input woocommerce-Input--text"
-                                    id="exampleInputEmail1" placeholder="Nama Lengkap" name="name" aria-describedby=""
+                                    id="Inputname1" placeholder="Nama Lengkap" name="name" aria-describedby=""
                                     required>
                             </div>
                             <div class="my-4 float-label-control">
@@ -127,8 +127,24 @@
         } else {
             password2.setCustomValidity('');
         }
+
+        if (password.value.length < 8 && password2.value.length < 8) {
+            password.setCustomValidity("Passwords harus lebih dari atau sama dengan 8 karakter");
+        } else {
+            password.setCustomValidity('');
+        }
     }
 
     password.onchange = validatePassword;
     password2.onkeyup = validatePassword;
+
+    // function checkPass() {
+    //     console.log(password.value.length);
+    //     if (password.value.length < 8 && password2.value.length < 8) {
+    //         password.setCustomValidity("Passwords harus lebih dari 8 karakter");
+    //     } else {
+    //         password2.setCustomValidity('');
+    //     }
+    //     document.querySelector('#form_regist').submit();
+    // }
 </script>
