@@ -171,6 +171,7 @@ class ProfileGuest extends Controller
                 'JK' => $request->input('jk'),
             ]
         );
+        $data[0]['FOTO_PROFILE'] = null;
         if (!empty($request->file('foto_profile'))) {
             $data[0]['FOTO_PROFILE'] = FileUpload::S3($request->file('foto_profile'), 'FOTO_PROFILE', 'Foto-Profile-' . strtotime(now()));
         }
