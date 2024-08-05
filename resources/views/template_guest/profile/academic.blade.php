@@ -9,7 +9,8 @@
     }
 </style>
 <div class="col ms-0 ms-md-4 px-5 py-5 shadow rounded-3 overflow-hidden bg-white">
-    <form action="/profile/academic/change" id="academic-form" method="POST">
+    <img src="{{ asset('assets') }}/images/UnderDev.png" alt="">
+    <!-- <form action="/profile/academic/change" id="academic-form" method="POST">
         @csrf
         <h3 class="fw-bold pb-5" style="color:#45b104">Data Akademik</h3>
         <h5 class="text-black ps-1">Nama Universitas</h5>
@@ -43,7 +44,7 @@
         </div>
 
         <button type="button" class="btn btn-main-2 btn-primary rounded rounded-4 fw-semibold py-2 w-100 mt-5 edit" style="--bs-btn-padding-x: 4.5rem;">Simpan</button>
-    </form>
+    </form> -->
 </div>
 
 <!-- (session->flashdata('resp_msg'));  -->

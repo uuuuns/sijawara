@@ -102,7 +102,7 @@
                                                 Akademik</span>
                                         </a>
                                     </li>
-                                    <li class="w-100">
+                                    <!-- <li class="w-100">
                                         <hr class="my-0 border border-1 mx-3">
                                     </li>
                                     <li class="nav-item w-100">
@@ -113,7 +113,7 @@
                                     </li>
                                     <li class="w-100">
                                         <hr class="my-0 border border-1 mx-3">
-                                    </li>
+                                    </li> -->
                                     <li class="w-100">
                                         <hr class="my-0 border border-1 mx-3">
                                     </li>
