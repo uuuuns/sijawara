@@ -81,14 +81,15 @@ class User extends Model
     {
         // Temukan pengguna berdasarkan ID
         $user = self::find(session('user')[0]['ID_USER']);
-        // dd($data[0]['EMAIL']);
         if ($user) {
             // Perbarui kolom yang diinginkan
             $user->EMAIL = $data[0]['EMAIL'];
             $user->NAME = $data[0]['NAME'];
             $user->TELP = $data[0]['TELP'];
             $user->JK = $data[0]['JK'];
-            $user->FOTO_PROFILE = $data[0]['FOTO_PROFILE'];
+            if($data[0]['FOTO_PROFILE'] != null){
+                $user->FOTO_PROFILE = $data[0]['FOTO_PROFILE'];
+            }
             return $user->save(); // Simpan perubahan ke database
         }
 
