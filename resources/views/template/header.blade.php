@@ -84,7 +84,7 @@
     </script>
 </head>
 
-<body id="top-header" style="<?= $title == "SIJAWARA+" ? "background-image: url(assets_new/images/new/bg.png);background-size: auto;" : "" ?>">
+<body id="top-header" style="<?= $title == "SIJAWARA+" ? "background-image: url(assets_new/images/new/bg.png);background-size: 100%;" : "" ?>">
     <style>
         :root {
             --theme-heading-font: "Poppins", sans-serif;

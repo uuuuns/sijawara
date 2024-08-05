@@ -1,15 +1,15 @@
 <div class="form-soal-{{ $item['NO'] }}{{ $item['ID_QUIZ'] }}">
     <div class="form-group row">
         <label class="col-sm-2 col-form-label control-label" id="label_soal">Question</label>
-        <input type="hidden" class="form-control" name="order_list_question[{{ $item['ID_QUIZ'] - 1 }}][]"
+        <input type="hidden" class="form-control" name="order_list_question[{{ $item['ID_QUIZ'] }}][]"
             value="{{ $item['NO'] }}">
-        <input type="hidden" class="form-control" name="list_quiz[{{ $item['ID_QUIZ'] - 1 }}][]"
-            value="{{ $item['ID_QUIZ'] - 1 }}">
-        <input type="hidden" name="ID_DETAIL[{{ $item['ID_QUIZ'] - 1 }}][]" value="{{ $item['ID_DETAIL'] }}">
+        <input type="hidden" class="form-control" name="list_quiz[{{ $item['ID_QUIZ'] }}][]"
+            value="{{ $item['ID_QUIZ'] }}">
+        <input type="hidden" name="ID_DETAIL[{{ $item['ID_QUIZ'] }}][{{ $item['ID_DETAIL'] }}]" value="{{ $item['ID_DETAIL'] }}">
         <div class="col-md-10">
             <div class="row">
                 <div class="col-md-11">
-                    <input type="text" class="form-control" name="question[{{ $item['ID_QUIZ'] - 1 }}][]"
+                    <input type="text" class="form-control" name="question[{{ $item['ID_QUIZ'] }}][{{ $item['ID_DETAIL'] }}]"
                         value="{{ $item['SOAL'] }}">
                 </div>
                 <div id="delete_question_{{ $item['NO'] }}{{ $item['ID_QUIZ'] }}"
@@ -26,43 +26,41 @@
         <div class="col-md-10">
             <div class="radio col-md-12 mb-2">
                 <div class="row">
-                    <input id="radio1{{ $item['ID_QUIZ'] }}"
-                        name="kunci_soal_[{{ $item['ID_QUIZ'] - 1 }}][{{ $item['NO'] - 1 }}]" type="radio"
+                    <input id="radio1{{ $item['ID_QUIZ'] }}{{ $item['ID_DETAIL'] }}"
+                        name="kunci_soal_[{{ $item['ID_QUIZ'] }}][{{ $item['ID_DETAIL'] }}]" type="radio"
                         value="a" <?= $item['KUNCI'] == 'a' ? 'checked' : '' ?>>
-                    <label for="radio1{{ $item['ID_QUIZ'] }}" class="mr-1">A. </label>
-                    <input type="text" class="form-control col-md-10" name="jawaban_a[{{ $item['ID_QUIZ'] - 1 }}][]"
+                    <label for="radio1{{ $item['ID_QUIZ'] }}{{ $item['ID_DETAIL'] }}" class="mr-1">A. </label>
+                    <input type="text" class="form-control col-md-10" name="jawaban_a[{{ $item['ID_QUIZ'] }}][{{ $item['ID_DETAIL'] }}]"
                         value="<?= $item['PIL_A'] ?>">
-                    <input type="text" value="{{ $item['KUNCI'] }}">
                 </div>
             </div>
             <div class="radio col-md-12 mb-2">
                 <div class="row">
-
-                    <input id="radio2{{ $item['ID_QUIZ'] }}"
-                        name="kunci_soal_[{{ $item['ID_QUIZ'] - 1 }}][{{ $item['NO'] - 1 }}]" type="radio"
-                        value="b" <?php $item['KUNCI'] == 'b' ? 'checked' : ''; ?>>
-                    <label for="radio2{{ $item['ID_QUIZ'] }}" class="mr-1">B. </label>
-                    <input type="text" class="form-control col-md-10" name="jawaban_b[{{ $item['ID_QUIZ'] - 1 }}][]"
+                    <input id="radio2{{ $item['ID_QUIZ'] }}{{ $item['ID_DETAIL'] }}"
+                        name="kunci_soal_[{{ $item['ID_QUIZ'] }}][{{ $item['ID_DETAIL'] }}]" type="radio"
+                        value="b" <?= $item['KUNCI'] == 'b' ? 'checked' : '' ?>>
+                    <label for="radio2{{ $item['ID_QUIZ'] }}{{ $item['ID_DETAIL'] }}" class="mr-1">B. </label>
+                    <input type="text" class="form-control col-md-10" name="jawaban_b[{{ $item['ID_QUIZ'] }}][{{ $item['ID_DETAIL'] }}]"
                         value="<?= $item['PIL_B'] ?>">
                 </div>
             </div>
             <div class="radio col-md-12 mb-2">
                 <div class="row">
-                    <input id="radio3{{ $item['ID_QUIZ'] }}"
-                        name="kunci_soal_[{{ $item['ID_QUIZ'] - 1 }}][{{ $item['NO'] - 1 }}]" type="radio"
+                    <input id="radio3{{ $item['ID_QUIZ'] }}{{ $item['ID_DETAIL'] }}"
+                        name="kunci_soal_[{{ $item['ID_QUIZ'] }}][{{ $item['ID_DETAIL'] }}]" type="radio"
                         value="c" <?= $item['KUNCI'] == 'c' ? 'checked' : '' ?>>
-                    <label for="radio3{{ $item['ID_QUIZ'] }}" class="mr-1">C. </label>
-                    <input type="text" class="form-control col-md-10" name="jawaban_c[{{ $item['ID_QUIZ'] - 1 }}][]"
+                    <label for="radio3{{ $item['ID_QUIZ'] }}{{ $item['ID_DETAIL'] }}" class="mr-1">C. </label>
+                    <input type="text" class="form-control col-md-10" name="jawaban_c[{{ $item['ID_QUIZ'] }}][{{ $item['ID_DETAIL'] }}]"
                         value="<?= $item['PIL_C'] ?>">
                 </div>
             </div>
             <div class="radio col-md-12 mb-2">
                 <div class="row">
-                    <input id="radio4{{ $item['ID_QUIZ'] }}"
-                        name="kunci_soal_[{{ $item['ID_QUIZ'] - 1 }}][{{ $item['NO'] - 1 }}]" type="radio"
-                        value="a" <?= $item['KUNCI'] == 'd' ? 'checked' : '' ?>>
-                    <label for="radio4{{ $item['ID_QUIZ'] }}" class="mr-1">D. </label>
-                    <input type="text" class="form-control col-md-10" name="jawaban_d[{{ $item['ID_QUIZ'] - 1 }}][]"
+                    <input id="radio4{{ $item['ID_QUIZ'] }}{{ $item['ID_DETAIL'] }}"
+                        name="kunci_soal_[{{ $item['ID_QUIZ'] }}][{{ $item['ID_DETAIL'] }}]" type="radio"
+                        value="d" <?= $item['KUNCI'] == 'd' ? 'checked' : '' ?>>
+                    <label for="radio4{{ $item['ID_QUIZ'] }}{{ $item['ID_DETAIL'] }}" class="mr-1">D. </label>
+                    <input type="text" class="form-control col-md-10" name="jawaban_d[{{ $item['ID_QUIZ'] }}][{{ $item['ID_DETAIL'] }}]"
                         value="<?= $item['PIL_D'] ?>">
                 </div>
             </div>
@@ -70,6 +68,7 @@
     </div>
 </div>
 <script>
+    console.log({{ $item['ID_QUIZ'] }});
     $('#delete_question_{{ $item['NO'] }}{{ $item['ID_QUIZ'] }}').click(function(e) {
         $(this).toggleClass("is-loading");
         $("#delete_question_{{ $item['NO'] }}{{ $item['ID_QUIZ'] }}").removeClass("is-loading")
