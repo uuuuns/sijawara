@@ -294,8 +294,6 @@ class CourseController extends Controller
             $html .= view('template_admin.course.update_question', ['item' => $question])->render();
         }
 
-        // dd($html);
-
         return response()->json([
             'success' => true,
             'message' => 'Data received successfully!',
@@ -342,7 +340,6 @@ class CourseController extends Controller
 
     public function update_materi($req)
     {
-        // dd($req);
         $id_item            = $req->input('ID_ITEM');
         $orderList          = $req->input('order_list');
         $categoryList       = $req->input('type');
@@ -379,7 +376,6 @@ class CourseController extends Controller
                 }
             }
         }
-        // dd($req);
         if (!empty($req->input('question'))) {
             $this->update_quiz($req);
         }
@@ -387,7 +383,32 @@ class CourseController extends Controller
 
     public function update_quiz($req)
     {
-
+        $jawaban_a          = $req->input('jawaban_a');
+        $jawaban_b          = $req->input('jawaban_b');
+        $jawaban_c          = $req->input('jawaban_c');
+        $jawaban_d          = $req->input('jawaban_d');
+        $question           = $req->input('question');
+        $kunci_soal         = $req->input('kunci_soal_');
+        $id_detail          = $req->input('ID_DETAIL');
+        
+        foreach($kunci_soal as $index => $value){
+            $id         = $id_detail[$index];
+            $questions  = $question[$index];
+            $pil_a      = $jawaban_a[$index];
+            $pil_b      = $jawaban_b[$index];
+            $pil_c      = $jawaban_c[$index];
+            $pil_d      = $jawaban_d[$index];
+            $kunci      = $kunci_soal[$index];
+            foreach($value as $index_detail => $value_detail){
+                $quiz = [
+                    'ID_DETAIL'     => $id[$index_detail],
+                    'SOAL'          => $questions[$index_detail],
+                    'PIL_JWB'       => implode(';', [$pil_a[$index_detail],$pil_b[$index_detail],$pil_c[$index_detail],$pil_d[$index_detail]]),
+                    'KUNCI'         => $kunci[$index_detail]
+                ];
+                DB::table('detail_quiz')->WHERE(['ID_DETAIL' => $id[$index_detail]])->update($quiz);
+            }
+        }
     }
 
     public function delete(Request $req)
@@ -456,13 +477,13 @@ class CourseController extends Controller
 
     public function item_quiz($data, $req, $lastIdQuiz)
     {
-        $jawaban_a              = $req->input('jawaban_a');
-        $jawaban_b              = $req->input('jawaban_b');
-        $jawaban_c              = $req->input('jawaban_c');
-        $jawaban_d              = $req->input('jawaban_d');
-        $order_list_quiz        = $req->input('order_list_question');
-        $question               = $req->input('question');
-        $kunci_soal             = $req->input('kunci_soal');
+        $jawaban_a          = $req->input('jawaban_a');
+        $jawaban_b          = $req->input('jawaban_b');
+        $jawaban_c          = $req->input('jawaban_c');
+        $jawaban_d          = $req->input('jawaban_d');
+        $order_list_quiz    = $req->input('order_list_question');
+        $question           = $req->input('question');
+        $kunci_soal         = $req->input('kunci_soal');
 
         $tmpNo = 0;
         foreach ($question as $i => $questions) {
