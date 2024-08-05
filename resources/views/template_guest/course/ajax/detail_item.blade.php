@@ -30,11 +30,11 @@
         <section id="video-course">
             <h6 class="fw-semibold pb-3">Video Kursus :</h6>
             <?php
-            $pattern = '/(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/';
+            $pattern = '/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/i';
             $url = $detail_item_course->LINK_YT;
             if (preg_match('/\/d\/(.*?)\//', $url, $matches)) { ?>
                 <button type="button" class="btn btn-main-2 rounded w-100" data-toggle="modal" data-target="#YTModal" onclick=" window.open('<?= $detail_item_course->LINK_YT ?>')">
-                    Buka Video </button>
+                    Buka File </button>
             <?php } else if (preg_match($pattern, $url, $matches)) { ?>
                 <button type="button" class="btn btn-main-2 rounded w-100" data-toggle="modal" data-target="#YTModal" onclick=" window.open('<?= $detail_item_course->LINK_YT ?>')">
                     Buka Video
