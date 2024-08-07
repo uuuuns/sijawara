@@ -137,14 +137,4 @@
 
     password.onchange = validatePassword;
     password2.onkeyup = validatePassword;
-
-    // function checkPass() {
-    //     console.log(password.value.length);
-    //     if (password.value.length < 8 && password2.value.length < 8) {
-    //         password.setCustomValidity("Passwords harus lebih dari 8 karakter");
-    //     } else {
-    //         password2.setCustomValidity('');
-    //     }
-    //     document.querySelector('#form_regist').submit();
-    // }
 </script>

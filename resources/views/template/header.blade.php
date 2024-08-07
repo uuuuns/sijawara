@@ -561,7 +561,7 @@
                                     <a href="{{ url('profile/myevents') }}">Webinar Ku</a>
                                 </li>
                                 <li class="d-md-none">
-                                    <a href="{{ url('profile/myebook') }}">Ebook Ku</a>
+                                    <a target="_blank" href="https://perpustakaan.uptkukm.id/">Ebook Ku</a>
                                 </li>
                                 <li class="d-md-none">
                                     <a href="{{ url('logout') }}">Keluar</a>
@@ -609,7 +609,7 @@
                                             <li><a class="" href="<?= url('profile') ?>">Profile</a></li>
                                             <li><a class=" " href="<?= url('profile/mycourses') ?>">Kursus Ku</a></li>
                                             <li><a class="" href="<?= url('profile/myevents') ?>">Webinar Ku</a></li>
-                                            <li><a class="" href="<?= url('profile/myebook') ?>">Ebook Ku</a></li>
+                                            <li><a class="" target="_blank" href="https://perpustakaan.uptkukm.id/">Ebook Ku</a></li>
                                         <?php    } ?>
                                         <hr>
                                         <li><a class="text-danger" href="<?= url('logout') ?>">Keluar</a></li>
