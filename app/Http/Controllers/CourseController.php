@@ -649,4 +649,38 @@ class CourseController extends Controller
         $uniqid = strtoupper($begin);
         return $prefix . "_" . $uniqid . substr(md5(time()), 0, 3);
     }
+
+    public function index_lihat_peserta(Request $req)
+    {
+        $data['title'] = "Peserta Kursus";
+
+        $data['list_peserta'] = DB::select("
+            SELECT
+                u.NAME ,
+                u.EMAIL 
+            FROM
+                user u 
+            LEFT JOIN `order` o ON   
+                o.ID_USER = u.ID_USER
+            WHERE 
+                ID_PRODUCT = '" . $req->input('ID_ACTIVITY') . "'
+        ");
+
+        $data['kursus'] = DB::selectOne("
+            SELECT
+                a.* ,
+                c.*
+            FROM
+                activity a
+            LEFT JOIN course c ON
+                c.ID_ACTIVITY = a.ID_ACTIVITY
+            WHERE
+                a.TYPE_ACTIVITY = 1
+                AND a.ID_ACTIVITY = '" . $req->input('ID_ACTIVITY') . "'
+        ");
+        return
+            view('template.header', $data) .
+            view('template_admin.course.lihat_peserta_course', $data) .
+            view('template.footer', $data);
+    }
 }

@@ -145,6 +145,7 @@ Route::middleware(['usersession:4,1'])->group(function () {
     Route::post('courses/get_quiz', 'CourseController@send_question'); //send to another page
     Route::post('courses/update', 'CourseController@update'); // update kursus
     Route::post('courses/delete', 'CourseController@delete');
+    Route::get('courses/lihat_peserta', 'CourseController@index_lihat_peserta');
     
     Route::get('courses/invite', 'CourseController@invite');
     Route::post('courses/invite_individu', 'CourseController@invite_individu');
