@@ -44,8 +44,6 @@
     var i_question_{{ $no }} = 0;
     var quizData = <?= json_encode($quiz[$id_quiz]) ?>;
 
-    console.log(quizData[0]);
-
     $('input[name="ID_ITEM[]"]').val()
 
     $('#collapse{{ $no }}').collapse('hide')
