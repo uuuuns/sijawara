@@ -64,6 +64,9 @@
                             <td><?= date_format(date_create($item->DATE_END), 'j F Y H:i:s') ?></td>
                             <td>
                                 <div class="d-flex flex-column gap-2">
+                                    <button type="button" onclick="location.href='events/lihat_peserta?ID_ACTIVITY={{$item->ID_ACTIVITY}}'" class="btn btn-danger px-4 py-2 rounded">
+                                        <i class="bx bxs-user-detail font-size-16 align-middle"></i>
+                                    </button>
                                     <button type="button" onclick="openviewModal(`<?= htmlentities(json_encode($item)) ?>`)" class="btn btn-warning px-4 py-2 rounded">
                                         <i class="bx bx-edit-alt font-size-16 align-middle"></i>
                                     </button>
@@ -105,7 +108,7 @@
                         <label>Judul <span class="text-danger">*</span></label>
                         <input placeholder="Title" type="text" name="title_activity" class="form-control" required>
                     </div>
-                    <div class="form-group mb-3">
+                    <!-- <div class="form-group mb-3">
                         <label>Harga <span class="text-danger">*</span></label>
                         <input type="number" class="form-control CurrencyInput" name="price_activity">
                         <div class="col-md-5">
@@ -117,7 +120,7 @@
                                 Gratis
                             </span>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="form-group mb-3">
                         <label>Tanggal Mulai<span class="text-danger">*</span></label>
                         <input type="datetime-local" class="form-control" name="date_start" required placeholder="Date Start">
@@ -128,8 +131,8 @@
                     </div>
                     <div class="form-group mb-3">
                         <label>Kode Sertifikat <span class="text-danger">*</span></label>
-                        <input placeholder="Certificate Code" type="text" name="sertif_code" class="form-control" required>
-                    </div>
+                        <input placeholder="Kosongi apabila tidak ada sertifikat" type="text" name="sertif_code" class="form-control">
+                    </div>  
                     <div class="form-group mb-3">
                         <label>Kategori <span class="text-danger">*</span></label>
                         <select class="form-control select-category" name="category" id="cars" onchange="zoomLinkCheck(this)" required>
@@ -163,7 +166,7 @@
                         <span class="d-flex align-items-center mt-2">
                             Tidak Aktif
                             <div class="switch m-r-10" style="margin-left: 7px;">
-                                <input type="checkbox" id="is_aktif" name="status">
+                                <input type="checkbox" checked id="is_aktif" name="status">
                                 <label for="is_aktif"></label>
                             </div>
                             Aktif

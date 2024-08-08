@@ -74,13 +74,52 @@ class EventController extends Controller
             view('template.footer', $data);
     }
 
+    public function index_lihat_peserta(Request $req) {
+        $data['title'] = "Peserta Event";
+
+        $data['list_peserta'] = DB::select("
+            SELECT
+                u.NAME ,
+                u.EMAIL 
+            FROM
+                user u 
+            LEFT JOIN `order` o ON   
+                o.ID_USER = u.ID_USER
+            WHERE 
+                ID_PRODUCT = '" . $req->input('ID_ACTIVITY') . "'
+        ");
+
+        $data['event'] = DB::selectOne("
+            SELECT
+                a.* ,
+                e.CATEGORY_EVENT,
+                e.LOCATION,
+                e.ORGANIZER,
+                e.CONTACT_CUSTOMER,
+                e.LINK_ZOOM,
+                e.KUOTA_PESERTA
+            FROM
+                activity a
+            LEFT JOIN event e ON
+                e.ID_ACTIVITY = a.ID_ACTIVITY
+            WHERE
+                a.TYPE_ACTIVITY = 2
+                AND a.ID_ACTIVITY = '" . $req->input('ID_ACTIVITY') . "'
+        ");
+
+        return
+            view('template.header', $data) .
+            view('template_admin/lihat_peserta_event', $data) .
+            view('template.footer', $data);
+    }
+
     public function store(Request $req)
     {
         $activity = [
             'ID_ACTIVITY' => $this->GenerateUniqID('ACT', $req->input('title_activity')),
             'TITLE_ACTIVITY' => $req->input('title_activity'),
             'ID_USER' => session('user')[0]['ID_USER'],
-            'SERTIF_CODE' => $req->input('sertif_code'),
+            'SERTIF_CODE' => !empty($req->input('sertif_code')) ? $req->input('sertif_code') : null,
             'TYPE_ACTIVITY' => 2,
             'STATUS' => $req->has('status') ? 1 : 0,
             'IMAGE_ACTIVITY' => FileUpload::S3($req->file('image_activity'), 'IMAGE_ACTIVITY', 'Image-Activity-' . strtotime(now())),

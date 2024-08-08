@@ -155,6 +155,7 @@ Route::middleware(['usersession:4,1'])->group(function () {
     Route::post('events/add', 'EventController@store');
     Route::post('events/update', 'EventController@update');
     Route::post('events/delete', 'EventController@delete');
+    Route::get('events/lihat_peserta', 'EventController@index_lihat_peserta');
     
     Route::post('user/jadikanAdmin', 'DashboardController@jadikanAdmin');
 });
