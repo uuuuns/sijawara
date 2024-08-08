@@ -68,7 +68,7 @@
                                     <tr>
                                         <td valign="top" class="font-weight-bolder">Kuota Peserta</td>
                                         <td valign="top"> : </td>
-                                        <td valign="top" class="font-weight-boldest"><?=empty($event->KUOTA_PESERTA) ? "Tidak Ada Batasan" : $event->KUOTA_PESERTA."Orang"?></td>
+                                        <td valign="top" class="font-weight-boldest"><?=empty($event->KUOTA_PESERTA) ? "Tidak Ada Batasan" : $event->KUOTA_PESERTA." Orang"?></td>
                                     </tr>
                                     <tr>
                                         <td valign="top" class="font-weight-bolder">Meeting URL</td>
