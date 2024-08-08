@@ -174,7 +174,7 @@ class CourseController extends Controller
     {
         $data['title'] = "Edit Kursus";
 
-        $kategori = DB::select("
+        $data['kategori'] = DB::select("
             SELECT
                 k.*
             FROM
@@ -206,11 +206,23 @@ class CourseController extends Controller
                 a.ID_ACTIVITY = '" . $req->input('id_activity') . "'
         ")[0];
 
+        $data['items'] = DB::Selectone("
+            SELECT
+                COUNT(ic.ID_COURSE) AS tot_item
+            FROM
+                item_course ic
+            LEFT JOIN course c ON
+                c.ID_COURSE = ic.ID_COURSE
+            WHERE
+                c.ID_ACTIVITY = '" . $data_course->ID_ACTIVITY . "'
+        ");
+
         $jsonData = json_encode($data_course);
+        $data['item'] = json_encode($data['items']->tot_item);
 
         return
             view('template.header', $data) .
-            view('template_admin/course/update_course', compact('kategori', 'jsonData')) .
+            view('template_admin/course/update_course', compact('data', 'jsonData')) .
             view('template.footer', $data);
     }
 
@@ -354,15 +366,27 @@ class CourseController extends Controller
         if (!empty($orderList)) {
             for ($i = 0; $i < count($orderList); $i++) {
                 if ($categoryList[$i] == 1) {
+
+                    if (empty($id_item[$i])) {
+                        $where = '0';
+                    } else {
+                        $where = $id_item[$i];
+                    }
+
                     $data_item = [
                         'TITLE'         => $materiTitleList[$i],
-                        'FILE'          => !empty($file[$i]) ? FileUpload::S3($file[$i], 'MATERI_FILE', 'Materi-' . strtotime(now())) : null,
+                        'ID_COURSE'     => $req->input('ID_COURSE'),
                         'LINK_YT'       => $linkYT[$i],
                         'DESKRIPSI'     => $descMateriList[$i],
                         'ORDER_LIST'    => $orderList[$i],
                         'TYPE'          => $categoryList[$i]
                     ];
-                    DB::table('item_course')->WHERE(['ID_ITEM' => $id_item[$i]])->update($data_item);
+                    
+                    if (!empty($file[$i])){
+                        $data_item['FILE'] = FileUpload::S3($file[$i], 'MATERI_FILE', 'Materi-' . strtotime(now()));
+                    }
+                    
+                    DB::table('item_course')->updateOrInsert(['ID_ITEM' => $where], $data_item);
                 } else {
                     $data_item = [
                         'TITLE'         => null,
@@ -372,7 +396,7 @@ class CourseController extends Controller
                         'ORDER_LIST'    => $orderList[$i],
                         'TYPE'          => $categoryList[$i]
                     ];
-                    DB::table('item_course')->WHERE(['ID_ITEM' => $id_item[$i]])->update($data_item);
+                    DB::table('item_course')->updateOrInsert(['ID_ITEM' => $id_item[$i]], $data_item);
                 }
             }
         }
@@ -422,6 +446,7 @@ class CourseController extends Controller
                 ID_ACTIVITY = '" . $req->id_activity . "'
         ");
         DB::statement('SET FOREIGN_KEY_CHECKS=0');
+        DB::table('tb_invited')->where('ID_ACTIVITY', $find_id_course->ID_ACTIVITY)->delete();
         DB::table('detail_quiz')->where('ID_COURSE', $find_id_course->ID_COURSE)->whereNotNull('ID_COURSE')->delete();
         DB::table('tb_komentar')->WHERE(['ID_ACTIVITY' => $find_id_course->ID_ACTIVITY])->delete();
         DB::table('mapping_course')->WHERE(['ID_ACTIVITY' => $find_id_course->ID_ACTIVITY])->delete();
@@ -429,6 +454,7 @@ class CourseController extends Controller
         DB::table('course')->WHERE(['ID_COURSE' => $find_id_course->ID_COURSE])->delete();
         DB::table('activity')->WHERE(['ID_ACTIVITY' => $find_id_course->ID_ACTIVITY])->delete();
         DB::statement('SET FOREIGN_KEY_CHECKS=1');
+
         return redirect('courses')->with(['succ_msg' => 'Successfully Delete Course', 'location' => 'courses']);
     }
 

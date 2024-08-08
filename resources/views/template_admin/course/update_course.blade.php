@@ -69,7 +69,7 @@
                         <label class="col-sm-2 col-form-label control-label">Kategori <span class="text-danger">*</span></label>
                         <div class="col-md-10">
                             <select class="select2" name="category">
-                                @foreach ($kategori as $item)
+                                @foreach ($data['kategori'] as $item)
                                 <option value="<?= $item->ID_KATEGORI ?>"><?= $item->KATEGORI ?>
                                 </option>
                                 @endforeach
@@ -130,12 +130,14 @@
 {{-- End add Item --}}
 
 <script>
-    var i = 1;
     var id_quiz = 1;
     var limit = 0;
 
     var data = {!! $jsonData !!};
+    var item = <?= $data['item'] ?>
 
+    console.log(item);
+    
     // Load Image
     var cover_book = $('input[name="image_activity"]').dropify();
     cover_book = cover_book.data('dropify');
@@ -232,7 +234,7 @@
         $("#add_item").addClass("disabled");
         $("#add_item").html("Loading...");
         $.ajax({
-            url: 'add_materi/' + i,
+            url: 'add_materi/' + item,
             success: function(html) {
                 $(".materi_form").append(html);
                 $("#add_item").removeClass("disabled");
@@ -248,7 +250,7 @@
         $("#add_item").addClass("disabled");
         $("#add_item").html("Loading...");
         $.ajax({
-            url: 'add_quiz/' + i + '/' + id_quiz,
+            url: 'add_quiz/' + item + '/' + id_quiz,
             success: function(html) {
                 $(".materi_form").append(html);
                 $("#add_item").removeClass("disabled");
@@ -262,7 +264,7 @@
     });
 
     $.ajax({
-        url: 'get_course_item/' + data.ID_COURSE + '/' + i,
+        url: 'get_course_item/' + data.ID_COURSE + '/' + item,
         type: "GET",
         beforeSend: function() {
             $('#add_item').toggleClass("is-loading");

@@ -68,7 +68,6 @@
     </div>
 </div>
 <script>
-    console.log({{ $item['ID_QUIZ'] }});
     $('#delete_question_{{ $item['NO'] }}{{ $item['ID_QUIZ'] }}').click(function(e) {
         $(this).toggleClass("is-loading");
         $("#delete_question_{{ $item['NO'] }}{{ $item['ID_QUIZ'] }}").removeClass("is-loading")
