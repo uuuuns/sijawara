@@ -109,17 +109,17 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="exampleModalCenterTitle">Tambahkan Bab atau kuis ?</h4>
-                <button type="button" class="close" data-dismiss="modal">
-                    <i class="anticon anticon-close"></i>
+                <h4 class="modal-title" id="exampleModalCenterTitle">Tambahkan Bab atau Kuis?</h4>
+                <button type="button" class="btn px-2 py-0" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="fs-3">&times;</span>
                 </button>
             </div>
             <div class="modal-body row">
                 <div class="col-md-12 text-center d-flex justify-content-around py-4">
-                    <a href="javascript.void(0)" id="add_materi" data-bs-dismiss="modal" class="rounded btn btn-success col-md-5 py-5 h-100 text-white">
+                    <a href="javascript.void(0)" id="add_materi" data-dismiss="modal" class="rounded btn btn-success col-md-5 py-5 h-100 text-white">
                         <h1><i class="far fa-book text-white"></i></h1> BAB
                     </a>
-                    <a href="javascript.void(0)" id="add_quiz" data-bs-dismiss="modal" class="rounded btn btn-danger col-md-5 py-5 h-100">
+                    <a href="javascript.void(0)" id="add_quiz" data-dismiss="modal" class="rounded btn btn-danger col-md-5 py-5 h-100">
                         <h1><i class="far fa-trophy text-white"></i></h1> KUIS
                     </a>
                 </div>
