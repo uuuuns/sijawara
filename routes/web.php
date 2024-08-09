@@ -146,6 +146,7 @@ Route::middleware(['usersession:4,1'])->group(function () {
     Route::post('courses/update', 'CourseController@update'); // update kursus
     Route::post('courses/delete', 'CourseController@delete');
     Route::get('courses/lihat_peserta', 'CourseController@index_lihat_peserta');
+    Route::get('courses/laporan_course', 'CourseController@laporan_course');
     
     Route::get('courses/invite', 'CourseController@invite');
     Route::post('courses/invite_individu', 'CourseController@invite_individu');
@@ -157,6 +158,7 @@ Route::middleware(['usersession:4,1'])->group(function () {
     Route::post('events/update', 'EventController@update');
     Route::post('events/delete', 'EventController@delete');
     Route::get('events/lihat_peserta', 'EventController@index_lihat_peserta');
+    Route::get('events/laporan_event', 'EventController@laporan_event');
     
     Route::post('user/jadikanAdmin', 'DashboardController@jadikanAdmin');
 });

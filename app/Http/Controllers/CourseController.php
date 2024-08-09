@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Laporan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -682,5 +683,83 @@ class CourseController extends Controller
             view('template.header', $data) .
             view('template_admin.course.lihat_peserta_course', $data) .
             view('template.footer', $data);
+    }
+
+    public function laporan_course(Request $req)
+    {
+        $event = DB::select("
+            SELECT
+                u.EMAIL,
+                u.ID_USER ,
+                u.NAME,
+                u.TELP,
+                u.JK ,
+                u.ALAMAT,
+                o.LOG_TIME,
+                a.TITLE_ACTIVITY,
+                (
+                    CEIL(
+                        (
+                            SELECT
+                                MAX(o.MAPPING_COUNT)
+                            FROM
+                                `order` o
+                            WHERE
+                                o.ID_USER  = u.ID_USER 
+                                AND o.ID_PRODUCT = a.ID_ACTIVITY
+                        ) / 
+                        (
+                            SELECT
+                                COUNT(*)
+                            FROM
+                                mapping_course
+                            WHERE
+                                mapping_course.ID_USER = u.ID_USER
+                                AND mapping_course.ID_ACTIVITY = a.ID_ACTIVITY
+                        ) * 100
+                    )
+                ) AS PROGRESS,
+                (
+                    CEIL 
+                    (
+                    (
+                        SELECT
+                            SUM(nq.NILAI)
+                        FROM 
+                            nilai_quiz nq
+                        LEFT JOIN detail_quiz dq ON
+                            dq.ID_QUIZ = nq.ID_QUIZ
+                        LEFT JOIN course c ON
+                            c.ID_COURSE = dq.ID_COURSE
+                        WHERE
+                            nq.ID_USER = u.ID_USER
+                            AND c.ID_ACTIVITY = o.ID_PRODUCT
+                    ) / (
+                        SELECT
+                            COUNT(nq2.NILAI)
+                        FROM
+                            nilai_quiz nq2
+                        LEFT JOIN detail_quiz dq ON
+                            dq.ID_QUIZ = nq2.ID_QUIZ
+                        LEFT JOIN course c ON
+                            c.ID_COURSE = dq.ID_COURSE
+                        WHERE
+                            nq2.ID_USER = u.ID_USER
+                            AND c.ID_ACTIVITY = o.ID_PRODUCT 
+                    )
+                    )
+                ) AS Rata_Nilai
+            FROM
+                user u
+            LEFT JOIN user_data ud ON   
+                ud.ID_USER = u.ID_USER
+            LEFT JOIN `order` o ON
+                o.ID_USER = u.ID_USER 
+            LEFT JOIN activity a  ON
+                o.ID_PRODUCT  = a.ID_ACTIVITY
+            WHERE
+                o.ID_PRODUCT  = '" . $req->input('ID_ACTIVITY') . "'
+        ");
+        app(Laporan::class)->laporan_course($event);
     }
 }

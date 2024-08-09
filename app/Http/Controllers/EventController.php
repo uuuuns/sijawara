@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Laporan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -111,6 +112,31 @@ class EventController extends Controller
             view('template.header', $data) .
             view('template_admin/lihat_peserta_event', $data) .
             view('template.footer', $data);
+    }
+
+    public function laporan_event(Request $req)
+    {
+        $event = DB::select("
+            SELECT
+                u.EMAIL,
+                u.NAME,
+                u.TELP,
+                u.JK ,
+                u.ALAMAT,
+                o.LOG_TIME ,
+                a.TITLE_ACTIVITY
+            FROM
+                user u
+            LEFT JOIN user_data ud ON   
+                ud.ID_USER = u.ID_USER
+            LEFT JOIN `order` o ON
+                o.ID_USER = u.ID_USER 
+            LEFT JOIN activity a ON
+                a.ID_ACTIVITY = o.ID_PRODUCT 
+            WHERE
+                o.ID_PRODUCT  = '" . $req->input('ID_ACTIVITY') . "'
+        ");
+        app(Laporan::class)->laporan_event($event);
     }
 
     public function store(Request $req)

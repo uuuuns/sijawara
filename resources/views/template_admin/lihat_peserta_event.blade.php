@@ -32,8 +32,11 @@
                     <div class="col-md-6 col-sm-12">
                         <div class="d-flex">
                             <div class="d-flex flex-column flex-grow-1"><span
-                                    class="font-weight-bolder font-size-lg text-primary mb-1">{{$event->TITLE_ACTIVITY}}</span> <span class="text-dark-50 font-weight-normal font-size-sm"></span>
-                                <img src="{{$event->IMAGE_ACTIVITY}}" style="display: block; margin-left: auto; margin-right: auto; max-width: 250px" alt="">
+                                    class="font-weight-bolder font-size-lg text-primary mb-1">{{$event->TITLE_ACTIVITY}}</span>
+                                <span class="text-dark-50 font-weight-normal font-size-sm"></span>
+                                <img src="{{$event->IMAGE_ACTIVITY}}"
+                                    style="display: block; margin-left: auto; margin-right: auto; max-width: 250px"
+                                    alt="">
                             </div>
                         </div>
                     </div>
@@ -46,41 +49,48 @@
 
                         $date_start_time = $date_start_format->format('H.i');
                         $date_end_time = $date_end_format->format('H.i');
-                    ?>
+                                            ?>
                     <div class="col-md-6 col-sm-12">
                         <div class="d-flex align-items-center">
                             <div class="d-flex flex-column flex-grow-1">
                                 <br>
                                 <br>
-                                <span
-                                    class="font-weight-bolder font-size-lg text-primary mb-1">Online</span>
+                                <span class="font-weight-bolder font-size-lg text-primary mb-1">Online</span>
                                 <table>
                                     <tr>
                                         <td valign="top" class="font-weight-bolder" style="width: 120px;">Tanggal</td>
                                         <td valign="top"> : </td>
-                                        <td valign="top" class="font-weight-boldest">{{$date_start}} - {{$date_end}}</td>
+                                        <td valign="top" class="font-weight-boldest">{{$date_start}} - {{$date_end}}
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td valign="top" class="font-weight-bolder">Waktu</td>
                                         <td valign="top"> : </td>
-                                        <td valign="top" class="font-weight-boldest">{{$date_start_time}} WIB - {{$date_end_time}} WIB</td>
+                                        <td valign="top" class="font-weight-boldest">{{$date_start_time}} WIB -
+                                            {{$date_end_time}} WIB</td>
                                     </tr>
                                     <tr>
                                         <td valign="top" class="font-weight-bolder">Kuota Peserta</td>
                                         <td valign="top"> : </td>
-                                        <td valign="top" class="font-weight-boldest"><?=empty($event->KUOTA_PESERTA) ? "Tidak Ada Batasan" : $event->KUOTA_PESERTA." Orang"?></td>
+                                        <td valign="top" class="font-weight-boldest">
+                                            <?=empty($event->KUOTA_PESERTA) ? "Tidak Ada Batasan" : $event->KUOTA_PESERTA . " Orang"?>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td valign="top" class="font-weight-bolder">Meeting URL</td>
                                         <td valign="top"> : </td>
-                                        <td valign="top" class="font-weight-boldest"><a
-                                                href="{{$event->LINK_ZOOM}}"
+                                        <td valign="top" class="font-weight-boldest"><a href="{{$event->LINK_ZOOM}}"
                                                 target="_blank">{{$event->LINK_ZOOM}}</a>
                                         </td>
                                     </tr> <!---->
                                 </table>
                             </div>
                         </div>
+                    </div>
+                    <div class="col-md-12">
+                        <a href="/events" class="btn btn-sm btn-danger">
+                        <i class="fas fa-chevron-left"></i> KEMBALI</a> 
+                        <button id="exportButton" onclick="location.href='/events/laporan_event?ID_ACTIVITY=<?=$event->ID_ACTIVITY?>'" class="btn btn-sm btn-success"><i class="fas fa-file-excel"></i> LAPORAN</button>
                     </div>
                 </div>
                 <!-- <div class="col-md-6 d-flex justify-content-md-end justify-content-end align-items-center">
@@ -260,7 +270,7 @@
                         <label>Judul <span class="text-danger">*</span></label>
                         <input placeholder="Title" type="text" name="up_title_activity" class="form-control" required>
                     </div>
-                    <div class="form-group mb-3">
+                    <!-- <div class="form-group mb-3">
                         <label>Harga <span class="text-danger">*</span></label>
                         <input type="number" class="form-control up_CurrencyInput" name="up_price_activity">
                         <div class="col-md-5">
@@ -272,7 +282,7 @@
                                 Gratis
                             </span>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="form-group mb-3">
                         <label>Tanggal Mulai<span class="text-danger">*</span></label>
                         <input type="datetime-local" class="form-control" name="up_date_start" placeholder="Date Start">
@@ -283,8 +293,7 @@
                     </div>
                     <div class="form-group mb-3">
                         <label>Kode Sertifikat <span class="text-danger">*</span></label>
-                        <input placeholder="Certificate Code" type="text" name="up_sertif_code" class="form-control"
-                            required>
+                        <input placeholder="Kosongi bila tidak ada sertifikat" type="text" name="up_sertif_code" class="form-control">
                     </div>
                     <div class="form-group mb-3">
                         <label>Kategori <span class="text-danger">*</span></label>
@@ -564,6 +573,18 @@
             error: 'error'
         }
     });
-    $(document).ready(function () { });
+
+    function laporan(id) {
+        $.ajax({
+            url: '/events/laporan_event?ID_ACTIVITY=' + id,
+            method: 'GET',
+            success: function (response) {
+                window.location.href = '/events/laporan/' + id;
+            },
+            error: function (xhr, status, error) {
+                console.log(xhr.responseText);
+            }
+        });
+    }
 </script>
 @endsection
