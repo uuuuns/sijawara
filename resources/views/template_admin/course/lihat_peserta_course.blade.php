@@ -70,13 +70,11 @@
                         </div>
                     </div>
                 </div>
-                <!-- <div class="col-md-6 d-flex justify-content-md-end justify-content-end align-items-center">
-                    <div class="mt-3 mt-md-0">
-                        <button type="button" class="btn btn-primary btn-sm-2 rounded" onclick="openModal()">
-                            <i class="mdi mdi-plus me-1"></i>
-                            Tambah Webinar</button>
-                    </div>
-                </div> -->
+                <div class="col-md-12">
+                    <a href="/events" class="btn btn-sm btn-danger">
+                    <i class="fas fa-chevron-left"></i> KEMBALI</a> 
+                    <button id="exportButton" onclick="location.href='/courses/laporan_course?ID_ACTIVITY=<?=$kursus->ID_ACTIVITY?>'" class="btn btn-sm btn-success"><i class="fas fa-file-excel"></i> LAPORAN</button>
+                </div>
             </div>
             <div class="mt-5">
                 <table class="table mb-0" id="dtTable">
