@@ -26,7 +26,6 @@
                         style="cursor: pointer;">
                         <span class="col-md-12 text-white">Tambahkan Pertanyaan</span>
                     </div>
-                    {{-- <input type="text" value="{{ $no }}"> --}}
                 </div>
             </div>
         </div>
