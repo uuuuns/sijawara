@@ -40,7 +40,7 @@
             </div>
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label control-label">Deskripsi Materi<span class="text-danger">*</span></label>
-                <div class="col-md-5">
+                <div class="col-md-12">
                     <textarea name="desc_materi[]" id="mytextarea_<?= $no ?>" required>
                     {{ $item['DESKRIPSI'] }}</textarea>
                 </div>

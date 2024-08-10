@@ -134,9 +134,10 @@
     var limit = 0;
 
     var data = {!! $jsonData !!};
-    var item = <?= $data['item'] ?>
-
-    console.log(item);
+    var id_course = data.ID_COURSE;
+    var id_act = data.ID_ACTIVITY;
+    
+    var item = <?= $data['item'] ?>;
     
     // Load Image
     var cover_book = $('input[name="image_activity"]').dropify();
@@ -147,10 +148,9 @@
     cover_book.destroy();
     cover_book.init();
 
-    var id_act = data.ID_ACTIVITY;
 
     $('input[name="ID_ACTIVITY"]').val(id_act);
-    $('input[name="ID_COURSE"]').val(data.ID_COURSE);
+    $('input[name="ID_COURSE"]').val(id_course);
     $('input[name="title_activity"]').val(data.TITLE_ACTIVITY);
     $('input[name="date_start"]').val(data.DATE_START);
     $('input[name="date_end"]').val(data.DATE_END);
@@ -158,7 +158,7 @@
     $('select[name="is_public"]').val(data.STATUS ? '1' : '0');
     $('select[name="category"]').val(data.ID_KATEGORI);
     $('input[name="status"]').prop('checked', data.STATUS);
-    $('input[name="desc_course"]').summernote('code', data.DESKRIPSI_COURSE);
+
     $.ajax({
         url: 'get/' + id_act,
         method: 'GET',
@@ -264,7 +264,7 @@
     });
 
     $.ajax({
-        url: 'get_course_item/' + data.ID_COURSE + '/' + item,
+        url: 'get_course_item/' + id_course,
         type: "GET",
         beforeSend: function() {
             $('#add_item').toggleClass("is-loading");
@@ -272,7 +272,7 @@
         success: function(html) {
             $("#add_item").removeClass("is-loading");
             $(".materi_form").append(html);
-            limit = i;
+            limit = item;
         }
     });
 
