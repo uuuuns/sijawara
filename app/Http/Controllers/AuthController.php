@@ -20,7 +20,7 @@ class AuthController extends Controller
             'transport' => 'smtp',
             'host' => 'smtp-relay.brevo.com',
             'port' => 587,
-            'from' => ['address' => '211131012@mhs.stiki.ac.id', 'name' => 'The Brain & Heart Official'],
+            'from' => ['address' => 'sijawara@noreply.com', 'name' => 'SIJAWARA'],
             'encryption' => 'tls',
             'username' => 'dbi.malang.o@gmail.com',
             'password' => '7YPLNq6KfpydDGBT',
