@@ -242,6 +242,12 @@ class CheckoutGuest extends Controller
 			];
 			foreach ($_POST['id_order'] as $item) {
 				$_response = $this->checkoutModel->get_detail_order($item, "")[0];
+				
+				$charLimit = 25;
+				$_response->TITLE_ACTIVITY = mb_substr($_response->TITLE_ACTIVITY, 0, $charLimit);
+				if (strlen($_response->TITLE_ACTIVITY) >= $charLimit) {
+					$_response->TITLE_ACTIVITY .= '...'; 
+				}
 				array_push(
 					$data_res['item_details'],
 					array(
