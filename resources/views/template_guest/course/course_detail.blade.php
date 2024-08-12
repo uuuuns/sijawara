@@ -164,7 +164,7 @@
                         <?php
                         if ($tot_proggress == 100) { ?>
                             <div class="tab-pane fade" id="nav-sertif" role="tabpanel" aria-labelledby="nav-sertif-tab" tabindex="0">
-                                <?php if ($grade > 75) { ?>
+                                <?php if ($grade >= 75) { ?>
                                     <div class="d-flex justify-content-center">
                                         <div class="blurred-image d-none d-lg-block" style="pointer-events: none">
                                             <embed class="overlay" style="width:600px; height:500px; pointer-events: none;" src="<?= $sertif->FILE_SERTIFIKAT ?>#toolbar=0&navpanes=0&scrollbar=0&statusbar=0&messages=0&scrollbar=0" type="text/plain"></emb>

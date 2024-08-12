@@ -151,6 +151,7 @@ Route::middleware(['usersession:4,1'])->group(function () {
     Route::get('courses/invite', 'CourseController@invite');
     Route::post('courses/invite_individu', 'CourseController@invite_individu');
     Route::post('courses/invite_batch', 'CourseController@invite_batch');
+    Route::post('courses/batalkan_undangan', 'CourseController@batalkan_undangan');
 
     Route::get('events', 'EventController@index');
     Route::get('events/get/{id}', 'EventController@deskripsi_get');

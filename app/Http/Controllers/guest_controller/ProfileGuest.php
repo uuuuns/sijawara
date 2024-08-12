@@ -169,6 +169,7 @@ class ProfileGuest extends Controller
                 'NAME' => $request->input('name_user'),
                 'TELP' => $request->input('no_hp'),
                 'JK' => $request->input('jk'),
+                'ALAMAT' => $request->input('alamat'),
             ]
         );
         $data[0]['FOTO_PROFILE'] = null;

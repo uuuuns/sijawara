@@ -165,7 +165,7 @@ class AuthController extends Controller
             $token_key = bin2hex(random_bytes(32));
             $details = [
                 'name' => $req->input('name'),
-                'body' => 'Click this link below to verify your email.',
+                'body' => 'Tekan Tombol dibawah ini untuk mengaktifkan akun.',
                 'link' => url('verification/confirm?token=' . $token_key),
                 'button' => "Verify",
             ];
@@ -184,9 +184,9 @@ class AuthController extends Controller
             ];
             DB::table('token')->insert($formDataToken);
 
-            return redirect('login')->with('succ_msg', 'Your account is registered, Please verify your account in your email before login!');
+            return redirect('login')->with('succ_msg', 'Anda Berhasil Mendadaftar Periksa Email Anda Untuk Mengaktifkan Akun!');
         } else {
-            return redirect('register')->with('error_msg', 'Email already Registered!');
+            return redirect('register')->with('error_msg', 'Email Telah Digunakan!');
         }
     }
     public function verifAccount(Request $req)
@@ -200,7 +200,7 @@ class AuthController extends Controller
                 `KEY` = "' . $req->input('token') . '"
         ');
         if (empty($getToken)) {
-            return redirect('login')->with('error_msg', 'Your Account is not Found please register first');
+            return redirect('login')->with('error_msg', 'Akun anda tidak terdaftar, Silahkan mendaftar terlebih dahulu!');
         }
 
         // $is_active = Login::where('id_login', '=', $getToken->id_login)->get();
@@ -219,7 +219,7 @@ class AuthController extends Controller
             DB::table('user')->where('ID_USER', '=', $getToken->ID_USER)->update(['STATUS' => 1]);
         }
 
-        return redirect('login')->with('succ_msg', 'Your Account is Activated, You can login now');
+        return redirect('login')->with('succ_msg', 'Akun anda telah aktif, silahkan masuk!');
     }
 
     public function logout()

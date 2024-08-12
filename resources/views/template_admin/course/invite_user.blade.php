@@ -91,8 +91,8 @@
                                     <td><?= $item->JK ?></td>
                                     <td>
                                         @if ($item->is_invited)
-                                        <button type="button" class="btn btn-dark rounded btn-sm-2 disabled-btn fs-8 px-2" disabled>
-                                            <i class="bx bx-send font-size-16 align-middle"></i> Sudah Diundang
+                                        <button type="button" class="btn btn-warning rounded btn-sm-2  waves-effect waves-light fs-8 px-2" onclick="openmodalDelete(`<?= $item->ID_USER?>`, `<?=$activity->ID_ACTIVITY ?>`)">
+                                            <i class="bx bx-trash font-size-16 align-middle"></i> Batalkan Undangan
                                         </button>
                                         @else
                                         <button type="button" id="send_cfl_individu<?= $item->ID_USER ?>" onclick="opensendModal(`<?= htmlentities(json_encode($item)) ?>`)" class="btn btn-primary rounded btn-sm-2  waves-effect waves-light fs-8 px-2">
@@ -149,6 +149,36 @@
 </div>
 {{-- End Modal Invite --}}
 
+{{-- Start Undo Invite --}}
+<div class="modal" id="DeleteModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Batalkan Undangan?</h4>
+                <button type="button" class="btn px-2 py-0" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="fs-3">&times;</span>
+                </button>
+            </div>
+            <form id="form-delete" action="batalkan_undangan" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-body">
+                    <div class="form-group mb-3">
+                        <p>Batalkan undangan user ini dari kursus "{{ $activity->TITLE_ACTIVITY }}"</p>
+                        <input type="hidden" name="id_user">
+                        <input type="hidden" name="id_activity" value="<?= $activity->ID_ACTIVITY ?>">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-sm btn-warning rounded waves-effect waves-light">
+                        <i class="bx bx-trash font-size-16 align-middle"></i> Batalkan Undangan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{{-- End Undo Invite --}}
+
 <script>
     $('#dtTable').DataTable();
 
@@ -156,6 +186,11 @@
         var data = JSON.parse(viewData)
         $('input[name="id_user"]').val(data.ID_USER)
         $('#sendModal').modal('show')
+    }
+
+    function openmodalDelete(id_user, id_activity) {
+        $('input[name="id_user"]').val(id_user)
+        $('#DeleteModal').modal('show')
     }
 
     $('#check-all').on('click', function(e) {

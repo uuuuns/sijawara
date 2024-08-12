@@ -81,7 +81,9 @@ class EventController extends Controller
         $data['list_peserta'] = DB::select("
             SELECT
                 u.NAME ,
-                u.EMAIL 
+                u.EMAIL ,
+                u.TELP,
+                u.ALAMAT
             FROM
                 user u 
             LEFT JOIN `order` o ON   

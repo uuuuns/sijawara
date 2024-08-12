@@ -49,6 +49,9 @@
                                 <td><?= $item->JK ?></td>
                                 <td>
                                     <div class="d-flex flex-column gap-2">
+                                        <button type="button" onclick="openviewModal(`<?= htmlentities(json_encode($item)) ?>`)" class="btn btn-dark px-4 py-2 rounded">
+                                            <i class="bx bx-list-ul font-size-16 align-middle"></i>
+                                        </button>
                                         <button type="button" onclick="openviewModal(`<?= htmlentities(json_encode($item)) ?>`)" class="btn btn-warning px-4 py-2 rounded">
                                             <i class="bx bx-edit-alt font-size-16 align-middle"></i>
                                         </button>
@@ -354,6 +357,44 @@
     </div>
 </div>
 {{-- End Modal Delete --}}
+
+{{-- Start Detail Pengambilan --}}
+<div class="modal" id="updateModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">List Kursus & Webinar yang diambil [Nama User]</h4>
+                <button type="button" class="btn px-2 py-0" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="fs-3">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table mb-0" id="dtTable">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Nama Kursus</th>
+                                <th>Tanggal Diambil</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($activities as $key => $kursus)
+                            <tr>
+                                <td><?= $key ?></td>
+                                <td><?= $kursuss->TITLE_ACTIVITY ?></td>
+                                <td><?= $kursuss->DATE_START ?></td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{-- End Detail Pengambilan --}}
+
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
 <script>

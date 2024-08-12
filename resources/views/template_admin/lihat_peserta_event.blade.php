@@ -87,7 +87,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-12">
+                    <div class="col-md-12 mt-2">
                         <a href="/events" class="btn btn-sm btn-danger">
                         <i class="fas fa-chevron-left"></i> KEMBALI</a> 
                         <button id="exportButton" onclick="location.href='/events/laporan_event?ID_ACTIVITY=<?=$event->ID_ACTIVITY?>'" class="btn btn-sm btn-success"><i class="fas fa-file-excel"></i> LAPORAN</button>
@@ -108,6 +108,8 @@
                             <th>No</th>
                             <th style="width: 500px;">Nama Peserta</th>
                             <th>Email</th>
+                            <th>Nomor HP</th>
+                            <th>Alamat</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -119,6 +121,8 @@
                                 <td><?= $number ?></td>
                                 <td><?= $item->NAME ?></td>
                                 <td><?= $item->EMAIL?></td>
+                                <td><?= $item->TELP?></td>
+                                <td><?= $item->ALAMAT?></td>
                             </tr>
                         @endforeach
                     </tbody>

@@ -511,11 +511,12 @@ class CourseController extends Controller
         $order_list_quiz    = $req->input('order_list_question');
         $question           = $req->input('question');
         $kunci_soal         = $req->input('kunci_soal');
-
+        
         $tmpNo = 0;
+        $tmpNoQuiz = 0;
         foreach ($question as $i => $questions) {
-            $id_quiz = $lastIdQuiz[$tmpNo];
-            for ($j = 1; $j < count($questions); $j++) {
+            $id_quiz = $lastIdQuiz[$tmpNoQuiz];
+            for ($j = 1; $j <= count($questions); $j++) {
                 $quiz = [
                     'ID_QUIZ'       => $id_quiz,
                     'ID_COURSE'     => $data['ID_COURSE'],
@@ -525,8 +526,9 @@ class CourseController extends Controller
                     'ORDER_LIST'    => $order_list_quiz[$tmpNo]
                 ];
                 DB::table('detail_quiz')->insert($quiz);
+                $tmpNo++;
             }
-            $tmpNo++;
+            $tmpNoQuiz++;
         }
     }
 
@@ -568,6 +570,29 @@ class CourseController extends Controller
             view('template.footer', $data);
     }
 
+    public function batalkan_undangan(Request $req)
+    {
+        $id_user = $req->input('id_user');
+        $id_activity = $req->input('id_activity');
+
+        $cek_data = DB::SelectOne("
+            SELECT
+                *
+            FROM
+                tb_invited
+            WHERE
+                ID_USER = '" . $id_user . "'
+            AND
+                ID_ACTIVITY = '" . $id_activity . "'
+        ");
+
+        if (!empty($cek_data)) {
+            DB::table('tb_invited')->WHERE(['ID_USER' => $id_user, 'ID_ACTIVITY' => $id_activity])->delete();
+            return redirect('courses/invite?id_activity=' . $id_activity)->with(['succ_msg' => 'Undangan telah dibatalkan', 'location' => 'courses/invite?id_activity=' . $id_activity]);
+        } else {
+            return redirect('courses/invite?id_activity=' . $id_activity)->with(['succ_msg' => 'User belum diundang', 'courses/invite?id_activity=' . $id_activity]);
+        }
+    }
     public function invite_individu(Request $req)
     {
         $id_user = $req->input('id_user');
@@ -585,14 +610,14 @@ class CourseController extends Controller
         ");
 
         if (!empty($cek_data)) {
-            return redirect('courses/invite?id_activity=' . $id_activity)->with(['err_msg' => 'User Already Invited', 'location' => 'courses/invite?id_activity=' . $id_activity]);
+            return redirect('courses/invite?id_activity=' . $id_activity)->with(['err_msg' => 'User telah diundang', 'location' => 'courses/invite?id_activity=' . $id_activity]);
         } else {
             $invited = [
                 'ID_USER'       => $id_user,
                 'ID_ACTIVITY'   => $id_activity
             ];
             DB::table('tb_invited')->insert($invited);
-            return redirect('courses/invite?id_activity=' . $id_activity)->with(['succ_msg' => 'Successfully Invite User', 'courses/invite?id_activity=' . $id_activity]);
+            return redirect('courses/invite?id_activity=' . $id_activity)->with(['succ_msg' => 'User berhasil diundang', 'courses/invite?id_activity=' . $id_activity]);
         }
     }
 
@@ -657,14 +682,76 @@ class CourseController extends Controller
 
         $data['list_peserta'] = DB::select("
             SELECT
-                u.NAME ,
-                u.EMAIL 
+                u.EMAIL,
+                u.ID_USER ,
+                u.NAME,
+                u.TELP,
+                u.JK ,
+                u.ALAMAT,
+                o.LOG_TIME,
+                a.TITLE_ACTIVITY,
+                (
+                    CEIL(
+                        (
+                            SELECT
+                                MAX(o.MAPPING_COUNT)
+                            FROM
+                                `order` o
+                            WHERE
+                                o.ID_USER  = u.ID_USER 
+                                AND o.ID_PRODUCT = a.ID_ACTIVITY
+                        ) / 
+                        (
+                            SELECT
+                                COUNT(*)
+                            FROM
+                                mapping_course
+                            WHERE
+                                mapping_course.ID_USER = u.ID_USER
+                                AND mapping_course.ID_ACTIVITY = a.ID_ACTIVITY
+                        ) * 100
+                    )
+                ) AS PROGRESS,
+                (
+                    CEIL 
+                    (
+                    (
+                        SELECT
+                            SUM(nq.NILAI)
+                        FROM 
+                            nilai_quiz nq
+                        LEFT JOIN detail_quiz dq ON
+                            dq.ID_QUIZ = nq.ID_QUIZ
+                        LEFT JOIN course c ON
+                            c.ID_COURSE = dq.ID_COURSE
+                        WHERE
+                            nq.ID_USER = u.ID_USER
+                            AND c.ID_ACTIVITY = o.ID_PRODUCT
+                    ) / (
+                        SELECT
+                            COUNT(nq2.NILAI)
+                        FROM
+                            nilai_quiz nq2
+                        LEFT JOIN detail_quiz dq ON
+                            dq.ID_QUIZ = nq2.ID_QUIZ
+                        LEFT JOIN course c ON
+                            c.ID_COURSE = dq.ID_COURSE
+                        WHERE
+                            nq2.ID_USER = u.ID_USER
+                            AND c.ID_ACTIVITY = o.ID_PRODUCT 
+                    )
+                    )
+                ) AS NILAI  
             FROM
-                user u 
-            LEFT JOIN `order` o ON   
-                o.ID_USER = u.ID_USER
-            WHERE 
-                ID_PRODUCT = '" . $req->input('ID_ACTIVITY') . "'
+                user u
+            LEFT JOIN user_data ud ON   
+                ud.ID_USER = u.ID_USER
+            LEFT JOIN `order` o ON
+                o.ID_USER = u.ID_USER 
+            LEFT JOIN activity a  ON
+                o.ID_PRODUCT  = a.ID_ACTIVITY
+            WHERE
+                o.ID_PRODUCT  = '" . $req->input('ID_ACTIVITY') . "'
         ");
 
         $data['kursus'] = DB::selectOne("

@@ -40,6 +40,11 @@
                     Wanita</option>
             </select>
         </div>
+
+        <h5 class="text-black ps-1 mt-4">Alamat</h5>
+        <div class="my-3 float-label-control">
+        <textarea name="alamat" class="form-control input-text woocommerce-Input woocommerce-Input--text" placeholder="Alamat Lengkap" readonly rows="3"><?= ($data_personal->ALAMAT) ?></textarea>
+        </div>
         <input type="hidden" name="jk" id="setJK" value="<?= $data_personal->JK ?>">
     </form>
 

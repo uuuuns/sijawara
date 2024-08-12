@@ -25,11 +25,6 @@
                                     Bagikan :<span class="fs-5"> <i class="fab fa-facebook mx-2" style="cursor: pointer"></i><i class="fab fa-twitter me-2" style="cursor: pointer"></i><i class="fab fa-instagram" style="cursor: pointer"></i></span>
                                 </div>
                                 <?php if ($event->DATA_CHECKING == 0 && $event->EXPIRED != 1) : ?>
-                                    <div class="price-header mb-3">
-                                        <h2 class="course-price">
-                                            <?= ($event->PRICE_ACTIVITY == 0) ? "Free" : "Rp " . number_format($event->PRICE_ACTIVITY, 2, ',', '.') ?>
-                                        </h2>
-                                    </div>
                                     <div class="">
                                         <form class="" id="FormBuyNow-info" method="POST" action="<?= url('event/add') ?>">
                                             @csrf

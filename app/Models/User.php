@@ -11,7 +11,7 @@ class User extends Model
     use HasFactory;
 
     // Definisikan kolom-kolom yang dapat diisi secara massal
-    protected $fillable = ['EMAIL', 'TELP','NAME','JK', 'FOTO_PROFILE'];    
+    protected $fillable = ['EMAIL', 'TELP','NAME','JK', 'FOTO_PROFILE', 'ALAMAT'];    
     protected $table = 'user';
     protected $primaryKey = 'ID_USER';    
     public $timestamps = false;
@@ -87,6 +87,7 @@ class User extends Model
             $user->NAME = $data[0]['NAME'];
             $user->TELP = $data[0]['TELP'];
             $user->JK = $data[0]['JK'];
+            $user->ALAMAT = $data[0]['ALAMAT'];
             if($data[0]['FOTO_PROFILE'] != null){
                 $user->FOTO_PROFILE = $data[0]['FOTO_PROFILE'];
             }
