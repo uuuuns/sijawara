@@ -83,17 +83,23 @@
                             <th>No</th>
                             <th style="width: 500px;">Nama Peserta</th>
                             <th>Email</th>
+                            <th>Lokasi</th>
+                            <th>Progress</th>
+                            <th>Nilai</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php $number = 0; ?>
 
                         @foreach ($list_peserta as $item)
-                            <?php    $number++; ?>
+                            <?php $number++; ?>
                             <tr>
                                 <td><?= $number ?></td>
                                 <td><?= $item->NAME ?></td>
                                 <td><?= $item->EMAIL?></td>
+                                <td><?= $item->ALAMAT?></td>
+                                <td><?= $item->PROGRESS?></td>
+                                <td><?= $item->NILAI?></td>
                             </tr>
                         @endforeach
                     </tbody>

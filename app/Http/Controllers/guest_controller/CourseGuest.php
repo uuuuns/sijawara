@@ -106,24 +106,23 @@ class CourseGuest extends Controller
 				AND ID_QUIZ = " . $data['last_item'][0]->ID_ITEM . "
 			");
 
-		$cek_quiz = DB::select("
+		$cek_item_course = DB::selectOne("
 			SELECT 
 				* 
 			FROM 
 				item_course 
 			WHERE 
-				TYPE = 2
-				AND ID_COURSE = '" . $data['course']->ID_COURSE . "'
+				ID_ITEM = " . $data['last_item'][0]->ID_ITEM . "
 			");
 
-		if (count($data['last_item']) == count($data['data_all_mapping']) && (!empty($cek_nilai->NILAI) ? $cek_nilai->NILAI == 100 : false)) {
+		if (count($data['last_item']) == count($data['data_all_mapping']) && (!empty($cek_nilai->NILAI) ? $cek_nilai->NILAI >= 75 : false)) {
 			$data['tot_proggress'] = 100;
 			DB::table('order')
 				->where('ID_USER', session('user')[0]->get('ID_USER'))
 				->where('ID_PRODUCT', $data['id_activity'])
 				->update(['COURSE_COMPLETED' => 1, 'MAPPING_COUNT' => count($data['data_all_mapping'])]);
 		}
-		if (count($data['last_item']) == count($data['data_all_mapping']) && empty($cek_quiz)) {
+		if (count($data['last_item']) == count($data['data_all_mapping']) && ($cek_item_course->TYPE == 1)) {
 			$data['tot_proggress'] = 100;
 			DB::table('order')
 				->where('ID_USER', session('user')[0]->get('ID_USER'))

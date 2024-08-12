@@ -15,8 +15,7 @@ class UserController extends Controller
         //
     }
 
-    public function index()
-    {
+    public function index() {
         $data['title'] = "User";
 
         $data["user"] = DB::select("
@@ -39,6 +38,7 @@ class UserController extends Controller
             WHERE
                 u.IS_DELETE = 0
         ");
+
         $data['admin'] = true;
         return
             view('template.header', $data) .
@@ -100,7 +100,7 @@ class UserController extends Controller
             'TELP'          => $req->input('up_contact'),
             'JK'            => $req->input('up_jk'),
         ];
-
+    
         if (!empty($req->input('up_foto_profile'))) {
             $user['FOTO_PROFILE'] = FileUpload::S3($req->file('up_foto_profile'), 'IMAGE_ACTIVITY', 'Image-Activity-' . strtotime(now()));
         }
@@ -145,6 +145,26 @@ class UserController extends Controller
             return redirect('user')->with(['msg' => 'Successfully Delete User', 'location' => 'user']);    
         } catch (\Throwable $e) {
             return redirect('user')->with(['msg' => 'Error'.$e, 'location' => 'user']);  
+        }
+    }
+    public function detail_pengambilan(Request $req)
+    {
+        try {
+            $data['activities'] = DB::select("
+                SELECT
+                    a.TITLE_ACTIVITY ,
+                    o.LOG_TIME ,
+                    a.TYPE_ACTIVITY 
+                FROM
+                    activity a 
+                LEFT JOIN `order` o ON   
+                    o.ID_PRODUCT  = a.ID_ACTIVITY 
+                WHERE
+                    o.ID_USER = ''
+            ");
+            return $data;
+        } catch (\Throwable $e) {
+            return $e;  
         }
     }
 

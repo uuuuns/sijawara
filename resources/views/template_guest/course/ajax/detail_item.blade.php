@@ -28,14 +28,15 @@
         </section>
         <hr>
         <section id="video-course">
-            <h6 class="fw-semibold pb-3">Video Kursus :</h6>
             <?php
             $pattern = '/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/i';
             $url = $detail_item_course->LINK_YT;
             if (preg_match('/\/d\/(.*?)\//', $url, $matches)) { ?>
+            <h6 class="fw-semibold pb-3">File Kursus :</h6>
                 <button type="button" class="btn btn-main-2 rounded w-100" data-toggle="modal" data-target="#YTModal" onclick=" window.open('<?= $detail_item_course->LINK_YT ?>')">
                     Buka File </button>
             <?php } else if (preg_match($pattern, $url, $matches)) { ?>
+                <h6 class="fw-semibold pb-3">Video Kursus :</h6>
                 <button type="button" class="btn btn-main-2 rounded w-100" data-toggle="modal" data-target="#YTModal" onclick=" window.open('<?= $detail_item_course->LINK_YT ?>')">
                     Buka Video
                 </button>

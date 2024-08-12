@@ -6,7 +6,7 @@
                 <div class="course-header">
                     <div class="course-thumb">
                         <img src="<?= $item->IMAGE_ACTIVITY ?>" alt="" class="img-fluid">
-                        <div class="course-price"><?= ($item->PRICE_ACTIVITY == 0) ? "Free" : "Rp " . number_format($item->PRICE_ACTIVITY, 2, ',', '.') ?></div>
+                        <div class="course-price"><?= ($item->PRICE_ACTIVITY == 0) ? "Segera Join!!" : "Rp " . number_format($item->PRICE_ACTIVITY, 2, ',', '.') ?></div>
                     </div>
                 </div>
 

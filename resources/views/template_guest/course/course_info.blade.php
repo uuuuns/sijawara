@@ -167,12 +167,6 @@
                                 </div>
                             </div>
 
-                            <div class="price-header">
-                                <h2 class="course-price">
-                                    <?= ($course->PRICE_ACTIVITY == 0) ? "Free" : "Rp " . number_format($course->PRICE_ACTIVITY, 2, ',', '.') ?>
-                                </h2>
-                            </div>
-
                             <ul class="course-sidebar-list">
                                 <li>
                                     <div class="d-flex justify-content-between align-items-center">
