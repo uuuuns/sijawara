@@ -209,7 +209,8 @@ class CourseController extends Controller
 
         $data['items'] = DB::Selectone("
             SELECT
-                COUNT(ic.ID_COURSE) AS tot_item
+                COUNT(ic.ID_COURSE) AS tot_item,
+                max(ic.ID_ITEM) AS last_id
             FROM
                 item_course ic
             LEFT JOIN course c ON
@@ -227,9 +228,8 @@ class CourseController extends Controller
             view('template.footer', $data);
     }
 
-    public function get_course_item($id_course, $materi)
+    public function get_course_item($id_course)
     {
-        $id_detailCourse = $materi;
         $data['data_materi'] = DB::select("
             SELECT
                 *
@@ -286,7 +286,7 @@ class CourseController extends Controller
                         'NO'         => $no
                     ];
 
-                    foreach ($data['quiz'][$quiz->ID_QUIZ] AS $ID_ITEM){
+                    foreach ($data['quiz'][$quiz->ID_QUIZ] as $ID_ITEM) {
                         $data['ID_ITEM'] = $ID_ITEM['ID_QUIZ'];
                     }
                     $no++;
@@ -302,7 +302,7 @@ class CourseController extends Controller
         $quizData = $request->input('quizData');
 
         $html = '';
-        
+
         foreach ($quizData as $question) {
             $html .= view('template_admin.course.update_question', ['item' => $question])->render();
         }
@@ -326,7 +326,7 @@ class CourseController extends Controller
             'LOG_TIME'              => date('Y-m-d H:i:s')
         ];
 
-        if(!empty($req->file('image_activity'))){
+        if (!empty($req->file('image_activity'))) {
             $activity['IMAGE_ACTIVITY'] = FileUpload::S3($req->file('image_activity'), 'IMAGE_ACTIVITY', 'Image-Activity-' . strtotime(now()));
         }
 
@@ -360,7 +360,7 @@ class CourseController extends Controller
         $descMateriList     = $req->input('desc_materi');
         $linkYT             = $req->input('materi_link');
 
-        if (!empty($req->file('materi_file'))){
+        if (!empty($req->file('materi_file'))) {
             $file           = $req->file('materi_file');
         }
 
@@ -382,11 +382,11 @@ class CourseController extends Controller
                         'ORDER_LIST'    => $orderList[$i],
                         'TYPE'          => $categoryList[$i]
                     ];
-                    
-                    if (!empty($file[$i])){
+
+                    if (!empty($file[$i])) {
                         $data_item['FILE'] = FileUpload::S3($file[$i], 'MATERI_FILE', 'Materi-' . strtotime(now()));
                     }
-                    
+
                     DB::table('item_course')->updateOrInsert(['ID_ITEM' => $where], $data_item);
                 } else {
                     $data_item = [
@@ -415,8 +415,8 @@ class CourseController extends Controller
         $question           = $req->input('question');
         $kunci_soal         = $req->input('kunci_soal_');
         $id_detail          = $req->input('ID_DETAIL');
-        
-        foreach($kunci_soal as $index => $value){
+
+        foreach ($kunci_soal as $index => $value) {
             $id         = $id_detail[$index];
             $questions  = $question[$index];
             $pil_a      = $jawaban_a[$index];
@@ -424,11 +424,11 @@ class CourseController extends Controller
             $pil_c      = $jawaban_c[$index];
             $pil_d      = $jawaban_d[$index];
             $kunci      = $kunci_soal[$index];
-            foreach($value as $index_detail => $value_detail){
+            foreach ($value as $index_detail => $value_detail) {
                 $quiz = [
                     'ID_DETAIL'     => $id[$index_detail],
                     'SOAL'          => $questions[$index_detail],
-                    'PIL_JWB'       => implode(';', [$pil_a[$index_detail],$pil_b[$index_detail],$pil_c[$index_detail],$pil_d[$index_detail]]),
+                    'PIL_JWB'       => implode(';', [$pil_a[$index_detail], $pil_b[$index_detail], $pil_c[$index_detail], $pil_d[$index_detail]]),
                     'KUNCI'         => $kunci[$index_detail]
                 ];
                 DB::table('detail_quiz')->WHERE(['ID_DETAIL' => $id[$index_detail]])->update($quiz);
