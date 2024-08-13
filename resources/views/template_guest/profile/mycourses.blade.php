@@ -3,7 +3,7 @@
 <div class="col ms-0 ms-md-4 px-5 py-5 shadow rounded-3 overflow-hidden bg-white">
     <h3 class="fw-bold pb-4" style="color:#45b104">Kursus Ku</h3>
     <div class="table-responsive">
-        <table class="table" style="color: #8A8A8E">
+        <table class="table table-hover" style="color: #8A8A8E">
             <thead>
                 <tr class="fw-normal text-black">
                     <td scope="col" class="fw-semibold fs-5" width="60%">Kursus</td>

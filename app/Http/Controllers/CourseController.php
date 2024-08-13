@@ -118,7 +118,7 @@ class CourseController extends Controller
 
         $data['ID_COURSE'] = $course['ID_COURSE'];
         $this->item_materi($data, $req);
-        return redirect('courses')->with(['succ_msg' => 'Successfully Add New Course', 'location' => 'courses']);
+        return redirect('courses')->with(['succ_msg' => 'Berhasil Menambahkan Kursus', 'location' => 'courses']);
     }
 
     public function deskripsi_get($id)
@@ -348,7 +348,7 @@ class CourseController extends Controller
 
         $this->update_materi($req);
 
-        return redirect('courses')->with(['succ_msg' => 'Successfully Update New Course', 'location' => 'courses']);
+        return redirect('courses')->with(['succ_msg' => 'Berhasi Memperbarui Kursus', 'location' => 'courses']);
     }
 
     public function update_materi($req)
@@ -456,7 +456,7 @@ class CourseController extends Controller
         DB::table('activity')->WHERE(['ID_ACTIVITY' => $find_id_course->ID_ACTIVITY])->delete();
         DB::statement('SET FOREIGN_KEY_CHECKS=1');
 
-        return redirect('courses')->with(['succ_msg' => 'Successfully Delete Course', 'location' => 'courses']);
+        return redirect('courses')->with(['succ_msg' => 'Berhasil Menghapus Kursus', 'location' => 'courses']);
     }
 
     public function item_materi($data, $req)

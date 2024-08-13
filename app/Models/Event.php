@@ -107,12 +107,14 @@ class Event extends Model
                 event.CONTACT_CUSTOMER, 
                 event.DESKRIPSI_EVENT, 
                 event.LINK_ZOOM,
+                event.KUOTA_PESERTA,
                 (SELECT COUNT(*)
-                    FROM payment p
-                    LEFT JOIN `order` o ON o.ID_PAY = p.ID_PAY 
+                    FROM `order` o
                     WHERE o.ID_USER = "' . session('user')[0]->get('ID_USER') . '"
-                    AND o.ID_PRODUCT = "' . $id_activity . '"
-                    AND p.DATE_PAY IS NOT NULL) as DATA_CHECKING,
+                    AND o.ID_PRODUCT = "' . $id_activity . '") as DATA_CHECKING,
+                (SELECT COUNT(*)
+                    FROM `order` o
+                    WHERE o.ID_PRODUCT = "' . $id_activity . '") as KUOTA,
                 (DATEDIFF(CURDATE(), activity.DATE_START) >= 1) as EXPIRED
             FROM activity
             LEFT OUTER JOIN event ON event.ID_ACTIVITY = activity.ID_ACTIVITY
@@ -131,6 +133,10 @@ class Event extends Model
                 event.CONTACT_CUSTOMER, 
                 event.DESKRIPSI_EVENT, 
                 event.LINK_ZOOM,
+                event.KUOTA_PESERTA,
+                (SELECT COUNT(*)
+                    FROM `order` o
+                    WHERE o.ID_PRODUCT = "' . $id_activity . '") as KUOTA,
                 DATEDIFF(CURDATE(), activity.DATE_START) >= 1 AS EXPIRED
             FROM 
                 activity

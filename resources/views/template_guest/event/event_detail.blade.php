@@ -25,6 +25,7 @@
                                     Bagikan :<span class="fs-5"> <i class="fab fa-facebook mx-2" style="cursor: pointer"></i><i class="fab fa-twitter me-2" style="cursor: pointer"></i><i class="fab fa-instagram" style="cursor: pointer"></i></span>
                                 </div>
                                 <?php if ($event->DATA_CHECKING == 0 && $event->EXPIRED != 1) : ?>
+                                    @if ($is_full == false)
                                     <div class="">
                                         <form class="" id="FormBuyNow-info" method="POST" action="<?= url('event/add') ?>">
                                             @csrf
@@ -33,6 +34,10 @@
                                             <button type="submit">Ambil Sekarang</button>
                                         </form>
                                     </div>
+                                    @endif
+                                    @if ($is_full == true && is_null($event->DATA_CHECKING))
+                                        <span class="bg-warning text-dark" disable> Mohon Maaf Kuota Penuh </span>                                    
+                                    @endif
                                 <?php endif ?>
                             </div>
 
@@ -55,7 +60,9 @@
                             <a class="nav-item nav-link" id="nav-instructor-tab" data-bs-toggle="tab" href="#nav-instructor" role="tab" aria-controls="nav-instructor-tab" aria-selected="false">Deskripsi</a>
                             <?php if (!empty(session('user')) && $event->DATA_CHECKING <> 0) : ?>
                                 <a class="nav-item nav-link" id="nav-link-tab" data-bs-toggle="tab" href="#nav-link" role="tab" aria-controls="nav-link-tab" aria-selected="false">Link Konferensi</a>
-                                <a class="nav-item nav-link" id="nav-certificate-tab" data-bs-toggle="tab" href="#nav-certificate" role="tab" aria-controls="nav-certificate-tab" aria-selected="false">Sertifikat</a>
+                                @if (!is_null($event->SERTIF_CODE) )
+                                    <a class="nav-item nav-link" id="nav-certificate-tab" data-bs-toggle="tab" href="#nav-certificate" role="tab" aria-controls="nav-certificate-tab" aria-selected="false">Sertifikat</a>
+                                @endif
                             <?php endif ?>
 
                         </div>
@@ -125,7 +132,7 @@
                                         <div class="row align-items-center">
                                             <div class="col-12">
                                                 <div class="instructor-content">
-                                                    <?php if (date('Y-m-d h:i:s') < $event->DATE_END) { ?>
+                                                    <?php if (date('Y-m-d h:i:s') > $event->DATE_END) { ?>
 
                                                         <div class="blurred-image d-none d-lg-block" style="pointer-events: none">
                                                             <embed class="overlay" style="width:200px; height:352px; pointer-events: none;" src="<?= $sertif->FILE_SERTIFIKAT ?>#toolbar=0&navpanes=0&scrollbar=0&statusbar=0&messages=0&scrollbar=0" type="text/plain"></embed>
@@ -137,7 +144,7 @@
                                                                 <button type="button" class="btn btn-primary col-md-12 my-3" onclick="DownloadPdf(this)">Unduh PDF</button>
                                                             </div>
                                                         </div>
-                                                    <?php } else if (date('Y-m-d h:i:s') > $event->DATE_START) { ?>
+                                                    <?php } else if (date('Y-m-d h:i:s') < $event->DATE_START) { ?>
                                                         <h4 class="event-title mb-0">Event belum dimulai</h4>
                                                     <?php } else { ?>
                                                         <h4 class="event-title mb-0">Event sedang berlangsung</h4>

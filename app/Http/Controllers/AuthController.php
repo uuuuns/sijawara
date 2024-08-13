@@ -167,7 +167,7 @@ class AuthController extends Controller
                 'name' => $req->input('name'),
                 'body' => 'Tekan Tombol dibawah ini untuk mengaktifkan akun.',
                 'link' => url('verification/confirm?token=' . $token_key),
-                'button' => "Verify",
+                'button' => "Aktifkan",
             ];
             $mail = new MailSender($details);
             $mail->subject("Email Verification");
@@ -184,7 +184,7 @@ class AuthController extends Controller
             ];
             DB::table('token')->insert($formDataToken);
 
-            return redirect('login')->with('succ_msg', 'Anda Berhasil Mendadaftar Periksa Email Anda Untuk Mengaktifkan Akun!');
+            return redirect('login')->with('succ_msg', 'Anda Berhasil Mendaftar, Periksa Email Anda Untuk Mengaktifkan Akun!');
         } else {
             return redirect('register')->with('error_msg', 'Email Telah Digunakan!');
         }

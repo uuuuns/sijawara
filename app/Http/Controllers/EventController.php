@@ -175,7 +175,7 @@ class EventController extends Controller
         DB::table('activity')->insert($activity);
         DB::table('event')->insert($event);
 
-        return redirect('events')->with(['succ_msg' => 'Successfully Add Events', 'location' => 'events']);
+        return redirect('events')->with(['succ_msg' => 'Berhasil Menambahkan Webinar', 'location' => 'events']);
     }
 
     public function update(Request $req)
@@ -212,7 +212,7 @@ class EventController extends Controller
         DB::table('activity')->WHERE(['ID_ACTIVITY' => $req->input('up_id_activity')])->update($activity);
         DB::table('event')->WHERE(['ID_ACTIVITY' => $req->input('up_id_activity')])->update($event);
 
-        return redirect('events')->with(['succ_msg' => 'Successfully Update Events', 'location' => 'events']);
+        return redirect('events')->with(['succ_msg' => 'Berhasil Memperbarui Webiar', 'location' => 'events']);
     }
 
     public function delete(Request $req)
@@ -220,7 +220,7 @@ class EventController extends Controller
         DB::table('event')->WHERE(['ID_ACTIVITY' => $req->input('id_activity')])->delete();
         DB::table('activity')->WHERE(['ID_ACTIVITY' => $req->input('id_activity')])->delete();
 
-        return redirect('events')->with('succ_msg', 'Data Deleted successfully');
+        return redirect('events')->with('succ_msg', 'Webinar Berhasil Dihapus');
     }
 
     public function deskripsi_get($id)

@@ -162,6 +162,7 @@ Route::middleware(['usersession:4,1'])->group(function () {
     Route::get('events/laporan_event', 'EventController@laporan_event');
     
     Route::post('user/jadikanAdmin', 'DashboardController@jadikanAdmin');
+    Route::get('user/detail_pengambilan', 'UserController@detail_pengambilan');
 });
 
 //Social Media Routes (Under Progress)
