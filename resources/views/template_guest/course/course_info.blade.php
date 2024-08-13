@@ -29,10 +29,10 @@
                                     <?= $course->DESKRIPSI_COURSE ?>
                                 </p>
 
-                                <div class="course-widget course-info">
+                                <!-- <div class="course-widget course-info">
                                     <h4 class="course-title">Apa yang akan anda pelajari?</h4>
                                     <?= $course->DESKRIPSI_COURSE_ITEM ?>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
 
