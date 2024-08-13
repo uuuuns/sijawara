@@ -150,21 +150,37 @@ class UserController extends Controller
     public function detail_pengambilan(Request $req)
     {
         try {
+            $data['title'] = "Detail Pengambilan";
+            $data['nama_user'] = DB::selectOne("
+                SELECT 
+                    NAME 
+                FROM 
+                    user 
+                WHERE 
+                    ID_USER = '".$req->input('id_user')."'");
             $data['activities'] = DB::select("
                 SELECT
                     a.TITLE_ACTIVITY ,
                     o.LOG_TIME ,
+                    u.NAME ,
                     a.TYPE_ACTIVITY 
                 FROM
                     activity a 
                 LEFT JOIN `order` o ON   
                     o.ID_PRODUCT  = a.ID_ACTIVITY 
+                LEFT JOIN user u ON   
+                    o.ID_USER  = u.ID_USER 
                 WHERE
-                    o.ID_USER = ''
+                    o.ID_USER = '".$req->input('id_user')."'
             ");
-            return $data;
+            $data['admin'] = true;
+            
+            return
+                view('template.header', $data) .
+                view('template_admin.detail_pengambilan_user', $data) .
+                view('template.footer', $data);  
         } catch (\Throwable $e) {
-            return $e;  
+            return redirect('user/detail_pengambilan')->with(['msg' => 'Error'.$e, 'location' => 'user']);  
         }
     }
 
