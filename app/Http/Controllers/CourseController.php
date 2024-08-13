@@ -346,7 +346,11 @@ class CourseController extends Controller
         DB::table('activity')->WHERE(['ID_ACTIVITY' => $req->input('ID_ACTIVITY')])->update($activity);
         DB::table('course')->WHERE(['ID_ACTIVITY' => $req->input('ID_ACTIVITY')])->update($course);
 
-        $this->update_materi($req);
+        DB::table('item_course')->WHERE(['ID_COURSE' => $req->input('ID_COURSE')])->delete();
+        DB::table('detail_quiz')->WHERE(['ID_COURSE' => $req->input('ID_COURSE')])->delete();
+
+        $data['ID_COURSE'] = $req->input('ID_COURSE');
+        $this->item_materi($data, $req);
 
         return redirect('courses')->with(['succ_msg' => 'Berhasi Memperbarui Kursus', 'location' => 'courses']);
     }
