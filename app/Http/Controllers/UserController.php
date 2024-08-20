@@ -10,11 +10,6 @@ use App\Models\FileUpload;
 
 class UserController extends Controller
 {
-    public function __construct()
-    {
-        //
-    }
-
     public function index() {
         $data['title'] = "User";
 
@@ -89,7 +84,7 @@ class UserController extends Controller
         DB::table('user')->INSERT($user);
         DB::table('user_data')->INSERT($userdata);
 
-        return redirect('user')->with(['succ_msg' => 'Successfully add new users', 'location' => 'user']);
+        return redirect('user')->with(['succ_msg' => 'Berhasil menambahkan user baru', 'location' => 'user']);
     }
 
     public function update(Request $req)
@@ -132,7 +127,7 @@ class UserController extends Controller
         DB::table('user')->WHERE(['ID_USER' => $req->input('up_id_user')])->update($user);
         DB::table('user_data')->WHERE(['ID_USER' => $req->input('up_id_user')])->update($userdata);
 
-        return redirect('user')->with(['succ_msg' => 'Successfully Update User', 'location' => 'user']);
+        return redirect('user')->with(['succ_msg' => 'Berhasil memperbarui user', 'location' => 'user']);
     }
 
     public function delete(Request $req)
@@ -142,7 +137,7 @@ class UserController extends Controller
                 'IS_DELETE'    => 1
             ];
             DB::table('user')->WHERE(['ID_USER' => $req->input('del_id_user')])->update($user);
-            return redirect('user')->with(['msg' => 'Successfully Delete User', 'location' => 'user']);    
+            return redirect('user')->with(['msg' => 'Berhasil menghapus user', 'location' => 'user']);    
         } catch (\Throwable $e) {
             return redirect('user')->with(['msg' => 'Error'.$e, 'location' => 'user']);  
         }

@@ -9,11 +9,6 @@ use Illuminate\Support\Facades\Session;
 
 class PromoController extends Controller
 {
-    public function __construct()
-    {
-        // 
-    }
-
     public function index()
     {
         $data['title'] = "Promo";
@@ -42,7 +37,7 @@ class PromoController extends Controller
 
         DB::table('promo')->insert($data);
 
-        return redirect('promo')->with('succ_msg', 'Successfully Add New Promo');
+        return redirect('promo')->with('succ_msg', 'Berhasil menambahkan promo baru');
     }
 
     public function update(Request $req)
@@ -56,7 +51,7 @@ class PromoController extends Controller
 
         DB::table('promo')->WHERE('ID_PROMO', '=', $req->input('up_id_promo'))->update($data);
 
-        return redirect('promo')->with('succ_msg', 'Successfully Update Promo');
+        return redirect('promo')->with('succ_msg', 'Berhasil memperbarui promo');
     }
 
     public function delete(Request $req)
@@ -64,6 +59,6 @@ class PromoController extends Controller
 
         DB::table('promo')->WHERE('ID_PROMO', '=', $req->input('id_promo'))->delete();
 
-        return redirect('promo')->with('succ_msg', 'Successfully Delete Promo');
+        return redirect('promo')->with('succ_msg', 'Berhasil memperbarui promo');
     }
 }

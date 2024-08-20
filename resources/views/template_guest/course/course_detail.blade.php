@@ -173,7 +173,7 @@
                                             <div class="mx-4 py-3 bg-white">
                                                 <label>Kode Sertifikat</label>
                                                 <form action="javascript:void(0)">
-                                                    <input type="text" class="form-control mb-4" name="" id="input-code">
+                                                    <input type="text" class="form-control mb-4" name="" id="input-code" style="text-transform:uppercase">
                                                     <button type="button" class="btn btn-primary rounded col-md-12 my-3" onclick="DownloadPdf(this)">Unduh PDF</button>
                                                 </form>
                                             </div>

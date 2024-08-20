@@ -21,9 +21,9 @@
                             </div>
 
                             <div class="container">
-                                <div class="my-3 fw-bold d-flex align-self-start justify-content-start pe-0 align-items-center text-black">
+                                {{-- <div class="my-3 fw-bold d-flex align-self-start justify-content-start pe-0 align-items-center text-black">
                                     Bagikan :<span class="fs-5"> <i class="fab fa-facebook mx-2" style="cursor: pointer"></i><i class="fab fa-twitter me-2" style="cursor: pointer"></i><i class="fab fa-instagram" style="cursor: pointer"></i></span>
-                                </div>
+                                </div> --}}
                                 <?php if ($event->DATA_CHECKING == 0 && $event->EXPIRED != 1) : ?>
                                     @if ($is_full == false)
                                     <div class="">

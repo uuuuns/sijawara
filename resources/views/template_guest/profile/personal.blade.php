@@ -58,6 +58,7 @@
     }
     edit.addEventListener('click', function() {
         $('.form-control').prop('readonly', (i, v) => !v);
+        $('.form-select').css('background', '#FFFFFF');
         $('.form-select').prop('disabled', (i, v) => !v);
         edit.innerHTML = edit.innerHTML === "Edit" ? "Save" : "Edit";
         $('#choose-button').css('cursor', 'pointer')
