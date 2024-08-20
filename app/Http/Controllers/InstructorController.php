@@ -9,11 +9,6 @@ use Illuminate\Support\Facades\Session;
 
 class InstructorController extends Controller
 {
-    public function __construct()
-    {
-        // 
-    }
-
     public function index()
     {
         $data['title'] = "Instruktur";
@@ -49,7 +44,7 @@ class InstructorController extends Controller
             'STATUS' => 0
         ];
         DB::table('instructor_req')->insert($data);
-        return redirect('profile')->with(['succ_msg' => 'Successfully Apply Instructor Waiting for Admin to Confirm', 'location' => 'profile']);
+        return redirect('profile')->with(['succ_msg' => 'Berhasil melamar sebagai instruktur, menunggu Admin untuk mengkonfirmasi', 'location' => 'profile']);
     }
 
     public function accept(Request $req)
@@ -60,7 +55,7 @@ class InstructorController extends Controller
 
         DB::table('instructor_req')->WHERE(['ID_USER' => $req->input('acc_id_instructor')])->update($accept);
         DB::table('user')->WHERE(['ID_USER' => $req->input('acc_id_instructor')])->update(['ID_ROLE' => 2]);
-        return redirect('instructor')->with(['succ_msg' => 'Successfully Update Data', 'location' => 'instructor']);
+        return redirect('instructor')->with(['succ_msg' => 'Berhasil memperbarui data', 'location' => 'instructor']);
     }
 
     public function decline(Request $req)
@@ -71,6 +66,6 @@ class InstructorController extends Controller
 
         DB::table('instructor_req')->WHERE(['ID_USER' => $req->input('dec_id_instructor')])->update($decline);
 
-        return redirect('instructor')->with(['succ_msg' => 'Successfully Update Data', 'location' => 'instructor']);
+        return redirect('instructor')->with(['succ_msg' => 'Berhasil memperbarui data', 'location' => 'instructor']);
     }
 }

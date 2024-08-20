@@ -13,11 +13,6 @@ use App\Models\Activity;
 
 class EventController extends Controller
 {
-    public function __construct()
-    {
-        // 
-    }
-
     public function index()
     {
         $data['title'] = "Webinar";
@@ -212,7 +207,7 @@ class EventController extends Controller
         DB::table('activity')->WHERE(['ID_ACTIVITY' => $req->input('up_id_activity')])->update($activity);
         DB::table('event')->WHERE(['ID_ACTIVITY' => $req->input('up_id_activity')])->update($event);
 
-        return redirect('events')->with(['succ_msg' => 'Berhasil Memperbarui Webiar', 'location' => 'events']);
+        return redirect('events')->with(['succ_msg' => 'Berhasil Memperbarui Webinar', 'location' => 'events']);
     }
 
     public function delete(Request $req)

@@ -11,14 +11,6 @@ use Illuminate\Http\Request;
 
 class GuestController extends Controller
 {
-	// public $session_data;
-	// function __construct()
-	// {
-	// 	parent::__construct();
-	// 	$this->load->model(['Event', 'Course', 'Category', 'Checkout']);
-	// 	// error_reporting(0);
-	// }
-
 	public function index()
 	{
 		$data['title'] = 'SIJAWARA+';

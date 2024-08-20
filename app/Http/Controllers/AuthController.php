@@ -63,13 +63,13 @@ class AuthController extends Controller
 
 
         if ($auth == null) {
-            return redirect()->back()->with('msg_auth', "Email or Password Wrong");
+            return redirect()->back()->with('msg_auth', "Email atau Password Salah");
         }
         if ($auth->STATUS == 0) {
-            return redirect()->back()->with('resp_msg', "Can't login, your account not verified, please check your email");
+            return redirect()->back()->with('resp_msg', "Tidak bisa masuk, akun anda belum diverifikasi, harap periksa email anda");
         }
         if ($auth->IS_DELETE == 1) {
-            return redirect()->back()->with('error_msg', "Can't login, your account is getting ban. Contact admin for more info");
+            return redirect()->back()->with('error_msg', "Tidak bisa masuk, akun anda telah di ban. Hubungi admin untuk informasi lebih lanjut");
         }
 
         if (!empty($auth)) {
@@ -255,7 +255,7 @@ class AuthController extends Controller
         ');
 
         if (empty($user_data)) {
-            return redirect('forgot-password')->with('resp_msg', 'Email not found in our system. Please Register first!');
+            return redirect('forgot-password')->with('resp_msg', 'Email tidak ditemukan di sistem kami. Harap daftar terlebih dahulu');
         }
 
         $checking_token = DB::selectOne('
@@ -289,9 +289,9 @@ class AuthController extends Controller
 
         $details = [
             'title' => 'Oh snap you forgot your password',
-            'body' => "Don't worry click this link below to reset password.",
+            'body' => "Jangan khawatir, tekan link dibawah untuk menyetel ulang password.",
             'link' => url('reset-password?token=' . $token_key),
-            'button' => 'Reset Password'
+            'button' => 'Setel Ulang Password'
         ];
 
         $mail = new MailSender($details);
@@ -317,10 +317,10 @@ class AuthController extends Controller
         if (!empty($data['token'])) {
             $dbtimestamp = strtotime($data['token']->LOG_TIME);
             if (time() - $dbtimestamp > 1 * 300) {
-                return redirect('forgot-password')->with('resp_msg', "Your token has been expired.");
+                return redirect('forgot-password')->with('resp_msg', "Token anda sudah kadaluarsa.");
             }
         } else {
-            return redirect('forgot-password')->with('resp_msg', "Token not found in our system.");
+            return redirect('forgot-password')->with('resp_msg', "Token tidak ditemukan di sistem.");
         }
         return view('template.header', $data) .
             view('auth.reset_password', $data) .
@@ -334,7 +334,7 @@ class AuthController extends Controller
 
         DB::table('user')->where('ID_USER', '=', $req->input('id_user'))->update($formDataReset);
 
-        return redirect('login')->with('resp_sts', 'success')->with('succ_msg', 'Your account password has been successfully reset.');
+        return redirect('login')->with('resp_sts', 'success')->with('succ_msg', 'Akun password anda berhasil di setel ulang.');
     }
 
     public function GenerateUniqID($var)

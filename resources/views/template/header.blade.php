@@ -35,15 +35,19 @@
     <script type="text/javascript" src="https://www.google.com/recaptcha/api.js"></script>
 
     <!-- sweetalert2 -->
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sweetalert2@11.6.6/dist/sweetalert2.all.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sweetalert2@11.6.6/dist/sweetalert2.all.min.js">
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
 
     <!-- Select2 css -->
     <link href="<?= asset('assets_admin/vendors/select2/select2.css') ?>" rel="stylesheet">
     <!-- DatePicker css -->
-    <link href="<?= asset('assets_admin/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css') ?>" rel="stylesheet">
+    <link href="<?= asset('assets_admin/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css') ?>"
+        rel="stylesheet">
     <!-- page css -->
     <link href="<?= asset('assets_admin/vendors/datatables/dataTables.bootstrap.min.css') ?>" rel="stylesheet">
     <!-- Dropify css -->
@@ -84,7 +88,8 @@
     </script>
 </head>
 
-<body id="top-header" style="<?= $title == "SIJAWARA+" ? "background-image: url(assets_new/images/new/bg.png);background-size: 100%;" : "" ?>">
+<body id="top-header"
+    style="<?= $title == 'SIJAWARA+' ? 'background-image: url(assets_new/images/new/bg.png);background-size: 100%;' : '' ?>">
     <style>
         :root {
             --theme-heading-font: "Poppins", sans-serif;
@@ -504,18 +509,28 @@
             <div class="container">
                 <div class="row justify-content-between align-items-center">
                     <div class="col-xl-8 col-lg-8 col-sm-6">
-                        <div class="header-contact text-center text-sm-start text-lg-start header-text" style="line-height: 1.5;">
-                            <a href="#">Jl. Raya Ki Ageng Gribig, Madyopuro, Kec. Kedungkandang, Kota Malang, Jawa Timur 65139 </a>
+                        <div class="header-contact text-center text-sm-start text-lg-start header-text"
+                            style="line-height: 1.5;">
+                            <a href="#">Jl. Raya Ki Ageng Gribig, Madyopuro, Kec. Kedungkandang, Kota Malang, Jawa
+                                Timur 65139 </a>
                         </div>
                     </div>
 
                     <div class="col-xl-4 col-lg-4 col-sm-6">
                         <div class="header-socials text-center text-lg-end">
                             <ul class="list-inline">
-                                <li class="list-inline-item"><a target="_blank" href="https://www.facebook.com/uptkukm"><i class="fab fa-facebook-f"></i></a></li>
-                                <li class="list-inline-item"><a target="_blank" href="https://www.instagram.com/uptkukmjatim"><i class="fab fa-instagram"></i></a></li>
-                                <li class="list-inline-item"><a target="_blank" href="https://www.linkedin.com/company/uptkukmjatim"><i class="fab fa-linkedin-in"></i></a></li>
-                                <li class="list-inline-item"><a target="_blank" href="https://www.youtube.com/@UPTPKUKMJATIM"><i class="fab fa-youtube"></i></a></li>
+                                <li class="list-inline-item"><a target="_blank"
+                                        href="https://www.facebook.com/uptkukm"><i class="fab fa-facebook-f"></i></a>
+                                </li>
+                                <li class="list-inline-item"><a target="_blank"
+                                        href="https://www.instagram.com/uptkukmjatim"><i
+                                            class="fab fa-instagram"></i></a></li>
+                                <li class="list-inline-item"><a target="_blank"
+                                        href="https://www.linkedin.com/company/uptkukmjatim"><i
+                                            class="fab fa-linkedin-in"></i></a></li>
+                                <li class="list-inline-item"><a target="_blank"
+                                        href="https://www.youtube.com/@UPTPKUKMJATIM"><i class="fab fa-youtube"></i></a>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -528,7 +543,8 @@
                 <div class="d-flex align-items-center justify-content-between">
                     <div class="site-logo">
                         <a href="{{ url('') }}" class="d-flex">
-                            <img class="logo-img" style="width: auto;" src="<?= asset('assets_new\images\new\sponsor\sijawara.png') ?>" alt="">
+                            <img class="logo-img" style="width: auto;"
+                                src="<?= asset('assets_new\images\new\sponsor\sijawara.png') ?>" alt="">
                             <!-- <img class="ms-3" style="width: auto; height: 35px;" src="<?= asset('assets_admin\images\logo\Logo MBKM.png') ?>" alt="">
                             <img class="ms-3" style="width: auto; height: 35px;" src="<?= asset('assets_admin\images\logo\logo-STIKI-PNG.png') ?>" alt=""> -->
                         </a>
@@ -549,35 +565,64 @@
                             </li>
 
                             <?php if (!empty(session('user')[0])) { ?>
-                                @if (session('user')[0]['ID_ROLE'] != 1)
+                            @if (session('user')[0]['ID_ROLE'] != 1)
                                 <li class="d-md-none">
                                     <a href="{{ url('profile') }}">Profil</a>
                                 </li>
-                                @endif
-                                <li class="d-md-none">
-                                    <a href="{{ url('profile/mycourses') }}">Kursus Ku</a>
-                                </li>
-                                <li class="d-md-none">
-                                    <a href="{{ url('profile/myevents') }}">Webinar Ku</a>
-                                </li>
-                                <li class="d-md-none">
-                                    <a target="_blank" href="https://perpustakaan.uptkukm.id/">Ebook Ku</a>
-                                </li>
-                                <li class="d-md-none">
-                                    <a href="{{ url('logout') }}">Keluar</a>
-                                </li>
+                            @endif
+                            <li class="d-md-none">
+                                <a href="{{ url('profile/mycourses') }}">Kursus Ku</a>
+                            </li>
+                            <li class="d-md-none">
+                                <a href="{{ url('profile/myevents') }}">Webinar Ku</a>
+                            </li>
+                            <li class="d-md-none">
+                                <a target="_blank" href="https://perpustakaan.uptkukm.id/">Ebook Ku</a>
+                            </li>
+                            <li class="d-md-none">
+                                <a href="{{ url('logout') }}">Keluar</a>
+                            </li>
                             <?php } else { ?>
-                                <li class="d-md-none">
-                                    <a href="{{ url('login') }}">Masuk</a>
-                                </li>
-                                <li class="d-md-none">
-                                    <a href="{{ url('register') }}">Daftar</a>
-                                </li>
+                            <li class="d-md-none">
+                                <a href="{{ url('login') }}">Masuk</a>
+                            </li>
+                            <li class="d-md-none">
+                                <a href="{{ url('register') }}">Daftar</a>
+                            </li>
                             <?php } ?>
                         </ul>
 
                         <a href="#" class="nav-close"><i class="fal fa-times"></i></a>
                     </nav>
+
+                    <style>
+                        .site-navbar .primary-menu li.d-md-none a {
+                            font-weight: bold;
+                            /* Different style for the current page */
+                        }
+
+                        .site-navbar .primary-menu li a {
+                            border-radius: 8px;
+                            padding: 10px 10px;
+                            text-decoration: none;
+                            color: #000;
+                            /* Initial background color */
+                            transition: background-color 0.3s ease, color 0.3s ease;
+                            /* Smooth transition */
+                        }
+
+                        .site-navbar .primary-menu li a:hover {
+                            color: #fff;
+                            /* Text color on hover */
+                            background-color: #61BD2A;
+                            /* Background color on hover */
+                        }
+
+                        .site-navbar .primary-menu li.current a {
+                            font-weight: bold;
+                            /* Different style for the current page */
+                        }
+                    </style>
 
 
                     <div class="d-none">
@@ -588,41 +633,43 @@
                     </div>
 
                     <?php if (!empty(session('user')[0])) { ?>
-                        <nav class="header-btn d-none d-md-block">
-                            <ul class="primary-menu">
-                                <li>
-                                    <a href="#">
-                                        <?php if (empty(session('user')[0]['PROFILE_PICTURE'])) { ?>
-                                            <i class="far fa-user"></i>
-                                        <?php    } else { ?>
-                                            <img class="nav-link rounded-circle " style="height:40px;width:40px;background-size:cover;background-image: url('<?= session('user')[0]['PROFILE_PICTURE'] ?>')">
-                                            </img>
-                                        <?php    } ?>
-                                        <span class="text-truncate mx-2">
-                                            <?= (session('user')[0]['NAME']) ?>
-                                        </span>
-                                    </a>
-                                    <ul class="submenu" style="left: initial;right:0">
-                                        <?php if (session('user')[0]['ID_ROLE'] == 1 || session('user')[0]['ID_ROLE'] == 4) { ?>
-                                            <li><a class="" href="<?= url('dashboard') ?>">Beranda </a></li>
-                                        <?php    } else { ?>
-                                            <li><a class="" href="<?= url('profile') ?>">Profile</a></li>
-                                            <li><a class=" " href="<?= url('profile/mycourses') ?>">Kursus Ku</a></li>
-                                            <li><a class="" href="<?= url('profile/myevents') ?>">Webinar Ku</a></li>
-                                            <li><a class="" target="_blank" href="https://perpustakaan.uptkukm.id/">Ebook Ku</a></li>
-                                        <?php    } ?>
-                                        <hr>
-                                        <li><a class="text-danger" href="<?= url('logout') ?>">Keluar</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
+                    <nav class="header-btn d-none d-md-block">
+                        <ul class="primary-menu">
+                            <li>
+                                <a href="#">
+                                    <?php if (empty(session('user')[0]['PROFILE_PICTURE'])) { ?>
+                                    <i class="far fa-user"></i>
+                                    <?php    } else { ?>
+                                    <img class="nav-link rounded-circle "
+                                        style="height:40px;width:40px;background-size:cover;background-image: url('<?= session('user')[0]['PROFILE_PICTURE'] ?>')">
+                                    </img>
+                                    <?php    } ?>
+                                    <span class="text-truncate mx-2">
+                                        <?= session('user')[0]['NAME'] ?>
+                                    </span>
+                                </a>
+                                <ul class="submenu" style="left: initial;right:0">
+                                    <?php if (session('user')[0]['ID_ROLE'] == 1 || session('user')[0]['ID_ROLE'] == 4) { ?>
+                                    <li><a class="" href="<?= url('dashboard') ?>">Beranda </a></li>
+                                    <?php    } else { ?>
+                                    <li><a class="" href="<?= url('profile') ?>">Profile</a></li>
+                                    <li><a class=" " href="<?= url('profile/mycourses') ?>">Kursus Ku</a></li>
+                                    <li><a class="" href="<?= url('profile/myevents') ?>">Webinar Ku</a></li>
+                                    <li><a class="" target="_blank"
+                                            href="https://perpustakaan.uptkukm.id/">Ebook Ku</a></li>
+                                    <?php    } ?>
+                                    <hr>
+                                    <li><a class="text-danger" href="<?= url('logout') ?>">Keluar</a></li>
+                                </ul>
+                            </li>
+                        </ul>
 
-                        </nav>
+                    </nav>
                     <?php  } else { ?>
-                        <div class="header-btn d-none d-xl-block">
-                            <a href="{{ url('login') }}" class="login">Masuk</a>
-                            <a href="{{ url('register') }}" class="btn btn-main-2 btn-sm-2 rounded">Daftar</a>
-                        </div>
+                    <div class="header-btn d-none d-xl-block">
+                        <a href="{{ url('login') }}" class="login rounded">Masuk</a>
+                        <a href="{{ url('register') }}" class="btn btn-main-2 btn-sm-2 rounded">Daftar</a>
+                    </div>
                     <?php } ?>
                 </div>
             </div>

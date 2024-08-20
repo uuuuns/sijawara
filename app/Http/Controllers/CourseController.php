@@ -13,10 +13,6 @@ use App\Models\FileUpload;
 class CourseController extends Controller
 {
     private $id_detailCourse = 0;
-    public function __construct()
-    {
-        // 
-    }
     public function index()
     {
         $data['title'] = "Kursus";
@@ -642,7 +638,7 @@ class CourseController extends Controller
         }
 
         if (empty($id_users)) {
-            return redirect('courses/invite?id_activity=' . $id_activity)->with(['err_msg' => 'Choose at least one user', 'location' => 'courses/invite?id_activity=' . $id_activity]);
+            return redirect('courses/invite?id_activity=' . $id_activity)->with(['err_msg' => 'Pilih setidaknya satu pengguna', 'location' => 'courses/invite?id_activity=' . $id_activity]);
         }
 
         foreach ($id_users as $id_user) {
@@ -658,7 +654,7 @@ class CourseController extends Controller
             ");
 
             if (!empty($cek_data)) {
-                return redirect('courses/invite?id_activity=' . $id_activity)->with(['err_msg' => 'Choose at least one user', 'location' => 'courses/invite?id_activity=' . $id_activity]);
+                return redirect('courses/invite?id_activity=' . $id_activity)->with(['err_msg' => 'Pilih setidaknya satu pengguna', 'location' => 'courses/invite?id_activity=' . $id_activity]);
             } else {
                 $invited = [
                     'ID_USER'       => $id_user,
@@ -667,7 +663,7 @@ class CourseController extends Controller
                 DB::table('tb_invited')->insert($invited);
             }
         }
-        return redirect('courses/invite?id_activity=' . $id_activity)->with(['succ_msg' => 'Successfully Invite User', 'courses/invite?id_activity=' . $id_activity]);
+        return redirect('courses/invite?id_activity=' . $id_activity)->with(['succ_msg' => 'Berhasil mengundang user', 'courses/invite?id_activity=' . $id_activity]);
     }
 
     public function GenerateUniqID($prefix, $var)

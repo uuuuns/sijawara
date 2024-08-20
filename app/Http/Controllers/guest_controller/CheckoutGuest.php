@@ -185,7 +185,7 @@ class CheckoutGuest extends Controller
 		echo json_encode(array(
 			'IdOrder' => (!empty($data_order['ID_ORDER']) ? $data_order['ID_ORDER'] : ""),
 			'Status' => (!empty($id_activity) && !empty(session('user')[0]->get('ID_USER'))),
-			'Message' => (!empty(session('user')[0]->get('ID_USER'))) ? $msg : 'Please login first!'
+			'Message' => (!empty(session('user')[0]->get('ID_USER'))) ? $msg : 'Harap login terlebih dahulu!'
 		));
 	}
 	public function deleteOrder()
@@ -328,10 +328,6 @@ class CheckoutGuest extends Controller
 			WHERE
 				ID_ACTIVITY IN ('".implode("', '", $id_item)."')
 		");
-		// if (!empty($id_promo_code)) {
-		// 	$this->promoModel->usePromo($id_promo_code);
-		// }		
-
 		
 		if ((int)$_POST['total_bayar'] != 0) {
 			$checking_trans = $this->checkoutModel->get_trans(session('user')[0]->get('ID_USER'));

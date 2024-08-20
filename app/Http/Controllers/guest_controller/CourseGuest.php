@@ -344,7 +344,6 @@ class CourseGuest extends Controller
 		$data['title'] = 'Course';
 		$data_user = (session('user') == null) ? null : Session::get('user')[0]->get('ID_USER');
 
-
 		DB::statement("SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));");
 		$id_activity = $_GET['id_activity'];
 		$data['checking_trans'] = $this->checkoutModel->get_trans($data_user);
@@ -356,6 +355,25 @@ class CourseGuest extends Controller
 			'materi' => 0,
 			'quiz' => 0
 		);
+		if ($data['course']->IS_PUBLIC === 0){
+			$CHECKING_USER = DB::SelectOne("
+				SELECT
+					ti.*
+				FROM
+					tb_invited ti
+				LEFT JOIN activity a ON
+					ti.ID_ACTIVITY = a.ID_ACTIVITY
+				WHERE
+					ti.ID_ACTIVITY = '" . $data['course']->ID_ACTIVITY . "'
+				AND
+					ti.ID_USER = '" . session('user')[0]->get('ID_USER') . "'
+			");
+			
+			if (empty($CHECKING_USER)) {
+				return redirect()->back()->with(['err_msg' => 'Metode ini tidak diperbolehkan']);;
+			}
+		}
+
 		foreach ($data_itemCourse as $item) {
 			if ($item->TYPE == 1) {
 				array_push(
