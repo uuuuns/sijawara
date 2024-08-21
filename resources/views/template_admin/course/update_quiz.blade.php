@@ -1,4 +1,4 @@
-<div class="card" id="quiz_item_{{ $no }}">
+<div class="card" id="quiz_item_{{ $id_quiz }}">
     <div class="card-header">
         <h5 class="card-title d-flex align-items-center row">
             <a data-toggle="collapse" href="#collapse{{ $no }}" class="col-md-12">
@@ -22,7 +22,7 @@
             <div class="soal_form_{{ $no }}"></div>
             <div class="form-group row">
                 <div class="col-md-7">
-                    <div id="add_new_soal_{{ $no }}" class="btn btn-success rounded col-md-4 float-end mx-2"
+                    <div id="add_new_soal_{{ $no }}{{ $id_quiz }}" class="btn btn-success rounded col-md-4 float-end mx-2"
                         style="cursor: pointer;">
                         <span class="col-md-12 text-white">Tambahkan Pertanyaan</span>
                     </div>
@@ -40,7 +40,8 @@
         }
     });
 
-    var i_question_{{ $no }} = 0;
+    var index = {{ $no_index }};
+    
     var quizData = <?= json_encode($quiz[$id_quiz]) ?>;
 
     $('input[name="ID_ITEM[]"]').val()
@@ -52,7 +53,9 @@
         type: "POST",
         contentType: "application/json",
         data: JSON.stringify({
-            quizData: quizData
+            quizData: quizData,
+            no: {{ $no }},
+            no_index: {{ $no_index }},
         }),
         beforeSend: function() {
             $('#add_new_soal_{{ $no }}').toggleClass("is-loading");
@@ -60,22 +63,30 @@
         success: function(response) {
             $(".soal_form_{{ $no }}").append(response.html);
             $('#add_new_soal_{{ $no }}').removeClass("is-loading");
+            index++;
         },
         error: function(xhr, status, error) {
             $('#add_new_soal_{{ $no }}').removeClass("is-loading");
         }
     });
+    
+    $('#delete_quiz_{{ $no }}').click(function(e) {
+        $(this).toggleClass("is-loading");
+        $("#delete_quiz_{{ $no }}").removeClass("is-loading")
+        $("#quiz_item_{{ $id_quiz }}").remove();
+    });
 
-    $('#add_new_soal_{{ $no }}').click(function() {
-        $('#add_new_soal_{{ $no }}').toggleClass("is-loading");
+    $('#add_new_soal_{{ $no }}{{ $id_quiz }}').click(function() {        
+        $('#add_new_soal_{{ $no }}{{ $id_quiz }}').toggleClass("is-loading");
         $.ajax({
-            url: 'add_quiz_question?id_quiz=' + {{ $no }},
+            url: 'add_question/' + {{ $no }} +'/'+ index,
             success: function(html) {
                 $(".soal_form_{{ $no }}").append(html);
                 $('#add_new_batch_soal_{{ $no }}').removeClass("is-loading");
                 $('#add_new_soal_{{ $no }}').removeClass("is-loading");
-                i_question_{{ $no }}++;
+                index++;
             }
         });
     })
+    
 </script>

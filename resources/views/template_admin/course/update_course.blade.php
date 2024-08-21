@@ -239,7 +239,7 @@
                 $(".materi_form").append(html);
                 $("#add_item").removeClass("disabled");
                 $("#add_item").html("Tambahkan Bab atau Kuis");
-                i++;
+                item++;
                 limit++;
             }
         });
@@ -255,7 +255,7 @@
                 $(".materi_form").append(html);
                 $("#add_item").removeClass("disabled");
                 $("#add_item").html("Tambahkan Bab atau Kuis");
-                i++;
+                item++;
                 limit++;
                 id_quiz++;
             }

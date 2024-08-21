@@ -321,6 +321,52 @@ class Course extends Model
     // QUERY UPDATE DATA
     public function updateMappingIndex($id_course, $id_activity)
     {
+        $dataOldMapping = DB::select("
+			SELECT
+				*
+			FROM
+				mapping_course
+			WHERE
+				ID_USER = '" . session('user')[0]->get('ID_USER') . "' 
+				AND 
+				ID_ACTIVITY = '" . $id_activity . "'
+		");
+
+		$dataNewMapping = DB::select('
+			SELECT
+				ic.ID_ITEM
+			FROM
+				course c
+			LEFT JOIN item_course ic ON
+				ic.ID_COURSE = c.ID_COURSE
+			WHERE
+				c.ID_ACTIVITY = "' . $id_activity . '"
+		');
+
+		$oldIDMapping = [];
+		foreach ($dataNewMapping as $key => $newItem) {
+			if (!empty($dataOldMapping[$key])) {
+				$oldIDMapping[] = $dataOldMapping[$key]->ID_MAPPING;
+				$oldData = $dataOldMapping[$key];
+				$newDataMapping = [
+					'ID_USER' => session('user')[0]->get('ID_USER'),
+					'ID_ACTIVITY' => $oldData->ID_ACTIVITY,
+					'STATUS' => $oldData->STATUS,
+					'ID_ITEM' => $newItem->ID_ITEM
+				];
+			} else {
+				$newDataMapping = [
+					'ID_USER' => session('user')[0]->get('ID_USER'),
+					'ID_ACTIVITY' => $oldData->ID_ACTIVITY,
+					'STATUS' => 0,
+					'ID_ITEM' => $newItem->ID_ITEM
+				];
+			}
+			DB::table('mapping_course')->insert($newDataMapping);
+		}
+
+		DB::table('mapping_course')->whereIn('ID_MAPPING', $oldIDMapping)->delete();
+        
         // $mapping = $this->db->get_where('mapping_course', ['ID_USER' => session('user')[0]->get('ID_USER'), 'ID_ACTIVITY' => $id_activity])->result_array();
         $mapping = DB::select('
             SELECT

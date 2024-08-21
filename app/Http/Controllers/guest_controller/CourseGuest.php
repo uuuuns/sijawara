@@ -63,9 +63,9 @@ class CourseGuest extends Controller
 		$data['course'] = $this->courseModel->get_course($data['id_activity']);
 		$condition = "item_course.ID_COURSE = '" . $data['course']->ID_COURSE . "'" .
 			" AND mapping_course.ID_USER = '" . session('user')[0]->get('ID_USER') . "'";
-			" AND mapping_course.ID_USER = '" . session('user')[0]->get('ID_USER') . "'";
+		" AND mapping_course.ID_USER = '" . session('user')[0]->get('ID_USER') . "'";
 		$this->courseModel->updateMappingIndex($data['course']->ID_COURSE, $data['id_activity']);
-					" AND mapping_course.ID_USER = '" . session('user')[0]->get('ID_USER') . "'";
+		" AND mapping_course.ID_USER = '" . session('user')[0]->get('ID_USER') . "'";
 		$this->courseModel->updateMappingIndex($data['course']->ID_COURSE, $data['id_activity']);
 		$data['item_course'] = $this->courseModel->get_item_course($condition);
 		$data['last_item'] = DB::select('
@@ -254,9 +254,9 @@ class CourseGuest extends Controller
 
 			if ($max_id_item->MAX_ID != $data['data_all_mapping'][0]->ID_ITEM) {
 				DB::table("order")
-				->where('ID_USER', session('user')[0]->get('ID_USER'))
-				->where('ID_PRODUCT', $_POST['id_activity'])
-				->update($count);
+					->where('ID_USER', session('user')[0]->get('ID_USER'))
+					->where('ID_PRODUCT', $_POST['id_activity'])
+					->update($count);
 			}
 
 			if ($data['type'] == 2) {
@@ -285,7 +285,7 @@ class CourseGuest extends Controller
 				AND STATUS = 1
 			ORDER BY ID_ITEM DESC
 		');
-			
+
 		$condition = ['tc.ID_ITEM = ' . $data['id_item']];
 		// GET DATA UNTUK MATERI, ELSE QUIZ
 		$sql = "
@@ -297,7 +297,7 @@ class CourseGuest extends Controller
 				" . implode('AND ', $condition) . "
 			";
 		$data['detail_item_course'] = DB::select($sql)[0];
-		
+
 		if ($data['type'] != 1) {
 			$sql = "
 			SELECT
@@ -323,21 +323,24 @@ class CourseGuest extends Controller
 			";
 			$data['detail_item_course'] = DB::select($sql);
 		}
+
 		return view('template_guest.course.ajax.detail_item', $data);
 	}
 	public function getMappingCourse()
 	{
-		$condition_all_mapping = "ID_USER = '" . session('user')[0]->get('ID_USER') . "' AND ID_ACTIVITY = '" . $_POST['id_activity'] . "'";
 		// $data_all_mapping = $this->courseModel->get_all_mapping($condition_all_mapping);
-		$data_all_mapping = DB::select('
+		
+		$newDataItem = DB::select("
 			SELECT
 				*
 			FROM
 				mapping_course
 			WHERE
-				' . $condition_all_mapping . '
-		');
-		echo json_encode($data_all_mapping);
+				ID_USER = '" . session('user')[0]->get('ID_USER') . "' 
+				AND 
+				ID_ACTIVITY = '" . $_POST['id_activity'] . "'
+		");
+		echo json_encode($newDataItem);
 	}
 	public function infoCourse()
 	{
@@ -406,7 +409,6 @@ class CourseGuest extends Controller
 			view('template_guest.course.course_info', $data) .
 			view('template.footer', $data);
 	}
-
 	public function add_event(Request $req)
 	{
 		$check_data = DB::select("
@@ -447,7 +449,6 @@ class CourseGuest extends Controller
 			return redirect('profile/mycourses')->with(['err_msg' => 'Sudah mengambil join Kursus ini', 'location' => 'profile/mycourses']);
 		}
 	}
-
 	public function InsertDataMapping($item)
 	{
 		$data_course = $this->courseModel->get_course($item);
@@ -653,7 +654,6 @@ class CourseGuest extends Controller
 		return
 			view('template_guest.course.ajax.course_by_category', $data);
 	}
-
 	public function GenerateUniqID_Order($var)
 	{
 		$string = preg_replace('/[^a-z]/i', '', $var);
