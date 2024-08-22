@@ -13,7 +13,8 @@
             </a>
         </h5>
     </div>
-    <input type="hidden" name="materi_file[]">
+    <input id="file-upload" type="file" name="materi_file[]" style="display: none;">
+    <input type="hidden" name="default_file[]">
     <input type="hidden" name="materi_title[]">
     <input type="hidden" name="materi_link[]">
     <input type="hidden" name="desc_materi[]">

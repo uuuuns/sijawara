@@ -900,20 +900,23 @@ class CourseController extends Controller
         $kunci_soal         = $req->input('kunci_soal');
 
         $tmpNo = 0;
-        $tmpNoQuiz = 0;
+        $tmpNoQuiz = 0; 
         foreach ($question as $i => $questions) {
             $id_quiz = $lastIdQuiz[$tmpNoQuiz];
-            for ($j = 1; $j <= count($questions); $j++) {
-                $quiz = [
-                    'ID_QUIZ'       => $id_quiz,
-                    'ID_COURSE'     => $data['ID_COURSE'],
-                    'SOAL'          => $questions[$j],
-                    'PIL_JWB'       => implode(';', [$jawaban_a[$tmpNo], $jawaban_b[$tmpNo], $jawaban_c[$tmpNo], $jawaban_d[$tmpNo]]),
-                    'KUNCI'         => $kunci_soal[$i][$j],
-                    'ORDER_LIST'    => $order_list_quiz[$tmpNo]
-                ];
-                DB::table('detail_quiz')->insert($quiz);
-                $tmpNo++;
+            $maxIndex = max(array_keys($questions));
+            for ($j = 1; $j <= $maxIndex; $j++) {
+                if(array_key_exists($j, $questions)) {
+                    $quiz = [
+                        'ID_QUIZ'       => $id_quiz,
+                        'ID_COURSE'     => $data['ID_COURSE'],
+                        'SOAL'          => $questions[$j],
+                        'PIL_JWB'       => implode(';', [$jawaban_a[$tmpNo], $jawaban_b[$tmpNo], $jawaban_c[$tmpNo], $jawaban_d[$tmpNo]]),
+                        'KUNCI'         => $kunci_soal[$i][$j],
+                        'ORDER_LIST'    => $order_list_quiz[$tmpNo]
+                    ];
+                    DB::table('detail_quiz')->insert($quiz);
+                    $tmpNo++;
+                }
             }
             $tmpNoQuiz++;
         }
@@ -924,17 +927,19 @@ class CourseController extends Controller
         $categoryList       = $req->input('type');
         $materiTitleList    = $req->input('materi_title');
         $descMateriList     = $req->input('desc_materi');
-        $file               = $req->file('materi_file');
         $linkYT             = $req->input('materi_link');
-        $idQuiz          = [];
+        $file = $req->file('materi_file');
+        $file_default = $req->input('default_file');
+        
 
+        $idQuiz = [];
         if (!empty($orderList)) {
             for ($i = 0; $i < count($orderList); $i++) {
                 if ($categoryList[$i] == 1) {
                     $data_item = [
                         'ID_COURSE'     => $data['ID_COURSE'],
                         'TITLE'         => $materiTitleList[$i],
-                        'FILE'          => !empty($file[$i]) ? FileUpload::S3($file[$i], 'MATERI_FILE', 'Materi-' . strtotime(now())) : null,
+                        'FILE'          => !empty($file[$i]) ? FileUpload::S3($file[$i], 'MATERI_FILE', 'Materi-' . str_replace(' ', '', $materiTitleList[$i]) . '-' . strtotime(now())) : (!empty($file_default[$i]) ? $file_default[$i] : null),
                         'LINK_YT'       => $linkYT[$i],
                         'DESKRIPSI'     => $descMateriList[$i],
                         'ORDER_LIST'    => $orderList[$i],
