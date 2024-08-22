@@ -399,6 +399,21 @@ class Course extends Model
                 ID_COURSE = "' . $id_course . '"
         ');
 
+        $mapping_progress = DB::selectOne('
+            SELECT
+                MAPPING_COUNT,
+                COURSE_COMPLETED
+            FROM
+               `order`
+            WHERE
+                ID_USER = "' . session('user')[0]->get('ID_USER') . '"
+                AND ID_PRODUCT = "' . $id_activity . '"
+        ');
+
+        if ($mapping_aktif->total-1 != $mapping_progress->MAPPING_COUNT && $mapping_progress->COURSE_COMPLETED != 1) {
+            DB::table('order')->where('ID_PRODUCT', $id_activity)->where('ID_USER', session('user')[0]->get('ID_USER'))->update(['MAPPING_COUNT' => $mapping_aktif->total-1]);
+        }
+
         if (count($mapping) < count($new_item)) {
             for ($i = 0; $i < count($new_item); $i++) {
                 if (!empty($mapping[$i]->ID_ITEM)) {

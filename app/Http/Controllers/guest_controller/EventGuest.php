@@ -55,7 +55,7 @@ class EventGuest extends Controller
 									WHERE 
 										o.ID_PRODUCT = activity.ID_ACTIVITY 
 								) as participant, 
-								(DATEDIFF(CURDATE(), activity.DATE_START) >= 1) as EXPIRED')
+								(DATEDIFF(CURDATE(), activity.DATE_END) >= 1) as EXPIRED')
 					->leftJoin('event', 'event.ID_ACTIVITY', '=', 'activity.ID_ACTIVITY')
 					->where('TYPE_ACTIVITY', 2)
 					->Paginate($perPage, ['*'], 'page', $currentPage);
@@ -87,7 +87,7 @@ class EventGuest extends Controller
 									WHERE 
 										o.ID_PRODUCT = activity.ID_ACTIVITY 
 								) as participant, 
-								(DATEDIFF(CURDATE(), activity.DATE_START) >= 1) as EXPIRED', [session('user')[0]->get('ID_USER')])
+								(DATEDIFF(CURDATE(), activity.DATE_END) >= 1) as EXPIRED', [session('user')[0]->get('ID_USER')])
 					->leftJoin('event', 'event.ID_ACTIVITY', '=', 'activity.ID_ACTIVITY')
 					->where('activity.TYPE_ACTIVITY', 2)
 					->paginate($perPage, ['*'], 'page', $currentPage);
@@ -171,11 +171,13 @@ class EventGuest extends Controller
 			$data['sertif'] = $sertifCheck;
 		}
 		$data['checkout'] = $this->checkoutModel->get_all_order($data_user);
-		if ($data['event']->KUOTA >= $data['event']->KUOTA_PESERTA) {
-			$data['is_full'] = true;
-		} else {
+		
+		if (is_null($data['event']->KUOTA_PESERTA)) {
 			$data['is_full'] = false;
+		} else if ($data['event']->KUOTA >= $data['event']->KUOTA_PESERTA) {
+			$data['is_full'] = true;
 		}
+
 		return
 		 view('template.header', $data) .
 		 view('template_guest.event.event_detail', $data) .

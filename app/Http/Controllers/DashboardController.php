@@ -33,6 +33,8 @@ class DashboardController extends Controller
                     COUNT(a.ID_ACTIVITY) AS TOTAL
                 FROM
                     activity a
+                WHERE
+                    a.TYPE_ACTIVITY = 2
             ");
 
             $data['total_user'] = DB::select("
@@ -40,6 +42,8 @@ class DashboardController extends Controller
                     COUNT(u.ID_USER) AS TOTAL
                 FROM
                     user u
+                WHERE
+                    u.IS_DELETE = 0
             ");
         } else {
             $data['total_revenue'] = DB::select("
@@ -69,6 +73,7 @@ class DashboardController extends Controller
                     activity a
                 WHERE
                     a.ID_USER = '" . session('user')[0]->get('ID_USER') . "'
+                    AND a.TYPE_ACTIVITY = 2
             ");
         }
             $data['admin'] = true;

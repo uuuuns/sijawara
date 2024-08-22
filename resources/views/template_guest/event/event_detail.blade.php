@@ -133,7 +133,6 @@
                                             <div class="col-12">
                                                 <div class="instructor-content">
                                                     <?php if (date('Y-m-d h:i:s') > $event->DATE_END) { ?>
-
                                                         <div class="blurred-image d-none d-lg-block" style="pointer-events: none">
                                                             <embed class="overlay" style="width:200px; height:352px; pointer-events: none;" src="<?= $sertif->FILE_SERTIFIKAT ?>#toolbar=0&navpanes=0&scrollbar=0&statusbar=0&messages=0&scrollbar=0" type="text/plain"></embed>
                                                         </div>

@@ -60,7 +60,7 @@ class Event extends Model
         $data['query'] = DB::select("
         SELECT 
             activity.*,
-            (DATEDIFF(CURDATE(), activity.DATE_START) >= 1) as EXPIRED
+            (DATEDIFF(CURDATE(), activity.DATE_END) >= 1) as EXPIRED
             FROM 
                 activity
             LIMIT 
@@ -82,7 +82,7 @@ class Event extends Model
         $data = DB::select('
         SELECT 
             activity.*,
-            DATEDIFF(CURDATE(), activity.DATE_START) >= 1 AS EXPIRED
+            DATEDIFF(CURDATE(), activity.DATE_END) >= 1 AS EXPIRED
         FROM 
             activity
         WHERE 
@@ -115,7 +115,7 @@ class Event extends Model
                 (SELECT COUNT(*)
                     FROM `order` o
                     WHERE o.ID_PRODUCT = "' . $id_activity . '") as KUOTA,
-                (DATEDIFF(CURDATE(), activity.DATE_START) >= 1) as EXPIRED
+                (DATEDIFF(CURDATE(), activity.DATE_END) >= 1) as EXPIRED
             FROM activity
             LEFT OUTER JOIN event ON event.ID_ACTIVITY = activity.ID_ACTIVITY
             WHERE activity.TYPE_ACTIVITY = 2
@@ -137,7 +137,7 @@ class Event extends Model
                 (SELECT COUNT(*)
                     FROM `order` o
                     WHERE o.ID_PRODUCT = "' . $id_activity . '") as KUOTA,
-                DATEDIFF(CURDATE(), activity.DATE_START) >= 1 AS EXPIRED
+                DATEDIFF(CURDATE(), activity.DATE_END) >= 1 AS EXPIRED
             FROM 
                 activity
             LEFT OUTER JOIN 
