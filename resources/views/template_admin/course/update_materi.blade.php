@@ -5,6 +5,7 @@
                 <span class="col-md-11">Detail - Materi <?= $item['TITLE'] ?></span>
                 <input type="hidden" class="form-control" name="order_list[]" value="{{ $no }}" required>
                 <input type="hidden" class="form-control" name="type[]" value="1" required>
+                <input type="hidden" name="default_file[]" value="<?= $item['FILE'] ?>">
                 <input type="hidden" name="ID_ITEM[]" value="<?= $item['ID_ITEM'] ?>">
                 <div id="delete_materi_{{ $no }}" class="btn btn-danger px-1 py-0 float-end"
                     style="cursor: pointer;">
@@ -50,21 +51,32 @@
 </div>
 <script>
     $('input[name="materi_file[]"]').each(function() {
+        var dropifyInstance = $(this).data('dropify');
+        
         if ($(this).attr('type') === 'hidden') {
-            var dropifyInstance = $(this).data('dropify');
+            if (dropifyInstance) {
+                dropifyInstance.destroy();
+            }
+        } else if ($(this).attr('id') === 'file-upload') {
             if (dropifyInstance) {
                 dropifyInstance.destroy();
             }
         } else {
+            if (dropifyInstance) {
+                dropifyInstance.destroy();  // Destroy the current instance if it exists
+            }
+            
             var dropifyElement = $(this).dropify();
-            var dropifyInstance = dropifyElement.data('dropify');
+            dropifyInstance = dropifyElement.data('dropify');
+            
             dropifyInstance.resetPreview();
             dropifyInstance.clearElement();
-            dropifyInstance.settings['defaultFile'] = "{{ $item['FILE'] }}";
+            dropifyInstance.settings.defaultFile = "{{ $item['FILE'] }}";  // Adjust this part based on your server-side logic
             dropifyInstance.destroy();
-            dropifyInstance.init();
+            dropifyInstance.init();  // Re-initialize the dropify instance with new settings
         }
     });
+
 
     $(document).ready(function() {
         var $editor = $('#mytextarea_{{ $no }}');
