@@ -62,18 +62,13 @@
                 dropifyInstance.destroy();
             }
         } else {
-            if (dropifyInstance) {
-                dropifyInstance.destroy();  // Destroy the current instance if it exists
-            }
-            
             var dropifyElement = $(this).dropify();
             dropifyInstance = dropifyElement.data('dropify');
-            
             dropifyInstance.resetPreview();
             dropifyInstance.clearElement();
-            dropifyInstance.settings.defaultFile = "{{ $item['FILE'] }}";  // Adjust this part based on your server-side logic
+            dropifyInstance.settings.defaultFile = "{{ $item['FILE'] }}";
             dropifyInstance.destroy();
-            dropifyInstance.init();  // Re-initialize the dropify instance with new settings
+            dropifyInstance.init();
         }
     });
 
