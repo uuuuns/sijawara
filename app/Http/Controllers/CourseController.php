@@ -515,7 +515,7 @@ class CourseController extends Controller
                     $data_item = [
                         'ID_COURSE'     => $data['ID_COURSE'],
                         'TITLE'         => $materiTitleList[$i],
-                        'FILE'          => !empty($file[$i]) ? FileUpload::S3($file[$i], 'MATERI_FILE', 'Materi-' . strtotime(now())) : null,
+                        'FILE'          => !empty($file[$i]) ? FileUpload::S3($file[$i], 'MATERI_FILE', 'Materi-' . str_replace(' ', '', $file[$i]->getClientOriginalName()) . '-' . strtotime(now())) : null,
                         'LINK_YT'       => $linkYT[$i],
                         'DESKRIPSI'     => $descMateriList[$i],
                         'ORDER_LIST'    => $orderList[$i],
@@ -952,7 +952,7 @@ class CourseController extends Controller
                     $data_item = [
                         'ID_COURSE'     => $data['ID_COURSE'],
                         'TITLE'         => $materiTitleList[$i],
-                        'FILE'          => !empty($file[$i]) ? FileUpload::S3($file[$i], 'MATERI_FILE', 'Materi-' . str_replace(' ', '', $materiTitleList[$i]) . '-' . strtotime(now())) : (!empty($file_default[$i]) ? $file_default[$i] : null),
+                        'FILE'          => !empty($file[$i]) ? FileUpload::S3($file[$i], 'MATERI_FILE', 'Materi-' . str_replace(' ', '', $file[$i]->getClientOriginalName()) . '-' . strtotime(now())) : (!empty($file_default[$i]) ? $file_default[$i] : null),
                         'LINK_YT'       => $linkYT[$i],
                         'DESKRIPSI'     => $descMateriList[$i],
                         'ORDER_LIST'    => $orderList[$i],
