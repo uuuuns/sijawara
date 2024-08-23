@@ -891,6 +891,16 @@ class CourseController extends Controller
     }
     public function update_item_quiz($data, $req, $lastIdQuiz)
     {
+        $id_quiz_in = implode(',', $req->input('ID_QUIZ'));
+        $id_quiz_old = DB::select("
+            SELECT
+                ID_QUIZ
+            FROM 
+                nilai_quiz
+            WHERE
+                ID_QUIZ IN (".$id_quiz_in.")
+        ");
+
         $jawaban_a          = $req->input('jawaban_a');
         $jawaban_b          = $req->input('jawaban_b');
         $jawaban_c          = $req->input('jawaban_c');
@@ -917,6 +927,9 @@ class CourseController extends Controller
                     DB::table('detail_quiz')->insert($quiz);
                     $tmpNo++;
                 }
+            }
+            if(!empty($id_quiz_old)) {
+                DB::table('nilai_quiz')->WHERE(['ID_QUIZ' => $id_quiz_old[$tmpNoQuiz]->ID_QUIZ])->update(['ID_QUIZ' => $id_quiz]);
             }
             $tmpNoQuiz++;
         }

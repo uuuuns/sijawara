@@ -164,26 +164,20 @@
                         <?php
                         if ($tot_proggress == 100) { ?>
                             <div class="tab-pane fade" id="nav-sertif" role="tabpanel" aria-labelledby="nav-sertif-tab" tabindex="0">
-                                <?php if ($grade >= 75) { ?>
-                                    <div class="d-flex justify-content-center">
-                                        <div class="blurred-image d-none d-lg-block" style="pointer-events: none">
-                                            <embed class="overlay" style="width:600px; height:500px; pointer-events: none;" src="<?= $sertif->FILE_SERTIFIKAT ?>#toolbar=0&navpanes=0&scrollbar=0&statusbar=0&messages=0&scrollbar=0" type="text/plain"></emb>
-                                        </div>
-                                        <div class="shadow mx-5 mt-3 rounded-4 box-input d-flex align-items-center">
-                                            <div class="mx-4 py-3 bg-white">
-                                                <label>Kode Sertifikat</label>
-                                                <form action="javascript:void(0)">
-                                                    <input type="text" class="form-control mb-4" name="" id="input-code" style="text-transform:uppercase">
-                                                    <button type="button" class="btn btn-primary rounded col-md-12 my-3" onclick="DownloadPdf(this)">Unduh PDF</button>
-                                                </form>
-                                            </div>
+                                <div class="d-flex justify-content-center">
+                                    <div class="blurred-image d-none d-lg-block" style="pointer-events: none">
+                                        <embed class="overlay" style="width:600px; height:500px; pointer-events: none;" src="<?= $sertif->FILE_SERTIFIKAT ?>#toolbar=0&navpanes=0&scrollbar=0&statusbar=0&messages=0&scrollbar=0" type="text/plain"></emb>
+                                    </div>
+                                    <div class="shadow mx-5 mt-3 rounded-4 box-input d-flex align-items-center">
+                                        <div class="mx-4 py-3 bg-white">
+                                            <label>Kode Sertifikat</label>
+                                            <form action="javascript:void(0)">
+                                                <input type="text" class="form-control mb-4" name="" id="input-code" style="text-transform:uppercase">
+                                                <button type="button" class="btn btn-primary rounded col-md-12 my-3" onclick="DownloadPdf(this)">Unduh PDF</button>
+                                            </form>
                                         </div>
                                     </div>
-                                <?php } else { ?>
-                                    <div class="mx-3 mx-lg-7 my-4 text-muted">
-                                        Silakan selesaikan seluruh kursus dan raih skor di atas 75 poin.
-                                    </div>
-                                <?php } ?>
+                                </div>
                             </div>
                             <div class="tab-pane fade" id="nav-komen" role="tabpanel" aria-labelledby="nav-komen-tab" tabindex="0">
                                 <div style="display: flex; justify-content: center; width: 100%;">

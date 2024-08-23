@@ -18,6 +18,7 @@
     <input type="hidden" name="materi_title[]">
     <input type="hidden" name="materi_link[]">
     <input type="hidden" name="desc_materi[]">
+    <input type="hidden" name="ID_QUIZ[]" value="<?= $ID_ITEM?>">
     <div id="collapse{{ $no }}" class="collapse show" data-parent="#accordion-default">
         <div class="card-body">
             <div class="soal_form_{{ $no }}"></div>

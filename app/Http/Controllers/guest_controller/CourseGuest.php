@@ -62,12 +62,12 @@ class CourseGuest extends Controller
 		$data['id_activity'] = $_GET['id_activity'];
 		$data['course'] = $this->courseModel->get_course($data['id_activity']);
 		$condition = "item_course.ID_COURSE = '" . $data['course']->ID_COURSE . "'" .
-			" AND mapping_course.ID_USER = '" . session('user')[0]->get('ID_USER') . "'";
-		" AND mapping_course.ID_USER = '" . session('user')[0]->get('ID_USER') . "'";
+					 " AND mapping_course.ID_USER = '" . session('user')[0]->get('ID_USER') . "'";
+
 		$this->courseModel->updateMappingIndex($data['course']->ID_COURSE, $data['id_activity']);
-		" AND mapping_course.ID_USER = '" . session('user')[0]->get('ID_USER') . "'";
-		$this->courseModel->updateMappingIndex($data['course']->ID_COURSE, $data['id_activity']);
+
 		$data['item_course'] = $this->courseModel->get_item_course($condition);
+
 		$data['last_item'] = DB::select('
 			SELECT
 				*
@@ -92,6 +92,7 @@ class CourseGuest extends Controller
 			WHERE
 				$condition_all_mapping
 		");
+
 		$data_all_mapping = $this->courseModel->get_counttask($data['id_activity']);
 
 		$data['tot_proggress'] = (!empty($data['last_item'])) ? (((int) $data_all_mapping[0]->MAPPING_COUNT) / count($data['data_all_mapping'])) * 100 : 0;
@@ -173,6 +174,7 @@ class CourseGuest extends Controller
 			WHERE
 				ID_USER = '" . session('user')[0]->get('ID_USER') . "'
 		");
+		
 		$data['checkout'] = $this->checkoutModel->get_all_order(session('user')[0]->get('ID_USER'));
 
 		// KOMENTAR
