@@ -83,6 +83,24 @@ class CourseController extends Controller
 
     public function store(Request $req)
     {
+        try {
+            $validatedData = $req->validate([
+                'title_activity' => 'required',
+                'date_start' => 'required',
+                'date_end' => 'required',
+                'desc_course' => 'required',
+                'benefit' => 'required',
+                'certif_code' => 'required',
+                'order_list' => 'required',
+                'order_list_question' => 'required'
+            ]);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'status' => 'failure',
+                'errors' => $e->errors()
+            ], 422);
+        }
+
         $activity = [
             'ID_ACTIVITY'           => $this->GenerateUniqID('ACT', $req->input('title_activity')),
             'TITLE_ACTIVITY'        => $req->input('title_activity'),
@@ -313,43 +331,64 @@ class CourseController extends Controller
 
     public function update(Request $req)
     {
-        $activity = [
-            'TITLE_ACTIVITY'        => $req->input('title_activity'),
-            'ID_USER'               => session('user')[0]['ID_USER'],
-            'SERTIF_CODE'           => $req->input('certif_code'),
-            'DATE_START'            => $req->input('date_start'),
-            'DATE_END'              => $req->input('date_end'),
-            'IS_PUBLIC'             => $req->input('is_public'),
-            'LOG_TIME'              => date('Y-m-d H:i:s')
-        ];
+        try {
+            $validatedData = $req->validate([
+                'ID_ACTIVITY' => 'required',
+                'ID_COURSE' => 'required',
+                'title_activity' => 'required',
+                'date_start' => 'required',
+                'date_end' => 'required',
+                'desc_course' => 'required',
+                'benefit' => 'required',
+                'certif_code' => 'required',
+                'order_list' => 'required',
+                'ID_ITEM' => 'required',
+                'order_list_question' => 'required'
+            ]);
 
-        if (!empty($req->file('image_activity'))) {
-            $activity['IMAGE_ACTIVITY'] = FileUpload::S3($req->file('image_activity'), 'IMAGE_ACTIVITY', 'Image-Activity-' . strtotime(now()));
+            $activity = [
+                'TITLE_ACTIVITY'        => $req->input('title_activity'),
+                'ID_USER'               => session('user')[0]['ID_USER'],
+                'SERTIF_CODE'           => $req->input('certif_code'),
+                'DATE_START'            => $req->input('date_start'),
+                'DATE_END'              => $req->input('date_end'),
+                'IS_PUBLIC'             => $req->input('is_public'),
+                'LOG_TIME'              => date('Y-m-d H:i:s')
+            ];
+
+            if (!empty($req->file('image_activity'))) {
+                $activity['IMAGE_ACTIVITY'] = FileUpload::S3($req->file('image_activity'), 'IMAGE_ACTIVITY', 'Image-Activity-' . strtotime(now()));
+            }
+
+            if ($req->input('status') == 'on') {
+                $activity['STATUS'] = 1;
+            } else {
+                $activity['STATUS'] = 0;
+            }
+
+            $course = [
+                'ID_ACTIVITY'           => $req->input('ID_ACTIVITY'),
+                'DESKRIPSI_COURSE'      => $req->input('desc_course'),
+                'BENEFIT'               => $req->input('benefit'),
+                'KATEGORI'              => $req->input('category')
+            ];
+
+            DB::table('activity')->WHERE(['ID_ACTIVITY' => $req->input('ID_ACTIVITY')])->update($activity);
+            DB::table('course')->WHERE(['ID_ACTIVITY' => $req->input('ID_ACTIVITY')])->update($course);
+
+            DB::table('item_course')->WHERE(['ID_COURSE' => $req->input('ID_COURSE')])->delete();
+            DB::table('detail_quiz')->WHERE(['ID_COURSE' => $req->input('ID_COURSE')])->delete();
+
+            $data['ID_COURSE'] = $req->input('ID_COURSE');
+            $this->update_item_materi($data, $req);
+
+            return redirect('courses')->with(['succ_msg' => 'Berhasi Memperbarui Kursus', 'location' => 'courses']);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'status' => 'failure',
+                'errors' => $e->errors()
+            ], 422);
         }
-
-        if ($req->input('status') == 'on') {
-            $activity['STATUS'] = 1;
-        } else {
-            $activity['STATUS'] = 0;
-        }
-
-        $course = [
-            'ID_ACTIVITY'           => $req->input('ID_ACTIVITY'),
-            'DESKRIPSI_COURSE'      => $req->input('desc_course'),
-            'BENEFIT'               => $req->input('benefit'),
-            'KATEGORI'              => $req->input('category')
-        ];
-
-        // DB::table('activity')->WHERE(['ID_ACTIVITY' => $req->input('ID_ACTIVITY')])->update($activity);
-        // DB::table('course')->WHERE(['ID_ACTIVITY' => $req->input('ID_ACTIVITY')])->update($course);
-
-        DB::table('item_course')->WHERE(['ID_COURSE' => $req->input('ID_COURSE')])->delete();
-        DB::table('detail_quiz')->WHERE(['ID_COURSE' => $req->input('ID_COURSE')])->delete();
-
-        $data['ID_COURSE'] = $req->input('ID_COURSE');
-        $this->update_item_materi($data, $req);
-
-        return redirect('courses')->with(['succ_msg' => 'Berhasi Memperbarui Kursus', 'location' => 'courses']);
     }
 
     public function update_materi($req)
@@ -512,7 +551,7 @@ class CourseController extends Controller
         $order_list_quiz    = $req->input('order_list_question');
         $question           = $req->input('question');
         $kunci_soal         = $req->input('kunci_soal');
-        
+
         $tmpNo = 0;
         $tmpNoQuiz = 0;
         foreach ($question as $i => $questions) {
@@ -869,7 +908,7 @@ class CourseController extends Controller
         $order_list_quiz    = $req->input('order_list_question');
         $question           = $req->input('question');
         $kunci_soal         = $req->input('kunci_soal');
-        
+
         $tmpNo = 0;
         $tmpNoQuiz = 0; 
         foreach ($question as $i => $questions) {
