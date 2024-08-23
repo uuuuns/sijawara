@@ -20,7 +20,7 @@
                 <label class="col-sm-2 col-form-label control-label">File Materi<span class="text-danger">*</span></label>
                 <div class="col-md-5">
                     <div class="custom-file">
-                        <input type="file" name="materi_file[]" accept=".pdf, .ppt, .pptx"
+                        <input type="file" name="materi_file[]" accept=".pdf, .ppt, .pptx" id="material_file<?=$no?>"
                             class="custom-file-input file_materi">
                     </div>
                 </div>
@@ -62,7 +62,7 @@
                 dropifyInstance.destroy();
             }
         } else {
-            var dropifyElement = $(this).dropify();
+            var dropifyElement = $("#material_file<?=$no?>").dropify();
             dropifyInstance = dropifyElement.data('dropify');
             dropifyInstance.resetPreview();
             dropifyInstance.clearElement();
