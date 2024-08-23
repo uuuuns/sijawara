@@ -129,10 +129,14 @@ class ProfileGuest extends Controller
             }
         }
         $data['document'] = DB::selectOne("
-            SELECT user_data.*, instructor_req.STATUS
-            FROM user_data
-            LEFT JOIN instructor_req ON instructor_req.ID_USER = user_data.ID_USER
-            WHERE user_data.ID_USER = '" . session('user')[0]['ID_USER'] . "';
+            SELECT 
+                user_data.*, instructor_req.STATUS
+            FROM 
+                user_data
+            LEFT JOIN instructor_req ON 
+                instructor_req.ID_USER = user_data.ID_USER
+            WHERE 
+                user_data.ID_USER = '" . session('user')[0]['ID_USER'] . "';
 
         ");
         
