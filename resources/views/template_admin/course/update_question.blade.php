@@ -7,15 +7,13 @@
             value="{{ $index }}">
         <input type="hidden" name="ID_DETAIL[{{ $item['ID_QUIZ'] }}][{{ $item['ID_DETAIL'] }}]" value="{{ $item['ID_DETAIL'] }}">
         <div class="col-md-10">
-            <div class="row">
-                <div class="col-md-11">
+            <div class="d-flex flex-row">
+                <div class="pe-3 flex-1 w-100">
                     <input type="text" class="form-control" name="question[{{ $no }}][{{ $index }}]"
-                        value="{{ $item['SOAL'] }}">
+                    value="{{ $item['SOAL'] }}">
                 </div>
-                <div id="delete_question_{{ $no }}{{ $index }}"
-                    class="btn btn-danger px-1 py-0 float-right d-flex align-items-center" style="cursor: pointer;">
-                    <i class="anticon anticon-loading"></i>
-                    <span><i class="anticon anticon-close"></i> </span>
+                <div id="delete_question_{{ $no }}{{ $index }}" class="justify-content-center rounded btn btn-danger px-3 py-0 float-end d-flex align-items-center" style="cursor: pointer;">
+                    <span><i class="far fa-times"></i> </span>
                 </div>
             </div>
         </div>
