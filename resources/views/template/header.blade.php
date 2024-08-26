@@ -655,6 +655,7 @@
                                     <li><a class="" href="<?= url('profile') ?>">Profile</a></li>
                                     <li><a class=" " href="<?= url('profile/mycourses') ?>">Kursus Ku</a></li>
                                     <li><a class="" href="<?= url('profile/myevents') ?>">Webinar Ku</a></li>
+                                    <li><a class="" href="<?= url('profile/mysertificate') ?>">Sertifikat Ku</a></li>
                                     <li><a class="" target="_blank"
                                             href="https://perpustakaan.uptkukm.id/">Ebook Ku</a></li>
                                     <?php    } ?>
