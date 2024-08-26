@@ -188,23 +188,23 @@ class Course extends Model
     {
         DB::statement("SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));");
         $data = DB::select('
-        SELECT 
-            item_course.*, 
-            detail_quiz.SOAL, 
-            detail_quiz.PIL_JWB, 
-            detail_quiz.KUNCI, 
-            detail_quiz.ORDER_LIST as SOAL_ORDER,
-            mapping_course.STATUS
-        FROM 
-            item_course
-        LEFT JOIN 
-            detail_quiz ON detail_quiz.ID_QUIZ = item_course.ID_ITEM
-        LEFT JOIN 
-            mapping_course ON mapping_course.ID_ITEM = item_course.ID_ITEM
-        WHERE 
-            ' . $condition . '
-        GROUP BY 
-            item_course.ID_ITEM;
+            SELECT 
+                item_course.*, 
+                detail_quiz.SOAL, 
+                detail_quiz.PIL_JWB, 
+                detail_quiz.KUNCI, 
+                detail_quiz.ORDER_LIST as SOAL_ORDER,
+                mapping_course.STATUS
+            FROM 
+                item_course
+            LEFT JOIN 
+                detail_quiz ON detail_quiz.ID_QUIZ = item_course.ID_ITEM
+            LEFT JOIN 
+                mapping_course ON mapping_course.ID_ITEM = item_course.ID_ITEM
+            WHERE 
+                ' . $condition . '
+            GROUP BY 
+                item_course.ID_ITEM;
         ');
         return $data;
     }
