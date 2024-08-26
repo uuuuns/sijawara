@@ -15,9 +15,13 @@
                 function ShowDocument(e) {
                     $(e).hide();
                     const file = '<?= $detail_item_course->FILE ?>';
-
+                    var pptxRegex = /^https?:\/\/[\w.-]+\/[\w\/.-]+\.pptx(\?.*)?$/;
                     if (!file) {
                         $('#document-frame').html('<p>Dokumen Tidak ditemukan hubungi Instruktur</p>');
+                    } else if (pptxRegex.test(file)) {
+                        $('#document-frame').html(
+                            `<iframe src="https://view.officeapps.live.com/op/embed.aspx?src=${file}#toolbar=0&navpanes=0" style="width:600px; height:500px;" frameborder="0"></iframe>`
+                        );
                     } else {
                         $('#document-frame').html(
                             `<iframe src="${file}#toolbar=0&navpanes=0" style="width:600px; height:500px;" frameborder="0"></iframe>`
@@ -104,7 +108,7 @@
                 <div class="my-4 d-flex d-lg-block flex-column">
                     <?php $no = 0;
                     foreach ($soal as $soal_item) : ?>
-                        <button class="btn btn-outline-dark me-3 mb-3 py-2 px-3 rounded-3 shadow fw-semibold" data-value="<?= (($no == 0) ? "a" : (($no == 1) ? "b" : (($no == 3) ? "c" : "d" ))) ?>" id="jwbn_<?= $item->ID_DETAIL . '' . ++$no ?>" onclick="SelectJwbn<?= $item->ID_DETAIL . '' . $item->ORDER_LIST ?>(this)">
+                        <button class="btn btn-outline-dark me-3 mb-3 py-2 px-3 rounded-3 shadow fw-semibold" data-value="<?= (($no == 0) ? "a" : (($no == 1) ? "b" : (($no == 3) ? "d" : "c" ))) ?>" id="jwbn_<?= $item->ID_DETAIL . '' . ++$no ?>" onclick="SelectJwbn<?= $item->ID_DETAIL . '' . $item->ORDER_LIST ?>(this)">
                             <?= $soal_item ?>
                         </button>
                     <?php endforeach; ?>
