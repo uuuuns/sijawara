@@ -176,6 +176,8 @@ class EventGuest extends Controller
 			$data['is_full'] = false;
 		} else if ($data['event']->KUOTA >= $data['event']->KUOTA_PESERTA) {
 			$data['is_full'] = true;
+		} else {
+			$data['is_full'] = false;
 		}
 
 		return

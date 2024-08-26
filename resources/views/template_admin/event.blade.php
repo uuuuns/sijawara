@@ -50,12 +50,9 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <?php $number = 0; ?>
-
-                            @foreach ($event as $item)
-                                <?php $number++; ?>
+                            @foreach ($event as $key => $item)
                                 <tr>
-                                    <td><?= $number ?></td>
+                                    <td><?= $key + 1 ?></td>
                                     <td><?= $item->TITLE_ACTIVITY ?></td>
                                     <td><?= $item->STATUS == 1 ? '<span class="badge bg-success">Aktif</span>' : '<span class="badge bg-danger">Tidak Aktif</span>' ?>
                                     </td>

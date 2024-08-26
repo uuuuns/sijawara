@@ -165,6 +165,35 @@ class ProfileGuest extends Controller
             view('template_guest/profile/mycourses', $data) .
             view('template.footer', $data);
     }
+    public function mysertificate()
+    {
+        $data['title'] = "Sertifikat Ku";
+
+        $data['sertif'] = DB::select("
+            SELECT 
+                s.FILE_SERTIFIKAT,
+                a.TITLE_ACTIVITY,
+                a.TYPE_ACTIVITY
+            FROM 
+                sertifikat_activity s
+            LEFT JOIN activity a ON 
+                a.ID_ACTIVITY = s.ID_ACTIVITY
+            WHERE 
+                s.ID_USER = '" . session('user')[0]['ID_USER'] . "'
+                AND s.IS_DOWNLOADED = 1   
+            ");
+            
+            $data['document'] = DB::selectOne("
+            SELECT user_data.*, instructor_req.STATUS
+            FROM user_data
+            LEFT JOIN instructor_req ON instructor_req.ID_USER = user_data.ID_USER
+            WHERE user_data.ID_USER = '" . session('user')[0]['ID_USER'] . "';
+        ");
+        return
+            view('template.header', $data) .
+            view('template_guest/profile/mysertificate', $data) .
+            view('template.footer', $data);
+    }
     public function update_profile(request $request)
     {
         $data = array(
@@ -236,5 +265,13 @@ class ProfileGuest extends Controller
         $updated = DB::table('user_data')->updateOrInsert(['ID_USER' => $userId], $data);
         // $updateStatus = User::updateTableById($data);
         return redirect('/profile/document');
+    }
+    public function update_sertif(request $request)
+    {
+        $data = [
+            'IS_DOWNLOADED' => 1
+        ];
+        DB::table('sertifikat_activity')->where('ID_ACTIVITY', $request->id_activity)->where('ID_USER', session('user')[0]['ID_USER'])->update($data);
+        return response()->json(['status' => 'success']);   
     }
 }
