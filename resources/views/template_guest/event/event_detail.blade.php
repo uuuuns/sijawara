@@ -222,6 +222,37 @@
         }
     })
 
+    function DownloadPdf(e) {
+            if ($('#input-code').val() == '<?= $event->SERTIF_CODE ?>') {
+                var csrfToken = $('meta[name="csrf-token"]').attr('content');
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken
+                    }
+                });
+
+                $.ajax({
+                    url: '<?= Request::segment(0) ?>/update-sertif',
+                    type: "POST",
+                    data: {
+                        id_activity: "<?= $event->ID_ACTIVITY; ?>",
+                    },
+                    success: function(data) {
+                        window.open('<?= $sertif->FILE_SERTIFIKAT ?>', '_blank');
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.error("AJAX Error: ", textStatus, errorThrown);
+                        console.error("Response Text: ", jqXHR.responseText);
+                    }
+                });
+            } else {
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Wrong Code!'
+                })
+            }
+        }
+
     function AddToCart(e) {
         const Toast = Swal.mixin({
             toast: true,
