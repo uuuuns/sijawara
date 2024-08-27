@@ -223,6 +223,7 @@
     })
 
     function DownloadPdf(e) {
+        
             if ($('#input-code').val() == '<?= $event->SERTIF_CODE ?>') {
                 var csrfToken = $('meta[name="csrf-token"]').attr('content');
                 $.ajaxSetup({
@@ -230,7 +231,7 @@
                         'X-CSRF-TOKEN': csrfToken
                     }
                 });
-
+                file = <?= empty($sertif->FILE_SERTIFIKAT) ? null : $sertif->FILE_SERTIFIKAT ?>
                 $.ajax({
                     url: '<?= Request::segment(0) ?>/update-sertif',
                     type: "POST",
@@ -238,7 +239,7 @@
                         id_activity: "<?= $event->ID_ACTIVITY; ?>",
                     },
                     success: function(data) {
-                        window.open('<?= $sertif->FILE_SERTIFIKAT ?>', '_blank');
+                        window.open(file, '_blank');
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
                         console.error("AJAX Error: ", textStatus, errorThrown);
