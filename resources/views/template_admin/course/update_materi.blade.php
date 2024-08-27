@@ -63,7 +63,7 @@
             }
         } else {
             var dropifyElement = $("#material_file<?=$no?>").dropify();
-            dropifyInstance = dropifyElement.data('dropify');
+                dropifyInstance = dropifyElement.data('dropify');
             dropifyInstance.resetPreview();
             dropifyInstance.clearElement();
             dropifyInstance.settings.defaultFile = "{{ $item['FILE'] }}";
