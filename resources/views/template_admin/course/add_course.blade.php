@@ -180,7 +180,7 @@
                 ['color', ['color']],
                 ['height', ['height']],
                 ['operation', ['undo', 'redo']],
-                ['para', ['ul', 'ol', 'paragraph']],
+                ['para', ['paragraph']],
                 ['object', ['link']]
             ]
         });
@@ -213,7 +213,7 @@
                 ['color', ['color']],
                 ['height', ['height']],
                 ['operation', ['undo', 'redo']],
-                ['para', ['ul', 'ol', 'paragraph']],
+                ['para', ['paragraph']],
                 ['object', ['link']]
             ]
         });

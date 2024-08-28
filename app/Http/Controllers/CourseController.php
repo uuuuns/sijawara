@@ -84,24 +84,7 @@ class CourseController extends Controller
 
     public function store(Request $req)
     {
-        try {
-            $validatedData = $req->validate([
-                'title_activity' => 'required',
-                'date_start' => 'required',
-                'date_end' => 'required',
-                'desc_course' => 'required',
-                'benefit' => 'required',
-                'certif_code' => 'required',
-                'order_list' => 'required',
-                'order_list_question' => 'required'
-            ]);
-        } catch (ValidationException $e) {
-            return response()->json([
-                'status' => 'failure',
-                'errors' => $e->errors()
-            ], 422);
-        }
-
+       
         $activity = [
             'ID_ACTIVITY'           => $this->GenerateUniqID('ACT', $req->input('title_activity')),
             'TITLE_ACTIVITY'        => $req->input('title_activity'),
@@ -333,20 +316,7 @@ class CourseController extends Controller
     public function update(Request $req)
     {
         try {
-            $validatedData = $req->validate([
-                'ID_ACTIVITY' => 'required',
-                'ID_COURSE' => 'required',
-                'title_activity' => 'required',
-                'date_start' => 'required',
-                'date_end' => 'required',
-                'desc_course' => 'required',
-                'benefit' => 'required',
-                'certif_code' => 'required',
-                'order_list' => 'required',
-                'ID_ITEM' => 'required',
-                'order_list_question' => 'required'
-            ]);
-
+            
             $activity = [
                 'TITLE_ACTIVITY'        => $req->input('title_activity'),
                 'ID_USER'               => session('user')[0]['ID_USER'],
