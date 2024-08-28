@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class Course extends Model
 {
@@ -148,23 +149,27 @@ class Course extends Model
     }
     public function get_course_by_id($keyword, $type)
     {
-        $query = DB::table('activity AS act')
-            ->select('act.*')
-            ->selectSub(function ($query) {
-                $query->selectRaw('COUNT(*)')
-                    ->from('order AS o')
-                    ->leftJoin('transaction AS t', 't.ID_USER', '=', 'o.ID_USER')
-                    ->where('o.ID_USER', session()->get('ID_USER'))
-                    ->whereColumn('o.ID_PRODUCT', 'act.ID_ACTIVITY')
-                    ->where('t.STAT_BAYAR', 3);
-            }, 'DATA_CHECKING')
-            ->where('act.IS_PUBLIC', 1)
-            ->where('act.TYPE_ACTIVITY', $type);
-
-        if (!empty($keyword)) {
-            $query->where('act.TITLE_ACTIVITY', 'LIKE', "%$keyword%");
-        }
-        return $query->get();
+        $query = DB::select("
+            SELECT 
+                activity.*,
+                (
+                    SELECT
+                        COUNT(*)
+                    FROM
+                        `order` o
+                    WHERE
+                        o.ID_USER = '".Session::get('user')[0]->get('ID_USER')."'
+                        AND o.ID_PRODUCT = activity.ID_ACTIVITY	
+                ) AS DATA_CHECKING
+            FROM 
+                activity
+            WHERE
+                activity.IS_PUBLIC = 1
+                AND activity.TYPE_ACTIVITY = $type
+                AND activity.TITLE_ACTIVITY LIKE '%$keyword%'
+        ");
+        
+        return $query;
     }
     public function get_item_course($condition)
     {
