@@ -291,5 +291,15 @@
             error: 'error'
         }
     });
+    $('#form-user').submit(function(e) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Mohon Tunggu',
+            text: 'jangan tutup halaman ini sampai proses selesai',
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+        });
+    });
 </script>
 @endsection
