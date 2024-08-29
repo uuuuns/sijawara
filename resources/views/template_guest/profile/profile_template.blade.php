@@ -89,8 +89,7 @@
                                     </li>
                                     <li class="nav-item w-100">
                                         <a target="_blank" href="https://perpustakaan.uptkukm.id/" class="nav-link  d-flex align-middle px-4 py-3 rounded-0">
-                                            <i class="fs-6 d-flex align-items-center far fa-book"></i> <span class="ms-1 ps-2 fs-6 align-self-center ">My
-                                                Ebook</span>
+                                            <i class="fs-6 d-flex align-items-center far fa-book"></i> <span class="ms-1 ps-2 fs-6 align-self-center ">Perpustakaan</span>
                                         </a>
                                     </li>
                                     <li class="w-100">
