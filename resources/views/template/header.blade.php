@@ -577,7 +577,7 @@
                                 <a href="{{ url('profile/myevents') }}">Webinar Ku</a>
                             </li>
                             <li class="d-md-none">
-                                <a target="_blank" href="https://perpustakaan.uptkukm.id/">Ebook Ku</a>
+                                <a target="_blank" href="https://perpustakaan.uptkukm.id/">Perpustakaan</a>
                             </li>
                             <li class="d-md-none">
                                 <a href="{{ url('logout') }}">Keluar</a>
@@ -657,7 +657,7 @@
                                     <li><a class="" href="<?= url('profile/myevents') ?>">Webinar Ku</a></li>
                                     <li><a class="" href="<?= url('profile/mysertificate') ?>">Sertifikat Ku</a></li>
                                     <li><a class="" target="_blank"
-                                            href="https://perpustakaan.uptkukm.id/">Ebook Ku</a></li>
+                                            href="https://perpustakaan.uptkukm.id/">Perpustakaan</a></li>
                                     <?php    } ?>
                                     <hr>
                                     <li><a class="text-danger" href="<?= url('logout') ?>">Keluar</a></li>

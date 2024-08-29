@@ -14,7 +14,8 @@
         @csrf
         <div class="nav-link rounded-circle">
             <input type="file" id="file" name="foto_profile" accept="image/jpeg, image/png" style="display: none;" readonly>
-            <button type="button" id="choose-button" style="border: none; background-color: transparent;">
+            <button type="button" id="choose-button" style="border: none; background-color: transparent; position: relative;">
+                <i class="fa fa-pencil" hidden style="position: absolute; bottom: 140px; right: 30px; font-size: 20px; color: #000; background-color: #a7abb5; border-radius: 50%; padding: 10px;"></i>
                 <img class="nav-link rounded-circle mb-2" src="<?= (!empty($data_personal->FOTO_PROFILE) ? $data_personal->FOTO_PROFILE : 'assets/images/person-circle.svg') ?>" id="preview" style="height:150px; width:150px; object-fit: cover;" />
             </button>
         </div>
@@ -58,6 +59,7 @@
     }
     edit.addEventListener('click', function() {
         $('.form-control').prop('readonly', (i, v) => !v);
+        $('.fa-pencil').prop('hidden', (i, v) => !v);
         $('.form-select').css('background', '#FFFFFF');
         $('.form-select').prop('disabled', (i, v) => !v);
         edit.innerHTML = edit.innerHTML === "Edit" ? "Save" : "Edit";
