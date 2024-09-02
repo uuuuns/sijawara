@@ -100,12 +100,12 @@
                                             <i class="fs-6 d-flex align-items-center far fa-file-alt"></i> <span class="ms-1 ps-2 fs-6 align-self-center ">ٍSertifikat Ku</span>
                                         </a>
                                     </li>
-                                    <li class="nav-item w-100">
+                                    <!-- <li class="nav-item w-100">
                                         <a href="/profile/academic" class="nav-link  d-flex align-middle px-4 py-3 rounded-0">
                                             <i class="fs-6 d-flex align-items-center far fa-file-alt"></i> <span class="ms-1 ps-2 fs-6 align-self-center ">Data
-                                                Akademik</span>
+                                                Personal Lanjutan</span>
                                         </a>
-                                    </li>
+                                    </li> -->
                                     <!-- <li class="w-100">
                                         <hr class="my-0 border border-1 mx-3">
                                     </li>
@@ -143,7 +143,7 @@
                                 </ul>
                             </div>
                         </div>
-                        <div class="bg-white shadow rounded-2 overflow-hidden p-3 mt-3" style="height:max-content">
+                        <!-- <div class="bg-white shadow rounded-2 overflow-hidden p-3 mt-3" style="height:max-content">
                             <div class="d-flex flex-column align-items-center align-items-sm-start">
                                 <?php
                                 $array = (array) $document;
@@ -184,7 +184,7 @@
                                     <?php } ?>
                                 <?php } ?>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
@@ -195,31 +195,7 @@
         </div>
     </div>
 </div>
-<!-- Modal -->
-<div class="modal fade" id="tokenModal" tabindex="-1" aria-labelledby="tokenModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <form action="/profile/redeemToken" method="POST">
-            @csrf
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="tokenModalLabel">Masukan Token</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="tokenInput" class="form-label">Token</label>
-                        <input type="text" class="form-control" id="tokenInput" placeholder="Enter token" required>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger rounded" data-bs-dismiss="modal">Tutup</button>
-                    <button type="submit" class="btn btn-main-2 btn-primary rounded">Kirim</button>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
-<!-- End Modal Token -->
+
 <style>
     .rotate180 {
         transform: rotate(180deg);
