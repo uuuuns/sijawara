@@ -12,7 +12,9 @@
                 </p>
                 <div class="d-flex gap-2">
                     <button class="btn btn-main py-2 px-4 rounded" onclick="window.location.href = '/course'">Mulai Belajar</button>
-                    <button class="btn btn-main-outline py-2 px-4 rounded" onclick="window.location.href = '/register'">Daftar</button>
+                    @if (empty(session('user')))
+                        <button class="btn btn-main-outline py-2 px-4 rounded" onclick="window.location.href = '/register'">Daftar</button>
+                    @endif
                 </div>
             </div>
             <div class="col-0 col-lg-5 text-end d-none d-sm-block">

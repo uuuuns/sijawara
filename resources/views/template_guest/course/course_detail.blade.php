@@ -328,19 +328,19 @@
 
         if ($(e).data("type") == 3) {
             Swal.fire({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
+                title: 'Apakah anda yakin?',
+                text: "anda tidak dapat membatalkan hal ini!",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, Try Again!'
+                confirmButtonText: 'Ya, Coba lagi!'
             }).then((result) => {
                 if (result.isConfirmed) {
                     let timerInterval
                     Swal.fire({
-                        title: 'Reseting Quiz On Proccess !',
-                        html: 'it will be over in a few seconds.',
+                        title: 'Mengulangi Kuis dalam proses!',
+                        html: 'Harap tunggu!',
                         timer: 2000,
                         timerProgressBar: false,
                         didOpen: () => {

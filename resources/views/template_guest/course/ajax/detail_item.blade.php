@@ -219,13 +219,13 @@
 <script>
     function NextItem(e) {
         Swal.fire({
-            title: 'Are you sure, you want continue?',
-            text: "You won't be able to revert this!",
+            title: 'Apakah Anda ingin lanjut?',
+            text: "Anda tidak dapat membatalkan hal ini!",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, Continue!'
+            confirmButtonText: 'Ya, Lanjutkan!'
         }).then((result) => {
             if (result.isConfirmed) {
                 ShowDetailItem(e)
