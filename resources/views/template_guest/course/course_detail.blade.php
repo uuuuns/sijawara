@@ -363,6 +363,10 @@
                     $('#show-detail-' + <?= $item->ID_ITEM ?>).addClass('btn-main-outline')
                 <?php endforeach; ?>
             }
+            
+            if ($(e).data("nilai") >= 75 && ($(e).data("iditem") == $(e).data("iditemmax"))) {   
+                location.reload()
+            }
             GetItemCourse(e)
         }
     }
@@ -459,24 +463,4 @@
 
     readmoreText.style.height = defaultHeight;
     readmoreBtn.addEventListener('click', toggleExpandedState);
-
-
-    // document.addEventListener('contextmenu', event => event.preventDefault());
-    // document.onkeydown = (e) => {
-    //     if (e.key == 123) {
-    //         return false;
-    //     }
-    //     if (e.ctrlKey && e.shiftKey && e.key == 'I') {
-    //         return false;
-    //     }
-    //     if (e.ctrlKey && e.shiftKey && e.key == 'C') {
-    //         return false;
-    //     }
-    //     if (e.ctrlKey && e.shiftKey && e.key == 'J') {
-    //         return false;
-    //     }
-    //     if (e.ctrlKey && e.key == 'u') {
-    //         return false;
-    //     }
-    // }
 </script>

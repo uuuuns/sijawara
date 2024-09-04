@@ -201,7 +201,7 @@
                                 "pilih_jwbn": pilih_jwbn
                             },
                             success: function(data) {
-                                $("#footer_modal_<?= $item->ID_ITEM ?>").html('<button type="button" class="btn btn-danger rounded fw-semibold col" data-bs-dismiss="modal" data-iditem="<?= $item->ID_ITEM ?>" data-status="0" data-type="4" onclick="ShowDetailItem(this)">Close</button>')
+                                $("#footer_modal_<?= $item->ID_ITEM ?>").html('<button type="button" class="btn btn-danger rounded fw-semibold col" data-bs-dismiss="modal" data-iditem="<?= $item->ID_ITEM ?>" data-iditemmax="<?= $max_id_item?>" data-status="0" data-nilai="'+ data +'" data-type="4" onclick="ShowDetailItem(this)">Close</button>')
                                 $("#body-detail").html('<img class="nav-link rounded-circle" src="https://img.freepik.com/free-vector/completed-concept-illustration_114360-3891.jpg" style="width: 80%;height:80%;background-size:cover"></img><h6 class="fw-semibold text-center mt-3">Nilai Anda : ' + data + '</h6>');
                                 $(e).hide()
                             }
