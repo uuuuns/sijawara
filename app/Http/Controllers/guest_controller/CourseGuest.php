@@ -245,7 +245,8 @@ class CourseGuest extends Controller
 				ID_USER = '" . session('user')[0]->get('ID_USER') . "'
 				AND ID_ACTIVITY = '" . $_POST['id_activity'] . "'"
 		);
-
+		$data['max_id_item'] = $max_id_item->MAX_ID;
+		
 		$data_all_mapping = $this->courseModel->get_counttask($_POST['id_activity']);
 		$count = ['MAPPING_COUNT' => ((int) $data_all_mapping[0]->MAPPING_COUNT) + 1];
 		if ($data['status'] == 2) {
