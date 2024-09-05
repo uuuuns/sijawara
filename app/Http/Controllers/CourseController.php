@@ -316,7 +316,6 @@ class CourseController extends Controller
     public function update(Request $req)
     {
         try {
-            
             $activity = [
                 'TITLE_ACTIVITY'        => $req->input('title_activity'),
                 'ID_USER'               => session('user')[0]['ID_USER'],
