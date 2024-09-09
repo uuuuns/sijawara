@@ -20,7 +20,7 @@ class MailSender extends Mailable
     }
     public function build()
     {
-        return $this->from('sijawara@noreply.com', 'SIJAWARA')->view('template_file.another_mail_template');
+        return $this->from('sijawara@gmail.com', 'SIJAWARA')->view('template_file.another_mail_template');
     }
 
     /**

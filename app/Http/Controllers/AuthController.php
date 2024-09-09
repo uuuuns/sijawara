@@ -20,7 +20,7 @@ class AuthController extends Controller
             'transport' => 'smtp',
             'host' => 'smtp-relay.brevo.com',
             'port' => 587,
-            'from' => ['address' => 'noreply.jawara@gmail.com', 'name' => 'SIJAWARA'],
+            'from' => ['address' => 'jawara@gmail.com', 'name' => 'SIJAWARA'],
             'encryption' => 'tls',
             'username' => 'dbi.malang.o@gmail.com',
             'password' => '7YPLNq6KfpydDGBT',
