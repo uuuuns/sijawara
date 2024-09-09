@@ -24,7 +24,7 @@ class ProfileGuest extends Controller
     {
         $data['title'] = "Personal Data";
         $user = new User();
-        // $data['data_personal'] = $user->get_user(session('user')[0]['ID_USER']);
+
         $data['data_personal'] = DB::selectOne("
             SELECT
                 u.*
@@ -203,6 +203,13 @@ class ProfileGuest extends Controller
                 'TELP' => $request->input('no_hp'),
                 'JK' => $request->input('jk'),
                 'ALAMAT' => $request->input('alamat'),
+                'NIK' => $request->input('nik'),
+                'TGL_LAHIR' => $request->input('tgl_lahir'),
+                'TEMPAT_LAHIR' => $request->input('tempat_lahir'),
+                'NAMA_INSTANSI' => $request->input('nama_instansi'),
+                'JABATAN' => $request->input('jabatan'),
+                'JENIS_INSTANSI' => $request->input('jenis_instansi'),
+                'PROVINSI' => $request->input('provinsi'),
             ]
         );
         $data[0]['FOTO_PROFILE'] = null;

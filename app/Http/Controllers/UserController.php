@@ -23,7 +23,6 @@ class UserController extends Controller
                 u.TELP,
                 u.JK ,
                 u.FOTO_PROFILE ,
-                u.SESS_KEY ,
                 u.STATUS,
                 u.IS_DELETE
             FROM
@@ -100,32 +99,7 @@ class UserController extends Controller
             $user['FOTO_PROFILE'] = FileUpload::S3($req->file('up_foto_profile'), 'IMAGE_ACTIVITY', 'Image-Activity-' . strtotime(now()));
         }
 
-        $userdata = [
-            'UNIV'          => $req->input('up_univ'),
-            'NIM'           => $req->input('up_nim'),
-            'STUDY'         => $req->input('up_study'),
-            'DEGREE'        => $req->input('up_degree'),
-            'SEMESTER'      => $req->input('up_semester'),
-            'IS_GRADUATED'  => $req->input('up_is_graduated')
-        ];
-        if (!empty($req->file('up_cv_doc'))) {
-            $userdata['CV']     = FileUpload::S3($req->file('up_cv_doc'), 'DOCUMENT_CV', 'Image-Activity-' . strtotime(now()));
-        }
-
-        if (!empty($req->file('up_certi_doc'))) {
-            $userdata['PORTOFOLIO']    = FileUpload::S3($req->file('up_certi_doc'), 'DOCUMENT_CERTIFICATE', 'Image-Activity-' . strtotime(now()));
-        }
-
-        if (!empty($req->file('up_portofolio_doc'))) {
-            $userdata['SERTIFIKAT']    = FileUpload::S3($req->file('up_portofolio_doc'), 'DOCUMENT_PORTOFOLIO', 'Image-Activity-' . strtotime(now()));
-        }
-
-        if (!empty($req->file('up_recommend_doc'))) {
-            $userdata['SURAT_RECOM']   = FileUpload::S3($req->file('up_recommend_doc'), 'DOCUMENT_RECOMMENDATION', 'Image-Activity-' . strtotime(now()));
-        }
-
         DB::table('user')->WHERE(['ID_USER' => $req->input('up_id_user')])->update($user);
-        DB::table('user_data')->WHERE(['ID_USER' => $req->input('up_id_user')])->update($userdata);
 
         return redirect('user')->with(['succ_msg' => 'Berhasil memperbarui user', 'location' => 'user']);
     }

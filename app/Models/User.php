@@ -104,7 +104,13 @@ class User extends Model
             $user->NAME = $data[0]['NAME'];
             $user->TELP = $data[0]['TELP'];
             $user->JK = $data[0]['JK'];
-            $user->ALAMAT = $data[0]['ALAMAT'];
+            $user->NIK = $data[0]['NIK'];
+            $user->TGL_LAHIR = $data[0]['TGL_LAHIR'];
+            $user->TEMPAT_LAHIR = $data[0]['TEMPAT_LAHIR'];
+            $user->NAMA_INSTANSI = $data[0]['NAMA_INSTANSI'];
+            $user->JABATAN = $data[0]['JABATAN'];
+            $user->JENIS_INSTANSI = $data[0]['JENIS_INSTANSI'];
+            $user->PROVINSI = $data[0]['PROVINSI'];
             if($data[0]['FOTO_PROFILE'] != null){
                 $user->FOTO_PROFILE = $data[0]['FOTO_PROFILE'];
             }
