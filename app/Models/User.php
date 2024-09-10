@@ -105,6 +105,7 @@ class User extends Model
             $user->TELP = $data[0]['TELP'];
             $user->JK = $data[0]['JK'];
             $user->NIK = $data[0]['NIK'];
+            $user->ALAMAT = $data[0]['ALAMAT'];
             $user->TGL_LAHIR = $data[0]['TGL_LAHIR'];
             $user->TEMPAT_LAHIR = $data[0]['TEMPAT_LAHIR'];
             $user->NAMA_INSTANSI = $data[0]['NAMA_INSTANSI'];

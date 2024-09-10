@@ -120,7 +120,6 @@
             // Loop through each province and append it to the select options
             $.each(provinces, function(index, province) {
                 var isSelected = (province.name == selectedProvince) ? true : false;
-                console.log(isSelected);
                 
                 $('#provinsi-select').append(
                     $('<option>', {
