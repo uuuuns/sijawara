@@ -27,7 +27,7 @@ class Course extends Model
                 course.ID_ACTIVITY = activity.ID_ACTIVITY
             WHERE
                 activity.IS_PUBLIC = 1
-                AND ".implode(' AND ', $id_category)."
+                AND " . implode(' AND ', $id_category) . "
             ORDER BY activity.LOG_TIME DESC
             LIMIT 4");
         return $data;
@@ -115,6 +115,31 @@ class Course extends Model
         SELECT 
             activity.*,
             course.ID_COURSE,
+            course.REQUIREMENT,
+            (
+            SELECT 
+                a.TITLE_ACTIVITY
+            FROM
+                course c
+            LEFT JOIN activity a ON
+                c.ID_ACTIVITY = a.ID_ACTIVITY
+            WHERE
+                c.ID_ACTIVITY = course.REQUIREMENT
+        ) AS REQ_NAME,
+        (
+            SELECT
+                count(a.TITLE_ACTIVITY)
+            FROM
+                `order` o
+            LEFT JOIN activity a ON
+                a.ID_ACTIVITY = o.ID_PRODUCT
+            WHERE
+                o.ID_USER = "' . session('user')[0]['ID_USER'] . '"
+            AND
+                o.ID_PRODUCT = course.REQUIREMENT
+            AND
+                o.COURSE_COMPLETED = 1
+        ) AS REQ,
             course.PENGUMUMAN,
             course.DESKRIPSI_COURSE,
             course.DESKRIPSI_COURSE_ITEM,
@@ -158,7 +183,7 @@ class Course extends Model
                     FROM
                         `order` o
                     WHERE
-                        o.ID_USER = '".Session::get('user')[0]->get('ID_USER')."'
+                        o.ID_USER = '" . Session::get('user')[0]->get('ID_USER') . "'
                         AND o.ID_PRODUCT = activity.ID_ACTIVITY	
                 ) AS DATA_CHECKING
             FROM 
@@ -168,7 +193,7 @@ class Course extends Model
                 AND activity.TYPE_ACTIVITY = $type
                 AND activity.TITLE_ACTIVITY LIKE '%$keyword%'
         ");
-        
+
         return $query;
     }
     public function get_item_course($condition)
@@ -319,7 +344,7 @@ class Course extends Model
 				ID_ACTIVITY = '" . $id_activity . "'
 		");
 
-		$dataNewMapping = DB::select('
+        $dataNewMapping = DB::select('
 			SELECT
 				ic.ID_ITEM
 			FROM
@@ -329,7 +354,7 @@ class Course extends Model
 			WHERE
 				c.ID_ACTIVITY = "' . $id_activity . '"
 		');
-        
+
         if ($dataNewMapping[0]->ID_ITEM != $dataOldMapping[0]->ID_ITEM) {
             $oldIDMapping = [];
             foreach ($dataNewMapping as $key => $newItem) {
@@ -353,11 +378,11 @@ class Course extends Model
                 DB::table('mapping_course')->insert($newDataMapping);
             }
 
-		    DB::table('mapping_course')->whereIn('ID_MAPPING', $oldIDMapping)->delete();
+            DB::table('mapping_course')->whereIn('ID_MAPPING', $oldIDMapping)->delete();
         }
-		
 
-        
+
+
         // $mapping = $this->db->get_where('mapping_course', ['ID_USER' => session('user')[0]->get('ID_USER'), 'ID_ACTIVITY' => $id_activity])->result_array();
         $mapping = DB::select('
             SELECT
@@ -401,8 +426,8 @@ class Course extends Model
                 AND ID_PRODUCT = "' . $id_activity . '"
         ');
 
-        if ($mapping_aktif->total-1 != $mapping_progress->MAPPING_COUNT && $mapping_progress->COURSE_COMPLETED != 1) {
-            DB::table('order')->where('ID_PRODUCT', $id_activity)->where('ID_USER', session('user')[0]->get('ID_USER'))->update(['MAPPING_COUNT' => $mapping_aktif->total-1]);
+        if ($mapping_aktif->total - 1 != $mapping_progress->MAPPING_COUNT && $mapping_progress->COURSE_COMPLETED != 1) {
+            DB::table('order')->where('ID_PRODUCT', $id_activity)->where('ID_USER', session('user')[0]->get('ID_USER'))->update(['MAPPING_COUNT' => $mapping_aktif->total - 1]);
         }
 
         if (count($mapping) < count($new_item)) {
@@ -428,9 +453,9 @@ class Course extends Model
                     }
                     $this->db->insert('mapping_course', $data_mapping);
                     DB::table('order')
-                    ->where('ID_PRODUCT', $id_activity)
-                    ->where('ID_USER', session('user')[0]->get('ID_USER'))
-                    ->update(['MAPPING_COUNT' => $mapping_aktif->total]);
+                        ->where('ID_PRODUCT', $id_activity)
+                        ->where('ID_USER', session('user')[0]->get('ID_USER'))
+                        ->update(['MAPPING_COUNT' => $mapping_aktif->total]);
                 }
             }
         } else {
@@ -523,4 +548,3 @@ class Course extends Model
         return $data;
     }
 }
-
