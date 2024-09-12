@@ -186,180 +186,180 @@
     </div>
     {{-- End add Item --}}
 
-    <script>
-        var i = 0;
-        var id_quiz = 1;
-        var limit = 0;
+<script>
+    var i = 0;
+    var id_quiz = 1;
+    var limit = 0;
 
-        $(document).ready(function() {
-            var $editor = $('#desc_course');
-            $editor.summernote({
-                height: 200,
-                callbacks: {
-                    onPaste: function(e) {
-                        console.log('Called event paste', e);
-                    },
-                    onImageUpload: function(files) {
-                        console.log(files);
-                        $summernote.summernote('insertNode', imgNode);
-                    }
+    $(document).ready(function() {
+        var $editor = $('#desc_course');
+        $editor.summernote({
+            height: 200,
+            callbacks: {
+                onPaste: function(e) {
+                    console.log('Called event paste', e);
                 },
-                toolbar: [
-                    ['style', ['bold', 'italic', 'underline']],
-                    ['fontsize', ['fontsize']],
-                    ['color', ['color']],
-                    ['height', ['height']],
-                    ['operation', ['undo', 'redo']],
-                    ['para', ['paragraph']],
-                    ['object', ['link']]
-                ]
-            });
-
-            $('#insert-btn').click(() => {
-                $editor.summernote('insertParagraph');
-            });
-
-            $('#bold-btn').click(() => {
-                $editor.summernote('bold');
-            });
+                onImageUpload: function(files) {
+                    console.log(files);
+                    $summernote.summernote('insertNode', imgNode);
+                }
+            },
+            toolbar: [
+                ['style', ['bold', 'italic', 'underline']],
+                ['fontsize', ['fontsize']],
+                ['color', ['color']],
+                ['height', ['height']],
+                ['operation', ['undo', 'redo']],
+                ['para', ['paragraph']],
+                ['object', ['link']]
+            ]
         });
 
-        $(document).ready(function() {
-            var $editor = $('#benefit');
-            $editor.summernote({
-                height: 200,
-                callbacks: {
-                    onPaste: function(e) {
-                        console.log('Called event paste', e);
-                    },
-                    onImageUpload: function(files) {
-                        console.log(files);
-                        $summernote.summernote('insertNode', imgNode);
-                    }
+        $('#insert-btn').click(() => {
+            $editor.summernote('insertParagraph');
+        });
+
+        $('#bold-btn').click(() => {
+            $editor.summernote('bold');
+        });
+    });
+
+    $(document).ready(function() {
+        var $editor = $('#benefit');
+        $editor.summernote({
+            height: 200,
+            callbacks: {
+                onPaste: function(e) {
+                    console.log('Called event paste', e);
                 },
-                toolbar: [
-                    ['style', ['bold', 'italic', 'underline']],
-                    ['fontsize', ['fontsize']],
-                    ['color', ['color']],
-                    ['height', ['height']],
-                    ['operation', ['undo', 'redo']],
-                    ['para', ['paragraph']],
-                    ['object', ['link']]
-                ]
-            });
-
-            $('#insert-btn').click(() => {
-                $editor.summernote('insertParagraph');
-            });
-
-            $('#bold-btn').click(() => {
-                $editor.summernote('bold');
-            });
+                onImageUpload: function(files) {
+                    console.log(files);
+                    $summernote.summernote('insertNode', imgNode);
+                }
+            },
+            toolbar: [
+                ['style', ['bold', 'italic', 'underline']],
+                ['fontsize', ['fontsize']],
+                ['color', ['color']],
+                ['height', ['height']],
+                ['operation', ['undo', 'redo']],
+                ['para', ['paragraph']],
+                ['object', ['link']]
+            ]
         });
 
-        const dateStartInput = document.getElementById('date_start');
-        const dateEndInput = document.getElementById('date_end');
-        $(document).ready(function() {
-            dateStartInput.addEventListener('change', function() {
-                // Set the minimum value of date_end to the value of date_start
-                dateEndInput.min = dateStartInput.value;
-
-                // If date_end is before date_start, clear the date_end input
-                if (dateEndInput.value && dateEndInput.value < dateStartInput.value) {
-                    dateEndInput.value = '';
-                }
-            });
-
-
-            dateEndInput.addEventListener('change', function() {
-                // Check if date_end is before date_start
-                if (dateEndInput.value < dateStartInput.value) {
-                    alert('Akhir tanggal tidak bisa dipilih sebelum tanggal dimulai');
-                    dateEndInput.value = '';
-                }
-            });
+        $('#insert-btn').click(() => {
+            $editor.summernote('insertParagraph');
         });
 
-        $('#add_materi').click(function(e) {
-            $("#add_item").addClass("disabled");
-            $("#add_item").html("Loading...");
-            $.ajax({
-                url: 'add_materi/' + i,
-                success: function(html) {
-                    $(".materi_form").append(html);
-                    $("#add_item").removeClass("disabled");
-                    $("#add_item").html("Tambahkan Bab atau Kuis");
-                    i++;
-                    limit++;
-                }
-            });
-            e.preventDefault();
+        $('#bold-btn').click(() => {
+            $editor.summernote('bold');
         });
+    });
 
-        $('#add_quiz').click(function(e) {
-            $("#add_item").addClass("disabled");
-            $("#add_item").html("Loading...");
-            $.ajax({
-                url: 'add_quiz/' + i + '/' + id_quiz,
-                success: function(html) {
-                    $(".materi_form").append(html);
-                    $("#add_item").removeClass("disabled");
-                    $("#add_item").html("Tambahkan Bab atau Kuis");
-                    i++;
-                    limit++;
-                    id_quiz++;
-                }
-            });
-            e.preventDefault();
-        });
+    const dateStartInput = document.getElementById('date_start');
+    const dateEndInput = document.getElementById('date_end');
+    $(document).ready(function() {
+        dateStartInput.addEventListener('change', function() {
+            // Set the minimum value of date_end to the value of date_start
+            dateEndInput.min = dateStartInput.value;
 
-        $('.dropify').dropify({
-            messages: {
-                default: 'Drag dan drop untuk memilih file',
-                replace: 'Ganti',
-                remove: 'Hapus',
-                error: 'error'
+            // If date_end is before date_start, clear the date_end input
+            if (dateEndInput.value && dateEndInput.value < dateStartInput.value) {
+                dateEndInput.value = '';
             }
         });
 
-        $(document).ready(function() {
-            $('#req').change(function() {
-                if ($(this).is(':checked')) {
-                    $('#requirement-container').html(`
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label control-label">Persyaratan Kursus</label>
-                        <div class="col-md-5">
-                            <select name="req" id="reqSelect" class="select2" placeholder="Pilih Persyaratan ...">
-                                @foreach ($requirement as $item)
-                                    <option value="{{ $item->ID_ACTIVITY }}">{{ $item->TITLE_ACTIVITY }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                `);
 
-                    $('#reqSelect').select2({
-                        placeholder: "Select Requirement ...",
-                        allowClear: true,
-                        width: '100%'
-                    });
-                } else {
-                    $('#requirement-container').empty();
-                }
-            });
-        });
-
-        $('#form-user').submit(function(e) {
-            Swal.fire({
-                icon: 'warning',
-                title: 'Mohon Tunggu',
-                text: 'jangan tutup halaman ini sampai proses selesai',
-                showConfirmButton: false,
-                allowOutsideClick: false,
-                allowEscapeKey: false,
-            });
+        dateEndInput.addEventListener('change', function() {
+            // Check if date_end is before date_start
+            if (dateEndInput.value < dateStartInput.value) {
+                alert('Akhir tanggal tidak bisa dipilih sebelum tanggal dimulai');
+                dateEndInput.value = '';
+            }
         });
     });
+
+    $('#add_materi').click(function(e) {
+        $("#add_item").addClass("disabled");
+        $("#add_item").html("Loading...");
+        $.ajax({
+            url: 'add_materi/' + i,
+            success: function(html) {
+                $(".materi_form").append(html);
+                $("#add_item").removeClass("disabled");
+                $("#add_item").html("Tambahkan Bab atau Kuis");
+                i++;
+                limit++;
+            }
+        });
+        e.preventDefault();
+    });
+
+    $('#add_quiz').click(function(e) {
+        $("#add_item").addClass("disabled");
+        $("#add_item").html("Loading...");
+        $.ajax({
+            url: 'add_quiz/' + i + '/' + id_quiz,
+            success: function(html) {
+                $(".materi_form").append(html);
+                $("#add_item").removeClass("disabled");
+                $("#add_item").html("Tambahkan Bab atau Kuis");
+                i++;
+                limit++;
+                id_quiz++;
+            }
+        });
+        e.preventDefault();
+    });
+
+    $('.dropify').dropify({
+        messages: {
+            default: 'Drag dan drop untuk memilih file',
+            replace: 'Ganti',
+            remove: 'Hapus',
+            error: 'error'
+        }
+    });
+
+    $(document).ready(function() {
+        $('#req').change(function() {
+            if ($(this).is(':checked')) {
+                $('#requirement-container').html(`
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label control-label">Persyaratan Kursus</label>
+                    <div class="col-md-5">
+                        <select name="req" id="reqSelect" class="select2" placeholder="Pilih Persyaratan ...">
+                            @foreach ($requirement as $item)
+                                <option value="{{ $item->ID_ACTIVITY }}">{{ $item->TITLE_ACTIVITY }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+            `);
+
+                $('#reqSelect').select2({
+                    placeholder: "Select Requirement ...",
+                    allowClear: true,
+                    width: '100%'
+                });
+            } else {
+                $('#requirement-container').empty();
+            }
+        });
+    });
+
+    $('#form-user').submit(function(e) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Mohon Tunggu',
+            text: 'jangan tutup halaman ini sampai proses selesai',
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+        });
+    });
+
 
     function cek_soal() {
         no_accordion = 1;

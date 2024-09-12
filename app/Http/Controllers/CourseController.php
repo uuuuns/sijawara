@@ -218,6 +218,16 @@ class CourseController extends Controller
                 a.ID_ACTIVITY = '" . $req->input('id_activity') . "'
         ")[0];
 
+        $data['requirement'] = DB::Select("
+            SELECT
+                a.ID_ACTIVITY,
+                a.TITLE_ACTIVITY
+            FROM
+                activity a
+            WHERE
+                a.TYPE_ACTIVITY = 1
+        ");
+
         $data['items'] = DB::Selectone("
             SELECT
                 COUNT(ic.ID_COURSE) AS tot_item,
