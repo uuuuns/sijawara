@@ -84,7 +84,6 @@ class CourseController extends Controller
 
     public function store(Request $req)
     {
-       
         $activity = [
             'ID_ACTIVITY'           => $this->GenerateUniqID('ACT', $req->input('title_activity')),
             'TITLE_ACTIVITY'        => $req->input('title_activity'),
@@ -259,9 +258,12 @@ class CourseController extends Controller
                 $data['id_quiz'] = $item_data->ID_ITEM;
                 $dataquiz = DB::select("
                     SELECT
-                        *
+                        dq.*,
+                        ic.LIMIT_QUIZ
                     FROM
-                        detail_quiz
+                        detail_quiz dq
+                    LEFT JOIN item_course ic ON
+                        ic.ID_ITEM = dq.ID_QUIZ
                     WHERE
                         ID_QUIZ = '" . $item_data->ID_ITEM . "'
                 ");
@@ -280,12 +282,13 @@ class CourseController extends Controller
                         'PIL_C'      => $quiz->PIL_C,
                         'PIL_D'      => $quiz->PIL_D,
                         'KUNCI'      => $quiz->KUNCI,
-                        'ORDER_LIST' => $quiz->ORDER_LIST,
+                        'LIMIT_QUIZ' => $quiz->LIMIT_QUIZ,
                         'NO'         => $data['no_index']
                     ];
 
                     foreach ($data['quiz'][$quiz->ID_QUIZ] as $ID_ITEM) {
                         $data['ID_ITEM'] = $ID_ITEM['ID_QUIZ'];
+                        $data['LIMIT_QUIZ'] = $quiz->LIMIT_QUIZ;
                     }
                     $data['no_index']++;
                 }
@@ -478,10 +481,12 @@ class CourseController extends Controller
         $descMateriList     = $req->input('desc_materi');
         $file               = $req->file('materi_file');
         $linkYT             = $req->input('materi_link');
-        $idQuiz          = [];
+        $idQuiz             = [];
+        $nomor         = 0;
 
         if (!empty($orderList)) {
             for ($i = 0; $i < count($orderList); $i++) {
+                $nomor++;
                 if ($categoryList[$i] == 1) {
                     $data_item = [
                         'ID_COURSE'     => $data['ID_COURSE'],
@@ -501,7 +506,8 @@ class CourseController extends Controller
                         'LINK_YT'       => null,
                         'DESKRIPSI'     => null,
                         'ORDER_LIST'    => $orderList[$i],
-                        'TYPE'          => $categoryList[$i]
+                        'TYPE'          => $categoryList[$i],
+                        'LIMIT_QUIZ'    => $req->input('limit_soal_'.$nomor)
                     ];
                     $idQuiz[] = DB::table('item_course')->insertGetId($data_item);
                 }
@@ -916,11 +922,12 @@ class CourseController extends Controller
         $linkYT             = $req->input('materi_link');
         $file = $req->file('materi_file');
         $file_default = $req->input('default_file');
-        
+        $nomor = 0;
 
         $idQuiz = [];
         if (!empty($orderList)) {
             for ($i = 0; $i < count($orderList); $i++) {
+                $nomor++;
                 if ($categoryList[$i] == 1) {
                     $data_item = [
                         'ID_COURSE'     => $data['ID_COURSE'],
@@ -940,7 +947,8 @@ class CourseController extends Controller
                         'LINK_YT'       => null,
                         'DESKRIPSI'     => null,
                         'ORDER_LIST'    => $orderList[$i],
-                        'TYPE'          => $categoryList[$i]
+                        'TYPE'          => $categoryList[$i],
+                        'LIMIT_QUIZ'    => $req->input('limit_soal_'.$nomor)
                     ];
                     $idQuiz[] = DB::table('item_course')->insertGetId($data_item);
                 }
