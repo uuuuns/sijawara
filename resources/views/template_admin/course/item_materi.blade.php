@@ -2,9 +2,14 @@
     <div class="card-header">
         <h5 class="card-title d-flex align-items-center row my-1">
             <a data-toggle="collapse" href="#collapse{{ $no }}" class="col-md-12 accordion-link">
-                <span class="col-md-11">Detail - Materi</span>
-                <input type="hidden" class="form-control" name="order_list[]" value="{{ $no }}" required>
+                <div class="float-start" style="width: 65px; margin-right: 10px;">
+                    <input type="number" class="form-control" name="order_list[]" value="{{ $no }}" required>
+                </div>
                 <input type="hidden" class="form-control" name="type[]" value="1" required>
+                <div class="row align-items-center" style="height: 16px;">
+                    &nbsp;
+                </div>
+                <span class="col-md-11">Detail - Materi</span>
                 <div id="delete_materi_{{ $no }}" class="btn btn-danger px-1 py-0 float-end" style="cursor: pointer;">
                     <span><i class="far fa-times"></i> </span>
                 </div>

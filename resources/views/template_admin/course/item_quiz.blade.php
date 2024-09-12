@@ -2,8 +2,13 @@
     <div class="card-header">
         <h5 class="card-title d-flex align-items-center row my-1">
             <a data-toggle="collapse" href="#collapse{{ $no }}" class="col-md-12 accordion-link">
+                <div class="float-start" style="width: 65px; margin-right: 10px;">
+                    <input type="number" class="form-control" name="order_list[]" value="{{ $no }}">
+                </div>
+                <div class="row align-items-center" style="height: 16px;">
+                    &nbsp;
+                </div>
                 <span class="col-md-11">Detail - Kuis</span>
-                <input type="hidden" class="form-control" name="order_list[]" value="{{ $no }}">
                 <input type="hidden" class="form-control" name="type[]" value="2">
                 <div id="delete_quiz_{{ $no }}" class="btn btn-danger px-1 py-0 float-end"
                     style="cursor: pointer;">
@@ -17,6 +22,13 @@
     <input type="hidden" name="materi_link[]">
     <input type="hidden" name="desc_materi[]">
     <div id="collapse{{ $no }}" class="collapse show" data-parent="#accordion-default">
+        <div class="form-group ps-3 pe-3 row mt-3">
+            <label class="col mt-3">Batasi Soal<span class="text-danger">*</span></label>
+            <div class="col-md-10">
+                <input type="number" class="form-control" id="limit_soal_{{ $no }}" name="limit_soal_{{ $no }}" placeholder="10" required>
+                <small class="text-danger">Batasi Soal yang akan dikeluarkan di quiz ini</small>
+            </div>
+        </div>
         <div class="card-body">
             <div class="soal_form_{{ $no }}"></div>
             <div class="form-group row">

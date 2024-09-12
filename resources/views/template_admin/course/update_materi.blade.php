@@ -2,8 +2,13 @@
     <div class="card-header">
         <h5 class="card-title d-flex row">
             <a data-toggle="collapse" href="#collapse{{ $no }}" class="col-md-12">
+                <div class="float-start" style="width: 65px; margin-right: 10px;">
+                    <input type="number" class="form-control" name="order_list[]" value="{{ $no }}" required>
+                </div>
+                <div class="row align-items-center" style="height: 16px;">
+                    &nbsp;
+                </div>
                 <span class="col-md-11">Detail - Materi <?= $item['TITLE'] ?></span>
-                <input type="hidden" class="form-control" name="order_list[]" value="{{ $no }}" required>
                 <input type="hidden" class="form-control" name="type[]" value="1" required>
                 <input type="hidden" name="default_file[]" value="<?= $item['FILE'] ?>">
                 <input type="hidden" name="ID_ITEM[]" value="<?= $item['ID_ITEM'] ?>">

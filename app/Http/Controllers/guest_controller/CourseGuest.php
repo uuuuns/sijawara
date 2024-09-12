@@ -324,6 +324,7 @@ class CourseGuest extends Controller
 			WHERE
 				" . implode('AND ', $condition) . "
 			ORDER BY RAND()
+			LIMIT ".$data['detail_item_course']->LIMIT_QUIZ."
 			";
 			$data['detail_item_course'] = DB::select($sql);
 		}

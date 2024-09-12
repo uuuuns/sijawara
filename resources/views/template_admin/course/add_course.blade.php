@@ -102,6 +102,7 @@
                             <div class="col-md-10">
                                 <input type="text" class="form-control" name="certif_code" placeholder="Certificate Code"
                                     style="text-transform: uppercase" required>
+                                 <small class="text-danger">Jangan Gunakan Spasi Gunakan huruf besar contoh : BLJKPR9</small>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -148,11 +149,11 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group text-end mt-5">
-                            <button type="submit" class="btn btn-primary rounded btn-submit-form">Submit</button>
-                        </div>
-                    </form>
-                </div>
+                    </div>
+                    <div class="form-group text-end mt-5">
+                        <button type="button" onclick="cek_soal()" class="btn btn-primary rounded btn-submit-form">Submit</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -358,5 +359,33 @@
                 allowEscapeKey: false,
             });
         });
-    </script>
+    });
+
+    function cek_soal() {
+        no_accordion = 1;
+        while ($('#quiz_item_' + no_accordion).length) {
+            var limit_soal = $('#limit_soal_' + no_accordion).val();
+            if (limit_soal == '') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Limit soal tidak boleh kosong di quiz nomor ' + no_accordion,
+                });
+                return false;
+            } else {
+                var questionCount = $('.soal_form_'+no_accordion+' input[name^="question["]').length;
+                if (limit_soal > questionCount) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Soal Quiz Kurang',
+                        text: 'Jumlah soal kurang dari limit yang ditentukan di quiz nomor ' + no_accordion,
+                    });
+                    return false;
+                }
+            }
+            no_accordion++;
+        }
+        $('#form-user').submit();
+    }
+</script>
 @endsection

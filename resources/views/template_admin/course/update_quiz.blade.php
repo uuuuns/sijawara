@@ -2,8 +2,13 @@
     <div class="card-header">
         <h5 class="card-title d-flex align-items-center row">
             <a data-toggle="collapse" href="#collapse{{ $no }}" class="col-md-12">
+                <div class="float-start" style="width: 65px; margin-right: 10px;">    
+                    <input type="number" class="form-control" name="order_list[]" value="{{ $no }}">
+                </div>
+                <div class="row align-items-center" style="height: 16px;">
+                    &nbsp;
+                </div>
                 <span class="col-md-11">Detail - Quiz</span>
-                <input type="hidden" class="form-control" name="order_list[]" value="{{ $no }}">
                 <input type="hidden" class="form-control" name="type[]" value="2">
                 <input type="hidden" name="ID_ITEM[]" value="<?= $ID_ITEM ?>">
                 <div id="delete_quiz_{{ $no }}" class="btn btn-danger px-1 py-0 float-end"
@@ -20,6 +25,13 @@
     <input type="hidden" name="desc_materi[]">
     <input type="hidden" name="ID_QUIZ[]" value="<?= $ID_ITEM?>">
     <div id="collapse{{ $no }}" class="collapse show" data-parent="#accordion-default">
+        <div class="form-group ps-3 pe-3 row mt-3">
+            <label class="col mt-3">Batasi Soal<span class="text-danger">*</span></label>
+            <div class="col-md-10">
+                <input type="number" class="form-control" id="limit_soal_{{ $no }}" name="limit_soal_{{ $no }}" value="{{$LIMIT_QUIZ}}" placeholder="10" required>
+                <small class="text-danger">Batasi Soal yang akan dikeluarkan di quiz ini</small>
+            </div>
+        </div>
         <div class="card-body">
             <div class="soal_form_{{ $no }}"></div>
             <div class="form-group row">
