@@ -158,205 +158,205 @@
     </div>
     {{-- End add Item --}}
 
-    <script>
-        var id_quiz = 1;
-        var limit = 0;
+<script>
+    var id_quiz = 1;
+    var limit = 0;
 
-        var data = {!! $jsonData !!};
-        var id_course = data.ID_COURSE;
-        var id_act = data.ID_ACTIVITY;
+    var data = {!! $jsonData !!};
+    var id_course = data.ID_COURSE;
+    var id_act = data.ID_ACTIVITY;
 
-        var item = <?= $data['item'] ?>;
+    var item = <?= $data['item'] ?>;
 
-        // Load Image
-        var cover_book = $('input[name="image_activity"]').dropify();
-        cover_book = cover_book.data('dropify');
-        cover_book.resetPreview();
-        cover_book.clearElement();
-        cover_book.settings['defaultFile'] = data.IMAGE_ACTIVITY;
-        cover_book.destroy();
-        cover_book.init();
+    // Load Image
+    var cover_book = $('input[name="image_activity"]').dropify();
+    cover_book = cover_book.data('dropify');
+    cover_book.resetPreview();
+    cover_book.clearElement();
+    cover_book.settings['defaultFile'] = data.IMAGE_ACTIVITY;
+    cover_book.destroy();
+    cover_book.init();
 
 
-        $('input[name="ID_ACTIVITY"]').val(id_act);
-        $('input[name="ID_COURSE"]').val(id_course);
-        $('input[name="title_activity"]').val(data.TITLE_ACTIVITY);
-        $('input[name="date_start"]').val(data.DATE_START);
-        $('input[name="date_end"]').val(data.DATE_END);
-        $('input[name="certif_code"]').val(data.SERTIF_CODE);
-        $('select[name="is_public"]').val(data.STATUS ? '1' : '0');
-        $('select[name="category"]').val(data.ID_KATEGORI);
-        $('input[name="status"]').prop('checked', data.STATUS);
+    $('input[name="ID_ACTIVITY"]').val(id_act);
+    $('input[name="ID_COURSE"]').val(id_course);
+    $('input[name="title_activity"]').val(data.TITLE_ACTIVITY);
+    $('input[name="date_start"]').val(data.DATE_START);
+    $('input[name="date_end"]').val(data.DATE_END);
+    $('input[name="certif_code"]').val(data.SERTIF_CODE);
+    $('select[name="is_public"]').val(data.STATUS ? '1' : '0');
+    $('select[name="category"]').val(data.ID_KATEGORI);
+    $('input[name="status"]').prop('checked', data.STATUS);
 
-        $.ajax({
-            url: 'get/' + id_act,
-            method: 'GET',
-            dataType: 'JSON',
-            success: function(response) {
-                $('#desc_course').summernote('code', response[0].DESKRIPSI_COURSE);
-                $('#benefit').summernote('code', response[0].BENEFIT);
+    $.ajax({
+        url: 'get/' + id_act,
+        method: 'GET',
+        dataType: 'JSON',
+        success: function(response) {
+            $('#desc_course').summernote('code', response[0].DESKRIPSI_COURSE);
+            $('#benefit').summernote('code', response[0].BENEFIT);
+        },
+        error: function(xhr, status, error) {
+            console.error(error);
+        }
+    });
+
+    $(document).ready(function() {
+        var $editor = $('#desc_course');
+        $editor.summernote({
+            height: 200,
+            callbacks: {
+                onImageUpload: function(files) {
+                    $summernote.summernote('insertNode', imgNode);
+                }
             },
-            error: function(xhr, status, error) {
-                console.error(error);
-            }
+            toolbar: [
+                ['style', ['bold', 'italic', 'underline']],
+                ['fontsize', ['fontsize']],
+                ['color', ['color']],
+                ['height', ['height']],
+                ['operation', ['undo', 'redo']],
+                ['para', ['paragraph']],
+                ['object', ['link']]
+            ]
         });
 
-        $(document).ready(function() {
-            var $editor = $('#desc_course');
-            $editor.summernote({
-                height: 200,
-                callbacks: {
-                    onImageUpload: function(files) {
-                        $summernote.summernote('insertNode', imgNode);
-                    }
-                },
-                toolbar: [
-                    ['style', ['bold', 'italic', 'underline']],
-                    ['fontsize', ['fontsize']],
-                    ['color', ['color']],
-                    ['height', ['height']],
-                    ['operation', ['undo', 'redo']],
-                    ['para', ['paragraph']],
-                    ['object', ['link']]
-                ]
-            });
-
-            $('#insert-btn').click(() => {
-                $editor.summernote('insertParagraph');
-            });
-
-            $('#bold-btn').click(() => {
-                $editor.summernote('bold');
-            });
+        $('#insert-btn').click(() => {
+            $editor.summernote('insertParagraph');
         });
 
-        $(document).ready(function() {
-            var $editor = $('#benefit');
-            $editor.summernote({
-                height: 200,
-                callbacks: {
-                    onImageUpload: function(files) {
-                        $summernote.summernote('insertNode', imgNode);
-                    }
-                },
-                toolbar: [
-                    ['style', ['bold', 'italic', 'underline']],
-                    ['fontsize', ['fontsize']],
-                    ['color', ['color']],
-                    ['height', ['height']],
-                    ['operation', ['undo', 'redo']],
-                    ['para', ['paragraph']],
-                    ['object', ['link']]
-                ]
-            });
-
-            $('#insert-btn').click(() => {
-                $editor.summernote('insertParagraph');
-            });
-
-            $('#bold-btn').click(() => {
-                $editor.summernote('bold');
-            });
-        });
-
-        $('#add_materi').click(function(e) {
-            $("#add_item").addClass("disabled");
-            $("#add_item").html("Loading...");
-            $.ajax({
-                url: 'add_materi/' + item,
-                success: function(html) {
-                    $(".materi_form").append(html);
-                    $("#add_item").removeClass("disabled");
-                    $("#add_item").html("Tambahkan Bab atau Kuis");
-                    item++;
-                    limit++;
-                }
-            });
-            e.preventDefault();
-        });
-
-        $('#add_quiz').click(function(e) {
-            $("#add_item").addClass("disabled");
-            $("#add_item").html("Loading...");
-            $.ajax({
-                url: 'add_quiz/' + item + '/' + id_quiz,
-                success: function(html) {
-                    $(".materi_form").append(html);
-                    $("#add_item").removeClass("disabled");
-                    $("#add_item").html("Tambahkan Bab atau Kuis");
-                    item++;
-                    limit++;
-                    id_quiz++;
-                }
-            });
-            e.preventDefault();
-        });
-
-        $.ajax({
-            url: 'get_course_item/' + id_course,
-            type: "GET",
-            beforeSend: function() {
-                $('#add_item').toggleClass("is-loading");
-            },
-            success: function(html) {
-                $("#add_item").removeClass("is-loading");
-                $(".materi_form").append(html);
-                limit = item;
-            }
-        });
-
-        $(document).ready(function() {
-            $('.dropify').dropify({
-                messages: {
-                    default: 'Tarik dan lepas gambar disini atau klik',
-                    replace: 'Ganti',
-                    remove: 'Hapus',
-                    error: 'Error'
-                },
-                error: {
-                    'fileSize': 'File terlalu besar (1MB maksimal).'
-                }
-            });
-        });
-
-        $(document).ready(function() {
-            $('#req').change(function() {
-                if ($(this).is(':checked')) {
-                    $('#requirement-container').html(`
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label control-label">Persyaratan Kursus</label>
-                        <div class="col-md-5">
-                            <select name="req" id="reqSelect" class="select2" placeholder="Pilih Persyaratan ...">
-                                @foreach ($requirement as $item)
-                                    <option value="{{ $item->ID_ACTIVITY }}">{{ $item->TITLE_ACTIVITY }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                `);
-
-                    $('#reqSelect').select2({
-                        placeholder: "Select Requirement ...",
-                        allowClear: true,
-                        width: '100%'
-                    });
-                } else {
-                    $('#requirement-container').empty();
-                }
-            });
-        });
-
-        $('#form-user').submit(function(e) {
-            Swal.fire({
-                icon: 'warning',
-                title: 'Mohon Tunggu',
-                text: 'jangan tutup halaman ini sampai proses selesai',
-                showConfirmButton: false,
-                allowOutsideClick: false,
-                allowEscapeKey: false,
-            });
+        $('#bold-btn').click(() => {
+            $editor.summernote('bold');
         });
     });
+
+    $(document).ready(function() {
+        var $editor = $('#benefit');
+        $editor.summernote({
+            height: 200,
+            callbacks: {
+                onImageUpload: function(files) {
+                    $summernote.summernote('insertNode', imgNode);
+                }
+            },
+            toolbar: [
+                ['style', ['bold', 'italic', 'underline']],
+                ['fontsize', ['fontsize']],
+                ['color', ['color']],
+                ['height', ['height']],
+                ['operation', ['undo', 'redo']],
+                ['para', ['paragraph']],
+                ['object', ['link']]
+            ]
+        });
+
+        $('#insert-btn').click(() => {
+            $editor.summernote('insertParagraph');
+        });
+
+        $('#bold-btn').click(() => {
+            $editor.summernote('bold');
+        });
+    });
+
+    $('#add_materi').click(function(e) {
+        $("#add_item").addClass("disabled");
+        $("#add_item").html("Loading...");
+        $.ajax({
+            url: 'add_materi/' + item,
+            success: function(html) {
+                $(".materi_form").append(html);
+                $("#add_item").removeClass("disabled");
+                $("#add_item").html("Tambahkan Bab atau Kuis");
+                item++;
+                limit++;
+            }
+        });
+        e.preventDefault();
+    });
+
+    $('#add_quiz').click(function(e) {
+        $("#add_item").addClass("disabled");
+        $("#add_item").html("Loading...");
+        $.ajax({
+            url: 'add_quiz/' + item + '/' + id_quiz,
+            success: function(html) {
+                $(".materi_form").append(html);
+                $("#add_item").removeClass("disabled");
+                $("#add_item").html("Tambahkan Bab atau Kuis");
+                item++;
+                limit++;
+                id_quiz++;
+            }
+        });
+        e.preventDefault();
+    });
+
+    $.ajax({
+        url: 'get_course_item/' + id_course,
+        type: "GET",
+        beforeSend: function() {
+            $('#add_item').toggleClass("is-loading");
+        },
+        success: function(html) {
+            $("#add_item").removeClass("is-loading");
+            $(".materi_form").append(html);
+            limit = item;
+        }
+    });
+
+    $(document).ready(function() {
+        $('.dropify').dropify({
+            messages: {
+                default: 'Tarik dan lepas gambar disini atau klik',
+                replace: 'Ganti',
+                remove: 'Hapus',
+                error: 'Error'
+            },
+            error: {
+                'fileSize': 'File terlalu besar (1MB maksimal).'
+            }
+        });
+    });
+
+    $(document).ready(function() {
+        $('#req').change(function() {
+            if ($(this).is(':checked')) {
+                $('#requirement-container').html(`
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label control-label">Persyaratan Kursus</label>
+                    <div class="col-md-5">
+                        <select name="req" id="reqSelect" class="select2" placeholder="Pilih Persyaratan ...">
+                            @foreach ($data['requirement'] as $item)
+                                <option value="{{ $item->ID_ACTIVITY }}">{{ $item->TITLE_ACTIVITY }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+            `);
+
+                $('#reqSelect').select2({
+                    placeholder: "Select Requirement ...",
+                    allowClear: true,
+                    width: '100%'
+                });
+            } else {
+                $('#requirement-container').empty();
+            }
+        });
+    });
+
+    $('#form-user').submit(function(e) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Mohon Tunggu',
+            text: 'jangan tutup halaman ini sampai proses selesai',
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+        });
+    });
+    
 
     function cek_soal() {
         no_accordion = 1;
