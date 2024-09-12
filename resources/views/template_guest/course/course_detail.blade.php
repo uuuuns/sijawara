@@ -121,6 +121,10 @@
                     <div class="tab-content tutori-course-content" id="nav-tabContent">
                         <div class="tab-pane fade show active" id="nav-course" role="tabpanel" aria-labelledby="nav-course-tab" tabindex="0">
                             <div class="flex-column flex-md-row gap-3 row">
+                                <div class="d-grid d-md-flex justify-content-md-end">
+                                    <button id="refreshPageBtn" type="button" class="btn btn-primary rounded"
+                                        style="padding: 5px !important;">Refresh</button>
+                                </div>
                                 <div class="col-12 col-md-3 mb-4">
                                     <?php
                                     $quiz = 0;
@@ -254,6 +258,11 @@
 </style>
 
 <script>
+    $('#refreshPageBtn').click(function() {
+        // Reload the page
+        location.reload();
+    });
+    
     const Toast = Swal.mixin({
         toast: true,
         position: 'top-end',

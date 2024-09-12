@@ -76,6 +76,16 @@ class CourseController extends Controller
                 kategori k
         ");
 
+        $data['requirement'] = DB::Select("
+            SELECT
+                a.ID_ACTIVITY,
+                a.TITLE_ACTIVITY
+            FROM
+                activity a
+            WHERE
+                a.TYPE_ACTIVITY = 1
+        ");
+
         return
             view('template.header', $data) .
             view('template_admin/course/add_course', $data) .
@@ -109,6 +119,10 @@ class CourseController extends Controller
             'BENEFIT'               => $req->input('benefit'),
             'KATEGORI'              => $req->input('category')
         ];
+
+        if ($req->input('req')) {
+            $course['REQUIREMENT']  = $req->input('req');
+        }
 
         DB::table('activity')->insert($activity);
         DB::table('course')->insert($course);
@@ -319,7 +333,6 @@ class CourseController extends Controller
     public function update(Request $req)
     {
         try {
-            
             $activity = [
                 'TITLE_ACTIVITY'        => $req->input('title_activity'),
                 'ID_USER'               => session('user')[0]['ID_USER'],
@@ -346,6 +359,10 @@ class CourseController extends Controller
                 'BENEFIT'               => $req->input('benefit'),
                 'KATEGORI'              => $req->input('category')
             ];
+
+            if ($req->input('req')) {
+                $course['REQUIREMENT']  = $req->input('req');
+            }
 
             DB::table('activity')->WHERE(['ID_ACTIVITY' => $req->input('ID_ACTIVITY')])->update($activity);
             DB::table('course')->WHERE(['ID_ACTIVITY' => $req->input('ID_ACTIVITY')])->update($course);
