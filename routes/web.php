@@ -99,25 +99,25 @@ Route::middleware(['usersession:4,1'])->group(function () {
     Route::post('bentuk/update', 'KoperasiController@update_bentuk');
     Route::post('bentuk/delete', 'KoperasiController@delete_bentuk');
 
-    Route::get('jenis', 'KoperasiController@');
-    Route::get('jenis/store', 'KoperasiController@');
-    Route::get('jenis/update', 'KoperasiController@');
-    Route::get('jenis/delete', 'KoperasiController@');
+    Route::get('jenis', 'KoperasiController@index_jenis');
+    Route::post('jenis/store', 'KoperasiController@store_jenis');
+    Route::post('jenis/update', 'KoperasiController@update_jenis');
+    Route::post('jenis/delete', 'KoperasiController@delete_jenis');
 
-    Route::get('kelompok', 'KoperasiController@');
-    Route::get('kelompok/store', 'KoperasiController@');
-    Route::get('kelompok/update', 'KoperasiController@');
-    Route::get('kelompok/delete', 'KoperasiController@');
+    Route::get('kelompok', 'KoperasiController@index_kelompok');
+    Route::post('kelompok/store', 'KoperasiController@store_kelompok');
+    Route::post('kelompok/update', 'KoperasiController@update_kelompok');
+    Route::post('kelompok/delete', 'KoperasiController@delete_kelompok');
 
-    Route::get('masalah', 'KoperasiController@');
-    Route::get('masalah/store', 'KoperasiController@');
-    Route::get('masalah/update', 'KoperasiController@');
-    Route::get('masalah/delete', 'KoperasiController@');
+    Route::get('masalah', 'KoperasiController@index_masalah');
+    Route::post('masalah/store', 'KoperasiController@store_masalah');
+    Route::post('masalah/update', 'KoperasiController@update_masalah');
+    Route::post('masalah/delete', 'KoperasiController@delete_masalah');
 
-    Route::get('sektor', 'KoperasiController@');
-    Route::get('sektor/store', 'KoperasiController@');
-    Route::get('sektor/update', 'KoperasiController@');
-    Route::get('sektor/delete', 'KoperasiController@');
+    Route::get('sektor', 'KoperasiController@index_sektor');
+    Route::post('sektor/store', 'KoperasiController@store_sektor');
+    Route::post('sektor/update', 'KoperasiController@update_sektor');
+    Route::post('sektor/delete', 'KoperasiController@delete_sektor');
 });
 
 //2 INSTRUKTUR

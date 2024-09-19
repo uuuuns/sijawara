@@ -25,13 +25,12 @@ class KoperasiController extends Controller
             FROM
                 md_bentuk_koperasi bk
         ");   
-
+        $data['admin'] = true;
         // Kirim data ke view
         return
-        view('template_main.admin_side.etc.header', $data) .
-        view('template_main.admin_side.etc.sidebar', $data) .
-        view('template_main.admin_side.master_data.bentuk_koperasi', $data) .
-        view('template_main.admin_side.etc.footer');
+            view('template.header', $data) .
+            view('template_admin/master_data/bentuk_koperasi', $data) .
+            view('template.footer', $data);
     }    
     public function store_bentuk(Request $req)
     {
@@ -41,7 +40,7 @@ class KoperasiController extends Controller
 
         DB::table('md_bentuk_koperasi')->INSERT($data);
 
-        return redirect('bentuk')->with(['succ_msg' => 'Berhasil Menambahkan Nama Bentuk', 'location' => 'bentuk']);
+        return redirect('bentuk')->with(['msg' => 'Berhasil Menambahkan Nama Bentuk', 'location' => 'bentuk']);
     }
     public function update_bentuk(Request $req)
     {
@@ -51,96 +50,188 @@ class KoperasiController extends Controller
 
         DB::table('md_bentuk_koperasi')->WHERE(['ID' => $req->input('up_id_bentuk')])->update($data);
 
-        return redirect('bentuk')->with(['succ_msg' => 'Berhasil Mengubah Bentuk', 'location' => 'bentuk']);
+        return redirect('bentuk')->with(['msg' => 'Berhasil Mengubah Bentuk', 'location' => 'bentuk']);
     }
     public function delete_bentuk(Request $req)
     {
         DB::table('md_bentuk_koperasi')->WHERE(['ID' => $req->input('del_id_bentuk')])->delete();
 
-        return redirect('bentuk')->with(['succ_msg' => 'Berhasil Menghapus Bentuk', 'location' => 'bentuk']);
+        return redirect('bentuk')->with(['msg' => 'Berhasil Menghapus Bentuk', 'location' => 'bentuk']);
     }
     
     public function index_jenis()
     {
-        // Ambil semua data dari model JenisKoperasi
-        $jenisKoperasi = JenisKoperasi::all();
+        $data['title'] = "Jenis Koperasi";
 
+        $data["jenis_koperasi"] = DB::select("
+            SELECT
+                jk.*
+            FROM
+                md_jenis_koperasi jk
+        ");   
+        $data['admin'] = true;
         // Kirim data ke view
-        return view('jenis_koperasi.index', ['jenisKoperasis' => $jenisKoperasi]);
+        return
+            view('template.header', $data) .
+            view('template_admin/master_data/jenis_koperasi', $data) .
+            view('template.footer', $data);
     }
-    public function store_jenis()
+    public function store_jenis(Request $req)
     {
+        $data = [
+            'NAMA'  => $req->input('jenis_koperasi')
+        ];
 
+        DB::table('md_jenis_koperasi')->INSERT($data);
+
+        return redirect('jenis')->with(['msg' => 'Berhasil Menambahkan Nama Jenis', 'location' => 'jenis']);
     }
-    public function update_jenis()
+    public function update_jenis(Request $req)
     {
+        $data = [
+            'NAMA'  => $req->input('up_jenis')
+        ];
 
+        DB::table('md_jenis_koperasi')->WHERE(['ID' => $req->input('up_id_jenis')])->update($data);
+
+        return redirect('jenis')->with(['msg' => 'Berhasil Mengubah Jenis', 'location' => 'jenis']);
     }
-    public function delete_jenis()
+    public function delete_jenis(Request $req)
     {
+        DB::table('md_jenis_koperasi')->WHERE(['ID' => $req->input('del_id_jenis')])->delete();
 
+        return redirect('jenis')->with(['msg' => 'Berhasil Menghapus Jenis', 'location' => 'jenis']);
     }
 
     public function index_kelompok()
     {
-        // Ambil semua data dari model KelompokKoperasi
-        $kelompokKoperasi = KelompokKoperasi::all();
+        $data['title'] = "Kelompok Koperasi";
 
+        $data["kelompok_koperasi"] = DB::select("
+            SELECT
+                kk.*
+            FROM
+                md_kelompok_koperasi kk
+        ");   
+        $data['admin'] = true;
         // Kirim data ke view
-        return view('kelompok_koperasi.index', ['bentukKoperasis' => $kelompokKoperasi]);
+        return
+            view('template.header', $data) .
+            view('template_admin/master_data/kelompok_koperasi', $data) .
+            view('template.footer', $data);
     }
-    public function store_kelompok()
+    public function store_kelompok(Request $req)
     {
+        $data = [
+            'NAMA'  => $req->input('kelompok_koperasi')
+        ];
 
+        DB::table('md_kelompok_koperasi')->INSERT($data);
+
+        return redirect('kelompok')->with(['msg' => 'Berhasil Menambahkan Nama Kelompok', 'location' => 'kelompok']);
     }
-    public function update_kelompok()
+    public function update_kelompok(Request $req)
     {
+        $data = [
+            'NAMA'  => $req->input('up_kelompok')
+        ];
 
+        DB::table('md_kelompok_koperasi')->WHERE(['ID' => $req->input('up_id_kelompok')])->update($data);
+
+        return redirect('kelompok')->with(['msg' => 'Berhasil Mengubah Kelompok', 'location' => 'kelompok']);
     }
-    public function delete_kelompok()
+    public function delete_kelompok(Request $req)
     {
+        DB::table('md_kelompok_koperasi')->WHERE(['ID' => $req->input('del_id_kelompok')])->delete();
 
+        return redirect('kelompok')->with(['msg' => 'Berhasil Menghapus Kelompok', 'location' => 'kelompok']);
     }
 
     public function index_masalah()
     {
-        // Ambil semua data dari model BentukKoperasi
-        $masalahKoperasi = MasalahKoperasi::all();
+        $data['title'] = "Masalah Koperasi";
 
+        $data["masalah_koperasi"] = DB::select("
+            SELECT
+                mk.*
+            FROM
+                md_masalah_koperasi mk
+        ");   
+        $data['admin'] = true;
         // Kirim data ke view
-        return view('masalah_koperasi.index', ['bentukKoperasis' => $masalahKoperasi]);
+        return
+            view('template.header', $data) .
+            view('template_admin/master_data/masalah_koperasi', $data) .
+            view('template.footer', $data);
     }
-    public function store_masalah()
+    public function store_masalah(Request $req)
     {
+        $data = [
+            'NAMA'  => $req->input('masalah_koperasi')
+        ];
 
+        DB::table('md_masalah_koperasi')->INSERT($data);
+
+        return redirect('masalah')->with(['msg' => 'Berhasil Menambahkan Nama Masalah', 'location' => 'masalah']);
     }
-    public function update_masalah()
+    public function update_masalah(Request $req)
     {
+        $data = [
+            'NAMA'  => $req->input('up_masalah')
+        ];
 
+        DB::table('md_masalah_koperasi')->WHERE(['ID' => $req->input('up_id_masalah')])->update($data);
+
+        return redirect('masalah')->with(['msg' => 'Berhasil Mengubah Masalah', 'location' => 'masalah']);
     }
-    public function delete_masalah()
+    public function delete_masalah(Request $req)
     {
+        DB::table('md_masalah_koperasi')->WHERE(['ID' => $req->input('del_id_masalah')])->delete();
 
+        return redirect('masalah')->with(['msg' => 'Berhasil Menghapus Masalah', 'location' => 'masalah']);
     }
 
     public function index_sektor()
     {
-        // Ambil semua data dari model BentukKoperasi
-        $sektorUsaha = SektorUsaha::all();
+        $data['title'] = "Sektor Usaha";
 
+        $data["sektor_usaha"] = DB::select("
+            SELECT
+                su.*
+            FROM
+                md_sektor_usaha su
+        ");   
+        $data['admin'] = true;
         // Kirim data ke view
-        return view('sektor_usaha.index', ['bentukKoperasis' => $sektorUsaha]);
+        return
+            view('template.header', $data) .
+            view('template_admin/master_data/sektor_usaha', $data) .
+            view('template.footer', $data);
     }
-    public function store_sektor()
+    public function store_sektor(Request $req)
     {
+        $data = [
+            'NAMA'  => $req->input('sektor_usaha')
+        ];
 
+        DB::table('md_sektor_usaha')->INSERT($data);
+
+        return redirect('sektor')->with(['msg' => 'Berhasil Menambahkan Nama Sektor', 'location' => 'sektor']);
     }
-    public function update_sektor()
+    public function update_sektor(Request $req)
     {
+        $data = [
+            'NAMA'  => $req->input('up_sektor')
+        ];
 
+        DB::table('md_sektor_usaha')->WHERE(['ID' => $req->input('up_id_sektor')])->update($data);
+
+        return redirect('sektor')->with(['msg' => 'Berhasil Mengubah Sektor', 'location' => 'sektor']);
     }
-    public function delete_sektor()
+    public function delete_sektor(Request $req)
     {
+        DB::table('md_sektor_usaha')->WHERE(['ID' => $req->input('del_id_sektor')])->delete();
 
+        return redirect('sektor')->with(['msg' => 'Berhasil Menghapus Sektor', 'location' => 'sektor']);
     }
 }
