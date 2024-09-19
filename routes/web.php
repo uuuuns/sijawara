@@ -92,6 +92,32 @@ Route::middleware(['usersession:4,1'])->group(function () {
     Route::post('testimoni/store', 'SettingController@addTestimoni');
     Route::post('testimoni/delete', 'SettingController@deleteTestimoni');
     Route::post('testimoni/edit', 'SettingController@editTestimoni');
+
+    // Koperasi Controller
+    Route::get('bentuk', 'KoperasiController@index_bentuk');
+    Route::post('bentuk/store', 'KoperasiController@store_bentuk');
+    Route::post('bentuk/update', 'KoperasiController@update_bentuk');
+    Route::post('bentuk/delete', 'KoperasiController@delete_bentuk');
+
+    Route::get('jenis', 'KoperasiController@');
+    Route::get('jenis/store', 'KoperasiController@');
+    Route::get('jenis/update', 'KoperasiController@');
+    Route::get('jenis/delete', 'KoperasiController@');
+
+    Route::get('kelompok', 'KoperasiController@');
+    Route::get('kelompok/store', 'KoperasiController@');
+    Route::get('kelompok/update', 'KoperasiController@');
+    Route::get('kelompok/delete', 'KoperasiController@');
+
+    Route::get('masalah', 'KoperasiController@');
+    Route::get('masalah/store', 'KoperasiController@');
+    Route::get('masalah/update', 'KoperasiController@');
+    Route::get('masalah/delete', 'KoperasiController@');
+
+    Route::get('sektor', 'KoperasiController@');
+    Route::get('sektor/store', 'KoperasiController@');
+    Route::get('sektor/update', 'KoperasiController@');
+    Route::get('sektor/delete', 'KoperasiController@');
 });
 
 //2 INSTRUKTUR
