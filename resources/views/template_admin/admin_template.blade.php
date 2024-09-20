@@ -121,28 +121,28 @@
                                                     </a>
                                                     <ul class="nav nav-list collapse" id="submenu_master_data_1">
                                                         <li class="nav-item w-100">
-                                                            <a href="#" class="nav-link d-flex align-middle px-4 py-3 rounded-0">
+                                                            <a href="{{ url('ukm/badan_usaha') }}" class="nav-link d-flex align-middle px-4 py-3 rounded-0">
                                                                 <span class="ms-3 ps-3 fs-6 align-self-center ">Bentuk Badan Usaha</span>
                                                             </a>
-                                                            <a href="#" class="nav-link d-flex align-middle px-4 py-3 rounded-0">
+                                                            <a href="{{ url('ukm/jabatan_ukm') }}" class="nav-link d-flex align-middle px-4 py-3 rounded-0">
                                                                 <span class="ms-3 ps-3 fs-6 align-self-center ">Jabatan UKM</span>
                                                             </a>
-                                                            <a href="#" class="nav-link d-flex align-middle px-4 py-3 rounded-0">
+                                                            <a href="{{ url('ukm/kategori_ukm') }}" class="nav-link d-flex align-middle px-4 py-3 rounded-0">
                                                                 <span class="ms-3 ps-3 fs-6 align-self-center ">Kategori UKM</span>
                                                             </a>
-                                                            <a href="#" class="nav-link d-flex align-middle px-4 py-3 rounded-0">
+                                                            <a href="{{ url('ukm/sumber_bahanbaku') }}" class="nav-link d-flex align-middle px-4 py-3 rounded-0">
                                                                 <span class="ms-3 ps-3 fs-6 align-self-center ">Sumber Bahan Baku</span>
                                                             </a>
-                                                            <a href="#" class="nav-link d-flex align-middle px-4 py-3 rounded-0">
+                                                            <a href="{{ url('ukm/standar_produk') }}" class="nav-link d-flex align-middle px-4 py-3 rounded-0">
                                                                 <span class="ms-3 ps-3 fs-6 align-self-center ">Standarisasi Produk</span>
                                                             </a>
-                                                            <a href="#" class="nav-link d-flex align-middle px-4 py-3 rounded-0">
+                                                            <a href="{{  url('ukm/wilayah_pemasaran') }}" class="nav-link d-flex align-middle px-4 py-3 rounded-0">
                                                                 <span class="ms-3 ps-3 fs-6 align-self-center ">Wilayah Pemasaran</span>
                                                             </a>
-                                                            <a href="#" class="nav-link d-flex align-middle px-4 py-3 rounded-0">
+                                                            <a href="{{ url('ukm/fasilitas_kegiatan') }}" class="nav-link d-flex align-middle px-4 py-3 rounded-0">
                                                                 <span class="ms-3 ps-3 fs-6 align-self-center ">Fasilitas Kegiatan</span>
                                                             </a>
-                                                            <a href="#" class="nav-link d-flex align-middle px-4 py-3 rounded-0">
+                                                            <a href="{{ url('ukm/masalah_ukm') }}" class="nav-link d-flex align-middle px-4 py-3 rounded-0">
                                                                 <span class="ms-3 ps-3 fs-6 align-self-center ">Masalah UKM</span>
                                                             </a>
                                                         </li>
