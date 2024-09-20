@@ -58,7 +58,6 @@ Route::get('verification/confirm', 'AuthController@verifAccount');
 
 // 1 Admin
 Route::middleware(['usersession:4,1'])->group(function () {
-
     Route::get('ebook', 'EbookController@index');
     Route::post('ebook/store', 'EbookController@store');
     Route::post('ebook/update', 'EbookController@update');
@@ -82,7 +81,7 @@ Route::middleware(['usersession:4,1'])->group(function () {
     Route::get('instructor', 'InstructorController@index');
     Route::post('instructor/accept', 'InstructorController@accept');
     Route::post('instructor/decline', 'InstructorController@decline');
-    
+
     Route::get('setting', 'SettingController@index');
     Route::post('carousel/store', 'SettingController@addCarousel');
     Route::post('carousel/delete', 'SettingController@deleteCarousel');
@@ -133,18 +132,18 @@ Route::middleware(['usersession:2'])->group(function () {
 
 // 3 USER
 Route::middleware(['usersession:4,3,2,1'])->group(function () {
-//COURSE
+    //COURSE
     Route::get('course/detail/{any}', 'guest_controller\CourseGuest@detailCourse');
     Route::post('course/item/mapping', 'guest_controller\CourseGuest@getMappingCourse');
     Route::post('course/item', 'guest_controller\CourseGuest@getDetailItemCourse');
     Route::post('course/quiz/evaluation', 'guest_controller\CourseGuest@QuizEvaluation');
     Route::post('course/add', 'guest_controller\CourseGuest@add_event');
     Route::post('course/detail/addkomen', 'SocialController@addkomen');
-//END COURSE
+    //END COURSE
 
     Route::post('event/add', 'guest_controller\EventGuest@add_event');
 
-// PROFILE
+    // PROFILE
     Route::get('profile', [ProfileGuest::class, 'profile']);
     Route::get('/profile/overview', [ProfileGuest::class, 'overview']);
     Route::get('profile/myebook', [ProfileGuest::class, 'ebook']);
@@ -158,7 +157,7 @@ Route::middleware(['usersession:4,3,2,1'])->group(function () {
     Route::post('/profile/document/change', [ProfileGuest::class, 'doc_up']);
     Route::post('/update-sertif', [ProfileGuest::class, 'update_sertif']);
     Route::get('apply_instructor', 'InstructorController@apply_instructor');
-//END PROFILE
+    //END PROFILE
 });
 
 Route::middleware(['usersession:4,1'])->group(function () {
@@ -174,14 +173,14 @@ Route::middleware(['usersession:4,1'])->group(function () {
     Route::get('courses/delete_question/{id}', 'CourseController@delete_question');
     Route::post('courses/store', 'CourseController@store');
     Route::post('courses/edit', 'CourseController@update_course'); // open page update
-    Route::get('courses/get/{id}', 'CourseController@deskripsi_get'); // get desc 
+    Route::get('courses/get/{id}', 'CourseController@deskripsi_get'); // get desc
     Route::get('courses/get_course_item/{id}', 'CourseController@get_course_item'); // get materi / quiz
     Route::post('courses/get_quiz', 'CourseController@send_question'); //send to another page
     Route::post('courses/update', 'CourseController@update'); // update kursus
     Route::post('courses/delete', 'CourseController@delete');
     Route::get('courses/lihat_peserta', 'CourseController@index_lihat_peserta');
     Route::get('courses/laporan_course', 'CourseController@laporan_course');
-    
+
     Route::get('courses/invite', 'CourseController@invite');
     Route::post('courses/invite_individu', 'CourseController@invite_individu');
     Route::post('courses/invite_batch', 'CourseController@invite_batch');
@@ -194,9 +193,57 @@ Route::middleware(['usersession:4,1'])->group(function () {
     Route::post('events/delete', 'EventController@delete');
     Route::get('events/lihat_peserta', 'EventController@index_lihat_peserta');
     Route::get('events/laporan_event', 'EventController@laporan_event');
-    
+
     Route::post('user/jadikanAdmin', 'DashboardController@jadikanAdmin');
     Route::get('user/detail_pengambilan', 'UserController@detail_pengambilan');
+
+    //route badan usaha
+    Route::get('ukm/badan_usaha', 'ukm_controller\BadanUsahaController@index');
+    Route::post('ukm/badan_usaha/add', 'ukm_controller\BadanUsahaController@store');
+    Route::post('ukm/badan_usaha/update', 'ukm_controller\BadanUsahaController@update');
+    Route::post('ukm/badan_usaha/delete', 'ukm_controller\BadanUsahaController@delete');
+
+    //route jabatan ukm
+    Route::get('ukm/jabatan_ukm', 'ukm_controller\JabatanUkmController@index');
+    Route::post('ukm/jabatan_ukm/add', 'ukm_controller\JabatanUkmController@store');
+    Route::post('ukm/jabatan_ukm/update', 'ukm_controller\JabatanUkmController@update');
+    Route::post('ukm/jabatan_ukm/delete', 'ukm_controller\JabatanUkmController@delete');
+
+    //route kategori ukm
+    Route::get('ukm/kategori_ukm', 'ukm_controller\KategoriUkmController@index');
+    Route::post('ukm/kategori_ukm/add', 'ukm_controller\KategoriUkmController@store');
+    Route::post('ukm/kategori_ukm/update', 'ukm_controller\KategoriUkmController@update');
+    Route::post('ukm/kategori_ukm/delete', 'ukm_controller\KategoriUkmController@delete');
+
+    //route sumber bahanbaku
+    Route::get('ukm/sumber_bahanbaku', 'ukm_controller\SumberBahanBakuController@index');
+    Route::post('ukm/sumber_bahanbaku/add', 'ukm_controller\SumberBahanBakuController@store');
+    Route::post('ukm/sumber_bahanbaku/update', 'ukm_controller\SumberBahanBakuController@update');
+    Route::post('ukm/sumber_bahanbaku/delete', 'ukm_controller\SumberBahanBakuController@delete');
+
+    //route standar produk
+    Route::get('ukm/standar_produk', 'ukm_controller\StandarProdukController@index');
+    Route::post('ukm/standar_produk/add', 'ukm_controller\StandarProdukController@store');
+    Route::post('ukm/standar_produk/update', 'ukm_controller\StandarProdukController@update');
+    Route::post('ukm/standar_produk/delete', 'ukm_controller\StandarProdukController@delete');
+
+    //route wilayah pemasaran
+    Route::get('ukm/wilayah_pemasaran', 'ukm_controller\WilayahPemasaranController@index');
+    Route::post('ukm/wilayah_pemasaran/add', 'ukm_controller\WilayahPemasaranController@store');
+    Route::post('ukm/wilayah_pemasaran/update', 'ukm_controller\WilayahPemasaranController@update');
+    Route::post('ukm/wilayah_pemasaran/delete', 'ukm_controller\WilayahPemasaranController@delete');
+
+    //route fasilitas Kegiatan
+    Route::get('ukm/fasilitas_kegiatan', 'ukm_controller\FasilitasKegiatanController@index');
+    Route::post('ukm/fasilitas_kegiatan/add', 'ukm_controller\FasilitasKegiatanController@store');
+    Route::post('ukm/fasilitas_kegiatan/update', 'ukm_controller\FasilitasKegiatanController@update');
+    Route::post('ukm/fasilitas_kegiatan/delete', 'ukm_controller\FasilitasKegiatanController@delete');
+
+    //route masalah ukm
+    Route::get('ukm/masalah_ukm', 'ukm_controller\MasalahUkmController@index');
+    Route::post('ukm/masalah_ukm/add', 'ukm_controller\MasalahUkmController@store');
+    Route::post('ukm/masalah_ukm/update', 'ukm_controller\MasalahUkmController@update');
+    Route::post('ukm/masalah_ukm/delete', 'ukm_controller\MasalahUkmController@delete');
 });
 
 //Social Media Routes (Under Progress)
