@@ -118,6 +118,12 @@ Route::middleware(['usersession:4,1'])->group(function () {
     Route::post('sektor/store', 'KoperasiController@store_sektor');
     Route::post('sektor/update', 'KoperasiController@update_sektor');
     Route::post('sektor/delete', 'KoperasiController@delete_sektor');
+
+    // Widyaiswara Controller
+    Route::get('widyaiswara', 'WidyaiswaraController@index_widyaiswara');
+    Route::post('widyaiswara/store', 'WidyaiswaraController@store_widyaiswara');
+    Route::post('widyaiswara/update', 'WidyaiswaraController@update_widyaiswara');
+    Route::post('widyaiswara/delete', 'WidyaiswaraController@delete_widyaiswara');
 });
 
 //2 INSTRUKTUR
