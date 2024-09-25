@@ -122,9 +122,9 @@ class EventGuest extends Controller
 			];
 	
 			DB::table('order')->insert($order);
-			return redirect('event')->with(['succ_msg' => 'Berhasil join webinar', 'location' => 'event']);
+			return redirect()->back()->with(['succ_msg' => 'Berhasil join webinar', 'location' => 'event']);
 		} else {
-			return redirect('event')->with(['err_msg' => 'Sudah mengambil join webinar ini', 'location' => 'event']);
+			return redirect()->back()->with(['err_msg' => 'Sudah mengambil join webinar ini', 'location' => 'event']);
 		}
 	}
 	public function detailEvent()

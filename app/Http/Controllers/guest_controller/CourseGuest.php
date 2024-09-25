@@ -564,26 +564,7 @@ class CourseGuest extends Controller
 	}
 	public function getFilterByKat(Request $req)
 	{
-		$condition = (!empty($_POST['category'])) ? "WHERE activity.TYPE_ACTIVITY = 1 AND activity.IS_PUBLIC = 1 AND course.KATEGORI = '" . $_POST['category'] . "'" : "WHERE activity.TYPE_ACTIVITY = 1 AND activity.IS_PUBLIC = 1";
-		$id_user = (session('user') == null) ? null : Session::get('user')[0]->get('ID_USER');
-		//999 is id tab invited
-		if ($_POST['category'] == 999) {
-			$data_id = DB::select("
-				SELECT
-					ID_ACTIVITY
-				FROM
-					tb_invited
-				WHERE
-					ID_USER = '" . $id_user . "'
-			");
-
-			$data_ids = array_map(function ($item) {
-				return $item->ID_ACTIVITY;
-			}, $data_id);
-			$placeholders = "'" . implode("','", $data_ids) . "'";
-			$condition = "WHERE activity.TYPE_ACTIVITY = 1 AND activity.ID_ACTIVITY IN (" . $placeholders . ")";
-		}
-
+		$condition = (!empty($_POST['category'])) ? "WHERE activity.TYPE_ACTIVITY = 1 AND course.KATEGORI = '" . $_POST['category'] . "'" : "WHERE activity.TYPE_ACTIVITY = 1";
 		$id_user = (session('user') == null) ? null : Session::get('user')[0]->get('ID_USER');
 
 		if ($id_user != null) {
@@ -608,6 +589,15 @@ class CourseGuest extends Controller
 						WHERE
 							o.ID_PRODUCT = activity.ID_ACTIVITY 
 					) AS participant,
+					(
+						SELECT
+							COUNT(ti.ID_INVITED)
+						FROM
+							tb_invited ti 
+						WHERE
+							ti.ID_USER = "USR_VRS068"
+							AND ti.ID_ACTIVITY = activity.ID_ACTIVITY
+					) AS is_invited,
 					(
 						CEIL(
 							(

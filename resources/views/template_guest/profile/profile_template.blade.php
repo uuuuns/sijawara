@@ -82,6 +82,11 @@
                                                     <span class="ms-3 ps-3 fs-6 align-self-center ">Webinar Ku</span>
                                                 </a>
                                             </li>
+                                            <li class="nav-item w-100">
+                                                <a href="/profile/mysertificate" class="nav-link  d-flex align-middle px-4 py-3 rounded-0">
+                                                    <i class="fs-6 d-flex align-items-center far fa-file-alt"></i> <span class="ms-1 ps-2 fs-6 align-self-center ">ٍSertifikat Ku</span>
+                                                </a>
+                                            </li>
                                         </ul>
                                     </li>
                                     <li class="w-100">
@@ -94,11 +99,6 @@
                                     </li>
                                     <li class="w-100">
                                         <hr class="my-0 border border-1 mx-3">
-                                    </li>
-                                    <li class="nav-item w-100">
-                                        <a href="/profile/mysertificate" class="nav-link  d-flex align-middle px-4 py-3 rounded-0">
-                                            <i class="fs-6 d-flex align-items-center far fa-file-alt"></i> <span class="ms-1 ps-2 fs-6 align-self-center ">ٍSertifikat Ku</span>
-                                        </a>
                                     </li>
                                     <!-- <li class="nav-item w-100">
                                         <a href="/profile/academic" class="nav-link  d-flex align-middle px-4 py-3 rounded-0">
