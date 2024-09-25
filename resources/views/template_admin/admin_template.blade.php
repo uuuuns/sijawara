@@ -133,6 +133,9 @@
                                                             <a href="{{ url('ukm/sumber_bahanbaku') }}" class="nav-link d-flex align-middle px-4 py-3 rounded-0">
                                                                 <span class="ms-3 ps-3 fs-6 align-self-center ">Sumber Bahan Baku</span>
                                                             </a>
+                                                            <a href="{{ url('ukm/legalitas_usaha') }}" class="nav-link d-flex align-middle px-4 py-3 rounded-0">
+                                                                <span class="ms-3 ps-3 fs-6 align-self-center ">Legalitas Usaha</span>
+                                                            </a>
                                                             <a href="{{ url('ukm/standar_produk') }}" class="nav-link d-flex align-middle px-4 py-3 rounded-0">
                                                                 <span class="ms-3 ps-3 fs-6 align-self-center ">Standarisasi Produk</span>
                                                             </a>

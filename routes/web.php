@@ -92,6 +92,60 @@ Route::middleware(['usersession:4,1'])->group(function () {
     Route::post('testimoni/delete', 'SettingController@deleteTestimoni');
     Route::post('testimoni/edit', 'SettingController@editTestimoni');
 
+    //route badan usaha
+    Route::get('ukm/badan_usaha', 'ukm_controller\BadanUsahaController@index');
+    Route::post('ukm/badan_usaha/add', 'ukm_controller\BadanUsahaController@store');
+    Route::post('ukm/badan_usaha/update', 'ukm_controller\BadanUsahaController@update');
+    Route::post('ukm/badan_usaha/delete', 'ukm_controller\BadanUsahaController@delete');
+
+    //route jabatan ukm
+    Route::get('ukm/jabatan_ukm', 'ukm_controller\JabatanUkmController@index');
+    Route::post('ukm/jabatan_ukm/add', 'ukm_controller\JabatanUkmController@store');
+    Route::post('ukm/jabatan_ukm/update', 'ukm_controller\JabatanUkmController@update');
+    Route::post('ukm/jabatan_ukm/delete', 'ukm_controller\JabatanUkmController@delete');
+
+    //route kategori ukm
+    Route::get('ukm/kategori_ukm', 'ukm_controller\KategoriUkmController@index');
+    Route::post('ukm/kategori_ukm/add', 'ukm_controller\KategoriUkmController@store');
+    Route::post('ukm/kategori_ukm/update', 'ukm_controller\KategoriUkmController@update');
+    Route::post('ukm/kategori_ukm/delete', 'ukm_controller\KategoriUkmController@delete');
+
+    //route sumber bahanbaku
+    Route::get('ukm/sumber_bahanbaku', 'ukm_controller\SumberBahanBakuController@index');
+    Route::post('ukm/sumber_bahanbaku/add', 'ukm_controller\SumberBahanBakuController@store');
+    Route::post('ukm/sumber_bahanbaku/update', 'ukm_controller\SumberBahanBakuController@update');
+    Route::post('ukm/sumber_bahanbaku/delete', 'ukm_controller\SumberBahanBakuController@delete');
+
+    //route legalitas usaha
+    Route::get('ukm/legalitas_usaha', 'ukm_controller\LegalitasUsahaController@index');
+    Route::post('ukm/legalitas_usaha/add', 'ukm_controller\LegalitasUsahaController@store');
+    Route::post('ukm/legalitas_usaha/update', 'ukm_controller\LegalitasUsahaController@update');
+    Route::post('ukm/legalitas_usaha/delete', 'ukm_controller\LegalitasUsahaController@delete');
+
+    //route standar produk
+    Route::get('ukm/standar_produk', 'ukm_controller\StandarProdukController@index');
+    Route::post('ukm/standar_produk/add', 'ukm_controller\StandarProdukController@store');
+    Route::post('ukm/standar_produk/update', 'ukm_controller\StandarProdukController@update');
+    Route::post('ukm/standar_produk/delete', 'ukm_controller\StandarProdukController@delete');
+
+    //route wilayah pemasaran
+    Route::get('ukm/wilayah_pemasaran', 'ukm_controller\WilayahPemasaranController@index');
+    Route::post('ukm/wilayah_pemasaran/add', 'ukm_controller\WilayahPemasaranController@store');
+    Route::post('ukm/wilayah_pemasaran/update', 'ukm_controller\WilayahPemasaranController@update');
+    Route::post('ukm/wilayah_pemasaran/delete', 'ukm_controller\WilayahPemasaranController@delete');
+
+    //route fasilitas Kegiatan
+    Route::get('ukm/fasilitas_kegiatan', 'ukm_controller\FasilitasKegiatanController@index');
+    Route::post('ukm/fasilitas_kegiatan/add', 'ukm_controller\FasilitasKegiatanController@store');
+    Route::post('ukm/fasilitas_kegiatan/update', 'ukm_controller\FasilitasKegiatanController@update');
+    Route::post('ukm/fasilitas_kegiatan/delete', 'ukm_controller\FasilitasKegiatanController@delete');
+
+    //route masalah ukm
+    Route::get('ukm/masalah_ukm', 'ukm_controller\MasalahUkmController@index');
+    Route::post('ukm/masalah_ukm/add', 'ukm_controller\MasalahUkmController@store');
+    Route::post('ukm/masalah_ukm/update', 'ukm_controller\MasalahUkmController@update');
+    Route::post('ukm/masalah_ukm/delete', 'ukm_controller\MasalahUkmController@delete');
+
     // Koperasi Controller
     Route::get('bentuk', 'KoperasiController@index_bentuk');
     Route::post('bentuk/store', 'KoperasiController@store_bentuk');
@@ -196,54 +250,6 @@ Route::middleware(['usersession:4,1'])->group(function () {
 
     Route::post('user/jadikanAdmin', 'DashboardController@jadikanAdmin');
     Route::get('user/detail_pengambilan', 'UserController@detail_pengambilan');
-
-    //route badan usaha
-    Route::get('ukm/badan_usaha', 'ukm_controller\BadanUsahaController@index');
-    Route::post('ukm/badan_usaha/add', 'ukm_controller\BadanUsahaController@store');
-    Route::post('ukm/badan_usaha/update', 'ukm_controller\BadanUsahaController@update');
-    Route::post('ukm/badan_usaha/delete', 'ukm_controller\BadanUsahaController@delete');
-
-    //route jabatan ukm
-    Route::get('ukm/jabatan_ukm', 'ukm_controller\JabatanUkmController@index');
-    Route::post('ukm/jabatan_ukm/add', 'ukm_controller\JabatanUkmController@store');
-    Route::post('ukm/jabatan_ukm/update', 'ukm_controller\JabatanUkmController@update');
-    Route::post('ukm/jabatan_ukm/delete', 'ukm_controller\JabatanUkmController@delete');
-
-    //route kategori ukm
-    Route::get('ukm/kategori_ukm', 'ukm_controller\KategoriUkmController@index');
-    Route::post('ukm/kategori_ukm/add', 'ukm_controller\KategoriUkmController@store');
-    Route::post('ukm/kategori_ukm/update', 'ukm_controller\KategoriUkmController@update');
-    Route::post('ukm/kategori_ukm/delete', 'ukm_controller\KategoriUkmController@delete');
-
-    //route sumber bahanbaku
-    Route::get('ukm/sumber_bahanbaku', 'ukm_controller\SumberBahanBakuController@index');
-    Route::post('ukm/sumber_bahanbaku/add', 'ukm_controller\SumberBahanBakuController@store');
-    Route::post('ukm/sumber_bahanbaku/update', 'ukm_controller\SumberBahanBakuController@update');
-    Route::post('ukm/sumber_bahanbaku/delete', 'ukm_controller\SumberBahanBakuController@delete');
-
-    //route standar produk
-    Route::get('ukm/standar_produk', 'ukm_controller\StandarProdukController@index');
-    Route::post('ukm/standar_produk/add', 'ukm_controller\StandarProdukController@store');
-    Route::post('ukm/standar_produk/update', 'ukm_controller\StandarProdukController@update');
-    Route::post('ukm/standar_produk/delete', 'ukm_controller\StandarProdukController@delete');
-
-    //route wilayah pemasaran
-    Route::get('ukm/wilayah_pemasaran', 'ukm_controller\WilayahPemasaranController@index');
-    Route::post('ukm/wilayah_pemasaran/add', 'ukm_controller\WilayahPemasaranController@store');
-    Route::post('ukm/wilayah_pemasaran/update', 'ukm_controller\WilayahPemasaranController@update');
-    Route::post('ukm/wilayah_pemasaran/delete', 'ukm_controller\WilayahPemasaranController@delete');
-
-    //route fasilitas Kegiatan
-    Route::get('ukm/fasilitas_kegiatan', 'ukm_controller\FasilitasKegiatanController@index');
-    Route::post('ukm/fasilitas_kegiatan/add', 'ukm_controller\FasilitasKegiatanController@store');
-    Route::post('ukm/fasilitas_kegiatan/update', 'ukm_controller\FasilitasKegiatanController@update');
-    Route::post('ukm/fasilitas_kegiatan/delete', 'ukm_controller\FasilitasKegiatanController@delete');
-
-    //route masalah ukm
-    Route::get('ukm/masalah_ukm', 'ukm_controller\MasalahUkmController@index');
-    Route::post('ukm/masalah_ukm/add', 'ukm_controller\MasalahUkmController@store');
-    Route::post('ukm/masalah_ukm/update', 'ukm_controller\MasalahUkmController@update');
-    Route::post('ukm/masalah_ukm/delete', 'ukm_controller\MasalahUkmController@delete');
 });
 
 //Social Media Routes (Under Progress)
