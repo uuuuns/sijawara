@@ -10,6 +10,8 @@ use App\Models\FileUpload;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Session;
+use App\Mail\MailSender;
+use Illuminate\Support\Facades\Mail;
 
 class ProfileGuest extends Controller
 {
@@ -18,6 +20,17 @@ class ProfileGuest extends Controller
     public function __construct(User $genericModel)
     {
         $this->genericModel = $genericModel;
+    
+        $smtpConfig = [
+            'transport' => 'smtp',
+            'host' => 'smtp-relay.brevo.com',
+            'port' => 587,
+            'from' => ['address' => 'sijawara@gmail.com', 'name' => 'SIJAWARA'],
+            'encryption' => 'tls',
+            'username' => 'dbi.malang.o@gmail.com',
+            'password' => '7YPLNq6KfpydDGBT',
+        ];
+        config(['mail.mailers.smtp' => $smtpConfig]);
     }
 
     public function profile()
@@ -279,6 +292,36 @@ class ProfileGuest extends Controller
             'IS_DOWNLOADED' => 1
         ];
         DB::table('sertifikat_activity')->where('ID_ACTIVITY', $request->id_activity)->where('ID_USER', session('user')[0]['ID_USER'])->update($data);
+
+        // SEND EMAIL SUCCESS DOWNLOAD SERTIFIKAT
+        $data['user'] = DB::selectOne('
+            SELECT
+                *
+            FROM
+                user
+            WHERE
+                ID_USER = "' . session('user')[0]['ID_USER'] . '"
+        ');
+
+        $data['activity'] = DB::selectOne('
+            SELECT
+                *
+            FROM
+                activity
+            WHERE
+                ID_ACTIVITY = "' . $request->id_activity . '"
+        ');
+
+        $details = [
+            'name'  => $data['user']->NAME,
+            'title' => 'Selamat '.$data['user']->NAME.', Anda telah berhasil mengunduh sertifikat',
+            'body'  => 'Sertifikat dari '.$data['activity']->TYPE_ACTIVITY == 1 ? 'Webinar' : 'Kursus'.' Dengan Judul '.$data['activity']->TITLE_ACTIVITY.', Sertifikat yang telah diunduh dapat dilihat di halaman profil anda dibagian SertifikatKu',
+        ];
+        $mail = new MailSender($details);
+        $mail->subject("Sukses Download Sertifikat");
+        Mail::to($data['user']->EMAIL)->send($mail);
+        // END  SUCCESS DOWNLOAD SERTIFIKAT
+
         return response()->json(['status' => 'success']);   
     }
 }

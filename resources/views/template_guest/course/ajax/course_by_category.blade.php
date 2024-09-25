@@ -1,13 +1,21 @@
 <?php if (!empty($course)) { ?>
     <div class="row mt-md-4">
         <?php foreach ($course as $item) : ?>
+            @php
+                $check_is_invited = false;
+                if ($item->is_invited == 1 && !empty(session('user')) && $item->IS_PUBLIC == 0) {
+                    $check_is_invited = true;
+                } else if ($item->IS_PUBLIC == 1) {
+                    $check_is_invited = true;
+                }
+            @endphp
             <?php if (session('user') != null && $item->DATA_CHECKING == 1) { ?>
                 <!-- VIEW SUDAH BAYAR -->
                 <div class="col-xl-4 col-lg-6 col-md-6">
                     <div class="px-0 px-sm-3">
                         <div class="course-grid course-style-4 bg-white" style="padding: 30px 30px 10px 30px;">
                             <div class="course-header">
-                                <a href="<?= url('course/detail/' . preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $item->TITLE_ACTIVITY)) . '?id_activity=' . $item->ID_ACTIVITY) ?>">
+                                <a <?= $check_is_invited ? 'href="' . url('course/detail/' . preg_replace("/[^A-Za-z0-9\-]/", "", str_replace(" ", "-", $item->TITLE_ACTIVITY))) . '?id_activity=' . $item->ID_ACTIVITY . '"' : 'class="link_kursus"' ?>>
                                     <img src="<?= $item->IMAGE_ACTIVITY ?>" alt="" style="width: 100%; height: 300px; object-fit: cover;">
                                 </a>
                             </div>
@@ -18,7 +26,7 @@
                                 <?php } else { ?>
                                     <span class="course-price bg-success">Progress <?= ceil($item->PROGRESS) ?>%</span>
                                 <?php } ?>
-                                <h3 class="course-title"> <a href="<?= url('course/detail/' . preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $item->TITLE_ACTIVITY)) . '?id_activity=' . $item->ID_ACTIVITY) ?>"><?= $item->TITLE_ACTIVITY ?> </a></h3>
+                                <h3 class="course-title"> <a <?= $check_is_invited ? 'href="' . url('course/detail/' . preg_replace("/[^A-Za-z0-9\-]/", "", str_replace(" ", "-", $item->TITLE_ACTIVITY))) . '?id_activity=' . $item->ID_ACTIVITY . '"' : 'class="link_kursus"' ?>><?= $item->TITLE_ACTIVITY ?></a></h3>
                             </div>
                             <div class="course-meta">
                                 <div class="text-muted m-0 pt-2 fs-6" style="overflow: hidden !important;
@@ -40,7 +48,7 @@
                         <div class="course-grid course-style-4 bg-white" style="padding: 30px 30px 10px 30px;">
                             <div class="course-header">
                                 <div class="" style="width: 100%; height: 300px; overflow: hidden;">
-                                    <a href="<?= url('course/info/' . preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $item->TITLE_ACTIVITY)) . '?id_activity=' . $item->ID_ACTIVITY) ?>">
+                                    <a <?= $check_is_invited ? 'href="' . url('course/info/' . preg_replace("/[^A-Za-z0-9\-]/", "", str_replace(" ", "-", $item->TITLE_ACTIVITY))) . '?id_activity=' . $item->ID_ACTIVITY . '"' : 'class="link_kursus"' ?>>
                                         <img src="<?= $item->IMAGE_ACTIVITY ?>" alt="" style="width: 100%; height: 100%; object-fit: cover;">
                                     </a>
                                 </div>
@@ -49,7 +57,7 @@
                             <div class="course-content">
                                 <span class="course-price <?= ($item->participant == 0) ? 'bg-success' : 'bg-primary' ?>"><?= ($item->participant == 0) ? 'Ayo Segera Ikuti!' : $item->participant . ' Orang' ?></span>
                                 <h3 class="course-title">
-                                    <a href="<?= url('course/info/' . preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $item->TITLE_ACTIVITY)) . '?id_activity=' . $item->ID_ACTIVITY) ?>"><?= $item->TITLE_ACTIVITY ?></a>
+                                    <a <?= $check_is_invited ? 'href="' . url('course/info/' . preg_replace("/[^A-Za-z0-9\-]/", "", str_replace(" ", "-", $item->TITLE_ACTIVITY))) . '?id_activity=' . $item->ID_ACTIVITY . '"' : 'class="link_kursus"' ?>><?= $item->TITLE_ACTIVITY ?></a>
                                 </h3>
                             </div>
                             <div class="course-meta">
@@ -76,3 +84,16 @@
         </div>
     </div>
 <?php } ?>
+
+<script>
+    $('.link_kursus').click(function() {
+        var url = $(this).attr('href');
+        Swal.fire({
+            title: 'Mohon Maaf',
+            text: 'Kursus ini hanya bisa diakses oleh peserta tertentu yang telah diundang',
+            icon: 'warning',
+            confirmButtonText: 'Oke',
+            confirmButtonColor: '#3085d6'
+        })
+    });
+</script>

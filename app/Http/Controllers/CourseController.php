@@ -10,10 +10,25 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use App\Models\FileUpload;
 use Illuminate\Validation\ValidationException;
+use App\Mail\MailSender;
+use Illuminate\Support\Facades\Mail;
 
 class CourseController extends Controller
 {
     private $id_detailCourse = 0;
+    public function __construct()
+    {
+        $smtpConfig = [
+            'transport' => 'smtp',
+            'host' => 'smtp-relay.brevo.com',
+            'port' => 587,
+            'from' => ['address' => 'sijawara@gmail.com', 'name' => 'SIJAWARA'],
+            'encryption' => 'tls',
+            'username' => 'dbi.malang.o@gmail.com',
+            'password' => '7YPLNq6KfpydDGBT',
+        ];
+        config(['mail.mailers.smtp' => $smtpConfig]);
+    }
     public function index()
     {
         $data['title'] = "Kursus";
@@ -661,6 +676,24 @@ class CourseController extends Controller
                 'ID_ACTIVITY'   => $id_activity
             ];
             DB::table('tb_invited')->insert($invited);
+
+            $data['user'] = DB::SelectOne("
+                    SELECT
+                        u.EMAIL,
+                        u.NAME,
+                        a.TITLE_ACTIVITY
+                    FROM
+                        tb_invited ti
+                    LEFT JOIN user u ON
+                        ti.ID_USER = u.ID_USER
+                    LEFT JOIN activity a ON
+                        ti.ID_ACTIVITY = a.ID_ACTIVITY
+                    WHERE
+                        ti.ID_USER = '" . $id_user . "'
+                        AND ti.ID_ACTIVITY = '" . $id_activity . "'
+                ");
+
+                $this->send_email_invited($data);
             return redirect('courses/invite?id_activity=' . $id_activity)->with(['succ_msg' => 'User berhasil diundang', 'courses/invite?id_activity=' . $id_activity]);
         }
     }
@@ -704,10 +737,39 @@ class CourseController extends Controller
                     'ID_USER'       => $id_user,
                     'ID_ACTIVITY'   => $id_activity
                 ];
+
                 DB::table('tb_invited')->insert($invited);
+
+                $data['user'] = DB::SelectOne("
+                    SELECT
+                        u.EMAIL,
+                        u.NAME,
+                        a.TITLE_ACTIVITY
+                    FROM
+                        tb_invited ti
+                    LEFT JOIN user u ON
+                        ti.ID_USER = u.ID_USER
+                    LEFT JOIN activity a ON
+                        ti.ID_ACTIVITY = a.ID_ACTIVITY
+                    WHERE
+                        ti.ID_USER = '" . $id_user . "'
+                        AND ti.ID_ACTIVITY = '" . $id_activity . "'
+                ");
+
+                $this->send_email_invited($data);
             }
         }
         return redirect('courses/invite?id_activity=' . $id_activity)->with(['succ_msg' => 'Berhasil mengundang user', 'courses/invite?id_activity=' . $id_activity]);
+    }
+
+    public function send_email_invited($data) {
+        $details = [
+            'name' => $data['user']->NAME,
+            'body' => 'Selamat Anda telah diundang dalam kursus khusus yaitu ' . $data['user']->TITLE_ACTIVITY . '. Silahkan login ke aplikasi SIJAWARA untuk melihat detail lebih lanjut.',
+        ];
+        $mail = new MailSender($details);
+        $mail->subject("Email Verification");
+        Mail::to($data['user']->EMAIL)->send($mail);
     }
 
     public function GenerateUniqID($prefix, $var)

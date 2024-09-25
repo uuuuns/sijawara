@@ -50,10 +50,7 @@
                 <li class="py-2 py-md-0"><a href="#" data-value="0" id="nav-all" onclick="ChangeNav(this, event)">Lihat Semua</a></li>
                 <?php foreach ($kategori as $item_kategori) : ?>
                     <li class="py-2 py-md-0"><a href="#" data-value="<?= $item_kategori->ID_KATEGORI ?>" id="nav-<?= $item_kategori->ID_KATEGORI ?>" onclick="ChangeNav(this, event)"><?= $item_kategori->KATEGORI ?></a></li>
-                <?php endforeach;
-                if ($is_invited != null && !empty(session('user'))) { ?>
-                    <li class="py-2 py-md-0"><a href="#" data-value="999" id="nav-invited" onclick="ChangeNav(this, event)">Di Undang</a></li>
-                <?php } ?>
+                <?php endforeach;?>
             </ul>
         </div>
         <div class="container-fluid container-padding">
