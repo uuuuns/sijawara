@@ -92,4 +92,33 @@ class DashboardController extends Controller
 
         return redirect()->back();
     }
+
+    public function get_data_chart() {
+        $data['register_per_month'] = DB::select("
+            SELECT 
+                COUNT(u.ID_USER) AS TOTAL,
+                MONTHNAME(u.REG_TIME) AS MONTH
+            FROM 
+                user u 
+            WHERE 
+                u.IS_DELETE = 0 
+            GROUP BY 
+                MONTHNAME(u.REG_TIME)
+            ORDER BY 
+                MONTH(u.REG_TIME) ASC
+        ");
+        
+        $months = [];
+        $registerCounts = [];
+
+        foreach ($data['register_per_month'] as $row) {
+            $months[] = strtoupper(substr($row->MONTH, 0, 3));  // Get the first 3 characters of the month name
+            $registerCounts[] = $row->TOTAL;
+        }
+
+        return response()->json([
+            'months' => $months,
+            'register_per_month' => $registerCounts
+        ]);
+    }
 }

@@ -365,11 +365,20 @@
         no_accordion = 1;
         while ($('#quiz_item_' + no_accordion).length) {
             var limit_soal = $('#limit_soal_' + no_accordion).val();
+            var min_nilai = $('#min_nilai_' + no_accordion).val();
+            
             if (limit_soal == '') {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
                     text: 'Limit soal tidak boleh kosong di quiz nomor ' + no_accordion,
+                });
+                return false;
+            } else if (min_nilai == '') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Minimum Nilai tidak boleh kosong di quiz nomor ' + no_accordion,
                 });
                 return false;
             } else {

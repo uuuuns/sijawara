@@ -298,7 +298,8 @@ class CourseController extends Controller
                 $dataquiz = DB::select("
                     SELECT
                         dq.*,
-                        ic.LIMIT_QUIZ
+                        ic.LIMIT_QUIZ,
+                        ic.MIN_NILAI
                     FROM
                         detail_quiz dq
                     LEFT JOIN item_course ic ON
@@ -322,12 +323,14 @@ class CourseController extends Controller
                         'PIL_D'      => $quiz->PIL_D,
                         'KUNCI'      => $quiz->KUNCI,
                         'LIMIT_QUIZ' => $quiz->LIMIT_QUIZ,
+                        'MIN_NILAI' => $quiz->MIN_NILAI,
                         'NO'         => $data['no_index']
                     ];
 
                     foreach ($data['quiz'][$quiz->ID_QUIZ] as $ID_ITEM) {
                         $data['ID_ITEM'] = $ID_ITEM['ID_QUIZ'];
                         $data['LIMIT_QUIZ'] = $quiz->LIMIT_QUIZ;
+                        $data['MIN_NILAI'] = $quiz->MIN_NILAI;
                     }
                     $data['no_index']++;
                 }
@@ -549,7 +552,8 @@ class CourseController extends Controller
                         'DESKRIPSI'     => null,
                         'ORDER_LIST'    => $orderList[$i],
                         'TYPE'          => $categoryList[$i],
-                        'LIMIT_QUIZ'    => $req->input('limit_soal_'.$nomor)
+                        'LIMIT_QUIZ'    => $req->input('limit_soal_'.$nomor),
+                        'MIN_NILAI'    => $req->input('min_nilai_'.$nomor)
                     ];
                     $idQuiz[] = DB::table('item_course')->insertGetId($data_item);
                 }
@@ -1037,7 +1041,8 @@ class CourseController extends Controller
                         'DESKRIPSI'     => null,
                         'ORDER_LIST'    => $orderList[$i],
                         'TYPE'          => $categoryList[$i],
-                        'LIMIT_QUIZ'    => $req->input('limit_soal_'.$nomor)
+                        'LIMIT_QUIZ'    => $req->input('limit_soal_'.$nomor),
+                        'MIN_NILAI'    => $req->input('min_nilai_'.$nomor)
                     ];
                     $idQuiz[] = DB::table('item_course')->insertGetId($data_item);
                 }

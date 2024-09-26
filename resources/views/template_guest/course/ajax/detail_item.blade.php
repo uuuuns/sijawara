@@ -129,7 +129,7 @@
                     </script>
                 </div>
             <?php }
-        } else if ($quiz_grade->NILAI >= 75) { ?>
+        } else if ($quiz_grade->NILAI >= $detail_item_course[0]->MIN_NILAI) { ?>
             <div class="col" id="detail-item">
                 <div class="py-5">
                     <div class="d-flex justify-content-center">
@@ -209,7 +209,7 @@
                     }
                 </script>
             </div>
-        <?php } else if ($quiz_grade->NILAI < 75) { ?>
+        <?php } else if ($quiz_grade->NILAI < $detail_item_course[0]->MIN_NILAI) { ?>
             <button class="btn btn-main-2 px-4 py-2 mb-3 rounded-3 shadow fw-semibold w-100" data-iditem="<?= $id_item ?>" data-status="0" data-type="3" onclick="ShowDetailItem(this)">
                 Ulangi Kuisnya Lagi
             </button>
