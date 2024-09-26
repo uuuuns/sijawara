@@ -61,7 +61,6 @@ class AuthController extends Controller
                 user.PASS = '" . hash('sha256', md5($req->input('password'))) . "'
         ");
 
-
         if ($auth == null) {
             return redirect()->back()->with('msg_auth', "Email atau Password Salah");
         }
@@ -73,6 +72,10 @@ class AuthController extends Controller
         }
 
         if (!empty($auth)) {
+            $data = [
+                'LOG_TIME' => date('Y-m-d H:i:s')
+            ];
+            DB::table('user')->where('EMAIL', $req->input('email'))->update($data);
             if ($auth->ID_ROLE == 1) {
                 $user_data = collect([
                     'ID_USER' => $auth->ID_USER,
@@ -158,6 +161,7 @@ class AuthController extends Controller
             $User->ID_ROLE               = 3;
             $User->STATUS                = 0;
             $User->IS_DELETE             = 0;
+            $User->REG_TIME              = date('Y-m-d H:i:s');
 
             $User->save();
 
