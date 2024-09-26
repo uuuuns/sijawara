@@ -351,6 +351,10 @@ class CourseGuest extends Controller
 	{
 		$data['title'] = 'Course';
 		$data_user = (session('user') == null) ? null : Session::get('user')[0]->get('ID_USER');
+		
+		if (empty(session('user'))) {
+			return redirect('login');
+		}
 
 		DB::statement("SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));");
 		$id_activity = $_GET['id_activity'];
@@ -363,6 +367,7 @@ class CourseGuest extends Controller
 			'materi' => 0,
 			'quiz' => 0
 		);
+
 		if ($data['course']->IS_PUBLIC === 0){
 			$CHECKING_USER = DB::SelectOne("
 				SELECT
