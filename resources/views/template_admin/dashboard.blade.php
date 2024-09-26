@@ -5,23 +5,6 @@
     <h3 class="fw-bold pb-4" style="color:#45b104">Dashboard</h3>
 
     <div class="row">
-        <div class="col-md-12">
-            <!-- <div class="card">
-                <div class="card-body">
-                    <div class="media align-items-center">
-                        <div class="avatar avatar-icon avatar-lg avatar-blue">
-                            <i class="anticon anticon-dollar"></i>
-                        </div>
-                        <div class="m-l-15">
-                            <h2 class="m-b-0">
-                                <?= isset($total_revenue[0]->TOTAL) && $total_revenue[0]->TOTAL !== null ? $total_revenue[0]->TOTAL : '0' ?>
-                                IDR</h2>
-                            <p class="m-b-0 text-muted">Pendapatan</p>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
-        </div>
         <div class="col-md-4">
             <div class="card my-3 me-2">
                 <div class="card-body">
@@ -33,7 +16,7 @@
                             <h2 class="m-b-0">
                                 <?= isset($total_event[0]->TOTAL) && $total_event[0]->TOTAL !== null ? $total_event[0]->TOTAL : '0' ?>
                             </h2>
-                            <p class="m-b-0 text-muted">Event</p>
+                            <p class="m-b-0 text-muted">Total Webinar</p>
                         </div>
                     </div>
                 </div>
@@ -50,7 +33,7 @@
                             <h2 class="m-b-0">
                                 <?= isset($total_course[0]->TOTAL) && $total_course[0]->TOTAL !== null ? $total_course[0]->TOTAL : '0' ?>
                             </h2>
-                            <p class="m-b-0 text-muted">Kursus</p>
+                            <p class="m-b-0 text-muted">Total Kursus</p>
                         </div>
                     </div>
                 </div>
@@ -66,7 +49,7 @@
                             </div>
                             <div class="m-l-15">
                                 <h2 class="m-b-0"><?= $total_user[0]->TOTAL ?></h2>
-                                <p class="m-b-0 text-muted">User</p>
+                                <p class="m-b-0 text-muted">Total Pengguna</p>
                             </div>
                         </div>
                     </div>
@@ -75,198 +58,74 @@
         <?php } ?>
 
     </div>
-    <!-- <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <h5>Total Pendapatan</h5>
-                        <div>
-                            <div class="btn-group">
-                                <button class="btn btn-default active">
-                                    <span>Month</span>
-                                </button>
-                                <button class="btn btn-default">
-                                    <span>Year</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="m-t-50" style="height: 330px">
-                        <canvas class="chart" id="profit-chart"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-12">
-            <div class="card my-3">
-                <div class="card-body">
-                    <h5 class="m-b-0">Pelanggan</h5>
-                    <div class="m-v-60 text-center" style="height: 200px">
-                        <canvas class="chart" id="customers-chart"></canvas>
-                    </div>
-                    <div class="row border-top p-t-25">
-                        <div class="col-4">
-                            <div class="d-flex justify-content-center">
-                                <div class="media align-items-center">
-                                    <span class="badge badge-success badge-dot m-r-10"></span>
-                                    <div class="m-l-5">
-                                        <h4 class="m-b-0">350</h4>
-                                        <p class="m-b-0 muted">Baru</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <div class="d-flex justify-content-center">
-                                <div class="media align-items-center">
-                                    <span class="badge badge-secondary badge-dot m-r-10"></span>
-                                    <div class="m-l-5">
-                                        <h4 class="m-b-0">450</h4>
-                                        <p class="m-b-0 muted">Kembali</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <div class="d-flex justify-content-center">
-                                <div class="media align-items-center">
-                                    <span class="badge badge-warning badge-dot m-r-10"></span>
-                                    <div class="m-l-5">
-                                        <h4 class="m-b-0">100</h4>
-                                        <p class="m-b-0 muted">Lainnya</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <div style="display: flex; justify-content: center;">
+        <div class="row" style="max-width: 60rem; text-align: center;">
+            <h4>Statistik Pendaftar Tiap Bulan</h4>
+            <canvas id="myPieChart"></canvas>
         </div>
     </div>
-</div> -->
-<style>
-    #legend ul {
-        list-style: none;
-        font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
-        font-size: 12px;
-    }
+</div>
 
-    #legend ul span {
-        display: inline-block;
-        height: 1em;
-        width: 1em;
-        margin-right: 0.5em;
-    }
-</style>
 <script>
-    var myChart = new Chart("profit-chart", {
-        type: 'line',
-        maintainAspectRatio: false,
-        data: {
-            labels: ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OKT', 'NOV', 'DES'],
-            datasets: []
-        },
-        options: {
-            tooltips: {
-                callbacks: {
-                    label: function(tooltipItem, data) {
-                        var value = data.datasets[0].data[tooltipItem.index];
-                        value = value.toString();
-                        value = value.split(/(?=(?:...)*$)/);
-                        value = value.join(',');
-                        return data.datasets[0].label + ' : ' + value;
-                    }
-                }
-            },
-            legend: {
-                display: true,
-                position: 'bottom',
-                fullWidth: true
-            },
-            scales: {
-                xAxes: [{
-                    gridLines: [{
-                        display: false,
-                    }],
-                    ticks: {
-                        display: true,
-                        fontColor: '#77838f',
-                        fontSize: 13,
-                        padding: 10
-                    }
-                }],
-                yAxes: [{
-                    gridLines: {
-                        drawBorder: false,
-                        drawTicks: false,
-                        borderDash: [3, 4],
-                        zeroLineWidth: 1,
-                        zeroLineBorderDash: [3, 4]
-                    }
-                }],
-            },
-        }
-    });
-
-    var getData = function() {
-        var month = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OKT', 'NOV', 'DES']
+    // Wait for the DOM to be fully loaded
+    document.addEventListener("DOMContentLoaded", function() {
+    var ctx = document.getElementById('myPieChart').getContext('2d');
         $.ajax({
-            url: '<?= asset('chart/revenue') ?>',
+            url: 'get-data-chart',
             method: 'GET',
             dataType: 'json',
             success: function(response) {
-                $.each(response, function(key, value) {
-                    myChart.data.datasets.push({
-                        label: 'Revenue ' + value.YEAR,
-                        backgroundColor: getRandomColor(key),
-                        borderColor: getRandomColor(key),
-                        pointBackgroundColor: getRandomColor(key),
-                        pointBorderColor: '#ffffff',
-                        pointHoverBackgroundColor: getRandomColor(key),
-                        pointHoverBorderColor: 'rgba(63, 135, 245, 0.15)',
-                        data: value.REVENUE
-                    });
+                var myLineChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: response.months,  // An array of month names or abbreviations, e.g., ['January', 'February', ...]
+                        datasets: [{
+                            label: 'Pendafataran Pengguna Baru Tiap Bulan',  // Label for the dataset
+                            data: response.register_per_month, // An array of registration numbers per month
+                            backgroundColor: 'rgba(54, 162, 235, 0.2)',  // Line fill color
+                            borderColor: 'rgba(54, 162, 235, 1)',  // Line color
+                            borderWidth: 2,
+                            fill: true,  // Fill the area under the line
+                            tension: 0.4  // Smooth the line curve
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'top',  // Position of the legend
+                            },
+                            tooltip: {
+                                enabled: true,  // Show tooltips on hover
+                            },
+                            title: {
+                                display: true,
+                                text: 'Registrations Per Month',  // Title text
+                                font: {
+                                    size: 18
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Month'
+                                }
+                            },
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Number of Registrations'
+                                }
+                            }
+                        }
+                    }
                 });
-                myChart.update();
             }
         });
-    };
-
-    getData()
-
-    function getRandomColor(key) {
-        var color = '#';
-        var index = key + 1
-        if (index == 1) {
-            color += '3fb6f5';
-        }
-        if (index == 2) {
-            color += '553ff5';
-        }
-        if (index == 3) {
-            color += '3fc4f5';
-        }
-        if (index == 4) {
-            color += '973ff5';
-        }
-        if (index == 5) {
-            color += '7a3ff5';
-        }
-        if (index == 6) {
-            color += '5c3ff5';
-        }
-        if (index == 7) {
-            color += '3faef5';
-        }
-        if (index == 8) {
-            color += '3fc4f5';
-        }
-        if (index == 9) {
-            color += '3fdaf5';
-        }
-        return color;
-    }
+    });
 </script>
-<!-- Content Wrapper END -->
 @endsection

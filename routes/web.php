@@ -177,6 +177,9 @@ Route::middleware(['usersession:4,1'])->group(function () {
     Route::post('widyaiswara/store', 'WidyaiswaraController@store_widyaiswara');
     Route::post('widyaiswara/update', 'WidyaiswaraController@update_widyaiswara');
     Route::post('widyaiswara/delete', 'WidyaiswaraController@delete_widyaiswara');
+    
+    Route::get('get-data-chart', 'DashboardController@get_data_chart');
+    
 });
 
 //2 INSTRUKTUR

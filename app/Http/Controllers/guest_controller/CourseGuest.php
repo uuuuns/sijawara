@@ -117,7 +117,7 @@ class CourseGuest extends Controller
 				ID_ITEM = " . $data['last_item'][0]->ID_ITEM . "
 			");
 
-		if (count($data['last_item']) == count($data['data_all_mapping']) && (!empty($cek_nilai->NILAI) ? $cek_nilai->NILAI >= 75 : false)) {
+		if (count($data['last_item']) == count($data['data_all_mapping']) && (!empty($cek_nilai->NILAI) ? $cek_nilai->NILAI >= $cek_item_course->MIN_NILAI : false)) {
 			$data['tot_proggress'] = 100;
 			DB::table('order')
 				->where('ID_USER', session('user')[0]->get('ID_USER'))
@@ -310,6 +310,7 @@ class CourseGuest extends Controller
 				tc.FILE ,
 				tc.LINK_YT ,
 				tc.DESKRIPSI ,
+				tc.MIN_NILAI ,
 				tc.`TYPE` ,
 				dq.ID_DETAIL,
 				dq.ID_QUIZ ,
@@ -530,7 +531,8 @@ class CourseGuest extends Controller
 
 		$dataActivity = DB::selectOne("
 			SELECT
-				c.ID_ACTIVITY
+				c.ID_ACTIVITY,
+				ic.MIN_NILAI
 			FROM 
 				item_course ic
 			LEFT JOIN course c ON
@@ -551,7 +553,7 @@ class CourseGuest extends Controller
 
 		$data_all_mapping = $this->courseModel->get_counttask($dataActivity->ID_ACTIVITY);
 		$count = ['MAPPING_COUNT' => ((int) $data_all_mapping[0]->MAPPING_COUNT) + 1];
-		if ($nilai >= 75 && $max_id_item->MAX_ID == $id_quiz) {
+		if ($nilai >= $dataActivity->MIN_NILAI && $max_id_item->MAX_ID == $id_quiz) {
 			DB::table("order")
 				->where('ID_USER', session('user')[0]->get('ID_USER'))
 				->where('ID_PRODUCT', $dataActivity->ID_ACTIVITY)
