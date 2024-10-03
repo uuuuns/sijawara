@@ -149,21 +149,24 @@ class AuthController extends Controller
         $check_user = DB::table('user')
             ->where('EMAIL', $req->input('email'))
             ->get();
-
         if ($check_user->isEmpty()) {
             $KODE_USER = $this->GenerateUniqID($req->input('name'));
-
-            $User = new User();
-            $User->ID_USER               = $KODE_USER;
-            $User->NAME                  = $req->input('name');
-            $User->EMAIL                 = $req->input('email');
-            $User->PASS                  = hash('sha256', md5($req->input('password')));
-            $User->ID_ROLE               = 3;
-            $User->STATUS                = 0;
-            $User->IS_DELETE             = 0;
-            $User->REG_TIME              = date('Y-m-d H:i:s');
-
-            $User->save();
+            try {
+                $User = new User();
+                $User->ID_USER               = $KODE_USER;
+                $User->NAME                  = $req->input('name');
+                $User->EMAIL                 = $req->input('email');
+                $User->PASS                  = hash('sha256', md5($req->input('password')));
+                $User->ID_ROLE               = 3;
+                $User->STATUS                = 0;
+                $User->IS_DELETE             = 0;
+                $User->REG_TIME              = date('Y-m-d H:i:s');
+                $User->JENIS_INSTANSI        = $req->input('jenis_instansi');
+    
+                $User->save();
+            } catch (\Throwable $e) {
+                dd($e->getMessage());
+            }
 
             // SEND EMAIL VERIFICATION
             $token_key = bin2hex(random_bytes(32));

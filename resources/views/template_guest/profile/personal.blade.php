@@ -55,14 +55,14 @@
         </div>
         <h5 class="text-black ps-1 mt-4">Jenis Instansi</h5>
         <div class="my-3 float-label-control">
-            <select class="form-select woocommerce-Input woocommerce-Input--text jenis_instansi" name="jenis_instansi" disabled>
-                <option value="ukm" <?= ($data_personal->JENIS_INSTANSI == "ukm") ? "selected" : "" ?>>
+            <select class="select2 woocommerce-Input woocommerce-Input--text jenis_instansi" name="jenis_instansi" disabled>
+                <option value="UKM" <?= ($data_personal->JENIS_INSTANSI == "UKM") ? "selected" : "" ?>>
                     UKM</option>
-                <option value="koperasi" <?= ($data_personal->JENIS_INSTANSI == "koperasi") ? "selected" : "" ?>>
+                <option value="KOPERASI" <?= ($data_personal->JENIS_INSTANSI == "KOPERASI") ? "selected" : "" ?>>
                     KOPERASI</option>
-                <option value="instansi" <?= ($data_personal->JENIS_INSTANSI == "instansi") ? "selected" : "" ?>>
+                <option value="INSTANSI" <?= ($data_personal->JENIS_INSTANSI == "INSTANSI") ? "selected" : "" ?>>
                     INSTANSI</option>
-                <option value="umum" <?= ($data_personal->JENIS_INSTANSI == "umum") ? "selected" : "" ?>>
+                <option value="UMUM" <?= ($data_personal->JENIS_INSTANSI == "UMUM") ? "selected" : "" ?>>
                     UMUM</option>
             </select>
         </div>
