@@ -24,6 +24,15 @@
                                     id="exampleInputEmail1" placeholder="Alamat Email" name="email"
                                     aria-describedby="emailHelp" required>
                             </div>
+                            <div class="my-4 float-label-control">
+                                <select id="jenis_instansi" name="jenis_instansi" placeholder="Pilih Jenis Instansi">
+                                    <option></option>
+                                    <option value="UKM">UKM</option>
+                                    <option value="KOPERASI">KOPERASI</option>
+                                    <option value="INSTANSI">INSTANSI</option>
+                                    <option value="UMUM">UMUM</option>
+                                </select>
+                            </div>
                             <div class="input-group my-4">
                                 <input type="password"
                                     class="form-control input-text woocommerce-Input woocommerce-Input--text"
@@ -59,6 +68,24 @@
 </div>
 <!-- End Register -->
 <script>
+    $(document).ready(function() {
+        // Initialize select2 with placeholder
+        $("#jenis_instansi").select2({
+            placeholder: "Select Requirement ...",
+            allowClear: true
+        });
+
+        $("#form_regist").submit(function(e) {
+            if ($("#jenis_instansi").val() == "") {
+                e.preventDefault();
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Pilih Jenis Instansi'
+                });
+            }
+        });
+    });
+
     var x = document.getElementById("form-1");
     var y = document.getElementById("form-2");
 
@@ -128,7 +155,7 @@
             password2.setCustomValidity('');
         }
 
-        if (password.value.length < 8 && password2.value.length < 8) {
+        if (password.value.length < 8) {
             password.setCustomValidity("Passwords harus lebih dari atau sama dengan 8 karakter");
         } else {
             password.setCustomValidity('');

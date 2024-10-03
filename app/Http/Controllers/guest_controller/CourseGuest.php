@@ -602,7 +602,7 @@ class CourseGuest extends Controller
 						FROM
 							tb_invited ti 
 						WHERE
-							ti.ID_USER = "USR_VRS068"
+							ti.ID_USER = "' . $id_user . '"
 							AND ti.ID_ACTIVITY = activity.ID_ACTIVITY
 					) AS is_invited,
 					(
@@ -645,13 +645,22 @@ class CourseGuest extends Controller
 							`order` o
 						WHERE
 							o.ID_PRODUCT = activity.ID_ACTIVITY 
-					) AS participant
+					) AS participant,
+					(
+						SELECT 
+							COUNT(ti.ID_INVITED)
+						FROM 
+							tb_invited ti 
+						WHERE 
+							ti.ID_ACTIVITY = activity.ID_ACTIVITY
+					) AS is_invited
 				FROM 
 					activity
 				LEFT JOIN 
 					course ON course.ID_ACTIVITY = activity.ID_ACTIVITY
 					' . $condition . '
 				');
+				
 		}
 		return
 			view('template_guest.course.ajax.course_by_category', $data);
