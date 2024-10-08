@@ -69,6 +69,14 @@ class ProfileGuest extends Controller
             WHERE user_data.ID_USER = '" . session('user')[0]['ID_USER'] . "';
 
         ");
+        $data['data_personal'] = DB::selectOne("
+        SELECT
+            u.*
+        FROM
+            user u
+        WHERE 
+        u.ID_USER = '" . session('user')[0]['ID_USER'] . "'
+    ");
         $data['title'] = "My Ebook";
         return
             view('template.header', $data) .
@@ -86,6 +94,14 @@ class ProfileGuest extends Controller
             WHERE 
             u.ID_USER = '" . session('user')[0]['ID_USER'] . "'
         ");
+        $data['data_personal'] = DB::selectOne("
+        SELECT
+            u.*
+        FROM
+            user u
+        WHERE 
+        u.ID_USER = '" . session('user')[0]['ID_USER'] . "'
+    ");
         $data['document'] = DB::selectOne("
             SELECT user_data.*, instructor_req.STATUS
             FROM user_data
@@ -125,6 +141,14 @@ class ProfileGuest extends Controller
             WHERE user_data.ID_USER = '" . session('user')[0]['ID_USER'] . "';
 
         ");
+        $data['data_personal'] = DB::selectOne("
+        SELECT
+            u.*
+        FROM
+            user u
+        WHERE 
+        u.ID_USER = '" . session('user')[0]['ID_USER'] . "'
+    ");
         // dd($data['document']);
         return
             view('template.header', $data) .
@@ -134,6 +158,14 @@ class ProfileGuest extends Controller
     public function myevents()
     {
         $data['title'] = "Webinar Ku";
+        $data['data_personal'] = DB::selectOne("
+        SELECT
+            u.*
+        FROM
+            user u
+        WHERE 
+        u.ID_USER = '" . session('user')[0]['ID_USER'] . "'
+    ");
         $user = new User();
         $data['event'] = [];
         $mycourse = $user->get_my_product2();
@@ -162,6 +194,14 @@ class ProfileGuest extends Controller
     public function mycourses()
     {
         $data['title'] = "Kursus Ku";
+        $data['data_personal'] = DB::selectOne("
+        SELECT
+            u.*
+        FROM
+            user u
+        WHERE 
+        u.ID_USER = '" . session('user')[0]['ID_USER'] . "'
+    ");
         $user = new User();
         $data['course'] = [];
         $mycourse = $user->get_my_product();
@@ -196,6 +236,15 @@ class ProfileGuest extends Controller
                 s.ID_USER = '" . session('user')[0]['ID_USER'] . "'
                 AND s.IS_DOWNLOADED = 1   
             ");
+
+            $data['data_personal'] = DB::selectOne("
+            SELECT
+                u.*
+            FROM
+                user u
+            WHERE 
+            u.ID_USER = '" . session('user')[0]['ID_USER'] . "'
+        ");
             
             $data['document'] = DB::selectOne("
             SELECT user_data.*, instructor_req.STATUS
@@ -555,5 +604,121 @@ class ProfileGuest extends Controller
         }
         $html .= '</select>';
         return response()->json($html);
+    }
+
+    public function data_koperasi_index(){
+        $data['title'] = "Data Koperasi";
+
+        $data['data_personal'] = DB::selectOne("
+            SELECT
+                u.*
+            FROM
+                user u
+            WHERE 
+            u.ID_USER = '" . session('user')[0]['ID_USER'] . "'
+        ");
+
+        $data['document'] = DB::selectOne("
+            SELECT user_data.*, instructor_req.STATUS
+            FROM user_data
+            LEFT JOIN instructor_req ON instructor_req.ID_USER = user_data.ID_USER
+            WHERE user_data.ID_USER = '" . session('user')[0]['ID_USER'] . "';
+        ");
+
+        $data['data_ukm'] = DB::selectOne('
+            SELECT
+                *
+            FROM
+                tb_ukm
+            WHERE ID_USER = "'.session('user')[0]['ID_USER'].'"
+        ');
+
+        if ($data['data_ukm'] == null) {
+            $data_ukm = [
+                'ID_USER' => session('user')[0]['ID_USER'],
+                'uuid' => Str::uuid()
+            ];
+
+            DB::table('tb_ukm')->insert($data_ukm);
+
+            $data['data_ukm'] = DB::selectOne('
+                SELECT
+                    *
+                FROM
+                    tb_ukm
+                WHERE ID_USER = "'.session('user')[0]['ID_USER'].'"
+            ');
+        }
+
+        $data['check'] = DB::selectOne("
+            SELECT 
+                (
+                    SUM(NULLIF(tu.nama_pemilik, '') IS NOT NULL) +
+                    SUM(NULLIF(tu.nik_pemilik, '') IS NOT NULL) +
+                    SUM(NULLIF(tu.phone_pemilik, '') IS NOT NULL) +
+                    SUM(NULLIF(tu.jenis_kelamin_pemilik, '') IS NOT NULL) +
+                    SUM(NULLIF(tu.tempat_lahir_pemilik, '') IS NOT NULL) +
+                    SUM(NULLIF(tu.tanggal_lahir_pemilik, '') IS NOT NULL) +
+                    SUM(NULLIF(tu.pendidikan_terakhir_pemilik, '') IS NOT NULL) +
+                    SUM(NULLIF(tu.alamat_pemilik, '') IS NOT NULL)
+                ) AS COUNT_DATA_PEMILIK,
+                (
+                    SUM(NULLIF(tu.nama_ukm, '') IS NOT NULL) +
+                    SUM(NULLIF(tu.alamat_ukm, '') IS NOT NULL) +
+                    SUM(NULLIF(tu.id_provinsi, '') IS NOT NULL) +
+                    SUM(NULLIF(tu.id_kota, '') IS NOT NULL) +
+                    SUM(NULLIF(tu.kegiatan_usaha, '') IS NOT NULL) +
+                    SUM(NULLIF(tu.produk_dihasilkan, '') IS NOT NULL) +
+                    SUM(NULLIF(tu.id_kategori_ukm, '') IS NOT NULL) +
+                    SUM(NULLIF(tu.tahun_mulai, '') IS NOT NULL) +
+                    SUM(NULLIF(tu.kapasitas_produksi, '') IS NOT NULL) +
+                    SUM(NULLIF(tu.volume_usaha, '') IS NOT NULL) +
+                    SUM(NULLIF(tu.tenaga_pria, '') IS NOT NULL) +
+                    SUM(NULLIF(tu.tenaga_wanita, '') IS NOT NULL) +
+                    SUM(NULLIF(tu.id_badan_usaha, '') IS NOT NULL) +
+                    SUM(NULLIF(tu.npwp, '') IS NOT NULL) +
+                    SUM(NULLIF(tu.lokasi_pemasaran, '') IS NOT NULL) +
+                    SUM(NULLIF(tu.nilai_realisasi, '') IS NOT NULL) +
+                    SUM(NULLIF(tu.tahun_realisasi, '') IS NOT NULL)
+                ) AS COUNT_DATA_UKM
+            FROM 
+                tb_ukm tu 
+            WHERE 
+                ID_USER = '".session('user')[0]['ID_USER']."'
+        ");
+
+        $masterDataTables = [
+            'provinsi' => 'md_provinsi',
+            'kategori_ukm' => 'md_kategori_ukm',
+            'fasilitas' => 'md_fasilitas_kegiatan',
+            'legalitas' => 'md_legalitas_usaha',
+            'permasalahan' => 'md_masalah_ukm',
+            'standart' => 'md_standar_produk',
+            'sumber' => 'md_sumber_bahanbaku',
+            'pemasaran' => 'md_wilayah_pemasaran',
+            'badan_usaha' => 'md_badan_usaha'
+        ];
+    
+        foreach ($masterDataTables as $key => $table) {
+            $data[$key] = DB::table($table)->get()->toArray();
+        }
+
+        $dataForUpdate = [
+            'tb_bahan_baku_ukm' => 'tb_bahan_baku_ukm',
+            'tb_fasilitas_ukm' => 'tb_fasilitas_ukm',
+            'tb_legalitas_ukm' => 'tb_legalitas_ukm',
+            'tb_permasalahan_ukm' => 'tb_permasalahan_ukm',
+            'tb_standart_ukm' => 'tb_standart_ukm',
+            'tb_pemasaran_ukm' => 'tb_pemasaran_ukm',
+        ];
+
+        foreach ($dataForUpdate as $key => $table) {
+            $data[$key] = DB::table($table)->where('id_ukm', $data['data_ukm']->id_ukm)->get()->toArray();
+        }
+
+        return
+            view('template.header', $data) .
+            view('template_guest.profile.data_koperasi', $data) .
+            view('template.footer', $data);
     }
 }
