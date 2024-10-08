@@ -84,8 +84,13 @@
                         <textarea class="form-control" rows="3" id="up_testimoni" name="up_testimoni"></textarea>
                     </div>
                     <div class="form-group mb-3">
-                        <label>Link <span class="text-danger">*</span></label>
+                        <label> Nama <span class="text-danger">*</span></label>
                         <input placeholder="Nama Pemberi Testimoni" type="text" id="up_nama" name="up_nama" class="form-control" required>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label> Gambar Testimoni <span class="text-danger">*</span></label>
+                        <input type="file" name="up_gambar_testimoni" class="custom-file-input dropify"
+                            accept=".jpg, .png, .jpeg" data-allowed-file-extensions="jpg png jpeg">
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -118,6 +123,11 @@
                     <div class="form-group mb-3">
                         <label>Nama <span class="text-danger">*</span></label>
                         <input placeholder="Nama Pemberi Testimoni" type="text" name="nama" class="form-control" required>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label> Gambar Testimoni <span class="text-danger">*</span></label>
+                        <input type="file" name="gambar_testimoni" class="custom-file-input dropify"
+                            accept=".jpg, .png, .jpeg" data-allowed-file-extensions="jpg png jpeg" required>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -180,6 +190,15 @@
         $('#up_id_testimoni').val(data.id_testimoni)
         $('#up_testimoni').val(data.testimoni)
         $('#up_nama').val(data.nama)
+        console.log(data)
+        var gambar_testimoni = $('input[name="up_gambar_testimoni"]').dropify();
+        gambar_testimoni = gambar_testimoni.data('dropify');
+        gambar_testimoni.resetPreview();
+        gambar_testimoni.clearElement();
+        gambar_testimoni.settings['defaultFile'] = data.gambar_testimoni;
+        gambar_testimoni.destroy();
+        gambar_testimoni.init();
+
         $('#addviewModal').modal('show')
     }
 </script>

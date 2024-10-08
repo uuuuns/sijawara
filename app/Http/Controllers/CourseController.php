@@ -217,6 +217,7 @@ class CourseController extends Controller
                 a.DATE_START ,
                 a.DATE_END ,
                 a.STATUS ,
+                a.IS_PUBLIC ,
                 c.ID_COURSE ,
                 c.PENGUMUMAN ,
                 c.DESKRIPSI_COURSE ,
@@ -800,6 +801,7 @@ class CourseController extends Controller
                 u.ALAMAT,
                 o.LOG_TIME,
                 a.TITLE_ACTIVITY,
+                o.DATE_COMPLETE,
                 (
                     CEIL(
                         (
@@ -893,6 +895,7 @@ class CourseController extends Controller
                 u.JK ,
                 u.ALAMAT,
                 o.LOG_TIME,
+                o.DATE_COMPLETE,
                 a.TITLE_ACTIVITY,
                 (
                     CEIL(

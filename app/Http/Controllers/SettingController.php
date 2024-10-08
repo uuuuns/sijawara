@@ -68,9 +68,7 @@ class SettingController extends Controller
 
         $data["testimoni"] = DB::select("
             SELECT
-                id_testimoni,
-                nama,
-                testimoni
+                *
             FROM 
                 tb_testimoni
         ");
@@ -83,10 +81,10 @@ class SettingController extends Controller
 
     public function addTestimoni(Request $request)
     {
-
         $data_testimoni = [
             'testimoni' => $request->input('testimoni'),
-            'nama' => $request->input('nama')
+            'nama' => $request->input('nama'),
+            'gambar_testimoni' => FileUpload::S3($request->file('gambar_testimoni'), 'TESTIMONI', 'Image' . strtotime(now()))
         ];
         DB::table('tb_testimoni')->insert($data_testimoni);
 
@@ -98,6 +96,9 @@ class SettingController extends Controller
             'testimoni' => $request->input('up_testimoni'),
             'nama' => $request->input('up_nama')
         ];
+        if ($request->file('up_gambar_testimoni')) {
+            $data_testimoni['gambar_testimoni'] = FileUpload::S3($request->file('up_gambar_testimoni'), 'TESTIMONI', 'Image' . strtotime(now()));
+        }
         DB::table('tb_testimoni')->where('id_testimoni', $request->input('up_id_testimoni'))->update($data_testimoni);
 
         return redirect()->back();

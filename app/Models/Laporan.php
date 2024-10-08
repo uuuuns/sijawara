@@ -117,9 +117,10 @@ class Laporan extends Model
         $ObjSheet->getColumnDimension('H')->setAutoSize(true);
         $ObjSheet->getColumnDimension('I')->setAutoSize(true);
         $ObjSheet->getColumnDimension('J')->setAutoSize(true);
+        $ObjSheet->getColumnDimension('K')->setAutoSize(true);
         
-        $ObjSheet->mergeCells('B2:J2')->setCellValue('B2', "DATA PESERTA KURSUS")->getStyle('B2:J2')->applyFromArray($this->styling_title_template('ff948a54', 'ffffffff'))->getFont()->setSize(14)->setUnderline(\PhpOffice\PhpSpreadsheet\Style\Font::UNDERLINE_SINGLE);
-        $ObjSheet->mergeCells('B3:J3')->setCellValue('B3', $data[0]->TITLE_ACTIVITY)->getStyle('B3:J3')->applyFromArray($this->styling_title_template('ff948a54', 'ffffffff'));
+        $ObjSheet->mergeCells('B2:K2')->setCellValue('B2', "DATA PESERTA KURSUS")->getStyle('B2:K2')->applyFromArray($this->styling_title_template('ff948a54', 'ffffffff'))->getFont()->setSize(14)->setUnderline(\PhpOffice\PhpSpreadsheet\Style\Font::UNDERLINE_SINGLE);
+        $ObjSheet->mergeCells('B3:K3')->setCellValue('B3', $data[0]->TITLE_ACTIVITY)->getStyle('B3:K3')->applyFromArray($this->styling_title_template('ff948a54', 'ffffffff'));
 
         $ObjSheet->setCellValue('B7', 'No')->getStyle('B7')->applyFromArray($this->styling_title_template('FFFFD966', 'FF000000'));
         $ObjSheet->setCellValue('C7', 'Nama Peserta')->getStyle('C7')->applyFromArray($this->styling_title_template('FFFFD966', 'FF000000'));
@@ -130,6 +131,7 @@ class Laporan extends Model
         $ObjSheet->setCellValue('H7', 'Tanggal Ambil')->getStyle('H7')->applyFromArray($this->styling_title_template('FFFFD966', 'FF000000'));
         $ObjSheet->setCellValue('I7', 'Status')->getStyle('I7')->applyFromArray($this->styling_title_template('FFFFD966', 'FF000000'));
         $ObjSheet->setCellValue('J7', 'Nilai')->getStyle('J7')->applyFromArray($this->styling_title_template('FFFFD966', 'FF000000'));
+        $ObjSheet->setCellValue('K7', 'Tanggal Selesai')->getStyle('K7')->applyFromArray($this->styling_title_template('FFFFD966', 'FF000000'));
 
         $rowStart = 8;
         foreach ($data as $key => $item) {
@@ -142,6 +144,7 @@ class Laporan extends Model
             $ObjSheet->setCellValue('H' . $rowStart, $item->LOG_TIME)->getStyle('H' . $rowStart)->applyFromArray($this->styling_content_template('00FFFFFF', '00000000', 'center', 'left'))->getAlignment()->setWrapText(false);
             $ObjSheet->setCellValue('I' . $rowStart, ($item->PROGRESS == 100 ? "Selesai" : $item->PROGRESS."%"))->getStyle('I' . $rowStart)->applyFromArray($this->styling_content_template('00FFFFFF', '00000000', 'center', 'left'))->getAlignment()->setWrapText(false);
             $ObjSheet->setCellValue('J' . $rowStart, (empty($item->Rata_Nilai) ? "Belum Mengerjakan" : $item->Rata_Nilai))->getStyle('J' . $rowStart)->applyFromArray($this->styling_content_template('00FFFFFF', '00000000', 'center', 'left'))->getAlignment()->setWrapText(false);
+            $ObjSheet->setCellValue('K' . $rowStart, (empty($item->DATE_COMPLETE) ? "Belum Selesai" : $item->DATE_COMPLETE))->getStyle('K' . $rowStart)->applyFromArray($this->styling_content_template('00FFFFFF', '00000000', 'center', 'left'))->getAlignment()->setWrapText(false);
 
             $rowStart++;
         }

@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Session;
 use App\Mail\MailSender;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class ProfileGuest extends Controller
 {
@@ -323,5 +324,236 @@ class ProfileGuest extends Controller
         // END  SUCCESS DOWNLOAD SERTIFIKAT
 
         return response()->json(['status' => 'success']);   
+    }
+
+    public function data_ukm_index(){
+        $data['title'] = "Data UKM";
+
+        $data['data_personal'] = DB::selectOne("
+            SELECT
+                u.*
+            FROM
+                user u
+            WHERE 
+            u.ID_USER = '" . session('user')[0]['ID_USER'] . "'
+        ");
+
+        $data['document'] = DB::selectOne("
+            SELECT user_data.*, instructor_req.STATUS
+            FROM user_data
+            LEFT JOIN instructor_req ON instructor_req.ID_USER = user_data.ID_USER
+            WHERE user_data.ID_USER = '" . session('user')[0]['ID_USER'] . "';
+        ");
+
+        $data['data_ukm'] = DB::selectOne('
+            SELECT
+                *
+            FROM
+                tb_ukm
+            WHERE ID_USER = "'.session('user')[0]['ID_USER'].'"
+        ');
+
+        if ($data['data_ukm'] == null) {
+            $data_ukm = [
+                'ID_USER' => session('user')[0]['ID_USER'],
+                'uuid' => Str::uuid()
+            ];
+
+            DB::table('tb_ukm')->insert($data_ukm);
+
+            $data['data_ukm'] = DB::selectOne('
+                SELECT
+                    *
+                FROM
+                    tb_ukm
+                WHERE ID_USER = "'.session('user')[0]['ID_USER'].'"
+            ');
+        }
+
+        $data['check'] = DB::selectOne("
+            SELECT 
+                (
+                    SUM(NULLIF(tu.nama_pemilik, '') IS NOT NULL) +
+                    SUM(NULLIF(tu.nik_pemilik, '') IS NOT NULL) +
+                    SUM(NULLIF(tu.phone_pemilik, '') IS NOT NULL) +
+                    SUM(NULLIF(tu.jenis_kelamin_pemilik, '') IS NOT NULL) +
+                    SUM(NULLIF(tu.tempat_lahir_pemilik, '') IS NOT NULL) +
+                    SUM(NULLIF(tu.tanggal_lahir_pemilik, '') IS NOT NULL) +
+                    SUM(NULLIF(tu.pendidikan_terakhir_pemilik, '') IS NOT NULL) +
+                    SUM(NULLIF(tu.alamat_pemilik, '') IS NOT NULL)
+                ) AS COUNT_DATA_PEMILIK,
+                (
+                    SUM(NULLIF(tu.nama_ukm, '') IS NOT NULL) +
+                    SUM(NULLIF(tu.alamat_ukm, '') IS NOT NULL) +
+                    SUM(NULLIF(tu.id_provinsi, '') IS NOT NULL) +
+                    SUM(NULLIF(tu.id_kota, '') IS NOT NULL) +
+                    SUM(NULLIF(tu.kegiatan_usaha, '') IS NOT NULL) +
+                    SUM(NULLIF(tu.produk_dihasilkan, '') IS NOT NULL) +
+                    SUM(NULLIF(tu.id_kategori_ukm, '') IS NOT NULL) +
+                    SUM(NULLIF(tu.tahun_mulai, '') IS NOT NULL) +
+                    SUM(NULLIF(tu.kapasitas_produksi, '') IS NOT NULL) +
+                    SUM(NULLIF(tu.volume_usaha, '') IS NOT NULL) +
+                    SUM(NULLIF(tu.tenaga_pria, '') IS NOT NULL) +
+                    SUM(NULLIF(tu.tenaga_wanita, '') IS NOT NULL) +
+                    SUM(NULLIF(tu.id_badan_usaha, '') IS NOT NULL) +
+                    SUM(NULLIF(tu.npwp, '') IS NOT NULL) +
+                    SUM(NULLIF(tu.lokasi_pemasaran, '') IS NOT NULL) +
+                    SUM(NULLIF(tu.nilai_realisasi, '') IS NOT NULL) +
+                    SUM(NULLIF(tu.tahun_realisasi, '') IS NOT NULL)
+                ) AS COUNT_DATA_UKM
+            FROM 
+                tb_ukm tu 
+            WHERE 
+                ID_USER = '".session('user')[0]['ID_USER']."'
+        ");
+
+        $masterDataTables = [
+            'provinsi' => 'md_provinsi',
+            'kategori_ukm' => 'md_kategori_ukm',
+            'fasilitas' => 'md_fasilitas_kegiatan',
+            'legalitas' => 'md_legalitas_usaha',
+            'permasalahan' => 'md_masalah_ukm',
+            'standart' => 'md_standar_produk',
+            'sumber' => 'md_sumber_bahanbaku',
+            'pemasaran' => 'md_wilayah_pemasaran',
+            'badan_usaha' => 'md_badan_usaha'
+        ];
+    
+        foreach ($masterDataTables as $key => $table) {
+            $data[$key] = DB::table($table)->get()->toArray();
+        }
+
+        $dataForUpdate = [
+            'tb_bahan_baku_ukm' => 'tb_bahan_baku_ukm',
+            'tb_fasilitas_ukm' => 'tb_fasilitas_ukm',
+            'tb_legalitas_ukm' => 'tb_legalitas_ukm',
+            'tb_permasalahan_ukm' => 'tb_permasalahan_ukm',
+            'tb_standart_ukm' => 'tb_standart_ukm',
+            'tb_pemasaran_ukm' => 'tb_pemasaran_ukm',
+        ];
+
+        foreach ($dataForUpdate as $key => $table) {
+            $data[$key] = DB::table($table)->where('id_ukm', $data['data_ukm']->id_ukm)->get()->toArray();
+        }
+
+        return
+            view('template.header', $data) .
+            view('template_guest.profile.data_ukm', $data) .
+            view('template.footer', $data);
+    }
+
+    public function store_data_ukm (Request $request) {
+        try {
+            $data = [
+                'nama_ukm' => $request->input('namaUKM'),
+                'kegiatan_usaha' => $request->input('kegiatanUsaha'),
+                'produk_dihasilkan' => $request->input('produkUKM'),
+                'id_kategori_ukm' => $request->input('kategoriProduk'),
+                'tahun_mulai' => $request->input('tahunMemulai'),
+                'kapasitas_produksi' => str_replace('.', '',$request->input('kapasitasProduksi')),
+                'volume_usaha' => str_replace('.', '',$request->input('volumePerbulan')),
+                'tenaga_pria' => $request->input('tenagaLaki'),
+                'tenaga_wanita' => $request->input('tenagaPerempuan'),
+                'id_badan_usaha' => $request->input('bentukUsaha'),
+                'npwp' => $request->input('npwp'),
+                'lokasi_pemasaran' => $request->input('lokasiPemasaran'),
+                'nilai_realisasi' => str_replace('.', '',$request->input('nilaiRealisasi')),
+                'tahun_realisasi' => $request->input('tahunRealisasi'),
+                'alamat_ukm' => $request->input('alamatUsaha'),
+                'id_provinsi' => $request->input('provinsi'),
+                'id_kota' => $request->input('kota'),
+                'updated_at' => date('Y-m-d H:i:s'),
+            ];
+            DB::table('tb_ukm')->updateOrInsert(['ID_USER' => session('user')[0]['ID_USER']], $data);
+            return redirect('data_ukm')->with('success', 'Data Pemilik UKM berhasil disimpan');
+        } catch (\Throwable $e) {
+            dd($e->getMessage());
+        }
+    }
+
+    public function store_data_pemilik (Request $request) {
+        try {
+            $data = [
+                'ID_USER'                       => session('user')[0]['ID_USER'],
+                'nama_pemilik'                  => $request->input('namaPemilik'),
+                'nik_pemilik'                   => $request->input('nikPemilik'),
+                'phone_pemilik'                 => $request->input('telpPemilik'),
+                'jenis_kelamin_pemilik'         => $request->input('jenisKelaminPemilik'),
+                'tempat_lahir_pemilik'          => $request->input('tempatLahirPemilik'),
+                'tanggal_lahir_pemilik'         => $request->input('tanggalLahirPemilik'),
+                'pendidikan_terakhir_pemilik'   => $request->input('pendidikanTerakhirPemilik'),
+                'alamat_pemilik'                => $request->input('alamatPemilik'),
+                'created_at'                    => date('Y-m-d H:i:s'),
+                'updated_at'                    => date('Y-m-d H:i:s'),
+            ];
+            
+            DB::table('tb_ukm')->updateOrInsert(['ID_USER' => session('user')[0]['ID_USER']], $data);
+            return redirect('data_ukm')->with('success', 'Data Pemilik UKM berhasil disimpan');
+        } catch (\Throwable $e) {
+            dd($e->getMessage());
+        }
+    }
+    public function store_data_lain (Request $request) {
+        try {
+            $get_id_ukm = DB::selectOne('
+                SELECT
+                    id_ukm
+                FROM
+                    tb_ukm
+                WHERE
+                    ID_USER = "' . session('user')[0]['ID_USER'] . '"
+            ')->id_ukm;
+
+            // Mapping the input fields to their respective tables and columns
+            $dataMappings = [
+                'sumberBahanBaku' => ['table' => 'tb_bahan_baku_ukm', 'column' => 'id_bahan_baku'],
+                'fasilitas' => ['table' => 'tb_fasilitas_ukm', 'column' => 'id_fasilitas'],
+                'legalitasUsaha' => ['table' => 'tb_legalitas_ukm', 'column' => 'id_legalitas_usaha'],
+                'permasalahan' => ['table' => 'tb_permasalahan_ukm', 'column' => 'id_permasalahan'],
+                'standarisasiProduk' => ['table' => 'tb_standart_ukm', 'column' => 'id_standarisasi_produk'],
+                'wilayahPemasaran' => ['table' => 'tb_pemasaran_ukm', 'column' => 'id_pemasaran'],
+            ];
+
+            // Helper function to handle insert or update
+            foreach ($dataMappings as $inputField => $mapping) {
+                if (!empty($request->$inputField)) {
+                    DB::table($mapping['table'])->where(['id_ukm' => $get_id_ukm])->delete();
+                    foreach ($request->$inputField as $value) {
+                        $data = [
+                            'uuid' => Str::uuid(),
+                            'id_ukm' => $get_id_ukm,
+                            $mapping['column'] => $value,
+                            'created_at' => now(),
+                            'updated_at' => now(),
+                        ];
+                        DB::table($mapping['table'])->Insert( $data);
+                    }
+                }
+            }
+
+            return redirect('data_ukm')->with('success', 'Data berhasil disimpan');
+        } catch (\Throwable $e) {
+            dd($e->getMessage());
+        }
+    }
+
+    public function get_kota (Request $request) {
+        $data = DB::select('
+            SELECT
+                *
+            FROM
+                md_kota
+            WHERE
+                id_provinsi = "'.$request->id.'"
+        ');
+        $html = '<label for="kota" class="form-label">Kota</label>
+        <select class="form-select" name="kota" id="kota" required>
+          <option disabled value="" ' . (empty($data_ukm->id_kota) ? 'selected' : '') . '>Pilih...</option>';
+        foreach ($data as $item) {
+            $selected = ($item->id_kota == $item->id_kota) ? 'selected' : '';
+            $html .= '<option value="' . $item->id_kota . '" ' . $selected . '>' . $item->nama_kota . '</option>';
+        }
+        $html .= '</select>';
+        return response()->json($html);
     }
 }

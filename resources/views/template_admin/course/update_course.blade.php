@@ -184,10 +184,11 @@
     $('input[name="date_start"]').val(data.DATE_START);
     $('input[name="date_end"]').val(data.DATE_END);
     $('input[name="certif_code"]').val(data.SERTIF_CODE);
-    $('select[name="is_public"]').val(data.STATUS ? '1' : '0');
+    $('select[name="is_public"]').val(data.IS_PUBLIC);
+    $('select[name="is_public"]').trigger('change');
     $('select[name="category"]').val(data.ID_KATEGORI);
     $('input[name="status"]').prop('checked', data.STATUS);
-
+    
     $.ajax({
         url: 'get/' + id_act,
         method: 'GET',

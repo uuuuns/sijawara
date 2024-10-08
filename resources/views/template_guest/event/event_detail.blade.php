@@ -222,6 +222,16 @@
         }
     })
 
+    $('#FormBuyNow-info').submit(function(e) {
+        @if (empty(session('user')))
+        e.preventDefault();
+            Toast.fire({
+                icon: 'error',
+                title: 'Harap Masuk Terlebih dulu!'
+            });
+        @endif
+    });
+
     function DownloadPdf(e) {
         if ($('#input-code').val() == '<?= $event->SERTIF_CODE ?>') {
             var csrfToken = $('meta[name="csrf-token"]').attr('content');
