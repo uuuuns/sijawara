@@ -122,14 +122,14 @@ class CourseGuest extends Controller
 			DB::table('order')
 				->where('ID_USER', session('user')[0]->get('ID_USER'))
 				->where('ID_PRODUCT', $data['id_activity'])
-				->update(['COURSE_COMPLETED' => 1, 'MAPPING_COUNT' => count($data['data_all_mapping'])]);
+				->update(['COURSE_COMPLETED' => 1, 'MAPPING_COUNT' => count($data['data_all_mapping']), 'DATE_COMPLETED' => date('Y-m-d H:i:s')]);
 		}
 		if (count($data['last_item']) == count($data['data_all_mapping']) && ($cek_item_course->TYPE == 1)) {
 			$data['tot_proggress'] = 100;
 			DB::table('order')
 				->where('ID_USER', session('user')[0]->get('ID_USER'))
 				->where('ID_PRODUCT', $data['id_activity'])
-				->update(['COURSE_COMPLETED' => 1, 'MAPPING_COUNT' => count($data['data_all_mapping'])]);
+				->update(['COURSE_COMPLETED' => 1, 'MAPPING_COUNT' => count($data['data_all_mapping']), 'DATE_COMPLETED' => date('Y-m-d H:i:s')]);
 		}
 		$sertifCheck = DB::selectOne("
 			SELECT
@@ -552,7 +552,11 @@ class CourseGuest extends Controller
 		);
 
 		$data_all_mapping = $this->courseModel->get_counttask($dataActivity->ID_ACTIVITY);
-		$count = ['MAPPING_COUNT' => ((int) $data_all_mapping[0]->MAPPING_COUNT) + 1];
+		$count = [
+					'MAPPING_COUNT' => ((int) $data_all_mapping[0]->MAPPING_COUNT) + 1,
+					'COURSE_COMPLETED' => 1,
+					'DATE_COMPLETED' => date('Y-m-d H:i:s')
+				];
 		if ($nilai >= $dataActivity->MIN_NILAI && $max_id_item->MAX_ID == $id_quiz) {
 			DB::table("order")
 				->where('ID_USER', session('user')[0]->get('ID_USER'))

@@ -202,6 +202,11 @@ Route::middleware(['usersession:4,3,2,1'])->group(function () {
 
     // PROFILE
     Route::get('profile', [ProfileGuest::class, 'profile']);
+    Route::get('data_ukm', [ProfileGuest::class, 'data_ukm_index']);
+    Route::post('data_ukm/store_ukm', [ProfileGuest::class, 'store_data_ukm']);
+    Route::post('data_ukm/store_pemilik', [ProfileGuest::class, 'store_data_pemilik']);
+    Route::post('data_ukm/store_lain', [ProfileGuest::class, 'store_data_lain']);
+    Route::post('get-kota', [ProfileGuest::class, 'get_kota']);
     Route::get('/profile/overview', [ProfileGuest::class, 'overview']);
     Route::get('profile/myebook', [ProfileGuest::class, 'ebook']);
     Route::get('profile/academic', [ProfileGuest::class, 'academic']);

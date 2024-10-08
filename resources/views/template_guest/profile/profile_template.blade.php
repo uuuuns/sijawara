@@ -97,9 +97,26 @@
                                             <i class="fs-6 d-flex align-items-center far fa-book"></i> <span class="ms-1 ps-2 fs-6 align-self-center ">Perpustakaan</span>
                                         </a>
                                     </li>
+                                    @if ($data_personal->JENIS_INSTANSI == 'UKM')
                                     <li class="w-100">
                                         <hr class="my-0 border border-1 mx-3">
                                     </li>
+                                    <li class="nav-item w-100">
+                                        <a href="data_ukm" class="nav-link  d-flex align-middle px-4 py-3 rounded-0">
+                                            <i class="fs-6 d-flex align-items-center far fa-book"></i> <span class="ms-1 ps-2 fs-6 align-self-center ">Data UKM</span>
+                                        </a>
+                                    </li>
+                                    @endif
+                                    @if ($data_personal->JENIS_INSTANSI == 'KOPERASI')
+                                    <li class="w-100">
+                                        <hr class="my-0 border border-1 mx-3">
+                                    </li>
+                                    <li class="nav-item w-100">
+                                        <a href="profile/koperasi" class="nav-link  d-flex align-middle px-4 py-3 rounded-0">
+                                            <i class="fs-6 d-flex align-items-center far fa-book"></i> <span class="ms-1 ps-2 fs-6 align-self-center ">Data Koperasi</span>
+                                        </a>
+                                    </li>
+                                    @endif
                                     <!-- <li class="nav-item w-100">
                                         <a href="/profile/academic" class="nav-link  d-flex align-middle px-4 py-3 rounded-0">
                                             <i class="fs-6 d-flex align-items-center far fa-file-alt"></i> <span class="ms-1 ps-2 fs-6 align-self-center ">Data

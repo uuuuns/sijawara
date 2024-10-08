@@ -396,8 +396,11 @@
                         <li class="splide__slide">
                             <div class="col-12 p-4">
                                 <div class="rounded shadow py-4 px-4" style="background-color: #D9D9D9;">
+                                    <div class="fw-bold d-flex align-items-center">
+                                        <img src="<?= empty($item->gambar_testimoni) ? 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973461_1280.png' : $item->gambar_testimoni ?>" alt="Julia Ferrisah" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover; margin-right: 15px;">
+                                        <?= $item->nama ?>
+                                    </div>
                                     <i><?= $item->testimoni ?></i>
-                                    <div class="mt-3 fw-bold"><?= $item->nama ?></div>
                                 </div>
                             </div>
                         </li>

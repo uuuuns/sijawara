@@ -73,7 +73,7 @@
                 <div class="col-md-12">
                     <a href="/events" class="btn btn-sm btn-danger">
                     <i class="fas fa-chevron-left"></i> KEMBALI</a> 
-                    <button id="exportButton" onclick="location.href='/courses/laporan_course?ID_ACTIVITY=<?=$kursus->ID_ACTIVITY?>'" class="btn btn-sm btn-success"><i class="fas fa-file-excel"></i> LAPORAN</button>
+                    <button id="exportButton" onclick="location.href='/courses/laporan_course?ID_ACTIVITY=<?=$kursus->ID_ACTIVITY?>'" class="btn btn-sm btn-success text-white"><i class="fas fa-file-excel text-white"></i> LAPORAN</button>
                 </div>
             </div>
             <div class="mt-5">
@@ -86,6 +86,7 @@
                             <th>Lokasi</th>
                             <th>Progress</th>
                             <th>Nilai</th>
+                            <th>Tanggal Selesai</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -100,6 +101,7 @@
                                 <td><?= $item->ALAMAT?></td>
                                 <td><?= $item->PROGRESS?></td>
                                 <td><?= $item->NILAI?></td>
+                                <td><?= empty($item->DATE_COMPLETE) ? "Belum Selesai" : $item->DATE_COMPLETE?></td>
                             </tr>
                         @endforeach
                     </tbody>
