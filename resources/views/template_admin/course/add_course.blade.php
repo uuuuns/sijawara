@@ -105,6 +105,13 @@
                                  <small class="text-danger">Jangan Gunakan Spasi Gunakan huruf besar contoh : BLJKPR9</small>
                             </div>
                         </div>
+                        <div class="form-group row ">
+                            <label class="col-sm-2 col-form-label control-label">Kuota Peserta Kursus</label>
+                            <div class="col-md-10">
+                                <input type="number" class="form-control" name="kuota_peserta" placeholder="Kosongi apabila tidak ada batasan"
+                                    required>
+                            </div>
+                        </div>
                         <div class="form-group row">
                             <label class="col-sm-2 col-form-label control-label">Tipe Kursus <span
                                     class="text-danger">*</span></label>

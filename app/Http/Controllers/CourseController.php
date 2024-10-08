@@ -135,6 +135,10 @@ class CourseController extends Controller
             'KATEGORI'              => $req->input('category')
         ];
 
+        if (!empty($req->input('kuota_peserta')) || $req->input('kuota_peserta') != 0) {
+            $course['KUOTA_PESERTA'] = $req->input('kuota_peserta');
+        }
+
         if ($req->input('req')) {
             $course['REQUIREMENT']  = $req->input('req');
         }
@@ -219,9 +223,8 @@ class CourseController extends Controller
                 a.STATUS ,
                 a.IS_PUBLIC ,
                 c.ID_COURSE ,
-                c.PENGUMUMAN ,
                 c.DESKRIPSI_COURSE ,
-                c.DESKRIPSI_COURSE_ITEM ,
+                c.KUOTA_PESERTA ,
                 a.SERTIF_CODE ,
                 k.ID_KATEGORI 
             FROM
@@ -388,6 +391,10 @@ class CourseController extends Controller
                 'BENEFIT'               => $req->input('benefit'),
                 'KATEGORI'              => $req->input('category')
             ];
+
+            if (!empty($req->input('kuota_peserta')) || $req->input('kuota_peserta') != 0) {
+                $course['KUOTA_PESERTA'] = $req->input('kuota_peserta');
+            }
 
             if ($req->input('req')) {
                 $course['REQUIREMENT']  = $req->input('req');

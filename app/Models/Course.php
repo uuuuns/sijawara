@@ -117,33 +117,40 @@ class Course extends Model
             course.ID_COURSE,
             course.REQUIREMENT,
             (
-            SELECT 
-                a.TITLE_ACTIVITY
-            FROM
-                course c
-            LEFT JOIN activity a ON
-                c.ID_ACTIVITY = a.ID_ACTIVITY
-            WHERE
-                c.ID_ACTIVITY = course.REQUIREMENT
-        ) AS REQ_NAME,
-        (
-            SELECT
-                count(a.TITLE_ACTIVITY)
-            FROM
-                `order` o
-            LEFT JOIN activity a ON
-                a.ID_ACTIVITY = o.ID_PRODUCT
-            WHERE
-                o.ID_USER = "' . session('user')[0]['ID_USER'] . '"
-            AND
-                o.ID_PRODUCT = course.REQUIREMENT
-            AND
-                o.COURSE_COMPLETED = 1
-        ) AS REQ,
-            course.PENGUMUMAN,
+                SELECT 
+                    a.TITLE_ACTIVITY
+                FROM
+                    course c
+                LEFT JOIN activity a ON
+                    c.ID_ACTIVITY = a.ID_ACTIVITY
+                WHERE
+                    c.ID_ACTIVITY = course.REQUIREMENT
+            ) AS REQ_NAME,
+            (
+                SELECT
+                    count(a.TITLE_ACTIVITY)
+                FROM
+                    `order` o
+                LEFT JOIN activity a ON
+                    a.ID_ACTIVITY = o.ID_PRODUCT
+                WHERE
+                    o.ID_USER = "' . session('user')[0]['ID_USER'] . '"
+                AND
+                    o.ID_PRODUCT = course.REQUIREMENT
+                AND
+                    o.COURSE_COMPLETED = 1
+            ) AS REQ,
             course.DESKRIPSI_COURSE,
-            course.DESKRIPSI_COURSE_ITEM,
             course.BENEFIT,
+            course.KUOTA_PESERTA,
+            (
+                SELECT 
+                    COUNT(o.ID_USER)
+                FROM
+                    `order` o
+                WHERE 
+                    o.ID_PRODUCT = "' . $id_activity . '"
+            ) AS CURRENT_PARTISIPAN,
             user.NAME,
             user.FOTO_PROFILE,
             kategori.KATEGORI,
