@@ -32,11 +32,6 @@
                                 <p>
                                     <?= $course->DESKRIPSI_COURSE ?>
                                 </p>
-
-                                <!-- <div class="course-widget course-info">
-                                    <h4 class="course-title">Apa yang akan anda pelajari?</h4>
-                                    <?= $course->DESKRIPSI_COURSE_ITEM ?>
-                                </div> -->
                             </div>
                         </div>
 
@@ -193,6 +188,7 @@
                                 </li>
                             </ul>
                             <div class="">
+                                <?php if ($course->KUOTA_PESERTA == 0 || $course->KUOTA_PESERTA >= $course->CURRENT_PARTISIPAN) { ?>
                                 <?php if (!empty($course->REQUIREMENT) && $course->REQ == 1) { ?>
                                 <form class="" id="FormBuyNow-info" method="POST"
                                     action="<?= url('course/add') ?>">
@@ -210,12 +206,16 @@
                                     <button type="submit">Ambil Sekarang</button>
                                 </form>
                                 <?php } else { ?>
-                                <label class="text-black" style="align-items: center">Harap selesaikan kursus <a
-                                        class="fw-bold text-danger"
+                                <label class="alert alert-warning" style="align-items: center">Harap selesaikan kursus
+                                    <a class="fw-bold text-danger"
                                         href="<?= url('course/info/' . preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $course->REQ_NAME)) . '?id_activity=' . $course->REQUIREMENT) ?>">
                                         <?= $course->REQ_NAME ?></a> terlebih
                                     dahulu
                                     sebelum mengambil kursus ini</label>
+                                <?php } ?>
+                                <?php } else { ?>
+                                <label class="alert alert-warning">Tidak dapat mengambil kursus ini, dikarenakan kuota
+                                    peserta sudah terpenuhi</label>
                                 <?php } ?>
                             </div>
                         </div>
