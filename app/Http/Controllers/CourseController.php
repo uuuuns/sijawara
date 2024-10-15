@@ -801,7 +801,7 @@ class CourseController extends Controller
                 u.ALAMAT,
                 o.LOG_TIME,
                 a.TITLE_ACTIVITY,
-                o.DATE_COMPLETE,
+                o.DATE_COMPLETED,
                 (
                     CEIL(
                         (
@@ -895,7 +895,7 @@ class CourseController extends Controller
                 u.JK ,
                 u.ALAMAT,
                 o.LOG_TIME,
-                o.DATE_COMPLETE,
+                o.DATE_COMPLETED,
                 a.TITLE_ACTIVITY,
                 (
                     CEIL(

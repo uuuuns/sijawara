@@ -206,6 +206,11 @@ Route::middleware(['usersession:4,3,2,1'])->group(function () {
     Route::post('data_ukm/store_ukm', [ProfileGuest::class, 'store_data_ukm']);
     Route::post('data_ukm/store_pemilik', [ProfileGuest::class, 'store_data_pemilik']);
     Route::post('data_ukm/store_lain', [ProfileGuest::class, 'store_data_lain']);
+    Route::get('data_koperasi', [ProfileGuest::class, 'data_koperasi_index']);
+    Route::post('data_koperasi/store_data_koperasi', [ProfileGuest::class, 'store_data_koperasi']);
+    Route::post('data_koperasi/store_hukum_koperasi', [ProfileGuest::class, 'store_hukum_koperasi']);
+    Route::post('data_koperasi/store_anggota_koperasi', [ProfileGuest::class, 'store_anggota_koperasi']);
+    Route::post('data_koperasi/store_masalah_koperasi', [ProfileGuest::class, 'store_masalah_koperasi']);
     Route::post('get-kota', [ProfileGuest::class, 'get_kota']);
     Route::get('/profile/overview', [ProfileGuest::class, 'overview']);
     Route::get('profile/myebook', [ProfileGuest::class, 'ebook']);
