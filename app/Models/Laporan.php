@@ -144,7 +144,7 @@ class Laporan extends Model
             $ObjSheet->setCellValue('H' . $rowStart, $item->LOG_TIME)->getStyle('H' . $rowStart)->applyFromArray($this->styling_content_template('00FFFFFF', '00000000', 'center', 'left'))->getAlignment()->setWrapText(false);
             $ObjSheet->setCellValue('I' . $rowStart, ($item->PROGRESS == 100 ? "Selesai" : $item->PROGRESS."%"))->getStyle('I' . $rowStart)->applyFromArray($this->styling_content_template('00FFFFFF', '00000000', 'center', 'left'))->getAlignment()->setWrapText(false);
             $ObjSheet->setCellValue('J' . $rowStart, (empty($item->Rata_Nilai) ? "Belum Mengerjakan" : $item->Rata_Nilai))->getStyle('J' . $rowStart)->applyFromArray($this->styling_content_template('00FFFFFF', '00000000', 'center', 'left'))->getAlignment()->setWrapText(false);
-            $ObjSheet->setCellValue('K' . $rowStart, (empty($item->DATE_COMPLETE) ? "Belum Selesai" : $item->DATE_COMPLETE))->getStyle('K' . $rowStart)->applyFromArray($this->styling_content_template('00FFFFFF', '00000000', 'center', 'left'))->getAlignment()->setWrapText(false);
+            $ObjSheet->setCellValue('K' . $rowStart, (empty($item->DATE_COMPLETED) ? "Belum Selesai" : $item->DATE_COMPLETED))->getStyle('K' . $rowStart)->applyFromArray($this->styling_content_template('00FFFFFF', '00000000', 'center', 'left'))->getAlignment()->setWrapText(false);
 
             $rowStart++;
         }

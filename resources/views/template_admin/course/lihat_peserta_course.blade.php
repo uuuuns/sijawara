@@ -101,7 +101,7 @@
                                 <td><?= $item->ALAMAT?></td>
                                 <td><?= $item->PROGRESS?></td>
                                 <td><?= $item->NILAI?></td>
-                                <td><?= empty($item->DATE_COMPLETE) ? "Belum Selesai" : $item->DATE_COMPLETE?></td>
+                                <td><?= empty($item->DATE_COMPLETED) ? "Belum Selesai" : $item->DATE_COMPLETED?></td>
                             </tr>
                         @endforeach
                     </tbody>

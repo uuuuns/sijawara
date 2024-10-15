@@ -405,7 +405,8 @@ class ProfileGuest extends Controller
         if ($data['data_ukm'] == null) {
             $data_ukm = [
                 'ID_USER' => session('user')[0]['ID_USER'],
-                'uuid' => Str::uuid()
+                'uuid' => Str::uuid(),
+                'created_at' => date('Y-m-d H:i:s'),
             ];
 
             DB::table('tb_ukm')->insert($data_ukm);
@@ -532,7 +533,6 @@ class ProfileGuest extends Controller
                 'tanggal_lahir_pemilik'         => $request->input('tanggalLahirPemilik'),
                 'pendidikan_terakhir_pemilik'   => $request->input('pendidikanTerakhirPemilik'),
                 'alamat_pemilik'                => $request->input('alamatPemilik'),
-                'created_at'                    => date('Y-m-d H:i:s'),
                 'updated_at'                    => date('Y-m-d H:i:s'),
             ];
             
@@ -587,6 +587,7 @@ class ProfileGuest extends Controller
     }
 
     public function get_kota (Request $request) {
+        $id_kota = $request->id_kota;
         $data = DB::select('
             SELECT
                 *
@@ -596,10 +597,10 @@ class ProfileGuest extends Controller
                 id_provinsi = "'.$request->id.'"
         ');
         $html = '<label for="kota" class="form-label">Kota</label>
-        <select class="form-select" name="kota" id="kota" required>
-          <option disabled value="" ' . (empty($data_ukm->id_kota) ? 'selected' : '') . '>Pilih...</option>';
+                <select class="form-select" name="kota" id="kota" required>
+                <option disabled value="" ' . (empty($id_kota) ? 'selected' : '') . '>Pilih...</option>';
         foreach ($data as $item) {
-            $selected = ($item->id_kota == $item->id_kota) ? 'selected' : '';
+            $selected = ($item->id_kota == $id_kota) ? 'selected' : '';
             $html .= '<option value="' . $item->id_kota . '" ' . $selected . '>' . $item->nama_kota . '</option>';
         }
         $html .= '</select>';
@@ -625,27 +626,28 @@ class ProfileGuest extends Controller
             WHERE user_data.ID_USER = '" . session('user')[0]['ID_USER'] . "';
         ");
 
-        $data['data_ukm'] = DB::selectOne('
+        $data['data_koperasi'] = DB::selectOne('
             SELECT
                 *
             FROM
-                tb_ukm
+                tb_koperasi
             WHERE ID_USER = "'.session('user')[0]['ID_USER'].'"
         ');
 
-        if ($data['data_ukm'] == null) {
-            $data_ukm = [
+        if ($data['data_koperasi'] == null) {
+            $data_koperasi = [
                 'ID_USER' => session('user')[0]['ID_USER'],
-                'uuid' => Str::uuid()
+                'uuid' => Str::uuid(),
+                'created_at' => date('Y-m-d H:i:s'),
             ];
 
-            DB::table('tb_ukm')->insert($data_ukm);
+            DB::table('tb_koperasi')->insert($data_koperasi);
 
-            $data['data_ukm'] = DB::selectOne('
+            $data['data_koperasi'] = DB::selectOne('
                 SELECT
                     *
                 FROM
-                    tb_ukm
+                    tb_koperasi
                 WHERE ID_USER = "'.session('user')[0]['ID_USER'].'"
             ');
         }
@@ -653,50 +655,61 @@ class ProfileGuest extends Controller
         $data['check'] = DB::selectOne("
             SELECT 
                 (
-                    SUM(NULLIF(tu.nama_pemilik, '') IS NOT NULL) +
-                    SUM(NULLIF(tu.nik_pemilik, '') IS NOT NULL) +
-                    SUM(NULLIF(tu.phone_pemilik, '') IS NOT NULL) +
-                    SUM(NULLIF(tu.jenis_kelamin_pemilik, '') IS NOT NULL) +
-                    SUM(NULLIF(tu.tempat_lahir_pemilik, '') IS NOT NULL) +
-                    SUM(NULLIF(tu.tanggal_lahir_pemilik, '') IS NOT NULL) +
-                    SUM(NULLIF(tu.pendidikan_terakhir_pemilik, '') IS NOT NULL) +
-                    SUM(NULLIF(tu.alamat_pemilik, '') IS NOT NULL)
-                ) AS COUNT_DATA_PEMILIK,
+                    SUM(NULLIF(tk.nik, '') IS NOT NULL) +
+                    SUM(NULLIF(tk.nm_koperasi, '') IS NOT NULL) +
+                    SUM(NULLIF(tk.phone, '') IS NOT NULL) +
+                    SUM(NULLIF(tk.alamat_koperasi, '') IS NOT NULL) +
+                    SUM(NULLIF(tk.id_provinsi, '') IS NOT NULL) +
+                    SUM(NULLIF(tk.id_kota, '') IS NOT NULL) +
+                    SUM(NULLIF(tk.id_bentuk_koperasi, '') IS NOT NULL) +
+                    SUM(NULLIF(tk.id_jenis_koperasi, '') IS NOT NULL) +
+                    SUM(NULLIF(tk.id_kelompok_koperasi, '') IS NOT NULL) +
+                    SUM(NULLIF(tk.id_sektor_usaha, '') IS NOT NULL) +
+                    SUM(NULLIF(tk.volume_usaha, '') IS NOT NULL) +
+                    SUM(NULLIF(tk.asset, '') IS NOT NULL) +
+                    SUM(NULLIF(tk.id_unit_usaha, '') IS NOT NULL) +
+                    SUM(NULLIF(tk.modal_sendiri, '') IS NOT NULL) +
+                    SUM(NULLIF(tk.modal_luar, '') IS NOT NULL) +
+                    SUM(NULLIF(tk.sisa_hasil_usaha, '') IS NOT NULL)
+                ) AS COUNT_DATA_KOPERASI,
                 (
-                    SUM(NULLIF(tu.nama_ukm, '') IS NOT NULL) +
-                    SUM(NULLIF(tu.alamat_ukm, '') IS NOT NULL) +
-                    SUM(NULLIF(tu.id_provinsi, '') IS NOT NULL) +
-                    SUM(NULLIF(tu.id_kota, '') IS NOT NULL) +
-                    SUM(NULLIF(tu.kegiatan_usaha, '') IS NOT NULL) +
-                    SUM(NULLIF(tu.produk_dihasilkan, '') IS NOT NULL) +
-                    SUM(NULLIF(tu.id_kategori_ukm, '') IS NOT NULL) +
-                    SUM(NULLIF(tu.tahun_mulai, '') IS NOT NULL) +
-                    SUM(NULLIF(tu.kapasitas_produksi, '') IS NOT NULL) +
-                    SUM(NULLIF(tu.volume_usaha, '') IS NOT NULL) +
-                    SUM(NULLIF(tu.tenaga_pria, '') IS NOT NULL) +
-                    SUM(NULLIF(tu.tenaga_wanita, '') IS NOT NULL) +
-                    SUM(NULLIF(tu.id_badan_usaha, '') IS NOT NULL) +
-                    SUM(NULLIF(tu.npwp, '') IS NOT NULL) +
-                    SUM(NULLIF(tu.lokasi_pemasaran, '') IS NOT NULL) +
-                    SUM(NULLIF(tu.nilai_realisasi, '') IS NOT NULL) +
-                    SUM(NULLIF(tu.tahun_realisasi, '') IS NOT NULL)
-                ) AS COUNT_DATA_UKM
+                    SUM(NULLIF(tk.no_badan_hukum, '') IS NOT NULL) +
+                    SUM(NULLIF(tk.tgl_badan_hukum, '') IS NOT NULL) +
+                    SUM(NULLIF(tk.no_pad, '') IS NOT NULL) +
+                    SUM(NULLIF(tk.tgl_pad, '') IS NOT NULL) +
+                    SUM(NULLIF(tk.status, '') IS NOT NULL) +
+                    SUM(NULLIF(tk.cabang, '') IS NOT NULL) +
+                    SUM(NULLIF(tk.tgl_rat, '') IS NOT NULL) 
+                ) AS COUNT_DATA_HUKUM,
+                (
+                    SUM(NULLIF(tk.nm_ketua, '') IS NOT NULL) +
+                    SUM(NULLIF(tk.phone_ketua, '') IS NOT NULL) +
+                    SUM(NULLIF(tk.nm_sekretaris, '') IS NOT NULL) +
+                    SUM(NULLIF(tk.phone_sekretaris, '') IS NOT NULL) +
+                    SUM(NULLIF(tk.nm_bendahara, '') IS NOT NULL) +
+                    SUM(NULLIF(tk.phone_bendahara, '') IS NOT NULL) +
+                    SUM(NULLIF(tk.anggota_pria, '') IS NOT NULL) +
+                    SUM(NULLIF(tk.anggota_wanita, '') IS NOT NULL) + 
+                    SUM(NULLIF(tk.manager_pria, '') IS NOT NULL) +
+                    SUM(NULLIF(tk.manager_wanita, '') IS NOT NULL) + 
+                    SUM(NULLIF(tk.karyawan_pria, '') IS NOT NULL) +
+                    SUM(NULLIF(tk.karyawan_wanita, '') IS NOT NULL) 
+                ) AS COUNT_DATA_PENGURUS
             FROM 
-                tb_ukm tu 
+                tb_koperasi tk 
             WHERE 
                 ID_USER = '".session('user')[0]['ID_USER']."'
         ");
 
         $masterDataTables = [
             'provinsi' => 'md_provinsi',
+            'bentuk_koperasi' => 'md_bentuk_koperasi',
+            'jenis_koperasi' => 'md_jenis_koperasi',
+            'kelompok_koperasi' => 'md_kelompok_koperasi',
+            'sektor_usaha' => 'md_sektor_usaha',
+            'unit_usaha' => 'md_unit_usaha',
             'kategori_ukm' => 'md_kategori_ukm',
-            'fasilitas' => 'md_fasilitas_kegiatan',
-            'legalitas' => 'md_legalitas_usaha',
-            'permasalahan' => 'md_masalah_ukm',
-            'standart' => 'md_standar_produk',
-            'sumber' => 'md_sumber_bahanbaku',
-            'pemasaran' => 'md_wilayah_pemasaran',
-            'badan_usaha' => 'md_badan_usaha'
+            'permasalahan' => 'md_masalah_koperasi',
         ];
     
         foreach ($masterDataTables as $key => $table) {
@@ -704,21 +717,114 @@ class ProfileGuest extends Controller
         }
 
         $dataForUpdate = [
-            'tb_bahan_baku_ukm' => 'tb_bahan_baku_ukm',
-            'tb_fasilitas_ukm' => 'tb_fasilitas_ukm',
-            'tb_legalitas_ukm' => 'tb_legalitas_ukm',
-            'tb_permasalahan_ukm' => 'tb_permasalahan_ukm',
-            'tb_standart_ukm' => 'tb_standart_ukm',
-            'tb_pemasaran_ukm' => 'tb_pemasaran_ukm',
+            'tb_masalah_koperasi' => 'tb_masalah_koperasi',
         ];
 
         foreach ($dataForUpdate as $key => $table) {
-            $data[$key] = DB::table($table)->where('id_ukm', $data['data_ukm']->id_ukm)->get()->toArray();
+            $data[$key] = DB::table($table)->where('koperasi_id', $data['data_koperasi']->id)->get()->toArray();
         }
-
         return
             view('template.header', $data) .
             view('template_guest.profile.data_koperasi', $data) .
             view('template.footer', $data);
+    }
+
+    public function store_data_koperasi (Request $request) {
+        try {
+            $data = [
+                'nm_koperasi' => $request->input('namaKoperasi'),
+                'nik' => $request->input('nikKoperasi'),
+                'phone' => $request->input('telpKoperasi'),
+                'alamat_koperasi' => $request->input('alamatKoperasi'),
+                'id_provinsi' => $request->input('provinsi'),
+                'id_bentuk_koperasi' => $request->input('bentukKoperasi'),
+                'id_jenis_koperasi' => $request->input('jenisKoperasi'),
+                'id_kelompok_koperasi' => $request->input('kelompokKoperasi'),
+                'id_sektor_usaha' => $request->input('sektorUsaha'),
+                'volume_usaha' => str_replace('.', '',$request->input('volumePerbulan')),
+                'asset' =>str_replace('.', '',$request->input('asset')),
+                'id_unit_usaha' => $request->input('UnitUsaha'),
+                'modal_sendiri' => str_replace('.', '',$request->input('modalSendiri')),
+                'modal_luar' => str_replace('.', '',$request->input('modalLuar')),
+                'sisa_hasil_usaha' => str_replace('.', '',$request->input('sisaHasilUsaha')),
+                'id_kota' => $request->input('kota'),
+                'updated_at' => date('Y-m-d H:i:s'),
+            ];
+            DB::table('tb_koperasi')->updateOrInsert(['ID_USER' => session('user')[0]['ID_USER']], $data);
+            return redirect('data_koperasi')->with('success', 'Data Koperasi berhasil disimpan');
+        } catch (\Throwable $e) {
+            dd($e->getMessage());
+        }
+    }
+    public function store_hukum_koperasi (Request $request) {
+        try {
+            $data = [
+                'no_badan_hukum' => $request->input('noBadanHukum'),
+                'tgl_badan_hukum' => $request->input('tglBadanHukum'),
+                'no_pad' => $request->input('noPAD'),
+                'tgl_pad' => $request->input('tglPAD'),
+                'status' => $request->input('status'),
+                'cabang' => $request->input('jmlKantorCabang'),
+                'tgl_rat' => $request->input('tglRAT'),
+                'updated_at' => date('Y-m-d H:i:s'),
+            ];
+            DB::table('tb_koperasi')->updateOrInsert(['ID_USER' => session('user')[0]['ID_USER']], $data);
+            return redirect('data_koperasi')->with('success', 'Data Koperasi berhasil disimpan');
+        } catch (\Throwable $e) {
+            dd($e->getMessage());
+        }
+    }
+    public function store_anggota_koperasi (Request $request) {
+        try {
+            $data = [
+                'nm_ketua' => $request->input('namaKetua'),
+                'phone_ketua' => $request->input('noHPKetua'),
+                'nm_sekretaris' => $request->input('namaSekre'),
+                'phone_sekretaris' => $request->input('noHPSekre'),
+                'nm_bendahara' => $request->input('namaBendahara'),
+                'phone_bendahara' => $request->input('noHPBendahara'),
+                'anggota_pria' => $request->input('jmlAnggotaPria'),
+                'anggota_wanita' => $request->input('jmlAnggotaWanita'),
+                'manager_pria' => $request->input('jmlManajerPria'),
+                'manager_wanita' => $request->input('jmlManajerWanita'),
+                'karyawan_pria' => $request->input('jmlKaryawanPria'),
+                'karyawan_wanita' => $request->input('jmlKaryawanWanita'),
+                'updated_at' => date('Y-m-d H:i:s'),
+            ];
+            DB::table('tb_koperasi')->updateOrInsert(['ID_USER' => session('user')[0]['ID_USER']], $data);
+            return redirect('data_koperasi')->with('success', 'Data Koperasi berhasil disimpan');
+        } catch (\Throwable $e) {
+            dd($e->getMessage());
+        }
+    }
+
+    public function store_masalah_koperasi (Request $request) {
+        try {
+            $get_id_koperasi = DB::selectOne('
+                SELECT
+                    id
+                FROM
+                    tb_koperasi
+                WHERE
+                    ID_USER = "' . session('user')[0]['ID_USER'] . '"
+            ')->id;
+            if (!empty($request->permasalahan)) {
+                DB::table('tb_masalah_koperasi')->where(['koperasi_id' => $get_id_koperasi])->delete();
+                foreach ($request->permasalahan as $value) {
+                    $data = [
+                        'uuid' => Str::uuid(),
+                        'koperasi_id' => $get_id_koperasi,
+                        'masalah_koperasi_id' => $value,
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ];
+                    DB::table('tb_masalah_koperasi')->Insert( $data);
+                }
+            }
+
+            return redirect('data_koperasi')->with('success', 'Data berhasil disimpan');
+        } catch (\Throwable $e) {
+            dd($e->getMessage());
+        }
     }
 }
