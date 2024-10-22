@@ -65,7 +65,7 @@
                                             <button type="button"
                                                 onclick="location.href='events/lihat_peserta?ID_ACTIVITY={{ $item->ID_ACTIVITY }}'"
                                                 class="btn btn-primary px-4 py-2 rounded">
-                                                <i class="bx bxs-user-detail font-size-1    6 align-middle"></i>
+                                                <i class="bx bxs-user-detail font-size-16 align-middle"></i>
                                             </button>
                                             <button type="button"
                                                 onclick="openviewModal(`<?= htmlentities(json_encode($item)) ?>`)"
