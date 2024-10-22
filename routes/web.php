@@ -199,6 +199,8 @@ Route::middleware(['usersession:4,3,2,1'])->group(function () {
     //END COURSE
 
     Route::post('event/add', 'guest_controller\EventGuest@add_event');
+    Route::post('event/upload_file', 'guest_controller\EventGuest@upload_file');
+    
 
     // PROFILE
     Route::get('profile', [ProfileGuest::class, 'profile']);
