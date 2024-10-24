@@ -79,6 +79,13 @@
                                 <small class="text-danger">Jangan Gunakan Spasi Gunakan huruf besar contoh : BLJKPR9</small>
                             </div>
                         </div>
+                        <div class="form-group row ">
+                            <label class="col-sm-2 col-form-label control-label">Kuota Peserta Kursus</label>
+                            <div class="col-md-10">
+                                <input type="number" class="form-control" name="kuota_peserta" placeholder="Kosongi apabila tidak ada batasan"
+                                    required>
+                            </div>
+                        </div>
                         <div class="form-group row">
                             <label class="col-sm-2 col-form-label control-label">Tipe Kursus <span
                                     class="text-danger">*</span></label>
@@ -186,6 +193,9 @@
     $('input[name="certif_code"]').val(data.SERTIF_CODE);
     $('select[name="is_public"]').val(data.IS_PUBLIC);
     $('select[name="is_public"]').trigger('change');
+    if (data.KUOTA_PESERTA >= 1) {
+        $('select[name="kuota_peserta"]').val(data.KUOTA_PESERTA);
+    }
     $('select[name="category"]').val(data.ID_KATEGORI);
     $('input[name="status"]').prop('checked', data.STATUS);
     

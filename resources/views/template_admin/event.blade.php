@@ -65,7 +65,7 @@
                                             <button type="button"
                                                 onclick="location.href='events/lihat_peserta?ID_ACTIVITY={{ $item->ID_ACTIVITY }}'"
                                                 class="btn btn-primary px-4 py-2 rounded">
-                                                <i class="bx bxs-user-detail font-size-1    6 align-middle"></i>
+                                                <i class="bx bxs-user-detail font-size-16 align-middle"></i>
                                             </button>
                                             <button type="button"
                                                 onclick="openviewModal(`<?= htmlentities(json_encode($item)) ?>`)"
@@ -90,9 +90,9 @@
     <!-- Content Wrapper END -->
 
     {{-- Start Modal Add --}}
-    <div class="modal" id="addModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog"
+    <div class="modal" id="addModal" data-bs-backdrop="static" tabindex="-1" role="dialog"
         aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title">Tambah Event</h4>
@@ -205,9 +205,9 @@
     {{-- End Modal Add --}}
 
     {{-- Start Modal Update --}}
-    <div class="modal" id="updateModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    <div class="modal" id="updateModal" data-bs-backdrop="static" tabindex="-1"
         role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title">Detail Event</h4>
@@ -325,9 +325,9 @@
     {{-- End Modal Update --}}
 
     {{-- Start Modal Delete --}}
-    <div class="modal" id="deleteModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    <div class="modal" id="deleteModal" data-bs-backdrop="static" tabindex="-1"
         role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title">Hapus Event</h4>

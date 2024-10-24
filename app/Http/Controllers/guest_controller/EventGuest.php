@@ -7,6 +7,7 @@ use App\Models\Course;
 use App\Models\Checkout;
 use App\Models\Event;
 use App\Models\Certificate;
+use App\Models\FileUpload;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -180,10 +181,35 @@ class EventGuest extends Controller
 			$data['is_full'] = false;
 		}
 
+		$data['materi_file'] = DB::table('tb_upload_materi')
+			->where('ID_USER', $data_user)
+			->where('ID_EVENT', $data['event']->ID_ACTIVITY)
+			->first();
+
 		return
 		 view('template.header', $data) .
 		 view('template_guest.event.event_detail', $data) .
 		 view('template.footer', $data);
+	}
+
+	public function upload_file(Request $req)
+	{
+		$file = [];
+
+		foreach ($req->file('file_materi') as $item) {
+			$file[] = FileUpload::S3($item, 'UPLOAD_MATERI', 'Upload-Materi-' . strtotime(now()));
+		}
+
+		$file = [
+			'ID_USER'		=> $req->input('id_user'),
+			'ID_EVENT'		=> $req->input('id_activity'),
+			'FILE'			=> implode(';', $file),
+			'LOG_TIME'		=> date('Y-m-d H:i:s')
+		];
+
+		DB::table('tb_upload_materi')->insert($file);
+
+		return redirect()->back()->with('succ_msg', 'Berhasil mengupload');
 	}
 	public function searchEvent()
 	{

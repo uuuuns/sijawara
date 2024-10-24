@@ -78,13 +78,16 @@ class EventController extends Controller
                 u.NAME ,
                 u.EMAIL ,
                 u.TELP,
-                u.ALAMAT
+                u.ALAMAT,
+                tum.FILE
             FROM
                 user u 
             LEFT JOIN `order` o ON   
                 o.ID_USER = u.ID_USER
+            LEFT JOIN tb_upload_materi tum ON
+                tum.ID_USER = o.ID_USER
             WHERE 
-                ID_PRODUCT = '" . $req->input('ID_ACTIVITY') . "'
+                o.ID_PRODUCT = '" . $req->input('ID_ACTIVITY') . "'
         ");
 
         $data['event'] = DB::selectOne("
@@ -102,7 +105,8 @@ class EventController extends Controller
                 e.ID_ACTIVITY = a.ID_ACTIVITY
             WHERE
                 a.TYPE_ACTIVITY = 2
-                AND a.ID_ACTIVITY = '" . $req->input('ID_ACTIVITY') . "'
+            AND
+                a.ID_ACTIVITY = '" . $req->input('ID_ACTIVITY') . "'
         ");
 
         return
@@ -220,8 +224,6 @@ class EventController extends Controller
 
     public function deskripsi_get($id)
     {
-        // $data['title'] = "Deskripsi Setting";
-
         $data['event'] = DB::selectOne("
             SELECT
                 *
