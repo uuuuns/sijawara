@@ -338,12 +338,9 @@ class ProfileGuest extends Controller
     }
     public function update_sertif(request $request)
     {
-        $data = [
+        $data_update = [
             'IS_DOWNLOADED' => 1
         ];
-        DB::table('sertifikat_activity')->where('ID_ACTIVITY', $request->id_activity)->where('ID_USER', session('user')[0]['ID_USER'])->update($data);
-
-        // SEND EMAIL SUCCESS DOWNLOAD SERTIFIKAT
         $data['user'] = DB::selectOne('
             SELECT
                 *
@@ -353,6 +350,14 @@ class ProfileGuest extends Controller
                 ID_USER = "' . session('user')[0]['ID_USER'] . '"
         ');
 
+        $cekData = $this->cekDataProfil(session('user')[0]['ID_USER'], $data['user']->JENIS_INSTANSI);
+        if ($cekData != null) {
+            return response()->json(['status' => 'error', 'message' => $cekData, 'code' => 1]);
+        }
+        
+        DB::table('sertifikat_activity')->where('ID_ACTIVITY', $request->id_activity)->where('ID_USER', session('user')[0]['ID_USER'])->update($data_update);
+
+        // SEND EMAIL SUCCESS DOWNLOAD SERTIFIKAT
         $data['activity'] = DB::selectOne('
             SELECT
                 *
@@ -374,7 +379,49 @@ class ProfileGuest extends Controller
 
         return response()->json(['status' => 'success']);   
     }
+    public function cekDataProfil($id_user, $instansi)
+    {
+        $mappingInstansi = [
+            'KOPERASI' => 'koperasi',
+            'UKM' => 'ukm',
+            'INSTANSI' => 'instansi',
+            'UMUM' => 'umum'
+        ];
 
+        $joinCond = '';
+        if ($mappingInstansi[$instansi] === 'ukm') {
+            $joinCond = 'LEFT JOIN tb_ukm tu ON tu.ID_USER = u.ID_USER';
+        } else if ($mappingInstansi[$instansi] === 'koperasi') {
+            $joinCond = 'LEFT JOIN tb_koperasi tk ON tk.ID_USER = u.ID_USER';
+        }
+    
+        // Query the database
+        $data = DB::selectOne('
+            SELECT 
+                *
+            FROM 
+                `user` u
+            ' . $joinCond . '
+            WHERE 
+                u.ID_USER = ?
+        ', [$id_user]);
+    
+        if ($data) {
+            foreach ($data as $key => $value) {
+                if (is_null($value) || $value === '') {
+                    if ($data->JENIS_INSTANSI === 'UKM') {
+                        return "Lengkapi data profil dan data " . $data->JENIS_INSTANSI . " anda terlebih dahulu";
+                    } else if ($data->JENIS_INSTANSI === 'KOPERASI') {
+                        return "Lengkapi data profil dan data " . $data->JENIS_INSTANSI . " anda terlebih dahulu";
+                    } else {
+                        return "Lengkapi data profil anda terlebih dahulu";
+                    }
+                }
+            }
+        }
+    
+        return null;
+    }
     public function data_ukm_index(){
         $data['title'] = "Data UKM";
 
@@ -423,36 +470,36 @@ class ProfileGuest extends Controller
         $data['check'] = DB::selectOne("
             SELECT 
                 (
-                    SUM(NULLIF(tu.nama_pemilik, '') IS NOT NULL) +
-                    SUM(NULLIF(tu.nik_pemilik, '') IS NOT NULL) +
-                    SUM(NULLIF(tu.phone_pemilik, '') IS NOT NULL) +
-                    SUM(NULLIF(tu.jenis_kelamin_pemilik, '') IS NOT NULL) +
-                    SUM(NULLIF(tu.tempat_lahir_pemilik, '') IS NOT NULL) +
-                    SUM(NULLIF(tu.tanggal_lahir_pemilik, '') IS NOT NULL) +
-                    SUM(NULLIF(tu.pendidikan_terakhir_pemilik, '') IS NOT NULL) +
-                    SUM(NULLIF(tu.alamat_pemilik, '') IS NOT NULL)
+                    SUM(CASE WHEN tu.nama_pemilik IS NOT NULL AND tu.nama_pemilik != '' THEN 1 ELSE 0 END) +
+                    SUM(CASE WHEN tu.nik_pemilik IS NOT NULL AND tu.nik_pemilik != '' THEN 1 ELSE 0 END) +
+                    SUM(CASE WHEN tu.phone_pemilik IS NOT NULL AND tu.phone_pemilik != '' THEN 1 ELSE 0 END) +
+                    SUM(CASE WHEN tu.jenis_kelamin_pemilik IS NOT NULL AND tu.jenis_kelamin_pemilik != '' THEN 1 ELSE 0 END) +
+                    SUM(CASE WHEN tu.tempat_lahir_pemilik IS NOT NULL AND tu.tempat_lahir_pemilik != '' THEN 1 ELSE 0 END) +
+                    SUM(CASE WHEN tu.tanggal_lahir_pemilik IS NOT NULL AND tu.tanggal_lahir_pemilik != '' THEN 1 ELSE 0 END) +
+                    SUM(CASE WHEN tu.pendidikan_terakhir_pemilik IS NOT NULL AND tu.pendidikan_terakhir_pemilik != '' THEN 1 ELSE 0 END) +
+                    SUM(CASE WHEN tu.alamat_pemilik IS NOT NULL AND tu.alamat_pemilik != '' THEN 1 ELSE 0 END)
                 ) AS COUNT_DATA_PEMILIK,
                 (
-                    SUM(NULLIF(tu.nama_ukm, '') IS NOT NULL) +
-                    SUM(NULLIF(tu.alamat_ukm, '') IS NOT NULL) +
-                    SUM(NULLIF(tu.id_provinsi, '') IS NOT NULL) +
-                    SUM(NULLIF(tu.id_kota, '') IS NOT NULL) +
-                    SUM(NULLIF(tu.kegiatan_usaha, '') IS NOT NULL) +
-                    SUM(NULLIF(tu.produk_dihasilkan, '') IS NOT NULL) +
-                    SUM(NULLIF(tu.id_kategori_ukm, '') IS NOT NULL) +
-                    SUM(NULLIF(tu.tahun_mulai, '') IS NOT NULL) +
-                    SUM(NULLIF(tu.kapasitas_produksi, '') IS NOT NULL) +
-                    SUM(NULLIF(tu.volume_usaha, '') IS NOT NULL) +
-                    SUM(NULLIF(tu.tenaga_pria, '') IS NOT NULL) +
-                    SUM(NULLIF(tu.tenaga_wanita, '') IS NOT NULL) +
-                    SUM(NULLIF(tu.id_badan_usaha, '') IS NOT NULL) +
-                    SUM(NULLIF(tu.npwp, '') IS NOT NULL) +
-                    SUM(NULLIF(tu.lokasi_pemasaran, '') IS NOT NULL) +
-                    SUM(NULLIF(tu.nilai_realisasi, '') IS NOT NULL) +
-                    SUM(NULLIF(tu.tahun_realisasi, '') IS NOT NULL)
+                    SUM(CASE WHEN tu.nama_ukm IS NOT NULL AND tu.nama_ukm != '' THEN 1 ELSE 0 END) +
+                    SUM(CASE WHEN tu.alamat_ukm IS NOT NULL AND tu.alamat_ukm != '' THEN 1 ELSE 0 END) +
+                    SUM(CASE WHEN tu.id_provinsi IS NOT NULL THEN 1 ELSE 0 END) +
+                    SUM(CASE WHEN tu.id_kota IS NOT NULL THEN 1 ELSE 0 END) +
+                    SUM(CASE WHEN tu.kegiatan_usaha IS NOT NULL AND tu.kegiatan_usaha != '' THEN 1 ELSE 0 END) +
+                    SUM(CASE WHEN tu.produk_dihasilkan IS NOT NULL AND tu.produk_dihasilkan != '' THEN 1 ELSE 0 END) +
+                    SUM(CASE WHEN tu.id_kategori_ukm IS NOT NULL THEN 1 ELSE 0 END) +
+                    SUM(CASE WHEN tu.tahun_mulai IS NOT NULL THEN 1 ELSE 0 END) +
+                    SUM(CASE WHEN tu.kapasitas_produksi IS NOT NULL THEN 1 ELSE 0 END) +
+                    SUM(CASE WHEN tu.volume_usaha IS NOT NULL THEN 1 ELSE 0 END) +
+                    SUM(CASE WHEN tu.tenaga_pria IS NOT NULL THEN 1 ELSE 0 END) +
+                    SUM(CASE WHEN tu.tenaga_wanita IS NOT NULL THEN 1 ELSE 0 END) +
+                    SUM(CASE WHEN tu.id_badan_usaha IS NOT NULL THEN 1 ELSE 0 END) +
+                    SUM(CASE WHEN tu.npwp IS NOT NULL AND tu.npwp != '' THEN 1 ELSE 0 END) +
+                    SUM(CASE WHEN tu.lokasi_pemasaran IS NOT NULL AND tu.lokasi_pemasaran != '' THEN 1 ELSE 0 END) +
+                    SUM(CASE WHEN tu.nilai_realisasi IS NOT NULL THEN 1 ELSE 0 END) +
+                    SUM(CASE WHEN tu.tahun_realisasi IS NOT NULL THEN 1 ELSE 0 END)
                 ) AS COUNT_DATA_UKM
             FROM 
-                tb_ukm tu 
+                tb_ukm tu
             WHERE 
                 ID_USER = '".session('user')[0]['ID_USER']."'
         ");
@@ -491,7 +538,6 @@ class ProfileGuest extends Controller
             view('template_guest.profile.data_ukm', $data) .
             view('template.footer', $data);
     }
-
     public function store_data_ukm (Request $request) {
         try {
             $data = [
@@ -520,7 +566,6 @@ class ProfileGuest extends Controller
             dd($e->getMessage());
         }
     }
-
     public function store_data_pemilik (Request $request) {
         try {
             $data = [
@@ -585,7 +630,6 @@ class ProfileGuest extends Controller
             dd($e->getMessage());
         }
     }
-
     public function get_kota (Request $request) {
         $id_kota = $request->id_kota;
         $data = DB::select('
@@ -606,7 +650,6 @@ class ProfileGuest extends Controller
         $html .= '</select>';
         return response()->json($html);
     }
-
     public function data_koperasi_index(){
         $data['title'] = "Data Koperasi";
 
@@ -653,47 +696,47 @@ class ProfileGuest extends Controller
         }
 
         $data['check'] = DB::selectOne("
-            SELECT 
+            SELECT
                 (
-                    SUM(NULLIF(tk.nik, '') IS NOT NULL) +
-                    SUM(NULLIF(tk.nm_koperasi, '') IS NOT NULL) +
-                    SUM(NULLIF(tk.phone, '') IS NOT NULL) +
-                    SUM(NULLIF(tk.alamat_koperasi, '') IS NOT NULL) +
-                    SUM(NULLIF(tk.id_provinsi, '') IS NOT NULL) +
-                    SUM(NULLIF(tk.id_kota, '') IS NOT NULL) +
-                    SUM(NULLIF(tk.id_bentuk_koperasi, '') IS NOT NULL) +
-                    SUM(NULLIF(tk.id_jenis_koperasi, '') IS NOT NULL) +
-                    SUM(NULLIF(tk.id_kelompok_koperasi, '') IS NOT NULL) +
-                    SUM(NULLIF(tk.id_sektor_usaha, '') IS NOT NULL) +
-                    SUM(NULLIF(tk.volume_usaha, '') IS NOT NULL) +
-                    SUM(NULLIF(tk.asset, '') IS NOT NULL) +
-                    SUM(NULLIF(tk.id_unit_usaha, '') IS NOT NULL) +
-                    SUM(NULLIF(tk.modal_sendiri, '') IS NOT NULL) +
-                    SUM(NULLIF(tk.modal_luar, '') IS NOT NULL) +
-                    SUM(NULLIF(tk.sisa_hasil_usaha, '') IS NOT NULL)
+                    SUM(CASE WHEN tk.nik IS NOT NULL AND tk.nik != '' THEN 1 ELSE 0 END) +
+                    SUM(CASE WHEN tk.nm_koperasi IS NOT NULL AND tk.nm_koperasi != '' THEN 1 ELSE 0 END) +
+                    SUM(CASE WHEN tk.phone IS NOT NULL AND tk.phone != '' THEN 1 ELSE 0 END) +
+                    SUM(CASE WHEN tk.alamat_koperasi IS NOT NULL AND tk.alamat_koperasi != '' THEN 1 ELSE 0 END) +
+                    SUM(CASE WHEN tk.id_provinsi IS NOT NULL THEN 1 ELSE 0 END) +
+                    SUM(CASE WHEN tk.id_kota IS NOT NULL THEN 1 ELSE 0 END) +
+                    SUM(CASE WHEN tk.id_bentuk_koperasi IS NOT NULL THEN 1 ELSE 0 END) +
+                    SUM(CASE WHEN tk.id_jenis_koperasi IS NOT NULL THEN 1 ELSE 0 END) +
+                    SUM(CASE WHEN tk.id_kelompok_koperasi IS NOT NULL THEN 1 ELSE 0 END) +
+                    SUM(CASE WHEN tk.id_sektor_usaha IS NOT NULL THEN 1 ELSE 0 END) +
+                    SUM(CASE WHEN tk.volume_usaha IS NOT NULL THEN 1 ELSE 0 END) +
+                    SUM(CASE WHEN tk.asset IS NOT NULL THEN 1 ELSE 0 END) +
+                    SUM(CASE WHEN tk.id_unit_usaha IS NOT NULL THEN 1 ELSE 0 END) +
+                    SUM(CASE WHEN tk.modal_sendiri IS NOT NULL THEN 1 ELSE 0 END) +
+                    SUM(CASE WHEN tk.modal_luar IS NOT NULL THEN 1 ELSE 0 END) +
+                    SUM(CASE WHEN tk.sisa_hasil_usaha IS NOT NULL THEN 1 ELSE 0 END)
                 ) AS COUNT_DATA_KOPERASI,
                 (
-                    SUM(NULLIF(tk.no_badan_hukum, '') IS NOT NULL) +
-                    SUM(NULLIF(tk.tgl_badan_hukum, '') IS NOT NULL) +
-                    SUM(NULLIF(tk.no_pad, '') IS NOT NULL) +
-                    SUM(NULLIF(tk.tgl_pad, '') IS NOT NULL) +
-                    SUM(NULLIF(tk.status, '') IS NOT NULL) +
-                    SUM(NULLIF(tk.cabang, '') IS NOT NULL) +
-                    SUM(NULLIF(tk.tgl_rat, '') IS NOT NULL) 
+                    SUM(CASE WHEN tk.no_badan_hukum IS NOT NULL AND tk.no_badan_hukum != '' THEN 1 ELSE 0 END) +
+                    SUM(CASE WHEN tk.tgl_badan_hukum IS NOT NULL THEN 1 ELSE 0 END) +
+                    SUM(CASE WHEN tk.no_pad IS NOT NULL AND tk.no_pad != '' THEN 1 ELSE 0 END) +
+                    SUM(CASE WHEN tk.tgl_pad IS NOT NULL THEN 1 ELSE 0 END) +
+                    SUM(CASE WHEN tk.status IS NOT NULL THEN 1 ELSE 0 END) +
+                    SUM(CASE WHEN tk.cabang IS NOT NULL THEN 1 ELSE 0 END) +
+                    SUM(CASE WHEN tk.tgl_rat IS NOT NULL THEN 1 ELSE 0 END)
                 ) AS COUNT_DATA_HUKUM,
                 (
-                    SUM(NULLIF(tk.nm_ketua, '') IS NOT NULL) +
-                    SUM(NULLIF(tk.phone_ketua, '') IS NOT NULL) +
-                    SUM(NULLIF(tk.nm_sekretaris, '') IS NOT NULL) +
-                    SUM(NULLIF(tk.phone_sekretaris, '') IS NOT NULL) +
-                    SUM(NULLIF(tk.nm_bendahara, '') IS NOT NULL) +
-                    SUM(NULLIF(tk.phone_bendahara, '') IS NOT NULL) +
-                    SUM(NULLIF(tk.anggota_pria, '') IS NOT NULL) +
-                    SUM(NULLIF(tk.anggota_wanita, '') IS NOT NULL) + 
-                    SUM(NULLIF(tk.manager_pria, '') IS NOT NULL) +
-                    SUM(NULLIF(tk.manager_wanita, '') IS NOT NULL) + 
-                    SUM(NULLIF(tk.karyawan_pria, '') IS NOT NULL) +
-                    SUM(NULLIF(tk.karyawan_wanita, '') IS NOT NULL) 
+                    SUM(CASE WHEN tk.nm_ketua IS NOT NULL AND tk.nm_ketua != '' THEN 1 ELSE 0 END) +
+                    SUM(CASE WHEN tk.phone_ketua IS NOT NULL AND tk.phone_ketua != '' THEN 1 ELSE 0 END) +
+                    SUM(CASE WHEN tk.nm_sekretaris IS NOT NULL AND tk.nm_sekretaris != '' THEN 1 ELSE 0 END) +
+                    SUM(CASE WHEN tk.phone_sekretaris IS NOT NULL AND tk.phone_sekretaris != '' THEN 1 ELSE 0 END) +
+                    SUM(CASE WHEN tk.nm_bendahara IS NOT NULL AND tk.nm_bendahara != '' THEN 1 ELSE 0 END) +
+                    SUM(CASE WHEN tk.phone_bendahara IS NOT NULL AND tk.phone_bendahara != '' THEN 1 ELSE 0 END) +
+                    SUM(CASE WHEN tk.anggota_pria IS NOT NULL THEN 1 ELSE 0 END) +
+                    SUM(CASE WHEN tk.anggota_wanita IS NOT NULL THEN 1 ELSE 0 END) + 
+                    SUM(CASE WHEN tk.manager_pria IS NOT NULL THEN 1 ELSE 0 END) +
+                    SUM(CASE WHEN tk.manager_wanita IS NOT NULL THEN 1 ELSE 0 END) + 
+                    SUM(CASE WHEN tk.karyawan_pria IS NOT NULL THEN 1 ELSE 0 END) +
+                    SUM(CASE WHEN tk.karyawan_wanita IS NOT NULL THEN 1 ELSE 0 END)
                 ) AS COUNT_DATA_PENGURUS
             FROM 
                 tb_koperasi tk 
@@ -728,7 +771,6 @@ class ProfileGuest extends Controller
             view('template_guest.profile.data_koperasi', $data) .
             view('template.footer', $data);
     }
-
     public function store_data_koperasi (Request $request) {
         try {
             $data = [
@@ -826,5 +868,40 @@ class ProfileGuest extends Controller
         } catch (\Throwable $e) {
             dd($e->getMessage());
         }
+    }
+    public function cek_email(Request $request) {
+        $email = $request->email;
+        $id_user = session('user')[0]['ID_USER'];
+
+        $email_old = DB::selectOne('
+            SELECT
+                email
+            FROM
+                user
+            WHERE
+                ID_USER = "' . $id_user . '"
+        ')->email;
+
+        if ($email == $email_old) {
+            return response()->json(['status' => 'success']);
+        }
+
+        $check_email = DB::selectOne('
+            SELECT
+                email
+            FROM
+                user
+            WHERE
+                email = "' . $email . '" 
+                AND ID_USER != "' . $id_user . '"
+        ');
+
+        if ($check_email) {
+            return response()->json(['status' => 'error', 'message' => 'Email sudah digunakan', 'code' => 1]);
+        } else {
+            return response()->json(['status' => 'success']);
+        }
+
+        
     }
 }

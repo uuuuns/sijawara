@@ -37,13 +37,13 @@
           </div>
           <div class="mb-3">
             <label for="nikKoperasi" class="form-label">No NIK Koperasi</label>
-            <input type="text" class="form-control" id="nikKoperasi" value="{{$data_koperasi->nik}}" placeholder="No NIK Koperasi" 
+            <input type="text" class="form-control number" id="nikKoperasi" value="{{$data_koperasi->nik}}" placeholder="No NIK Koperasi" 
                     minlength="1" maxlength="16" name="nikKoperasi" required title="NIK harus terdiri dari 16 angka, jika belum memiliki NIK isikan 0">
             <small>Jika belum bersertifikat bisa dituliskan angka 0</small>
           </div>
           <div class="mb-3">
             <label for="telpKoperasi" class="form-label">No Telp/HP</label>
-            <input type="text" class="form-control" id="telpKoperasi" value="{{$data_koperasi->phone}}" name="telpKoperasi" placeholder="No Telp Koperasi" 
+            <input type="text" class="form-control number" id="telpKoperasi" value="{{$data_koperasi->phone}}" name="telpKoperasi" placeholder="No Telp Koperasi" 
                 minlength="10" maxlength="13" required title="No Telp Harus lebih dari atau sama dengan 10 angka">
           </div>
           <div class="mb-3">
@@ -156,7 +156,7 @@
             @csrf
           <div class="mb-3">
             <label for="noBadanHukum" class="form-label">No Badan Hukum UKM</label>
-            <input type="text" value="{{$data_koperasi->no_badan_hukum}}" class="form-control" id="noBadanHukum" name="noBadanHukum" placeholder="XX/BH/X.XX/XX/XXX" required>
+            <input type="text" value="{{$data_koperasi->no_badan_hukum}}" class="form-control number" id="noBadanHukum" name="noBadanHukum" placeholder="XX/BH/X.XX/XX/XXX" required>
           </div>
           <div class="mb-3">
             <label for="tglBadanHukum" class="form-label">Tanggal Badan Hukum</label>
@@ -164,7 +164,7 @@
           </div>
           <div class="mb-3">
             <label for="noPAD" class="form-label">No PAD (Perubahan Anggaran Dasar)</label>
-            <input type="text" class="form-control" value="{{$data_koperasi->no_pad}}" id="noPAD" name="noPAD" placeholder="No PAD" required>
+            <input type="text" class="form-control number" value="{{$data_koperasi->no_pad}}" id="noPAD" name="noPAD" placeholder="No PAD" required>
           </div>
           <div class="mb-3">
             <label for="tglPAD" class="form-label">Tanggal PAD (Perubahan Anggaran Dasar)</label>
@@ -181,7 +181,7 @@
           </div>
           <div class="mb-3">
             <label for="jmlKantorCabang" class="form-label">Jumlah Kantor Cabang Koperasi</label>
-            <input type="number" class="form-control" id="jmlKantorCabang" value="{{$data_koperasi->cabang}}" name="jmlKantorCabang" placeholder="Jumlah Kantor Cabang" required>
+            <input type="number" class="form-control number" id="jmlKantorCabang" value="{{$data_koperasi->cabang}}" name="jmlKantorCabang" placeholder="Jumlah Kantor Cabang" required>
           </div>
           <div class="mb-3">
             <label for="tglRAT" class="form-label">Tanggal RAT</label>
@@ -205,7 +205,7 @@
           </div>
           <div class="mb-3">
             <label for="noHPKetua" class="form-label">No Telp/HP Ketua</label>
-            <input type="number" minlength="10" maxlength="13" value="{{$data_koperasi->phone_ketua}}" class="form-control" id="noHPKetua" name="noHPKetua" placeholder="Nomor Ketua Koperasi" required>
+            <input type="number" minlength="10" maxlength="13" value="{{$data_koperasi->phone_ketua}}" class="form-control number" id="noHPKetua" name="noHPKetua" placeholder="Nomor Ketua Koperasi" required>
           </div>
           <div class="mb-3">
             <label for="namaSekre" class="form-label">Nama Sekretaris</label>
@@ -213,7 +213,7 @@
           </div>
           <div class="mb-3">
             <label for="noHPSekre" class="form-label">No Telp/HP Sekretaris</label>
-            <input type="number" value="{{$data_koperasi->phone_sekretaris}}" class="form-control" id="noHPSekre" name="noHPSekre" placeholder="Nomor Sekretaris Koperasi" required>
+            <input type="number" value="{{$data_koperasi->phone_sekretaris}}" class="form-control number" id="noHPSekre" name="noHPSekre" placeholder="Nomor Sekretaris Koperasi" required>
           </div>
           <div class="mb-3">
             <label for="namaBendahara" class="form-label">Nama Bendahara</label>
@@ -221,31 +221,31 @@
           </div>
           <div class="mb-3">
             <label for="noHPBendahara" class="form-label">No Telp/HP</label>
-            <input type="number" value="{{$data_koperasi->phone_bendahara}}" class="form-control" id="noHPBendahara" name="noHPBendahara" placeholder="Nomor Bendahara Koperasi" required>
+            <input type="number" value="{{$data_koperasi->phone_bendahara}}" class="form-control number" id="noHPBendahara" name="noHPBendahara" placeholder="Nomor Bendahara Koperasi" required>
           </div>
           <div class="mb-3">
             <label for="jmlAnggotaPria" class="form-label">Jumlah Anggota Koperasi Pria</label>
-            <input type="number" value="{{$data_koperasi->anggota_pria}}" class="form-control" id="jmlAnggotaPria" name="jmlAnggotaPria" placeholder="Jumlah Anggota" required>
+            <input type="number" value="{{$data_koperasi->anggota_pria}}" class="form-control number" id="jmlAnggotaPria" name="jmlAnggotaPria" placeholder="Jumlah Anggota" required>
           </div>
           <div class="mb-3">
             <label for="jmlAnggotaWanita" class="form-label">Jumlah Anggota Koperasi Wanita</label>
-            <input type="number" value="{{$data_koperasi->anggota_wanita}}" class="form-control" id="jmlAnggotaWanita" name="jmlAnggotaWanita" placeholder="Jumlah Anggota" required>
+            <input type="number" value="{{$data_koperasi->anggota_wanita}}" class="form-control number" id="jmlAnggotaWanita" name="jmlAnggotaWanita" placeholder="Jumlah Anggota" required>
           </div>
           <div class="mb-3">
             <label for="jmlManajerPria" class="form-label">Jumlah Manajer Koperasi Pria</label>
-            <input type="number" value="{{$data_koperasi->manager_pria}}" class="form-control" id="jmlManajerPria" name="jmlManajerPria" placeholder="Jumlah Manajer" required>
+            <input type="number" value="{{$data_koperasi->manager_pria}}" class="form-control number" id="jmlManajerPria" name="jmlManajerPria" placeholder="Jumlah Manajer" required>
           </div>
           <div class="mb-3">
             <label for="jmlManajerWanita" class="form-label">Jumlah Manajer Koperasi Wanita</label>
-            <input type="number" value="{{$data_koperasi->manager_wanita}}" class="form-control" id="jmlManajerWanita" name="jmlManajerWanita" placeholder="Jumlah Manajer" required>
+            <input type="number" value="{{$data_koperasi->manager_wanita}}" class="form-control number" id="jmlManajerWanita" name="jmlManajerWanita" placeholder="Jumlah Manajer" required>
           </div>
           <div class="mb-3">
             <label for="jmlKaryawanPria" class="form-label">Jumlah Karyawan Koperasi Pria</label>
-            <input type="number" value="{{$data_koperasi->karyawan_pria}}" class="form-control" id="jmlKaryawanPria" name="jmlKaryawanPria" placeholder="Jumlah Karyawan" required>
+            <input type="number" value="{{$data_koperasi->karyawan_pria}}" class="form-control number" id="jmlKaryawanPria" name="jmlKaryawanPria" placeholder="Jumlah Karyawan" required>
           </div>
           <div class="mb-3">
             <label for="jmlKaryawanWanita" class="form-label">Jumlah Karyawan Koperasi Wanita</label>
-            <input type="number" value="{{$data_koperasi->karyawan_wanita}}" class="form-control" id="jmlKaryawanWanita" name="jmlKaryawanWanita" placeholder="Jumlah Karyawan" required>
+            <input type="number" value="{{$data_koperasi->karyawan_wanita}}" class="form-control number" id="jmlKaryawanWanita" name="jmlKaryawanWanita" placeholder="Jumlah Karyawan" required>
           </div>
           <div class="d-flex justify-content-end">
             <button type="submit" class="btn btn-primary">
@@ -322,6 +322,11 @@
     });
 
     $(document).ready(function () {
+        $('.select2').select2({
+            placeholder: "Select options",
+            allowClear: true
+        });
+
         $('.rupiah').each(function () {
             let value = $(this).val().replace(/[^\d]/g, '');
             if (value) {
@@ -335,17 +340,37 @@
             $(selector).val(values).trigger('change');
         }
         setSelect2Values('#permasalahan', permasalahanValues);
+
+        let id_kota = {{ $data_koperasi->id_kota ?? 'null' }};
+        $.ajax({
+            url: "get-kota",
+            type: "POST",
+            data: {
+                id: $('#provinsi').val(),
+                id_kota: id_kota,
+                _token: "{{ csrf_token() }}"
+            },
+            success: function(data) {
+                $('.kota').removeAttr('hidden');
+                $('.kota').html(data);
+            }
+        });
+    });
+
+    $('.number').on('input', function() {
+        this.value = this.value.replace(/[^0-9]/g, '');
     });
 
     $('#provinsi').change(function() {
         let id = $(this).val();
+        let id_kota = {{ $data_koperasi->id_kota ?? 'null' }};
         $.ajax({
             url: "get-kota",
             type: "POST",
             data: {
                 id: id,
                 _token: "{{ csrf_token() }}",
-                id_kota : '{{$data_koperasi->id_kota}}'
+                id_kota : id_kota
             },
             success: function(data) {
                 $('.kota').removeAttr('hidden');
@@ -367,14 +392,4 @@
     });
 
 </script>
-<script>
-    $(document).ready(function() {
-        $('.select2').select2({
-            placeholder: "Select options",
-            allowClear: true
-        });
-    });
- 
-</script>
-
 @endsection
