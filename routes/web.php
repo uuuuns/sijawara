@@ -222,6 +222,7 @@ Route::middleware(['usersession:4,3,2,1'])->group(function () {
     Route::post('profile/update', [ProfileGuest::class, 'update_profile']);
     Route::post('/profile/academic/change', [ProfileGuest::class, 'academic_change']);
     Route::post('/profile/document/change', [ProfileGuest::class, 'doc_up']);
+    Route::post('profile/cekEmail', [ProfileGuest::class, 'cek_email']);
     Route::post('/update-sertif', [ProfileGuest::class, 'update_sertif']);
     Route::get('apply_instructor', 'InstructorController@apply_instructor');
     //END PROFILE

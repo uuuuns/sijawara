@@ -295,7 +295,21 @@
                         id_activity: "<?= $id_activity; ?>",
                     },
                     success: function(data) {
-                        window.open('<?= $sertif->FILE_SERTIFIKAT ?>', '_blank');
+                        if (data.code == 1) {
+                            Swal.fire({
+                                icon: 'warning',
+                                title: data.message,
+                                showCancelButton: true,
+                                confirmButtonText: 'Ya, Lengkapi Data',
+                                cancelButtonText: 'Nanti'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = '<?= Request::segment(0) ?>/profile';
+                                }
+                            });
+                        } else {
+                            window.open('<?= $sertif->FILE_SERTIFIKAT ?>', '_blank');
+                        }
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
                         console.error("AJAX Error: ", textStatus, errorThrown);

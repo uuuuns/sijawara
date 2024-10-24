@@ -26,7 +26,7 @@
         </div>
         <h5 class="text-black ps-1">Email</h5>
         <div class="my-3 float-label-control">
-            <input type="text" name="email" class="form-control input-text woocommerce-Input woocommerce-Input--text" id="exampleInputEmail1" placeholder="Email" value="<?= $data_personal->EMAIL ?>" aria-describedby="emailHelp" readonly>
+            <input type="text" name="email" class="form-control input-text woocommerce-Input woocommerce-Input--text" id="email" placeholder="Email" value="<?= $data_personal->EMAIL ?>" aria-describedby="emailHelp" readonly>
         </div>
         <h5 class="text-black ps-1 mt-4">Nama</h5>
         <div class="my-3 float-label-control">
@@ -106,7 +106,22 @@
         edit.innerHTML = edit.innerHTML === "Edit" ? "Save" : "Edit";
         $('#choose-button').css('cursor', 'pointer')
         if (edit.innerHTML == "Edit") {
-            $('#form-profile').submit()
+            Swal.fire({
+                title: 'Loading...',
+                text: 'Harap Tunggu.',
+                allowOutsideClick: false,
+                showConfirmButton: false,
+                willOpen: () => {
+                Swal.showLoading();
+                }
+            });
+            cekEmail($('#email').val(), function(isValid) {
+                console.log(isValid);
+                
+                if (isValid) {
+                    $('#form-profile').submit();
+                }
+            });
         }
     })
 
@@ -180,5 +195,28 @@
             $('#preview').empty();
         }
     });
+
+    function cekEmail(email, callback) {
+        $.ajax({
+            url: 'profile/cekEmail',
+            type: 'POST',
+            data: {
+                _token: '{{ csrf_token() }}',
+                email: email
+            },
+            success: function(data) {
+                if (data.code == 1) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Email sudah terdaftar!',
+                    })
+                    callback(false);
+                }else{
+                    callback(true);
+                }
+            }
+        });
+    }
 </script>
 @endsection

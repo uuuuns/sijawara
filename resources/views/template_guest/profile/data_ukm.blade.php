@@ -34,12 +34,12 @@
           </div>
           <div class="mb-3">
             <label for="nikPemilik" class="form-label">No NIK Pemilik</label>
-            <input type="text" class="form-control" id="nikPemilik" value="{{$data_ukm->nik_pemilik}}" placeholder="No NIK (Pemilik/guild UKM)" 
+            <input type="text" class="form-control number" id="nikPemilik" value="{{$data_ukm->nik_pemilik}}" placeholder="No NIK (Pemilik/guild UKM)" 
                 pattern="\d{16}" minlength="16" maxlength="16" name="nikPemilik" required title="NIK harus terdiri dari 16 angka">
           </div>
           <div class="mb-3">
             <label for="telpPemilik" class="form-label">No Telp Pemilik</label>
-            <input type="text" class="form-control" id="telpPemilik" value="{{$data_ukm->phone_pemilik}}" name="telpPemilik" placeholder="No Telp (Pemilik/guild UKM)" 
+            <input type="text" class="form-control number" id="telpPemilik" value="{{$data_ukm->phone_pemilik}}" name="telpPemilik" placeholder="No Telp (Pemilik/guild UKM)" 
                 minlength="10" maxlength="13" required title="No Harus lebih dari atau sama dengan 10 angka">
           </div>
           <div class="mb-3">
@@ -111,7 +111,7 @@
           </div>
           <div class="mb-3">
             <label for="tahunMemulai" class="form-label">Tahun Memulai Usaha</label>
-            <input type="number" class="form-control" value="{{$data_ukm->tahun_mulai}}" 
+            <input type="number" class="form-control number" value="{{$data_ukm->tahun_mulai}}" 
               id="tahunMemulai" name="tahunMemulai" placeholder="Tahun Memulai Usaha" 
               min="1000" max="9999" title="Isi sesuai tahun UKM anda dimulai" required>
           </div>
@@ -119,7 +119,7 @@
               <label for="kapasitasProduksi" class="form-label">Kapasitas Produksi</label>
               <div class="mb-3 input-group">
                   <div class="input-group-text">Pcs</div>
-                  <input type="text" class="form-control rupiah" value="{{$data_ukm->kapasitas_produksi}}" id="kapasitasProduksi" name="kapasitasProduksi" placeholder="Kapasitas Produksi" required>
+                  <input type="text" class="form-control rupiah number" value="{{$data_ukm->kapasitas_produksi}}" id="kapasitasProduksi" name="kapasitasProduksi" placeholder="Kapasitas Produksi" required>
             </div>
           </div>
           <div class="mb-3">
@@ -131,11 +131,11 @@
           </div>
           <div class="mb-3">
             <label for="tenagaLaki" class="form-label">Jumlah Tenaga Kerja Laki-laki</label>
-            <input type="number" class="form-control" id="tenagaLaki" value="{{$data_ukm->tenaga_pria}}" name="tenagaLaki" placeholder="Jumlah Tenaga Kerja Laki-laki" required>
+            <input type="number" class="form-control number" id="tenagaLaki" value="{{$data_ukm->tenaga_pria}}" name="tenagaLaki" placeholder="Jumlah Tenaga Kerja Laki-laki" required>
           </div>
           <div class="mb-3">
             <label for="tenagaPerempuan" class="form-label">Jumlah Tenaga Kerja Perempuan</label>
-            <input type="number" class="form-control" id="tenagaPerempuan" value="{{$data_ukm->tenaga_wanita}}"name="tenagaPerempuan" placeholder="Jumlah Tenaga Kerja Perempuan" required>
+            <input type="number" class="form-control number" id="tenagaPerempuan" value="{{$data_ukm->tenaga_wanita}}"name="tenagaPerempuan" placeholder="Jumlah Tenaga Kerja Perempuan" required>
           </div>
           <div class="mb-3">
             <label for="bentukUsaha" class="form-label">Bentuk Badan Usaha</label>
@@ -168,7 +168,7 @@
           </div>
           <div class="mb-3">
             <label for="tahunRealisasi" class="form-label">Tahun Realisasi Pinjaman</label>
-            <input type="text" pattern="\d{4}" class="form-control" value="{{$data_ukm->tahun_realisasi}}" id="tahunRealisasi"name="tahunRealisasi" placeholder="Tahun Realisasi Pinjaman" minlength="4" maxlength="4" title="Isi sesuai tahun yang valid" required>
+            <input type="text" pattern="\d{4}" class="form-control number" value="{{$data_ukm->tahun_realisasi}}" id="tahunRealisasi"name="tahunRealisasi" placeholder="Tahun Realisasi Pinjaman" minlength="4" maxlength="4" title="Isi sesuai tahun yang valid" required>
           </div>
           <div class="mb-3">
             <label for="alamatUsaha" class="form-label">Alamat Usaha</label>
@@ -257,6 +257,8 @@
 </div>
 <script>
     $('#process2-tab').click(function() {
+      console.log('clicked');
+      
         @if ($check->COUNT_DATA_PEMILIK < 8)
             Swal.fire({
                 icon: 'error',
@@ -267,6 +269,7 @@
             $('#process1-tab').addClass('active');
         @endif
     });
+
     $('#process3-tab').click(function() {
         @if ($check->COUNT_DATA_UKM < 17)
             Swal.fire({
@@ -291,6 +294,13 @@
     });
 
     $(document).ready(function () {
+        // Initialize select2
+        $('.select2').select2({
+            placeholder: "Select options",
+            allowClear: true
+        });
+
+        // Initialize rupiah format for existing values
         $('.rupiah').each(function () {
             let value = $(this).val().replace(/[^\d]/g, '');
             if (value) {
@@ -298,6 +308,12 @@
             }
         });
 
+        // Only allow numbers in .number input fields
+        $('.number').on('input', function() {
+            this.value = this.value.replace(/[^0-9.]/g, '');
+        });
+
+        // Set values for Select2 fields from PHP variables
         var bahanBakuValues = {!! json_encode(array_column($tb_bahan_baku_ukm, 'id_bahan_baku')) !!};
         var legalitasValues = {!! json_encode(array_column($tb_legalitas_ukm, 'id_legalitas_usaha')) !!};
         var pemasaranValues = {!! json_encode(array_column($tb_pemasaran_ukm, 'id_pemasaran')) !!};
@@ -317,24 +333,44 @@
         setSelect2Values('#standarisasiProduk', standarisasiValues);
         setSelect2Values('#fasilitas', fasilitasValues);
         setSelect2Values('#permasalahan', permasalahanValues);
-    });
 
-    $('#provinsi').change(function() {
-        let id = $(this).val();
+        // AJAX call to load kota based on provinsi
+        let id_kota = {{ $data_ukm->id_kota ?? 'null' }};
         $.ajax({
             url: "get-kota",
             type: "POST",
             data: {
-                id: id,
+                id: $('#provinsi').val(),
+                id_kota: id_kota,
                 _token: "{{ csrf_token() }}"
             },
             success: function(data) {
-                $('.kota').removeAttr('hidden');
+                $('.kota').show();  // Better readability than removeAttr('hidden')
                 $('.kota').html(data);
             }
         });
     });
 
+    // Fetch kota options on provinsi change
+    $('#provinsi').change(function() {
+        let id = $(this).val();
+        let id_kota = {{ $data_ukm->id_kota ?? 'null' }};
+        $.ajax({
+            url: "get-kota",
+            type: "POST",
+            data: {
+                id: id,
+                id_kota: id_kota,
+                _token: "{{ csrf_token() }}"
+            },
+            success: function(data) {
+                $('.kota').show();
+                $('.kota').html(data);
+            }
+        });
+    });
+
+    // Show loading message on form submission
     $('form').on('submit', function() {
       Swal.fire({
         title: 'Loading...',
@@ -346,16 +382,5 @@
         }
       });
     });
-
 </script>
-<script>
-    $(document).ready(function() {
-        $('.select2').select2({
-            placeholder: "Select options",
-            allowClear: true
-        });
-    });
- 
-</script>
-
 @endsection

@@ -140,9 +140,7 @@ class Course extends Model
             AND
                 o.COURSE_COMPLETED = 1
         ) AS REQ,
-            course.PENGUMUMAN,
             course.DESKRIPSI_COURSE,
-            course.DESKRIPSI_COURSE_ITEM,
             course.BENEFIT,
             user.NAME,
             user.FOTO_PROFILE,
