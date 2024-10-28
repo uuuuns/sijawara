@@ -314,15 +314,7 @@
                     'X-CSRF-TOKEN': csrfToken
                 }
             });
-
-            // file = <?= empty($sertif->FILE_SERTIFIKAT) ? null : '"' . $sertif->FILE_SERTIFIKAT . '"' ?>
             let file = <?= json_encode(empty($sertif->FILE_SERTIFIKAT) ? null : $sertif->FILE_SERTIFIKAT) ?>
-
-            if (file) {
-                console.log("File URL:", file);
-            } else {
-                console.log("No file available.");
-            }
 
             $.ajax({
                 url: '<?= Request::segment(0) ?>/update-sertif',
@@ -331,7 +323,21 @@
                     id_activity: "<?= $event->ID_ACTIVITY ?>",
                 },
                 success: function(data) {
-                    window.open(file, '_blank');
+                    if (data.code == 1) {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: data.message,
+                            showCancelButton: true,
+                            confirmButtonText: 'Ya, Lengkapi Data',
+                            cancelButtonText: 'Nanti'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = '<?= Request::segment(0) ?>/profile';
+                            }
+                        });
+                    } else {
+                        window.open(file, '_blank');
+                    }
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.error("AJAX Error: ", textStatus, errorThrown);
