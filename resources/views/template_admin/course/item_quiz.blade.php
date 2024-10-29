@@ -68,7 +68,7 @@
                 <p>Masukkan File Excel Sesuai Template yang disediakan</p>
                 <a href="https://expo-dev.is3.cloudhost.id/CAROUSEL/Image1729761040-1729761040.xlsx" class="btn btn-success rounded text-white" download> Download Template</a>
                 <div class="col-md-12 text-center d-flex justify-content-around py-2">
-                    <input type="file" name="image_activity" id="excelFile_{{ $no }}{{ $id_quiz }}" class="custom-file-input dropify"
+                    <input type="file" name="excel" id="excelFile_{{ $no }}{{ $id_quiz }}" class="custom-file-input dropify"
                     accept=".xlsx" data-allowed-file-extensions="xlsx" required>
                 </div>
             </div>
