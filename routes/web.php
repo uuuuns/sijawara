@@ -180,6 +180,11 @@ Route::middleware(['usersession:4,1'])->group(function () {
     
     Route::get('get-data-chart', 'DashboardController@get_data_chart');
     
+    Route::post('user/jadikanAdmin', 'DashboardController@jadikanAdmin');
+    Route::post('user/jadikanInstruktur', 'DashboardController@jadikanInstruktur');
+    Route::get('user/detail_pengambilan', 'UserController@detail_pengambilan');
+    
+    Route::post('instruktur/delete', 'InstructorController@deleteInstruktur');
 });
 
 //2 INSTRUKTUR
@@ -231,7 +236,7 @@ Route::middleware(['usersession:4,3,2,1'])->group(function () {
     //END PROFILE
 });
 
-Route::middleware(['usersession:4,1'])->group(function () {
+Route::middleware(['usersession:4,1,2'])->group(function () {
     Route::get('dashboard', 'DashboardController@admin_index');
     Route::get('statistik', 'DashboardController@statistik');
 
@@ -265,9 +270,6 @@ Route::middleware(['usersession:4,1'])->group(function () {
     Route::post('events/delete', 'EventController@delete');
     Route::get('events/lihat_peserta', 'EventController@index_lihat_peserta');
     Route::get('events/laporan_event', 'EventController@laporan_event');
-
-    Route::post('user/jadikanAdmin', 'DashboardController@jadikanAdmin');
-    Route::get('user/detail_pengambilan', 'UserController@detail_pengambilan');
 });
 
 //Social Media Routes (Under Progress)

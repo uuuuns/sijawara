@@ -15,17 +15,11 @@ class InstructorController extends Controller
 
         $data["instructor"] = DB::select("
         SELECT 
-            u.NAME ,
-            ud.* ,
-            ir.STATUS
+            u.*
         FROM 
-            instructor_req ir 
-        LEFT JOIN user_data ud ON
-            ud.ID_USER = ir.ID_USER 
-        LEFT JOIN user u ON 
-            u.ID_USER = ir.ID_USER
-        ORDER BY
-            ir.STATUS ASC
+            user u
+        WHERE 
+            u.ID_ROLE = 2
         ");
         $data['admin'] = true;
         return
@@ -67,5 +61,18 @@ class InstructorController extends Controller
         DB::table('instructor_req')->WHERE(['ID_USER' => $req->input('dec_id_instructor')])->update($decline);
 
         return redirect('instructor')->with(['succ_msg' => 'Berhasil memperbarui data', 'location' => 'instructor']);
+    }
+
+    public function deleteInstruktur(Request $req)
+    {
+        try {
+            $user = [
+                'ID_ROLE'    => 3
+            ];
+            DB::table('user')->WHERE(['ID_USER' => $req->input('del_id_user')])->update($user);
+            return redirect('instructor')->with(['msg' => 'Berhasil menjadikan user biasa', 'location' => 'instructor']);
+        } catch (\Throwable $e) {
+            return redirect('instructor')->with(['msg' => 'Error' . $e, 'location' => 'instructor']);
+        }
     }
 }

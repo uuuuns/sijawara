@@ -2,16 +2,16 @@
 @section('content')
 <!-- Content Wrapper START -->
 <div class="col ms-0 ms-md-4 p-4 shadow rounded-3 overflow-hidden bg-white">
-    {{-- <?php if (!empty($this->session->flashdata('msg'))) { ?>
+    <?php if (!empty(session('msg'))) { ?>
     <div class="alert alert-success">
         <div class="d-flex align-items-center justify-content-start">
             <span class="alert-icon">
                 <i class="anticon anticon-check-o"></i>
             </span>
-            <span><?= $this->session->flashdata('msg') ?></span>
+            <span><?= session('msg') ?></span>
         </div>
     </div>
-    <?php } ?> --}}
+    <?php } ?>
     <div class="">
         <div class="card-body">
             <div class="row">
@@ -26,9 +26,7 @@
                             <tr>
                                 <th>No</th>
                                 <th>Nama User</th>
-                                <th>Universitas</th>
-                                <th>Studi</th>
-                                <th>Status</th>
+                                <th>Email</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -40,18 +38,13 @@
                             <tr>
                                 <td><?= $number ?></td>
                                 <td><?= $item->NAME ?></td>
-                                <td><?= $item->UNIV ?></td>
-                                <td><?= $item->DEGREE . ' - ' . $item->STUDY ?></td>
-                                <?php if ($item->STATUS == 0) { ?>
-                                    <td><span class="badge bg-warning text-dark">Butuh Verifikasi</span></td>
-                                <?php } else if ($item->STATUS == 1) { ?>
-                                    <td><span class="badge bg-success">Instruktur</span></td>
-                                <?php } else { ?>
-                                    <td><span class="badge bg-danger">Ditolak</span></td>
-                                <?php } ?>
+                                <td><?= $item->EMAIL ?></td>
                                 <td>
                                     <button type="button" onclick="openviewModal(`<?= htmlentities(json_encode($item)) ?>`)" class="btn btn-warning px-4 py-2 rounded">
                                         <i class="bx bx-edit-alt font-size-16 align-middle"></i>
+                                    </button>
+                                    <button type="button" onclick="openDelModal(`<?= $item->ID_USER ?>`)" class="btn btn-danger px-4 py-2 rounded">
+                                        <i class="bx bx-trash-alt font-size-16 align-middle"></i>
                                     </button>
                                 </td>
                             </tr>
@@ -152,6 +145,31 @@
 </div>
 {{-- End Modal View --}}
 
+{{-- Start Modal Delete --}}
+<div class="modal" id="deleteModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content modal lg">
+            <div class="modal-header">
+                <h4 class="modal-title">Hapus User Dari Instruktur</h4>
+                <button type="button" class="btn px-2 py-0" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="fs-3">&times;</span>
+                </button>
+            </div>
+            <form id="form-delete" action="instruktur/delete" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-body">
+                    <p>Apakah anda ingin menghapus user ini ?</p>
+                    <input type="hidden" name="del_id_user" value="" readonly>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary rounded">Hapus</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{{-- End Modal Delete --}}
+
 <script>
     $('#dtTable').DataTable()
 
@@ -176,8 +194,12 @@
 
         $('#acc_id_instructor').val(id_user)
         $('#dec_id_instructor').val(id_user)
-        console.log(id_user);
         $('#addviewModal').modal('show')
+    }
+
+    function openDelModal(id_user) {
+        $('input[name="del_id_user"]').val(id_user)
+        $('#deleteModal').modal('show')
     }
 </script>
 @endsection
