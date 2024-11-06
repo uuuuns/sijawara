@@ -78,7 +78,7 @@
           </div>
           <div class="d-flex justify-content-end">
             <button type="submit" class="btn btn-primary">
-                Selanjutnya
+                Simpan
             </button>
             </div>
         </form>
@@ -188,7 +188,7 @@
           </div>
           <div class="d-flex justify-content-end">
             <button type="submit" class="btn btn-primary">
-                Selanjutnya
+                Simpan
             </button>
           </div>
         </form>
@@ -248,7 +248,7 @@
           </div>
           <div class="d-flex justify-content-end">
             <button type="submit" class="btn btn-primary">
-                Selanjutnya
+                Simpan
             </button>
           </div>
         </form>
@@ -257,8 +257,6 @@
 </div>
 <script>
     $('#process2-tab').click(function() {
-      console.log('clicked');
-      
         @if ($check->COUNT_DATA_PEMILIK < 8)
             Swal.fire({
                 icon: 'error',
@@ -282,8 +280,34 @@
         @endif
     });
 
+    $('#provinsi').change(function() {
+        let id = $(this).val();
+        let id_kota = {{ $data_ukm->id_kota ?? 'null' }};
+        $.ajax({
+            url: "get-kota",
+            type: "POST",
+            data: {
+                id: id,
+                id_kota: id_kota,
+                _token: "{{ csrf_token() }}"
+            },
+            success: function(data) {
+                $('.kota').show();
+                $('.kota').html(data);
+            }
+        });
+    });
+
     function formatCurrency(num) {
         return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    }
+
+    function setSelect2Values(selector, values) {
+      if (values.length === 0) {
+          return;
+      }else{
+          $(selector).val(values).trigger('change');
+      }
     }
 
     $('.rupiah').on('input', function () {
@@ -293,14 +317,7 @@
         }
     });
 
-    $(document).ready(function () {
-        // Initialize select2
-        $('.select2').select2({
-            placeholder: "Select options",
-            allowClear: true
-        });
-
-        // Initialize rupiah format for existing values
+      $(document).ready(function () {
         $('.rupiah').each(function () {
             let value = $(this).val().replace(/[^\d]/g, '');
             if (value) {
@@ -319,12 +336,7 @@
         var pemasaranValues = {!! json_encode(array_column($tb_pemasaran_ukm, 'id_pemasaran')) !!};
         var standarisasiValues = {!! json_encode(array_column($tb_standart_ukm, 'id_standarisasi_produk')) !!};
         var fasilitasValues = {!! json_encode(array_column($tb_fasilitas_ukm, 'id_fasilitas')) !!};
-        var permasalahanValues = {!! json_encode(array_column($tb_permasalahan_ukm, 'id_permasalahan')) !!};
-
-        // Function to set values and trigger change for Select2 fields
-        function setSelect2Values(selector, values) {
-            $(selector).val(values).trigger('change');
-        }
+        var permasalahanValues = {!! json_encode (array_column($tb_permasalahan_ukm, 'id_permasalahan')) !!};
 
         // Set values for each Select2 input field
         setSelect2Values('#sumberBahanBaku', bahanBakuValues);
@@ -345,42 +357,23 @@
                 _token: "{{ csrf_token() }}"
             },
             success: function(data) {
-                $('.kota').show();  // Better readability than removeAttr('hidden')
+                $('.kota').removeAttr('hidden');
                 $('.kota').html(data);
             }
         });
-    });
-
-    // Fetch kota options on provinsi change
-    $('#provinsi').change(function() {
-        let id = $(this).val();
-        let id_kota = {{ $data_ukm->id_kota ?? 'null' }};
-        $.ajax({
-            url: "get-kota",
-            type: "POST",
-            data: {
-                id: id,
-                id_kota: id_kota,
-                _token: "{{ csrf_token() }}"
-            },
-            success: function(data) {
-                $('.kota').show();
-                $('.kota').html(data);
-            }
-        });
-    });
+      });
 
     // Show loading message on form submission
     $('form').on('submit', function() {
-      Swal.fire({
-        title: 'Loading...',
-        text: 'Harap Tunggu.',
-        allowOutsideClick: false,
-        showConfirmButton: false,
-        willOpen: () => {
-          Swal.showLoading();
-        }
-      });
+        Swal.fire({
+            title: 'Loading...',
+            text: 'Harap Tunggu.',
+            allowOutsideClick: false,
+            showConfirmButton: false,
+            willOpen: () => {
+                Swal.showLoading();
+            }
+        });
     });
 </script>
 @endsection

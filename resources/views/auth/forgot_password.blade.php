@@ -47,5 +47,11 @@
                 title: '{{ session('resp_msg') }}'
             });
             @endif
+            @if (session()->has('succ'))
+            Swal.fire({
+                icon: 'warning',
+                title: '{{ session('succ') }}'
+            });
+            @endif
         });
 </script>

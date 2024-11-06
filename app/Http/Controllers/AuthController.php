@@ -50,6 +50,21 @@ class AuthController extends Controller
 
     public function login_authentication(Request $req)
     {
+        $auth_migration = DB::selectOne("
+            SELECT
+                user.*
+            FROM
+                user
+            WHERE
+                user.EMAIL = '" . $req->input('email') . "'
+            AND
+                user.migrations = 1
+        ");
+
+        if ($auth_migration != null) {
+            return redirect('forgot-password')->with('succ', "Karena migrasi dari sistem lama, silahkan reset password anda");
+        }
+
         $auth = DB::selectOne("
             SELECT
                 user.*
@@ -64,6 +79,7 @@ class AuthController extends Controller
         if ($auth == null) {
             return redirect()->back()->with('msg_auth', "Email atau Password Salah");
         }
+        
         if ($auth->STATUS == 0) {
             return redirect()->back()->with('resp_msg', "Tidak bisa masuk, akun anda belum diverifikasi, harap periksa email anda");
         }
@@ -336,7 +352,8 @@ class AuthController extends Controller
     public function resetPassword(Request $req)
     {
         $formDataReset = [
-            'PASS' => hash('sha256', md5($req->input('password')))
+            'PASS' => hash('sha256', md5($req->input('password'))),
+            'migrations' => 0
         ];
 
         DB::table('user')->where('ID_USER', '=', $req->input('id_user'))->update($formDataReset);

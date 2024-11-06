@@ -111,7 +111,8 @@ class User extends Model
             $user->NAMA_INSTANSI = $data[0]['NAMA_INSTANSI'];
             $user->JABATAN = $data[0]['JABATAN'];
             $user->JENIS_INSTANSI = $data[0]['JENIS_INSTANSI'];
-            $user->PROVINSI = $data[0]['PROVINSI'];
+            $user->ID_PROVINSI = $data[0]['ID_PROVINSI'];
+            $user->ID_KOTA = $data[0]['ID_KOTA'];
             if($data[0]['FOTO_PROFILE'] != null){
                 $user->FOTO_PROFILE = $data[0]['FOTO_PROFILE'];
             }
