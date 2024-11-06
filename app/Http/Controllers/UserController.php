@@ -15,20 +15,9 @@ class UserController extends Controller
 
         $data["user"] = DB::select("
             SELECT
-                ud.* ,
-                u.ID_USER,
-                u.EMAIL,
-                u.NAME,
-                u.ID_ROLE,
-                u.TELP,
-                u.JK ,
-                u.FOTO_PROFILE ,
-                u.STATUS,
-                u.IS_DELETE
+                u.*
             FROM
                 user u
-            LEFT JOIN user_data ud ON   
-                ud.ID_USER = u.ID_USER
             WHERE
                 u.IS_DELETE = 0
         ");

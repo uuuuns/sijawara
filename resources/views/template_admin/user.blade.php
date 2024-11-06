@@ -242,86 +242,14 @@
                             <input placeholder="085141xxxx" type="text" name="up_contact" class="form-control" required>
                         </div>
                         <div class="form-group mb-3">
-                            <label>Apakah sudah lulus ?</label>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="up_is_graduated" id="inlineRadio33" value="0" checked>
-                                <label class="form-check-label" for="inlineRadio33">Belum</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="up_is_graduated" id="inlineRadio44" value="1">
-                                <label class="form-check-label" for="inlineRadio44">Sudah</label>
-                            </div>
-                        </div>
-                        <div class="form-group mb-3">
-                            <label>Universitas</label>
-                            <input placeholder="Universitas ..." type="univ" name="up_univ" class="form-control" required>
-                        </div>
-                        <div class="form-group mb-3">
-                            <label>NIM</label>
-                            <input placeholder="NIM" type="text" name="up_nim" class="form-control" required>
-                        </div>
-                        <div class="form-group mb-3">
-                            <label>Program Studi</label>
-                            <input placeholder="Informatika" type="text" name="up_study" class="form-control" required>
-                        </div>
-                        <div class="form-group mb-3">
-                            <label>Gelar</label>
-                            <select class="form-control select-degree" name="up_degree" required>
-                                <option value="D3">D3</option>
-                                <option value="S1">S1</option>
-                                <option value="S2">S2</option>
-                            </select>
-                        </div>
-                        <div class="form-group mb-3 hide_this">
-                            <label>Semester</label>
-                            <input placeholder="8" type="text" id="up_semester" name="up_semester" class="form-control" required>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col">
-                                <label>Dokumen CV :</label>
-                                <div class="custom-file show-file">
-                                    <iframe width="100%" height="512" style="border: 5px #3d3d3d solid;" name="frame_cv_doc" src=""></iframe>
-                                </div>
-                                <div class="hidden" style="display: none;">
-                                    <input type="file" name="up_cv_doc" class="custom-file-input dropify" data-allowed-file-extensions="pdf" data-max-file-size="5M" data-default-file="">
-                                </div>
-                            </div>
-                            <div class="col ">
-                                <label>Dokumen Sertifikat :</label>
-                                <div class="custom-file show-file">
-                                    <iframe width="100%" height="512" style="border: 5px #3d3d3d solid;" name="frame_certi_doc" src=""></iframe>
-                                </div>
-                                <div class="hidden" style="display: none;">
-                                    <input type="file" name="up_certi_doc" class="custom-file-input dropify" data-allowed-file-extensions="pdf" data-max-file-size="5M" data-default-file="">
-                                </div>
-                            </div>
-                            <div class="w-100" style="margin: 20px 0px;"></div>
-                            <div class="col">
-                                <label>Dokumen Portofolio :</label>
-                                <div class="custom-file show-file">
-                                    <iframe width="100%" height="512" style="border: 5px #3d3d3d solid;" name="frame_portofolio_doc" src=""></iframe>
-                                </div>
-                                <div class="hidden" style="display: none;">
-                                    <input type="file" name="up_portofolio_doc" class="custom-file-input dropify" data-allowed-file-extensions="pdf" data-max-file-size="5M" data-default-file="">
-                                </div>
-                            </div>
-                            <div class="col">
-                                <label>Dokumen Surat Rekomendasi :</label>
-                                <div class="custom-file show-file">
-                                    <iframe width="100%" height="512" style="border: 5px #3d3d3d solid;" name="frame_recommend_doc" src=""></iframe>
-                                </div>
-                                <div class="hidden" style="display: none;">
-                                    <input type="file" name="up_recommend_doc" class="custom-file-input dropify" data-allowed-file-extensions="pdf" data-max-file-size="5M" data-default-file="">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group mb-3">
-                            <button type="button" class="btn btn-secondary" id="ganti">Ganti Dokumen</button>
                             <button type="button" class="btn btn-danger" id="cancel">Batalkan</button>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
+                    @if (session('user')[0]['ID_ROLE'] == 1 || session('user')[0]['ID_ROLE'] == 4)
+                        <button type="button" onclick="jadikanInstruktur()" class="btn btn-primary rounded">Jadikan Instruktur</button>
+                    @endif
                     @if (session('user')[0]['ID_ROLE'] == 1)
                         <button type="button" onclick="jadikanAdmin()" class="btn btn-primary rounded">Jadikan Admin</button>
                     @endif
@@ -424,44 +352,11 @@
 
     function openviewModal(viewData) {
         var data = JSON.parse(viewData)
-
-        // Helper function to initialize Dropify
-        function initializeDropify(inputName, frameName, fileUrl) {
-            var dropifyElement = $('input[name="' + inputName + '"]').dropify();
-            var instance = dropifyElement.data('dropify');
-            instance.resetPreview();
-            instance.clearElement();
-            instance.settings['defaultFile'] = fileUrl;
-            instance.destroy();
-            instance.init();
-            $('iframe[name="' + frameName + '"]').attr('src', fileUrl + "#toolbar=0&navpanes=0");
-        }
-
-        // Initialize Dropify for each document directly with URLs
-        initializeDropify('up_foto_profile', 'frame_foto_profile', data.FOTO_PROFILE);
-        initializeDropify('up_cv_doc', 'frame_cv_doc', data.CV);
-        initializeDropify('up_certi_doc', 'frame_certi_doc', data.SERTIFIKAT);
-        initializeDropify('up_portofolio_doc', 'frame_portofolio_doc', data.PORTOFOLIO);
-        initializeDropify('up_recommend_doc', 'frame_recommend_doc', data.SURAT_RECOM);
-
-        // Other data
-        var graduated = data.IS_GRADUATED;
         $('input[name="up_id_user"]').val(data.ID_USER)
         $('input[name="up_name"]').val(data.NAME)
-        $('input[name="up_jk"][value="' + data.JK + '"]').prop('checked', true);
         $('input[name="up_email"]').val(data.EMAIL)
         $('input[name="up_contact"]').val(data.TELP)
-        $('input[name="up_is_graduated"][value="' + graduated + '"]').prop('checked', true)
-        $('input[name="up_univ"]').val(data.UNIV)
-        $('input[name="up_nim"]').val(data.NIM)
-        $('input[name="up_study"]').val(data.STUDY)
-        $('select[name="up_degree"]').val(data.DEGREE)
-        if (graduated == 1) {
-            $('.hide_this').hide();
-            $('input[name="up_semester"]').val(data.SEMESTER).prop('readonly', true)
-        } else {
-            $('input[name="up_semester"]').val(data.SEMESTER)
-        }
+        $('input[name="up_jk"][value="' + data.JK + '"]').prop('checked', true);
         $('#updateModal').modal('show')
     }
 
@@ -481,6 +376,27 @@
             });
         $.ajax({
             url: 'user/jadikanAdmin',
+            type: 'POST',
+            data: {
+                id_user: id_user,
+            },
+            success: function(data) {
+                $('#updateModal').modal('hide')
+                location.reload()
+            }
+        })
+    
+    }
+    function jadikanInstruktur() {
+        var id_user = $('input[name="up_id_user"]').val()
+        var csrfToken = $('meta[name="csrf-token"]').attr('content');
+        $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken
+                }
+            });
+        $.ajax({
+            url: 'user/jadikanInstruktur',
             type: 'POST',
             data: {
                 id_user: id_user,

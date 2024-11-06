@@ -71,7 +71,7 @@
                     </div>
                 </div>
                 <div class="col-md-12">
-                    <a href="/events" class="btn btn-sm btn-danger">
+                    <a href="/courses" class="btn btn-sm btn-danger">
                     <i class="fas fa-chevron-left"></i> KEMBALI</a> 
                     <button id="exportButton" onclick="location.href='/courses/laporan_course?ID_ACTIVITY=<?=$kursus->ID_ACTIVITY?>'" class="btn btn-sm btn-success text-white"><i class="fas fa-file-excel text-white"></i> LAPORAN</button>
                 </div>
