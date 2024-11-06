@@ -66,7 +66,7 @@
                     UMUM</option>
             </select>
         </div>
-        <h5 class="text-black ps-1 mt-4">Nama UKM/Koperasi/Instansi</h5>
+        <h5 class="text-black ps-1 mt-4">Nama Instansi</h5>
         <div class="my-3 float-label-control">
             <input type="text" name="nama_instansi" class="form-control input-text woocommerce-Input woocommerce-Input--text" placeholder="Nama Instansi Anda" value="<?= $data_personal->NAMA_INSTANSI ?>" readonly>
         </div>
@@ -81,13 +81,22 @@
         <h5 class="text-black ps-1 mt-4">Provinsi</h5>
         <div class="my-3 float-label-control">
             <select class="form-select woocommerce-Input woocommerce-Input--text provinsi" name="provinsi" id="provinsi-select" disabled>
-                <option value="" <?= ($data_personal->PROVINSI == "" || $data_personal->PROVINSI == null) ? "selected" : "" ?>>
-                    Pilih Provinsi...</option>
+            <option disabled value="" {{empty($data_personal->ID_PROVINSI) ? 'selected' : ''}}>Pilih Provinsi...</option>
+                @foreach ($provinsi as $item)
+                    <option value="{{$item->id_provinsi}}" {{$data_personal->ID_PROVINSI == $item->id_provinsi? 'selected' : ''}}>{{$item->nama_province}}</option>
+                @endforeach
+            </select>
+        </div>
+        <h5 class="text-black ps-1 mt-4">Kota</h5>
+        <div class="my-3 float-label-control kota-div">
+            <select class="form-select woocommerce-Input woocommerce-Input--text kota" name="kota" id="kota-select" disabled>
+                <option disabled value="" {{empty($data_personal->ID_PROVINSI) ? 'selected' : ''}}>Pilih Kota...</option>
             </select>
         </div>
         <input type="hidden" name="jk" id="setJK" value="<?= $data_personal->JK ?>">
         <input type="hidden" name="jenis_instansi" id="setJenis_instansi" value="<?= $data_personal->JENIS_INSTANSI ?>">
-        <input type="hidden" name="provinsi" id="setProvinsi" value="<?= $data_personal->PROVINSI ?>">
+        <input type="hidden" name="provinsi" id="setProvinsi" value="<?= $data_personal->ID_PROVINSI ?>">
+        <input type="hidden" name="kota" id="setKota" value="<?= $data_personal->ID_KOTA ?>">
     </form>
 
     <button type="submit" class="btn btn-primary btn-main rounded rounded-4 fw-semibold py-2 w-100 mt-5 edit" style="--bs-btn-padding-x: 4.5rem;">Edit</button>
@@ -125,25 +134,25 @@
         }
     })
 
-    $(document).ready(function() {
-        // Variable holding the selected province from PHP
-        var selectedProvince = '<?= $data_personal->PROVINSI ?>';
+    $('#provinsi-select').change(function() {
+        var selectedProvince = $(this).val();
+        $('#setProvinsi').val(selectedProvince);
+        $.ajax({
+            url: 'get-kota-option',
+            type: 'POST',
+            data: {
+                _token: '{{ csrf_token() }}',
+                id: selectedProvince
+            },
+            success: function(data) {                
+                $('#kota-select').empty().append('<option disabled selected value="">Pilih Kota...</option>');
 
-        // Fetch provinces data from the API
-        $.getJSON('https://www.emsifa.com/api-wilayah-indonesia/api/provinces.json', function(provinces) {
-
-            // Loop through each province and append it to the select options
-            $.each(provinces, function(index, province) {
-                var isSelected = (province.name == selectedProvince) ? true : false;
-                
-                $('#provinsi-select').append(
-                    $('<option>', {
-                        value: province.name,
-                        text: province.name,
-                        selected: isSelected
-                    })
-                );
-            });
+                $.each(data, function(index, value) {
+                    $('#kota-select').append(
+                        $('<option></option>').val(value.id_kota).text(value.nama_kota)
+                    );
+                });
+            }
         });
     });
 
@@ -155,6 +164,11 @@
     })
     $('.provinsi').change(function() {
         $('#setProvinsi').val($(this).val())
+    })
+    $('.kota').change(function() {
+        console.log();
+        
+        $('#setKota').val($(this).val())
     })
 
     $(document).ready(function() {
@@ -194,6 +208,30 @@
         } else {
             $('#preview').empty();
         }
+    });
+
+    $(document).ready(function() {
+        var selectedProvince = {{$data_personal->ID_PROVINSI ?? 0}};
+        $('#setProvinsi').val(selectedProvince);
+        
+        $.ajax({
+            url: 'get-kota-option',
+            type: 'POST',
+            data: {
+                _token: '{{ csrf_token() }}',
+                id: selectedProvince,
+                id_kota: {{$data_personal->ID_KOTA ?? 'null'}}
+            },
+            success: function(data) {
+                $('#kota-select').empty().append('<option disabled selected value="">Pilih Kota...</option>');
+
+                $.each(data, function(index, value) {
+                    $('#kota-select').append(
+                        $('<option></option>').val(value.id_kota).text(value.nama_kota).attr('selected', value.id_kota == {{$data_personal->ID_KOTA ?? '0'}})
+                    );
+                });
+            }
+        });
     });
 
     function cekEmail(email, callback) {

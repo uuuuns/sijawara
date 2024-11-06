@@ -214,6 +214,7 @@ Route::middleware(['usersession:4,3,2,1'])->group(function () {
     Route::post('data_koperasi/store_anggota_koperasi', [ProfileGuest::class, 'store_anggota_koperasi']);
     Route::post('data_koperasi/store_masalah_koperasi', [ProfileGuest::class, 'store_masalah_koperasi']);
     Route::post('get-kota', [ProfileGuest::class, 'get_kota']);
+    Route::post('get-kota-option', [ProfileGuest::class, 'get_kota_option']);
     Route::get('/profile/overview', [ProfileGuest::class, 'overview']);
     Route::get('profile/myebook', [ProfileGuest::class, 'ebook']);
     Route::get('profile/academic', [ProfileGuest::class, 'academic']);
@@ -232,6 +233,7 @@ Route::middleware(['usersession:4,3,2,1'])->group(function () {
 
 Route::middleware(['usersession:4,1'])->group(function () {
     Route::get('dashboard', 'DashboardController@admin_index');
+    Route::get('statistik', 'DashboardController@statistik');
 
     Route::get('courses', 'CourseController@index');
     Route::get('courses/add', 'CourseController@add_course');

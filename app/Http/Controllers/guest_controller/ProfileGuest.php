@@ -54,7 +54,13 @@ class ProfileGuest extends Controller
             WHERE user_data.ID_USER = '" . session('user')[0]['ID_USER'] . "';
 
         ");
-        // dd($data);
+
+        $data['provinsi'] = DB::select('
+            SELECT
+                *
+            FROM
+                md_provinsi
+        ');
         return
             view('template.header', $data) .
             view('template_guest/profile/personal', $data) .
@@ -272,7 +278,8 @@ class ProfileGuest extends Controller
                 'NAMA_INSTANSI' => $request->input('nama_instansi'),
                 'JABATAN' => $request->input('jabatan'),
                 'JENIS_INSTANSI' => $request->input('jenis_instansi'),
-                'PROVINSI' => $request->input('provinsi'),
+                'ID_PROVINSI' => $request->input('provinsi'),
+                'ID_KOTA' => $request->input('kota'),
             ]
         );
         $data[0]['FOTO_PROFILE'] = null;
@@ -903,5 +910,18 @@ class ProfileGuest extends Controller
         }
 
         
+    }
+    public function get_kota_option (Request $request) {
+        $id_kota = $request->id_kota == 'null' || empty($request->id_kota) ? '' : 'AND id_kota = "' . $request->id_kota . '"';
+        $data = DB::select('
+            SELECT
+                *
+            FROM
+                md_kota
+            WHERE
+                id_provinsi = "'.$request->id.'"
+                '.$id_kota.'
+        ');
+        return response()->json($data);
     }
 }

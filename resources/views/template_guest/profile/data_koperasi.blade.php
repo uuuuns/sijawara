@@ -144,7 +144,7 @@
           </div>
           <div class="d-flex justify-content-end">
             <button type="submit" class="btn btn-primary">
-                Selanjutnya
+                Simpan
             </button>
             </div>
         </form>
@@ -189,7 +189,7 @@
           </div>
           <div class="d-flex justify-content-end">
             <button type="submit" class="btn btn-primary">
-                Selanjutnya
+                Simpan
             </button>
           </div>
         </form>
@@ -249,7 +249,7 @@
           </div>
           <div class="d-flex justify-content-end">
             <button type="submit" class="btn btn-primary">
-                Selanjutnya
+                Simpan
             </button>
           </div>
         </form>     
@@ -268,7 +268,7 @@
           </div>
           <div class="d-flex justify-content-end">
             <button type="submit" class="btn btn-primary">
-                Selanjutnya
+                Simpan
             </button>
           </div>
         </form>     
@@ -322,11 +322,6 @@
     });
 
     $(document).ready(function () {
-        $('.select2').select2({
-            placeholder: "Select options",
-            allowClear: true
-        });
-
         $('.rupiah').each(function () {
             let value = $(this).val().replace(/[^\d]/g, '');
             if (value) {
@@ -334,7 +329,6 @@
             }
         });
         var permasalahanValues = {!! json_encode(array_column($tb_masalah_koperasi, 'masalah_koperasi_id')) !!};
-        console.log(permasalahanValues);
         
         function setSelect2Values(selector, values) {
             $(selector).val(values).trigger('change');
