@@ -178,8 +178,13 @@ Route::middleware(['usersession:4,1'])->group(function () {
     Route::post('widyaiswara/update', 'WidyaiswaraController@update_widyaiswara');
     Route::post('widyaiswara/delete', 'WidyaiswaraController@delete_widyaiswara');
     
+    Route::get('statistik-peserta', 'DashboardController@statistik_index');
+    Route::get('statistik-kategori', 'DashboardController@statistik_kategori_index');
     Route::get('get-data-chart', 'DashboardController@get_data_chart');
-    
+    Route::get('get-data-chart-kategori', 'DashboardController@get_data_chart_kategori');
+    Route::get('statistik_per_kategori', 'DashboardController@statistik_per_kategori');
+    Route::post('statistik_per_provinsi', 'DashboardController@statistik_per_provinsi');
+
     Route::post('user/jadikanAdmin', 'DashboardController@jadikanAdmin');
     Route::post('user/jadikanInstruktur', 'DashboardController@jadikanInstruktur');
     Route::get('user/detail_pengambilan', 'UserController@detail_pengambilan');
@@ -238,7 +243,6 @@ Route::middleware(['usersession:4,3,2,1'])->group(function () {
 
 Route::middleware(['usersession:4,1,2'])->group(function () {
     Route::get('dashboard', 'DashboardController@admin_index');
-    Route::get('statistik', 'DashboardController@statistik');
 
     Route::get('courses', 'CourseController@index');
     Route::get('courses/add', 'CourseController@add_course');
