@@ -160,173 +160,174 @@
                 </div>
             </div>
         </div>
-        {{-- End Modal Link --}}
+    </div>
+    {{-- End Modal Link --}}
 
-        <script>
-            $('#dtTable').DataTable();
+    <script>
+        $('#dtTable').DataTable();
 
-            $(document).ready(function() {
-                var $editor = $('#desc_event');
-                $editor.summernote({
-                    height: 200,
-                    callbacks: {
-                        onPaste: function(e) {
-                            console.log('Called event paste', e);
-                        },
-                        onImageUpload: function(files) {
-                            console.log(files);
-                            $summernote.summernote('insertNode', imgNode);
-                        }
+        $(document).ready(function() {
+            var $editor = $('#desc_event');
+            $editor.summernote({
+                height: 200,
+                callbacks: {
+                    onPaste: function(e) {
+                        console.log('Called event paste', e);
                     },
-                    toolbar: [
-                        ['style', ['bold', 'italic', 'underline']],
-                        ['fontsize', ['fontsize']],
-                        ['color', ['color']],
-                        ['height', ['height']],
-                        ['operation', ['undo', 'redo']],
-                        ['para', ['paragraph']],
-                        ['object', ['link']]
-                    ]
-                });
-
-                $('#insert-btn').click(() => {
-                    $editor.summernote('insertParagraph');
-                });
-
-                $('#bold-btn').click(() => {
-                    $editor.summernote('bold');
-                });
-            });
-
-            $(document).ready(function() {
-                var $editor = $('#up_desc_event');
-                $editor.summernote({
-                    height: 200,
-                    callbacks: {
-                        onPaste: function(e) {
-                            console.log('Called event paste', e);
-                        },
-                        onImageUpload: function(files) {
-                            console.log(files);
-                            $summernote.summernote('insertNode', imgNode);
-                        }
-                    },
-                    toolbar: [
-                        ['style', ['bold', 'italic', 'underline']],
-                        ['fontsize', ['fontsize']],
-                        ['color', ['color']],
-                        ['height', ['height']],
-                        ['operation', ['undo', 'redo']],
-                        ['para', ['paragraph']],
-                        ['object', ['link']]
-                    ]
-                });
-
-                $('#insert-btn').click(() => {
-                    $editor.summernote('insertParagraph');
-                });
-
-                $('#bold-btn').click(() => {
-                    $editor.summernote('bold');
-                });
-            });
-
-            $('.loader').hide();
-            $('.main-btn').show();
-
-            $('.modal').on('shown.bs.modal', function() {
-                $('#myInput').trigger('focus')
-            })
-
-            function openlinkModal(viewData) {
-                var data = JSON.parse(viewData)
-
-                var fileContainer = document.getElementById('file-container');
-
-                var file = data.FILE.split(';');
-
-                // Clear any previous content inside the container
-                fileContainer.innerHTML = '';
-
-                // Loop through each item and append it to the modal body
-                file.forEach(function(file,index) {
-                    // Create a new paragraph element for each file
-                    var a = document.createElement('a');
-                    a.href = file; // Set the file URL
-                    a.textContent = (index + 1) + ". file berkas "; // Set the text for the link
-                    a.target = "_blank"; // Open the link in a new tab
-                    a.classList.add('d-block'); // Optional: Add a class for styling (e.g., block display)
-
-                    // Append the <a> element to the file container
-                    fileContainer.appendChild(a);
-                });
-
-                $('#linkModal').modal('show')
-            }
-
-            $('#setFree').change(function() {
-                if ($(this).prop('checked')) {
-                    $('.CurrencyInput').prop('readonly', true)
-                    $('.CurrencyInput').val(0)
-                } else {
-                    $('.CurrencyInput').prop('readonly', false)
-                    $('.CurrencyInput').val('')
-                }
-            })
-
-            $('#up_setFree').change(function() {
-                if ($(this).prop('checked')) {
-                    $('.up_CurrencyInput').prop('readonly', true)
-                    $('.up_CurrencyInput').val(0)
-                } else {
-                    $('.up_CurrencyInput').prop('readonly', false)
-                    $('.up_CurrencyInput').val('')
-                }
-            })
-
-            function zoomLinkCheck(e) {
-                if ($(e).val() == 2) {
-                    $('input[name="link_zoom"]').prop('disabled', true);
-                    $('input:text[name="link_zoom"]').val('')
-                    $('input[name="up_link_zoom"]').prop('disabled', true);
-                    $('input:text[name="up_link_zoom"]').val('')
-                    $('input[name="location"]').prop('disabled', false).prop('required', true);
-                    $('input[name="up_location"]').prop('disabled', false).prop('required', true);
-                } else if ($(e).val() == 1) {
-                    $('input[name="location"]').prop('disabled', true);
-                    $('input:text[name="location"]').val('')
-                    $('input[name="up_location"]').prop('disabled', true);
-                    $('input:text[name="up_location"]').val('')
-                    $('input[name="link_zoom"]').prop('disabled', false).prop('required', true);
-                    $('input[name="up_link_zoom"]').prop('disabled', false).prop('required', true);
-                } else {
-                    $('input[name="link_zoom"]').prop('disabled', false).prop('required', true);
-                    $('input[name="up_link_zoom"]').prop('disabled', false).prop('required', true);
-                    $('input[name="location"]').prop('disabled', false).prop('required', true);
-                    $('input[name="up_location"]').prop('disabled', false).prop('required', true);
-                }
-            }
-
-            $('.dropify').dropify({
-                messages: {
-                    default: 'Drag atau drop untuk memilih file',
-                    replace: 'Ganti',
-                    remove: 'Hapus',
-                    error: 'error'
-                }
-            });
-
-            function laporan(id) {
-                $.ajax({
-                    url: '/events/laporan_event?ID_ACTIVITY=' + id,
-                    method: 'GET',
-                    success: function(response) {
-                        window.location.href = '/events/laporan/' + id;
-                    },
-                    error: function(xhr, status, error) {
-                        console.log(xhr.responseText);
+                    onImageUpload: function(files) {
+                        console.log(files);
+                        $summernote.summernote('insertNode', imgNode);
                     }
-                });
+                },
+                toolbar: [
+                    ['style', ['bold', 'italic', 'underline']],
+                    ['fontsize', ['fontsize']],
+                    ['color', ['color']],
+                    ['height', ['height']],
+                    ['operation', ['undo', 'redo']],
+                    ['para', ['paragraph']],
+                    ['object', ['link']]
+                ]
+            });
+
+            $('#insert-btn').click(() => {
+                $editor.summernote('insertParagraph');
+            });
+
+            $('#bold-btn').click(() => {
+                $editor.summernote('bold');
+            });
+        });
+
+        $(document).ready(function() {
+            var $editor = $('#up_desc_event');
+            $editor.summernote({
+                height: 200,
+                callbacks: {
+                    onPaste: function(e) {
+                        console.log('Called event paste', e);
+                    },
+                    onImageUpload: function(files) {
+                        console.log(files);
+                        $summernote.summernote('insertNode', imgNode);
+                    }
+                },
+                toolbar: [
+                    ['style', ['bold', 'italic', 'underline']],
+                    ['fontsize', ['fontsize']],
+                    ['color', ['color']],
+                    ['height', ['height']],
+                    ['operation', ['undo', 'redo']],
+                    ['para', ['paragraph']],
+                    ['object', ['link']]
+                ]
+            });
+
+            $('#insert-btn').click(() => {
+                $editor.summernote('insertParagraph');
+            });
+
+            $('#bold-btn').click(() => {
+                $editor.summernote('bold');
+            });
+        });
+
+        $('.loader').hide();
+        $('.main-btn').show();
+
+        $('.modal').on('shown.bs.modal', function() {
+            $('#myInput').trigger('focus')
+        })
+
+        function openlinkModal(viewData) {
+            var data = JSON.parse(viewData)
+
+            var fileContainer = document.getElementById('file-container');
+
+            var file = data.FILE.split(';');
+
+            // Clear any previous content inside the container
+            fileContainer.innerHTML = '';
+
+            // Loop through each item and append it to the modal body
+            file.forEach(function(file, index) {
+                // Create a new paragraph element for each file
+                var a = document.createElement('a');
+                a.href = file; // Set the file URL
+                a.textContent = (index + 1) + ". file berkas "; // Set the text for the link
+                a.target = "_blank"; // Open the link in a new tab
+                a.classList.add('d-block'); // Optional: Add a class for styling (e.g., block display)
+
+                // Append the <a> element to the file container
+                fileContainer.appendChild(a);
+            });
+
+            $('#linkModal').modal('show')
+        }
+
+        $('#setFree').change(function() {
+            if ($(this).prop('checked')) {
+                $('.CurrencyInput').prop('readonly', true)
+                $('.CurrencyInput').val(0)
+            } else {
+                $('.CurrencyInput').prop('readonly', false)
+                $('.CurrencyInput').val('')
             }
-        </script>
-    @endsection
+        })
+
+        $('#up_setFree').change(function() {
+            if ($(this).prop('checked')) {
+                $('.up_CurrencyInput').prop('readonly', true)
+                $('.up_CurrencyInput').val(0)
+            } else {
+                $('.up_CurrencyInput').prop('readonly', false)
+                $('.up_CurrencyInput').val('')
+            }
+        })
+
+        function zoomLinkCheck(e) {
+            if ($(e).val() == 2) {
+                $('input[name="link_zoom"]').prop('disabled', true);
+                $('input:text[name="link_zoom"]').val('')
+                $('input[name="up_link_zoom"]').prop('disabled', true);
+                $('input:text[name="up_link_zoom"]').val('')
+                $('input[name="location"]').prop('disabled', false).prop('required', true);
+                $('input[name="up_location"]').prop('disabled', false).prop('required', true);
+            } else if ($(e).val() == 1) {
+                $('input[name="location"]').prop('disabled', true);
+                $('input:text[name="location"]').val('')
+                $('input[name="up_location"]').prop('disabled', true);
+                $('input:text[name="up_location"]').val('')
+                $('input[name="link_zoom"]').prop('disabled', false).prop('required', true);
+                $('input[name="up_link_zoom"]').prop('disabled', false).prop('required', true);
+            } else {
+                $('input[name="link_zoom"]').prop('disabled', false).prop('required', true);
+                $('input[name="up_link_zoom"]').prop('disabled', false).prop('required', true);
+                $('input[name="location"]').prop('disabled', false).prop('required', true);
+                $('input[name="up_location"]').prop('disabled', false).prop('required', true);
+            }
+        }
+
+        $('.dropify').dropify({
+            messages: {
+                default: 'Drag atau drop untuk memilih file',
+                replace: 'Ganti',
+                remove: 'Hapus',
+                error: 'error'
+            }
+        });
+
+        function laporan(id) {
+            $.ajax({
+                url: '/events/laporan_event?ID_ACTIVITY=' + id,
+                method: 'GET',
+                success: function(response) {
+                    window.location.href = '/events/laporan/' + id;
+                },
+                error: function(xhr, status, error) {
+                    console.log(xhr.responseText);
+                }
+            });
+        }
+    </script>
+@endsection

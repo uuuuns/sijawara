@@ -8,6 +8,7 @@ use App\Models\Checkout;
 use App\Models\Event;
 use App\Models\Category;
 use App\Models\Certificate;
+use Exception;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -204,8 +205,35 @@ class CourseGuest extends Controller
 		$data['id_activity'] = $_POST['type'] . '/' . $_POST['id_activity'];
 		if ($data['type'] == 3) {
 			$data['type'] = 2;
+
+			// update NILAI
+
+			$old_nilai = DB::SelectOne("
+				SELECT
+					*
+				FROM
+					nilai_quiz
+				WHERE
+					ID_QUIZ = '" . $data['id_item'] . "'
+				AND
+					ID_USER = '" . session('user')[0]->get('ID_USER') . "'
+			");
+
+			$count_condition = $old_nilai->ATTEMPT_GRADE == NULL ? $old_nilai->NILAI : $old_nilai->ATTEMPT_GRADE . ';' . $old_nilai->NILAI;
+			$attempt_condition = $old_nilai->ATTEMPT == NULL ? 1 : $old_nilai->ATTEMPT + 1;
+
+			$new_nilai = [
+				'NILAI'			=> NULL,
+				'ATTEMPT'		=> $attempt_condition,
+				'ATTEMPT_GRADE'	=> $count_condition
+			];
+
+			// dd($new_nilai);
+
+			DB::table('nilai_quiz')->where('ID_QUIZ', $data['id_item'])->where('ID_USER', session('user')[0]->get('ID_USER'))->update($new_nilai);
+
 			//DELETE NILAI YANG ADA
-			DB::table('nilai_quiz')->where('ID_QUIZ', $data['id_item'])->where('ID_USER', session('user')[0]->get('ID_USER'))->delete();
+			// DB::table('nilai_quiz')->where('ID_QUIZ', $data['id_item'])->where('ID_USER', session('user')[0]->get('ID_USER'))->delete();
 		} else {
 			$data['type'] = $_POST['type'];
 		}
@@ -227,13 +255,18 @@ class CourseGuest extends Controller
 		// GET NILAI QUIZ
 		$data['quiz_grade'] = DB::selectOne('
 			SELECT
-				NILAI
+				nq.NILAI,
+				ic.MIN_NILAI
 			FROM
-				nilai_quiz
+				nilai_quiz nq
+			LEFT JOIN detail_quiz dq ON
+				dq.ID_QUIZ = nq.ID_QUIZ
+			LEFT JOIN item_course ic ON
+				ic.ID_COURSE = dq.ID_COURSE
 			WHERE
-				ID_USER = "' . session('user')[0]->get('ID_USER') . '"
-				AND 
-				ID_QUIZ = ' . $data['id_item'] . '
+				nq.ID_USER = "' . session('user')[0]->get('ID_USER') . '"
+			AND 
+				nq.ID_QUIZ = ' . $data['id_item'] . '
 		');
 
 		$max_id_item = DB::selectOne("
@@ -302,6 +335,8 @@ class CourseGuest extends Controller
 			";
 		$data['detail_item_course'] = DB::select($sql)[0];
 
+		$limit = !empty($data['detail_item_course']->LIMIT_QUIZ) ? 'LIMIT ' . $data['detail_item_course']->LIMIT_QUIZ : '';
+		
 		if ($data['type'] != 1) {
 			$sql = "
 			SELECT
@@ -325,7 +360,7 @@ class CourseGuest extends Controller
 			WHERE
 				" . implode('AND ', $condition) . "
 			ORDER BY RAND()
-			LIMIT ".$data['detail_item_course']->LIMIT_QUIZ."
+			$limit
 			";
 			$data['detail_item_course'] = DB::select($sql);
 		}
@@ -521,10 +556,11 @@ class CourseGuest extends Controller
 			"NILAI" => $nilai
 		];
 		if (!empty($data['total_data'])) {
-			DB::table('nilai_quiz')
-				->where('ID_QUIZ', $id_quiz)
-				->where('ID_USER', "'" . $id_user . "'")
-				->update($data_quiz);
+			$data_nilai = [
+				'NILAI'	=> $nilai
+			];
+
+			DB::table('nilai_quiz')->where('ID_QUIZ', $id_quiz)->where('ID_USER', $id_user)->update($data_nilai);
 		} else {
 			DB::table('nilai_quiz')->insert($data_quiz);
 		}

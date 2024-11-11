@@ -269,7 +269,16 @@
     });
 
     $('#process3-tab').click(function() {
-        @if ($check->COUNT_DATA_UKM < 17)
+      console.log({{$check->COUNT_DATA_UKM}});
+        @if ($check->COUNT_DATA_PEMILIK < 8)
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Data Pemilik UKM belum lengkap!',
+            });
+            $(this).removeClass('active');
+            $('#process1-tab').addClass('active');
+        @elseif ($check->COUNT_DATA_UKM < 17)       
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
@@ -357,7 +366,26 @@
                 _token: "{{ csrf_token() }}"
             },
             success: function(data) {
-                $('.kota').removeAttr('hidden');
+                $('.kota').show();  // Better readability than removeAttr('hidden')
+                $('.kota').html(data);
+            }
+        });
+    });
+
+    // Fetch kota options on provinsi change
+    $('#provinsi').change(function() {
+        let id = $(this).val();
+        let id_kota = {{ $data_ukm->id_kota ?? 'null' }};
+        $.ajax({
+            url: "get-kota",
+            type: "POST",
+            data: {
+                id: id,
+                id_kota: id_kota,
+                _token: "{{ csrf_token() }}"
+            },
+            success: function(data) {
+                $('.kota').show();
                 $('.kota').html(data);
             }
         });
