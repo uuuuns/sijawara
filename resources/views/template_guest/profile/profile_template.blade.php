@@ -25,7 +25,7 @@
                             <div class="d-flex flex-column align-items-center align-items-sm-start text-white">
                                 <ul class="sidebar-profile nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start w-100" id="menu">
                                     <li class="nav-item w-100 pt-2">
-                                        <a href="/profile" class=" {{ request()->is('profile') ? 'active' : '' }}  .  nav-link d-flex align-middle px-4 py-3 rounded-0">
+                                        <a href="{{ url("profile") }}" class=" {{ request()->is('profile') ? 'active' : '' }}  .  nav-link d-flex align-middle px-4 py-3 rounded-0">
                                             <i class="fs-6 d-flex align-items-center far fa-user"></i> <span class="ms-1 ps-2 fs-6 align-self-center ">Data
                                                 Pribadi</span>
                                         </a>
@@ -38,7 +38,7 @@
                                     <!-- if(instructor) -->
                                     <?php if (session('user')[0]['ID_ROLE'] == 2) { ?>
                                         <li class="nav-item w-100">
-                                            <a href="/profile/overview" class="overview  nav-link d-flex align-middle px-4 py-3 rounded-0">
+                                            <a href="{{ url("profile/overview") }}" class="overview  nav-link d-flex align-middle px-4 py-3 rounded-0">
                                                 <i class="fs-6 d-flex align-items-center far fa-bookmark"></i> <span class="ms-1 ps-2 fs-6 align-self-center ">Ringkasan
                                                     Penjualan</span>
                                             </a>
@@ -47,7 +47,7 @@
                                             <hr class="my-0 border border-1 mx-3">
                                         </li>
                                         <li class="nav-item w-100">
-                                            <a href="/dashboard" class="nav-link d-flex align-middle px-4 py-3 rounded-0">
+                                            <a href="{{ url("dashboard") }}" class="nav-link d-flex align-middle px-4 py-3 rounded-0">
                                                 <i class="fs-6 d-flex align-items-center far fa-book-medical"></i> <span class="ms-1 ps-2 fs-6 align-self-center ">Buat
                                                     Aktifitas</span>
                                             </a>
@@ -70,7 +70,7 @@
                                         </a>
                                         <ul class="nav nav-list collapse" id="submenu">
                                             <li class="nav-item w-100">
-                                                <a href="/profile/mycourses" class="nav-link d-flex align-middle px-4 py-3 rounded-0">
+                                                <a href="{{ url ("profile/mycourses") }}" class="nav-link d-flex align-middle px-4 py-3 rounded-0">
                                                     <span class="ms-3 ps-3 fs-6 align-self-center ">Kursus Ku</span>
                                                 </a>
                                             </li>
@@ -78,12 +78,12 @@
                                                 <hr class="my-0 border border-1 mx-3">
                                             </li>
                                             <li class="nav-item w-100">
-                                                <a href="/profile/myevents" class="nav-link d-flex align-middle px-4 py-3 rounded-0">
+                                                <a href="{{ url ("profile/myevents") }}" class="nav-link d-flex align-middle px-4 py-3 rounded-0">
                                                     <span class="ms-3 ps-3 fs-6 align-self-center ">Webinar Ku</span>
                                                 </a>
                                             </li>
                                             <li class="nav-item w-100">
-                                                <a href="/profile/mysertificate" class="nav-link  d-flex align-middle px-4 py-3 rounded-0">
+                                                <a href="{{ url ("profile/mysertificate") }}" class="nav-link  d-flex align-middle px-4 py-3 rounded-0">
                                                     <i class="fs-6 d-flex align-items-center far fa-file-alt"></i> <span class="ms-1 ps-2 fs-6 align-self-center ">ٍSertifikat Ku</span>
                                                 </a>
                                             </li>
@@ -102,7 +102,7 @@
                                         <hr class="my-0 border border-1 mx-3">
                                     </li>
                                     <li class="nav-item w-100">
-                                        <a href="data_ukm" class="nav-link  d-flex align-middle px-4 py-3 rounded-0">
+                                        <a href="{{ url("data_ukm") }}" class="nav-link  d-flex align-middle px-4 py-3 rounded-0">
                                             <i class="fs-6 d-flex align-items-center far fa-book"></i> <span class="ms-1 ps-2 fs-6 align-self-center ">Data UKM</span>
                                         </a>
                                     </li>
@@ -112,7 +112,7 @@
                                         <hr class="my-0 border border-1 mx-3">
                                     </li>
                                     <li class="nav-item w-100">
-                                        <a href="data_koperasi" class="nav-link  d-flex align-middle px-4 py-3 rounded-0">
+                                        <a href="{{ url("data_koperasi") }}" class="nav-link  d-flex align-middle px-4 py-3 rounded-0">
                                             <i class="fs-6 d-flex align-items-center far fa-book"></i> <span class="ms-1 ps-2 fs-6 align-self-center ">Data Koperasi</span>
                                         </a>
                                     </li>
