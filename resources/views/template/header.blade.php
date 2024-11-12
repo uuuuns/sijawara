@@ -56,7 +56,8 @@
     <!-- <link href="<?= asset('assets_admin/css/app.min.css') ?>" rel="stylesheet"> -->
     <!-- Icon css -->
     <link href="https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css" rel="stylesheet">
-
+    {{-- captcha --}}
+    <link rel="stylesheet" href="{{ asset('css/sliderPuzzle.css') }}">
 
     <!-- Core Vendors JS -->
     <script src="<?= asset('assets_admin/js/vendors.min.js') ?>"></script>
