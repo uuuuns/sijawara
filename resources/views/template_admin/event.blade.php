@@ -64,18 +64,21 @@
                                         <div class="d-flex flex-column gap-2">
                                             <button type="button"
                                                 onclick="location.href='events/lihat_peserta?ID_ACTIVITY={{ $item->ID_ACTIVITY }}'"
-                                                class="btn btn-primary px-4 py-2 rounded">
-                                                <i class="bx bxs-user-detail font-size-16 align-middle"></i>
+                                                class="btn btn-warning mb-1 btn-sm-2 w-100 fs-8 rounded waves-effect waves-light px-2"
+                                                style="min-width: 155px !important;">
+                                                <i class="bx bxs-user-detail font-size-16 align-middle"></i> Lihat Peserta
                                             </button>
                                             <button type="button"
                                                 onclick="openviewModal(`<?= htmlentities(json_encode($item)) ?>`)"
-                                                class="btn btn-warning px-4 py-2 rounded">
-                                                <i class="bx bx-edit-alt font-size-16 align-middle"></i>
+                                                class="btn btn-dark btn-sm-2 w-100 fs-8 rounded waves-effect waves-light px-2"
+                                                style="min-width: 155px !important; margin: 5px 0px;">
+                                                <i class="bx bx-edit-alt font-size-16 align-middle"></i> Edit Webinar
                                             </button>
                                             <button type="button"
                                                 onclick="opendeleteModal(`<?= htmlentities(json_encode($item)) ?>`)"
-                                                class="btn btn-danger px-4 py-2 rounded">
-                                                <i class="bx bx-trash font-size-16 align-middle"></i>
+                                                class="btn btn-danger btn-sm-2 w-100 fs-8 rounded waves-effect waves-light px-2"
+                                                style="min-width: 155px !important;">
+                                                <i class="bx bx-trash font-size-16 align-middle"></i> Hapus Webinar
                                             </button>
                                         </div>
                                     </td>
@@ -114,19 +117,6 @@
                             <label>Judul <span class="text-danger">*</span></label>
                             <input placeholder="Title" type="text" name="title_activity" class="form-control" required>
                         </div>
-                        <!-- <div class="form-group mb-3">
-                            <label>Harga <span class="text-danger">*</span></label>
-                            <input type="number" class="form-control CurrencyInput" name="price_activity">
-                            <div class="col-md-5">
-                                <span class="d-flex align-items-center mt-2">
-                                    <div class="switch m-r-10">
-                                        <input type="checkbox" id="setFree">
-                                        <label for="setFree"></label>
-                                    </div>
-                                    Gratis
-                                </span>
-                            </div>
-                        </div> -->
                         <div class="form-group mb-3">
                             <label>Tanggal Mulai<span class="text-danger">*</span></label>
                             <input type="datetime-local" class="form-control" name="date_start" required
@@ -205,8 +195,8 @@
     {{-- End Modal Add --}}
 
     {{-- Start Modal Update --}}
-    <div class="modal" id="updateModal" data-bs-backdrop="static" tabindex="-1"
-        role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal" id="updateModal" data-bs-backdrop="static" tabindex="-1" role="dialog"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -325,8 +315,8 @@
     {{-- End Modal Update --}}
 
     {{-- Start Modal Delete --}}
-    <div class="modal" id="deleteModal" data-bs-backdrop="static" tabindex="-1"
-        role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal" id="deleteModal" data-bs-backdrop="static" tabindex="-1" role="dialog"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
