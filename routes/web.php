@@ -184,6 +184,7 @@ Route::middleware(['usersession:4,1'])->group(function () {
     Route::get('get-data-chart-kategori', 'DashboardController@get_data_chart_kategori');
     Route::get('statistik_per_kategori', 'DashboardController@statistik_per_kategori');
     Route::post('statistik_per_provinsi', 'DashboardController@statistik_per_provinsi');
+    Route::post('statistik_per_kota', 'DashboardController@statistik_per_kota');
 
     Route::post('user/jadikanAdmin', 'DashboardController@jadikanAdmin');
     Route::post('user/jadikanInstruktur', 'DashboardController@jadikanInstruktur');

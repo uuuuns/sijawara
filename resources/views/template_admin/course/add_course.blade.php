@@ -108,8 +108,7 @@
                         <div class="form-group row ">
                             <label class="col-sm-2 col-form-label control-label">Kuota Peserta Kursus</label>
                             <div class="col-md-10">
-                                <input type="number" class="form-control" name="kuota_peserta" placeholder="Kosongi apabila tidak ada batasan"
-                                    required>
+                                <input type="number" class="form-control" name="kuota_peserta" placeholder="Kosongi apabila tidak ada batasan">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -158,7 +157,7 @@
                         </div>
                     </div>
                     <div class="form-group text-end mt-5">
-                        <button type="button" onclick="cek_soal()" class="btn btn-primary rounded btn-submit-form">Submit</button>
+                        <button type="submit" class="btn btn-primary rounded btn-submit-form">Submit</button>
                     </div>
                 </form>
             </div>
@@ -357,6 +356,20 @@
     });
 
     $('#form-user').submit(function(e) {
+        e.preventDefault(); // Prevent form submission initially for custom validation
+
+        // Check if the form is valid (includes HTML required attributes)
+        if (!this.checkValidity()) {
+            this.reportValidity(); // Shows default HTML5 validation for required fields
+            return;
+        }
+
+        // Proceed with custom validations
+        if (cek_materi() === false || cek_soal() === false) {
+            return false; // Stop form submission if custom validations fail
+        }
+
+        // Show the Swal loader after validations pass
         Swal.fire({
             icon: 'warning',
             title: 'Mohon Tunggu',
@@ -365,15 +378,17 @@
             allowOutsideClick: false,
             allowEscapeKey: false,
         });
+
+        // Finally submit the form after all validations pass
+        this.submit();
     });
 
-
     function cek_soal() {
-        no_accordion = 1;
+        let no_accordion = 1;
         while ($('#quiz_item_' + no_accordion).length) {
             var limit_soal = $('#limit_soal_' + no_accordion).val();
             var min_nilai = $('#min_nilai_' + no_accordion).val();
-            
+
             if (limit_soal == '') {
                 Swal.fire({
                     icon: 'error',
@@ -389,7 +404,7 @@
                 });
                 return false;
             } else {
-                var questionCount = $('.soal_form_'+no_accordion+' input[name^="question["]').length;
+                var questionCount = $('.soal_form_' + no_accordion + ' input[name^="question["]').length;
                 if (limit_soal > questionCount) {
                     Swal.fire({
                         icon: 'error',
@@ -401,7 +416,20 @@
             }
             no_accordion++;
         }
-        $('#form-user').submit();
+        return true;
     }
+
+    function cek_materi() {
+        if ($('#materi_item_1').length == 0 && $('#quiz_item_1').length == 0) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Minimal terdapat 1 materi atau kuis untuk membuat kursus',
+            });
+            return false;
+        }
+        return true;
+    }
+
 </script>
 @endsection
