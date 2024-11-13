@@ -82,7 +82,6 @@ class DashboardController extends Controller
             view('template_admin/dashboard', $data) .
             view('template.footer', $data);
     }
-
     public function jadikanAdmin(Request $request) {
         $id_user = $request->input('id_user');
 
@@ -101,7 +100,6 @@ class DashboardController extends Controller
 
         return redirect()->back();
     }
-
     public function get_data_chart() {
         $data['register_per_month'] = DB::select("
             SELECT 
@@ -225,16 +223,111 @@ class DashboardController extends Controller
         }
         return response()->json($chartData);
     }
-
+    public function statistik_per_kota(Request $req) {
+        $kota = $req->id_kota;
+        
+        DB::statement("SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));");
+        $data['kota'] = DB::select("
+            SELECT
+                k.nama_kota AS KOTA,
+                u.JENIS_INSTANSI ,
+                COUNT(u.JENIS_INSTANSI) AS TOTAL
+            FROM
+                user u
+            JOIN md_provinsi p ON
+                u.ID_PROVINSI = p.id_provinsi
+            JOIN md_kota k ON
+                u.ID_KOTA = k.id_kota
+            WHERE
+                u.IS_DELETE != 1
+                AND u.JENIS_INSTANSI IS NOT NULL
+                AND u.STATUS = 1
+                AND u.ID_KOTA = $kota
+            GROUP BY 
+                u.JENIS_INSTANSI 
+            ORDER by
+                TOTAL DESC
+        ");
+        
+        $chartData = [
+            'labels' => [],
+            'data' => [],
+            'kota' => $data['kota'][0]->KOTA,
+        ];
+        
+        foreach ($data['kota'] as $kota) {
+            $chartData['labels'][] = $kota->JENIS_INSTANSI;   // Adding city names to labels
+            $chartData['data'][] = $kota->TOTAL;    // Adding user totals to data array
+        }
+        return response()->json($chartData);
+    }
     public function statistik_kategori_index() {
         $data['title'] = 'Statistik Per Kategori';
-
-        return
-            view('template.header', $data) .
-            view('template_admin/statistik_kategori', $data) .
-            view('template.footer', $data);
+    
+        $dataKursus = DB::select("
+            SELECT
+                a.TITLE_ACTIVITY,
+                COUNT(o.ID_USER) AS Total_user,
+                COUNT(CASE WHEN o.COURSE_COMPLETED = 1 THEN 1 END) AS Total_complete,
+                COUNT(o.ID_USER) - COUNT(CASE WHEN o.COURSE_COMPLETED = 1 THEN 1 END) AS Total_not_complete
+            FROM
+                activity a 
+            LEFT JOIN `order` o ON
+                o.ID_PRODUCT = a.ID_ACTIVITY
+            WHERE     
+                a.TYPE_ACTIVITY = 1
+            GROUP BY 
+                a.TITLE_ACTIVITY
+            HAVING 
+                Total_user != 0
+            ORDER BY
+                a.LOG_TIME DESC
+            LIMIT 10
+        ");
+    
+        // Prepare data for Chart.js
+        $chartData = [
+            'labels' => [],
+            'datasets' => [
+                [
+                    'label' => 'Total Peserta',
+                    'data' => [],
+                    'backgroundColor' => 'rgba(255, 99, 132, 0.2)',
+                    'borderColor' => 'rgba(255, 99, 132, 1)',
+                    'borderWidth' => 1,
+                ],
+                [
+                    'label' => 'Total Peserta Belum Selesai',
+                    'data' => [],
+                    'backgroundColor' => 'rgba(255, 206, 86, 0.2)',
+                    'borderColor' => 'rgba(255, 206, 86, 1)',
+                    'borderWidth' => 1,
+                ],
+                [
+                    'label' => 'Total Peserta Selesai',
+                    'data' => [],
+                    'backgroundColor' => 'rgba(54, 162, 235, 0.2)',
+                    'borderColor' => 'rgba(54, 162, 235, 1)',
+                    'borderWidth' => 1,
+                ],
+            ]
+        ];
+    
+        // Populate labels and datasets
+        foreach ($dataKursus as $row) {
+            $chartData['labels'][] = $row->TITLE_ACTIVITY;
+            $chartData['datasets'][0]['data'][] = $row->Total_user;
+            $chartData['datasets'][1]['data'][] = $row->Total_not_complete;
+            $chartData['datasets'][2]['data'][] = $row->Total_complete;
+        }
+    
+        $data['chartData'] = json_encode($chartData); // Encode for use in JavaScript
+    
+        return view('template.header', $data) .
+               view('template_admin/statistik_kategori', $data) .
+               view('template.footer', $data);
     }
-
+    
     public function get_data_chart_kategori() {
         DB::statement("SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));");
         $data['per_kategori'] = DB::select("

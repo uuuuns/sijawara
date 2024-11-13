@@ -6,6 +6,19 @@
     <meta name="description" content="Edumel- Education Html Template by dreambuzz">
     <meta name="keywords" content="education,edumel,instructor,lms,online,instructor,dreambuzz,bootstrap,kindergarten,tutor,e learning">
     <meta name="author" content="dreambuzz">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' ; 
+        img-src      'self' 'unsafe-inline' 
+                      https://www.google.com/;
+        style-src     'self' 'unsafe-inline' 
+                      https://fonts.googleapis.com ;
+        script-src    'self' 'unsafe-inline'  
+                       https://www.google-analytics.com
+                       https://www.torrentpower.com; 
+        connect-src    'self' 
+                       https://google.com/
+                       https://www.google-analytics.com;
+        child-src 'self' https://www.google.com/;
+                         object-src 'self';"> 
 
     <title>{{ $title }}</title>
     <link rel="shortcut icon" href="<?= asset('assets_admin\images\logo\favicon_sijawara.svg') ?>">
