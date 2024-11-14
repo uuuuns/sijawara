@@ -119,8 +119,10 @@ class CourseController extends Controller
             'DATE_START'            => $req->input('date_start'),
             'DATE_END'              => $req->input('date_end'),
             'IS_PUBLIC'             => $req->input('is_public'),
-            'LOG_TIME'              => date('Y-m-d H:i:s')
+            'LOG_TIME'              => date('Y-m-d H:i:s'),
+            'SERTIF_IMAGE'          => $req->hasFile('sertif_image') ? FileUpload::S3($req->file('sertif_image'), 'SERTIF_IMAGE', 'Template-Certifiace-' . strtotime(now())) : null
         ];
+        
         if ($req->input('status') == 'on') {
             $activity['STATUS'] = 1;
         } else {
@@ -222,6 +224,7 @@ class CourseController extends Controller
                 a.DATE_END ,
                 a.STATUS ,
                 a.IS_PUBLIC ,
+                a.SERTIF_IMAGE ,
                 c.ID_COURSE ,
                 c.DESKRIPSI_COURSE ,
                 c.KUOTA_PESERTA ,
@@ -377,6 +380,10 @@ class CourseController extends Controller
 
             if (!empty($req->file('image_activity'))) {
                 $activity['IMAGE_ACTIVITY'] = FileUpload::S3($req->file('image_activity'), 'IMAGE_ACTIVITY', 'Image-Activity-' . strtotime(now()));
+            }
+
+            if (!empty($req->file('sertif_image'))) {
+                $activity['SERTIF_IMAGE'] = FileUpload::S3($req->file('sertif_image'), 'SERTIF_IMAGE', 'Sertificate-Template-' . strtotime(now()));
             }
 
             if ($req->input('status') == 'on') {

@@ -23,21 +23,27 @@ class Certificate extends Model
         return $this->db->affected_rows();
     }
 
-    public function generate($namaUser, $activity_name, $sertificate_no)
+    public function generate($namaUser, $activity_name, $sertificate_no, $template_link, $role, $date)
     {
         $file_pdf = strtoupper($namaUser . "_CERTIFICATE_" . $activity_name) . ".pdf";
         $paper = 'A4';
         $orientation = 'landscape';
 
         $path = 'assets/images/certificate_template.jpg';
+        if ($template_link != null) {
+            $path = $template_link;
+        }
+        
         $type = pathinfo($path, PATHINFO_EXTENSION);
         $getImage = file_get_contents($path);
         $data['IMAGE'] = 'data:image/' . $type . ';base64,' . base64_encode($getImage);
         
-        $data['NO_SERTIF'] = $sertificate_no;
-        $data['NAME'] = $namaUser;
-        $data['ACTIVITY'] = $activity_name;
-        $data['TYPE'] = explode("/", $sertificate_no)[1];
+        $data['NAME'] = ucwords(strtolower(trim($namaUser)));
+        $data['JUDUL'] = ucwords(strtolower(trim($activity_name)));
+        $data['ROLES'] = strtoupper($role); //PESERTA
+        $data['TGL_ACARA'] = $date; //25 Oktober 2024
+        $data['TGL_TTD'] = strtoupper($date); //MALANG, 25 OKTOBER 2024
+
         
         $html = view('pdf_template.sertifikat', $data)->render();
         $resPdf = PDFGenerator::generate($html, $file_pdf, $paper, $orientation);
