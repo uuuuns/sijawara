@@ -97,6 +97,18 @@
                             </div>
                         </div>
                         <div class="form-group row">
+                            <label class="col-sm-2 col-form-label control-label">Template Sertifikat <span
+                                    class="text-danger">*</span>
+                            </label>
+                            <div class="col-md-10">
+                                <div class="custom-file">
+                                    <input type="file" name="sertif_image" class="custom-file-input dropify"
+                                        accept=".jpg" data-allowed-file-extensions="jpg" required>
+                                    <small class="text-danger">* Hanya Masukkan file JPG dan Ukuran Template adalah Horizontal A4</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
                             <label class="col-sm-2 col-form-label control-label">Kode Sertifikat<span
                                     class="text-danger">*</span></label>
                             <div class="col-md-10">

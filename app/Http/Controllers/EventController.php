@@ -152,7 +152,8 @@ class EventController extends Controller
             'IMAGE_ACTIVITY' => FileUpload::S3($req->file('image_activity'), 'IMAGE_ACTIVITY', 'Image-Activity-' . strtotime(now())),
             'DATE_START' => $req->input('date_start'),
             'DATE_END' => $req->input('date_end'),
-            'LOG_TIME' => date('Y-m-d H:i:s')
+            'LOG_TIME' => date('Y-m-d H:i:s'),
+            'SERTIF_IMAGE' => $req->hasFile('sertif_image') ? FileUpload::S3($req->file('sertif_image'), 'SERTIF_IMAGE', 'Template-Certifiace-' . strtotime(now())) : null
         ];
 
         $event = [
@@ -191,6 +192,10 @@ class EventController extends Controller
 
         if (!empty($req->file('up_image_activity'))) {
             $activity['IMAGE_ACTIVITY'] = FileUpload::S3($req->file('up_image_activity'), 'IMAGE_ACTIVITY', 'Image-Activity-' . strtotime(now()));
+        }
+
+        if ($req->hasFile('up_sertif_image')) {
+            $activity['SERTIF_IMAGE'] = FileUpload::S3($req->file('up_sertif_image'), 'SERTIF_IMAGE', 'Template-Certifiace-' . strtotime(now()));
         }
 
         $event = [

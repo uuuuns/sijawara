@@ -155,7 +155,7 @@ class EventGuest extends Controller
 		if (!empty($data['event']->DATA_CHECKING) && empty($sertifCheck)) {
 			$bln = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'];
 			$sertif_number = $data['event']->ID_EVENT . '/' . (($data['event']->TYPE_ACTIVITY == 1) ? 'CRS' : 'EVT') . '/TBH/' . $bln[(date('m', strtotime($data['event']->DATE_START)) - 1)] . '/' . date('Y');
-			$sertif_path = $this->certificateModel->generate(session('user')[0]->get('NAME'), $data['event']->TITLE_ACTIVITY, $sertif_number);
+			$sertif_path = $this->certificateModel->generate(session('user')[0]->get('NAME'), $data['event']->TITLE_ACTIVITY, $sertif_number, $data['event']->SERTIF_IMAGE, "PESERTA", date('d F Y', strtotime($data['event']->DATE_START)));
 			$data_sertif = array(
 				"ID_USER" => session('user')[0]->get('ID_USER'),
 				"ID_ACTIVITY" => $id_activity,
@@ -164,10 +164,9 @@ class EventGuest extends Controller
 				"FILE_SERTIFIKAT" => $sertif_path,
 				"LOG_TIME" => date('Y-m-d H:i:s')
 			);
-			// $this->certificateModel->createCertificate($data_sertif);
 			DB::table('sertifikat_activity')->insert($data_sertif);
 
-			$data['sertif'] = $this->certificateModel->getCertificate($data_sertif);
+			$data['sertif'] = (object) $data_sertif;
 		}else{
 			$data['sertif'] = $sertifCheck;
 		}

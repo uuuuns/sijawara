@@ -1,21 +1,66 @@
 <?php
-defined('BASEPATH') or exit('No direct script access allowed');
 
+namespace App\Http\Controllers\guest_controller;
 use Aws\S3\S3Client;
+use App\Http\Controllers\Controller;
+use App\Models\User;
+use App\Models\PDFGenerator;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Models\FileUpload;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Session;
+use App\Mail\MailSender;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Response;
 
-class SertificateGuest extends Middleware
+class SertificateGuest extends Controller
 {
-	public $session_data;
-	function __construct()
-	{
-		parent::__construct();
-		$this->load->model(['Event', 'Course', 'Checkout']);
-        $this->load->library('pdfgenerator');
-        $this->load->library('S3Upload', NULL, 'S3');
-		// error_reporting(0);
-	}
+    public function generate()
+    {
+        $file_pdf = strtoupper("Tamarin Hamaji" . "_CERTIFICATE_" . "Fotografi Dalam 5 Menit") . ".pdf";
+        $paper = 'A4';
+        $orientation = 'landscape';
 
-    public function generate($namaUser, $activity_name, $sertificate_no)
+        // Set the certificate template path
+        $path = 'assets/images/certificate_template.jpg';
+
+        $type = pathinfo($path, PATHINFO_EXTENSION);
+        $getImage = file_get_contents($path);
+        $data['IMAGE'] = 'data:image/' . $type . ';base64,' . base64_encode($getImage);
+
+        // Set certificate details
+        $data['NAME'] = "Tamarin Hamaji";
+        $data['ACTIVITY'] = "Fotografi Dalam 5 Menit";
+        $data['ROLES'] = "PESERTA"; //PESERTA
+        $data['JUDUL'] = "Fotografi Dalam 5 Menit"; //Fotografi Dalam 5 Menit
+        $data['TEMA'] = "Menigkatkan Kreatifitas Dalam Fotografi"; //Menigkatkan Kreatifitas Dalam Fotografi
+        $data['TGL_ACARA'] = "25 Oktober 2024"; //25 Oktober 2024
+        $data['LAMA_ACARA'] = "2 jam pelajaran"; // 2 jam pelajaran 
+        $data['TGL_TTD'] = "MALANG, 25 OKTOBER 2024"; //MALANG, 25 OKTOBER 2024
+
+        // Render the HTML template for the certificate
+        $html = view('pdf_template.sertifikat', $data)->render();
+
+        // Generate the PDF
+        $resPdf = PDFGenerator::generate($html, $file_pdf, $paper, $orientation);
+
+        // Stream the PDF inline in the browser
+        return Response::stream(
+            function () use ($resPdf) {
+                echo $resPdf;
+            },
+            200,
+            [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'inline; filename="' . $file_pdf . '"'
+            ]
+        );
+    }
+
+    public function generate_old($namaUser, $activity_name, $sertificate_no)
     {
         $file_pdf = $namaUser . "_SERTIFIKAT.pdf";
 

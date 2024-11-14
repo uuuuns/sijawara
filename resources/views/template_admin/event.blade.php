@@ -127,6 +127,14 @@
                             <input type="datetime-local" class="form-control" name="date_end" required
                                 placeholder="Date End">
                         </div>
+                        <div class="form-group">
+                            <label>Template Sertifikat <span class="text-danger">*</span></label>
+                            <div class="custom-file">
+                            <input type="file" name="sertif_image" class="custom-file-input dropify"
+                                        accept=".jpg" data-allowed-file-extensions="jpg" required>
+                                <small class="text-danger">* Hanya Masukkan file JPG dan Ukuran Template adalah Horizontal A4</small>
+                            </div>
+                        </div>
                         <div class="form-group mb-3">
                             <label>Kode Sertifikat <span class="text-danger">*</span></label>
                             <input placeholder="Kosongi apabila tidak ada sertifikat" type="text" name="sertif_code"
@@ -177,7 +185,7 @@
                         </div>
                         <div class="form-group mb-3">
                             <label>Deskripsi Event</label>
-                            <textarea name="desc_event" id="desc_event"></textarea>
+                            <textarea name="desc_event" id="desc_event" required></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -224,19 +232,6 @@
                             <input placeholder="Title" type="text" name="up_title_activity" class="form-control"
                                 required>
                         </div>
-                        {{-- <div class="form-group mb-3">
-                            <label>Harga <span class="text-danger">*</span></label>
-                            <input type="number" class="form-control up_CurrencyInput" name="up_price_activity">
-                            <div class="col-md-5">
-                                <span class="d-flex align-items-center gap-2 mt-2">
-                                    <div class="switch m-r-10">
-                                        <input type="checkbox" id="up_setFree">
-                                        <label for="up_setFree"></label>
-                                    </div>
-                                    Gratis
-                                </span>
-                            </div>
-                        </div> --}}
                         <div class="form-group mb-3">
                             <label>Tanggal Mulai<span class="text-danger">*</span></label>
                             <input type="datetime-local" class="form-control" name="up_date_start"
@@ -246,6 +241,14 @@
                             <label>Tanggal Selesai<span class="text-danger">*</span></label>
                             <input type="datetime-local" class="form-control" name="up_date_end"
                                 placeholder="Date Start">
+                        </div>
+                        <div class="form-group">
+                            <label>Template Sertifikat <span class="text-danger">*</span></label>
+                            <div class="custom-file">
+                            <input type="file" name="up_sertif_image" class="custom-file-input dropify"
+                                        accept=".jpg" data-allowed-file-extensions="jpg">
+                            <small class="text-danger">* Hanya Masukkan file JPG dan Ukuran Template adalah Horizontal A4</small>
+                            </div>
                         </div>
                         <div class="form-group mb-3">
                             <label>Kode Sertifikat <span class="text-danger">*</span></label>
@@ -427,16 +430,19 @@
             var data = JSON.parse(viewData)
             var price = data.PRICE_ACTIVITY
             var cat = data.CATEGORY_EVENT
-            var img_sc = data.IMAGE_ACTIVITY;
-
-            // Load Image
-            var cover_book = $('input[name="up_image_activity"]').dropify();
-            cover_book = cover_book.data('dropify');
-            cover_book.resetPreview();
-            cover_book.clearElement();
-            cover_book.settings['defaultFile'] = img_sc;
-            cover_book.destroy();
-            cover_book.init();
+            console.log(data);
+            
+            function initializeDropify(inputName, fileUrl) {
+                var dropifyElement = $('input[name="' + inputName + '"]').dropify();
+                var instance = dropifyElement.data('dropify');
+                instance.resetPreview();
+                instance.clearElement();
+                instance.settings['defaultFile'] = fileUrl;
+                instance.destroy();
+                instance.init();
+            }
+            initializeDropify('up_image_activity', data.IMAGE_ACTIVITY);
+            initializeDropify('up_sertif_image', data.SERTIF_IMAGE);
 
             $('input[name="up_id_activity"]').val(data.ID_ACTIVITY)
             $('input[name="up_title_activity"]').val(data.TITLE_ACTIVITY)

@@ -71,6 +71,17 @@
                             </div>
                         </div>
                         <div class="form-group row">
+                            <label class="col-sm-2 col-form-label control-label">Template Sertifikat <span class="text-danger">*</span>
+                            </label>
+                            <div class="col-md-10">
+                                <div class="custom-file">
+                                    <input type="file" name="sertif_image" class="custom-file-input dropify"
+                                        accept=".jpg" data-allowed-file-extensions="jpg">
+                                    <small class="text-danger">* Hanya Masukkan file JPG dan Ukuran Template adalah Horizontal A4</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
                             <label class="col-sm-2 col-form-label control-label">Kode Sertifikat<span
                                     class="text-danger">*</span></label>
                             <div class="col-md-10">
@@ -170,6 +181,8 @@
     var limit = 0;
 
     var data = {!! $jsonData !!};
+    console.log(data);
+    
     var id_course = data.ID_COURSE;
     var id_act = data.ID_ACTIVITY;
 
@@ -183,6 +196,14 @@
     cover_book.settings['defaultFile'] = data.IMAGE_ACTIVITY;
     cover_book.destroy();
     cover_book.init();
+
+    var sertif_image = $('input[name="sertif_image"]').dropify();
+    sertif_image = sertif_image.data('dropify');
+    sertif_image.resetPreview();
+    sertif_image.clearElement();
+    sertif_image.settings['defaultFile'] = data.SERTIF_IMAGE;
+    sertif_image.destroy();
+    sertif_image.init();
 
 
     $('input[name="ID_ACTIVITY"]').val(id_act);

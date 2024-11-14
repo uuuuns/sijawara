@@ -6,105 +6,30 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Certificate</title>
-    <style>
-        @page {
-            margin: 0;
-            size: a4 landscape;
-        }
-
-        html,
-        body {
-            font-family: Arial, Helvetica;
-            font-size: 14px;
-        }
-
-        .box {
-            position: absolute;
-        }
-
-        .image img {
-            width: 1122px;
-            height: 793px;
-        }
-
-        .text-align-center {
-            text-align: center;
-        }
-
-        .text {
-            width: 580px;
-        }
-
-        .number {
-            font-size: 22px;
-            font-weight: bold;
-            color: black;
-            word-wrap: break-word;
-            margin-top: -3%;
-        }
-
-        .box .valign-middle .name {
-            padding: 19% 0px;
-        }
-
-        .name {
-            font-size: 29px;
-            font-weight: bold;
-            color: black;
-            line-height: 121%;
-        }
-
-        .description {
-            font-size: 20px;
-            font-weight: lighter;
-            margin-top: 30%;
-        }
-
-        .detail-description {
-            font-size: 25px;
-            font-weight: bold;
-            color: black;
-            word-wrap: break-word;
-            margin: auto;
-        }
-
-        .valign-middle {
-            vertical-align: middle;
-            color: black;
-            padding: 40% 45%;
-        }
-    </style>
 </head>
 
-<body>
-    <div class="wrapper-page">
-        <div class="box">
+<style>
+    @page {
+            margin: 0;
+            size: 1280px 720px;
+        }
+    
+</style>
+
+<body style="font-family: Poppins, sans-serif; font-size: 14px; margin: 0;">
+    <div class="wrapper-page" style="position: relative;">
+        <div class="box" style="position: absolute;">
             <div class="image">
-                <img src="<?= $IMAGE ?>">
+                <img src="<?= $IMAGE ?>" style="width: 1280px; height: 720px;">
             </div>
         </div>
 
-        <div class="box">
+        <div class="box" style="position: absolute;">
             <div class="table-responsive">
-                <table class="valign-middle">
+                <table class="valign-middle" style="width: 100%; vertical-align: middle; color: black; padding: 48% 56%;">
                     <tr>
-                        <th class="text-align-center">
-                            <div class="text number">
-                                <?= $NO_SERTIF ?>
-                            </div>
-                        </th>
-                    </tr>
-                </table>
-            </div>
-        </div>
-
-
-        <div class="box">
-            <div class="table-responsive">
-                <table class="valign-middle">
-                    <tr>
-                        <th class="text-align-center">
-                            <div class="text name">
+                        <th class="text-align-center" style="text-align: center;">
+                            <div class="text name" style="width: 580px; font-size: 29px; font-weight: bold; color: black; line-height: 121%; padding: 1% 0px;">
                                 <?= $NAME ?>
                             </div>
                         </th>
@@ -113,25 +38,23 @@
             </div>
         </div>
 
-        <div class="box">
-            <div class="table-responsive">
-                <table class="valign-middle">
-                    <tr>
-                        <th class="text-align-center">
-                            <div class="text description">
-                                Congratulations on joining the <?= ($TYPE == "CRS") ? "course" : "event"; ?> entitled
-                            </div>
-                        </th>
-                    </tr>
-                    <tr>
-                        <th class="text-align-center">
-                            <div class="text detail-description">
-                                <?= $ACTIVITY ?>
-                            </div>
-                        </th>
-                    </tr>
-                </table>
+        <div class="box" style=" font-family: Poppins, sans-serif; position: absolute; margin-left: 140px;">
+            <div style="text-align: left; font-size: 15px; margin-top: 370px; max-width: 650px;">
+                <div style="font-size: 25px; font-weight: bold;">
+                    <?= $ROLES?>
+                </div>
+                dalam kegiatan <span style="font-weight: bold"><?= $JUDUL?></span> dengan tema
+                <br>
+                <span style="font-weight: bold">Meningkatkan Kreatifitasan Fotografi</span> yang diselenggarakan oleh
+                <br>
+                UPT Pelatihan Koperasi dan UKM Provinsi Jawa Timur, 
+                <br>
+                pada tanggal <?= $TGL_ACARA?>
             </div>
+        </div>
+
+        <div class="box" style="position: absolute; margin-left: 875px; font-size: 13px; font-weight: bold; margin-top: 375;">
+            MALANG, <?= $TGL_TTD?>
         </div>
     </div>
 </body>
