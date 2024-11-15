@@ -107,8 +107,8 @@
                 Swal.showLoading();
             }
         });
-
-        if ($('#file').val() === '') {
+        let pp = "<?= $data_personal->FOTO_PROFILE?>";
+        if ($('#file').val() === '' && pp == null) {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
