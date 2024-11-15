@@ -55,6 +55,11 @@ Route::post('resetPassword', 'AuthController@resetPassword');
 
 //VERIFICATION ACCOUNT
 Route::get('verification/confirm', 'AuthController@verifAccount');
+//VERIFICATION ACCOUNT
+Route::get('verification/{any}', 'guest_controller\SertificateGuest@verifSertif');
+
+//SERTIFIKAT
+// Route::get('sertifikat', 'guest_controller\SertificateGuest@generate');
 
 // 1 Admin
 Route::middleware(['usersession:4,1'])->group(function () {

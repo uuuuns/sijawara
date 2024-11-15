@@ -144,7 +144,18 @@ class CourseGuest extends Controller
 		if ($data['tot_proggress'] == 100 && empty($sertifCheck)) {
 			$bln = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'];
 			$sertif_number = $data['course']->ID_COURSE . '/' . (($data['course']->TYPE_ACTIVITY == 1) ? 'CRS' : 'EVT') . '/TBH/' . $bln[(date('m', strtotime($data['course']->DATE_START)) - 1)] . '/' . date('Y');
-			$sertif_path = $this->certificateModel->generate(session('user')[0]->get('NAME'), $data['course']->TITLE_ACTIVITY, $sertif_number, $data['course']->SERTIF_IMAGE, "PESERTA", date('d F Y', strtotime($data['course']->DATE_START)));
+			
+			$data_sertif = array(
+				"ID_USER" => session('user')[0]->get('ID_USER'),
+				"ID_ACTIVITY" => $data['id_activity'],
+				"NO_SERTIFIKAT" => $sertif_number,
+				"FILE_SERTIFIKAT" => null,
+				"JENIS_SERTIFIKAT" => $data['event']->TYPE_ACTIVITY,
+				"LOG_TIME" => date('Y-m-d H:i:s')
+			);
+			$id_sertif = DB::table('sertifikat_activity')->insertGetId($data_sertif);
+			
+			$sertif_path = $this->certificateModel->generate(session('user')[0]->get('NAME'), $data['course']->TITLE_ACTIVITY, $sertif_number, $data['course']->SERTIF_IMAGE, "PESERTA", date('d F Y', strtotime($data['course']->DATE_START)), $id_sertif);
 			$data_sertif = array(
 				"ID_USER" => session('user')[0]->get('ID_USER'),
 				"ID_ACTIVITY" => $data['id_activity'],
@@ -153,8 +164,8 @@ class CourseGuest extends Controller
 				"FILE_SERTIFIKAT" => $sertif_path,
 				"LOG_TIME" => date('Y-m-d H:i:s')
 			);
-
-			DB::table('sertifikat_activity')->insert($data_sertif);
+			DB::table('sertifikat_activity')->where('ID_SERTIFIKAT', $id_sertif)->update($data_sertif);
+			
 			$data['sertif'] = (object) $data_sertif;
 		} else {
 			$data['sertif'] = $sertifCheck;
