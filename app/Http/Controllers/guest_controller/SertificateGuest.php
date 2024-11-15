@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\URL;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Models\FileUpload;
+use Illuminate\Support\Facades\Crypt;
 
 class SertificateGuest extends Controller
 {
@@ -55,7 +56,7 @@ class SertificateGuest extends Controller
 
     public function verifSertif(Request $request) {
         $data['title'] = 'Verifikasi Sertifikat';
-        $id_sertif = $request->ID_SERTIFIKAT;
+        $id_sertif = Crypt::decryptString($request->ID_SERTIFIKAT);
 
         $data['sertifikat'] = DB::selectOne("
             SELECT 
