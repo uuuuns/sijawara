@@ -58,7 +58,7 @@ class AuthController extends Controller
             WHERE
                 user.EMAIL = '" . $req->input('email') . "'
             AND
-                user.migrations = 1
+                user.migrations = 2
         ");
 
         if ($auth_migration != null) {
@@ -353,7 +353,7 @@ class AuthController extends Controller
     {
         $formDataReset = [
             'PASS' => hash('sha256', md5($req->input('password'))),
-            'migrations' => 0
+            'migrations' => 1
         ];
 
         DB::table('user')->where('ID_USER', '=', $req->input('id_user'))->update($formDataReset);

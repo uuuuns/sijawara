@@ -3,6 +3,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Illuminate\Support\Facades\URL;
 use App\Models\FileUpload;
 class Certificate extends Model
 {
@@ -23,7 +25,7 @@ class Certificate extends Model
         return $this->db->affected_rows();
     }
 
-    public function generate($namaUser, $activity_name, $sertificate_no, $template_link, $role, $date)
+    public function generate($namaUser, $activity_name, $sertificate_no, $template_link, $role, $date, $id_sertif)
     {
         $file_pdf = strtoupper($namaUser . "_CERTIFICATE_" . $activity_name) . ".pdf";
         $paper = 'A4';
@@ -43,7 +45,7 @@ class Certificate extends Model
         $data['ROLES'] = strtoupper($role); //PESERTA
         $data['TGL_ACARA'] = $date; //25 Oktober 2024
         $data['TGL_TTD'] = strtoupper($date); //MALANG, 25 OKTOBER 2024
-
+        $data['QR'] = base64_encode(QrCode::format("svg")->size(516)->generate(URL::to('/').'/verification/sertifikat?ID_SERTIFIKAT='.$id_sertif));
         
         $html = view('pdf_template.sertifikat', $data)->render();
         $resPdf = PDFGenerator::generate($html, $file_pdf, $paper, $orientation);
