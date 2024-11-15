@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\DB;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Facades\URL;
 use App\Models\FileUpload;
+use Illuminate\Support\Facades\Crypt;
 class Certificate extends Model
 {
     public function getCertificate($con)
@@ -27,6 +28,7 @@ class Certificate extends Model
 
     public function generate($namaUser, $activity_name, $sertificate_no, $template_link, $role, $date, $id_sertif)
     {
+        $encryptedId = Crypt::encryptString($id_sertif);
         $file_pdf = strtoupper($namaUser . "_CERTIFICATE_" . $activity_name) . ".pdf";
         $paper = 'A4';
         $orientation = 'landscape';
@@ -45,7 +47,7 @@ class Certificate extends Model
         $data['ROLES'] = strtoupper($role); //PESERTA
         $data['TGL_ACARA'] = $date; //25 Oktober 2024
         $data['TGL_TTD'] = strtoupper($date); //MALANG, 25 OKTOBER 2024
-        $data['QR'] = base64_encode(QrCode::format("svg")->size(516)->generate(URL::to('/').'/verification/sertifikat?ID_SERTIFIKAT='.$id_sertif));
+        $data['QR'] = base64_encode(QrCode::format("svg")->size(516)->generate(URL::to('/').'/verification/sertifikat?ID_SERTIFIKAT='.$encryptedId));
         
         $html = view('pdf_template.sertifikat', $data)->render();
         $resPdf = PDFGenerator::generate($html, $file_pdf, $paper, $orientation);
