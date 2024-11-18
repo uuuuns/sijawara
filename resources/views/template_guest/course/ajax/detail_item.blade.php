@@ -24,7 +24,7 @@
                         );
                     } else {
                         $('#document-frame').html(
-                            `<iframe src="${file}#toolbar=0&navpanes=0" style="width:600px; height:500px;" frameborder="0"></iframe>`
+                            `<iframe src="https://docs.google.com/gview?embedded=true&url=${file}" style="width:600px; height:500px;" frameborder="0" sandbox="allow-same-origin allow-scripts"></iframe>`
                         );
                     }
                 }
