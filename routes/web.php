@@ -80,7 +80,7 @@ Route::middleware(['usersession:4,1'])->group(function () {
 
     Route::get('user', 'UserController@index');
     Route::post('user/store', 'UserController@store');
-    Route::post('user/update', 'UserController@update');
+    Route::post('update_user', 'UserController@update_profile');
     Route::post('user/delete', 'UserController@delete');
 
     Route::get('instructor', 'InstructorController@index');

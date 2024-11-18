@@ -19,12 +19,12 @@
                     <h3 class="fw-bold" style="color:#45b104">Users</h3>
                 </div>
                 <div class="col-md-6 d-flex justify-content-md-end justify-content-end align-items-center">
-                    <div class="mt-3 mt-md-0">
+                    <!-- <div class="mt-3 mt-md-0">
                         <button type="button" class="btn btn-primary btn-sm-2 rounded" onclick="openaddModal()">
                             <i class="mdi mdi-plus me-1"></i>
                             Tambah User</button>
                     </div>
-                </div>
+                </div> -->
             </div>
             <div class="mt-5">
                 <div class="table-responsive">
@@ -52,9 +52,16 @@
                                         <button type="button" onclick="location.href='user/detail_pengambilan?id_user=<?=$item->ID_USER?>'" class="btn btn-dark px-4 py-2 rounded">
                                             <i class="bx bx-list-ul font-size-16 align-middle"></i>
                                         </button>
+                                        @if (session('user')[0]['ID_ROLE'] == 1)
+                                        <button type="button" onclick="openUpdateModal(`<?= htmlentities(json_encode($item)) ?>`)" class="btn btn-warning px-4 py-2 rounded">
+                                            <i class="bx bx-edit-alt font-size-16 align-middle"></i>
+                                        </button>
+                                        @endif
+                                        @if (session('user')[0]['ID_ROLE'] == 4)
                                         <button type="button" onclick="openviewModal(`<?= htmlentities(json_encode($item)) ?>`)" class="btn btn-warning px-4 py-2 rounded">
                                             <i class="bx bx-edit-alt font-size-16 align-middle"></i>
                                         </button>
+                                        @endif
                                         <button type="button" onclick="opendeleteModal('<?= $item->ID_USER?>')" class="btn btn-danger px-4 py-2 rounded">
                                             <i class="bx bx-trash font-size-16 align-middle"></i>
                                         </button>
@@ -195,65 +202,160 @@
 </div>
 {{-- End Modal Add --}}
 
-{{-- Start Modal Update --}}
-<div class="modal" id="updateModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
+{{-- Start Modal Detail --}}
+<div class="modal fade" id="userDetailModal" tabindex="-1" role="dialog" aria-labelledby="userDetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Detail User</h4>
+                <h5 class="modal-title" id="userDetailModalLabel">Detail User</h5>
                 <button type="button" class="btn px-2 py-0" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true" class="fs-3">&times;</span>
                 </button>
             </div>
-            <form id="form-update" action="user/update" method="POST" enctype="multipart/form-data">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-4 d-flex justify-content-center">
+                        <div class="nav-link rounded-circle">
+                            <img class="nav-link rounded-circle mb-2" src='assets/images/person-circle.svg' id="preview" style="height:150px; width:150px; object-fit: cover;" />
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <h5 id="userName" class="mb-3"></h5>
+                        <p class="mb-0">Email: <span id="userEmail"></span></p>
+                        <p class="mb-0">Telepon: <span id="userTelp"></span></p>
+                        <p class="mb-0">Jenis Kelamin: <span id="userJK"></span></p>
+                        <p class="mb-0">NIK: <span id="userNIK"></span></p>
+                        <p class="mb-0">Tanggal Lahir: <span id="userTglLahir"></span></p>
+                        <p class="mb-0">Tempat Lahir: <span id="userTempatLahir"></span></p>
+                        <p class="mb-0">ID Kota: <span id="userIdKota"></span></p>
+                        <p class="mb-0">ID Provinsi: <span id="userIdProvinsi"></span></p>
+                        <p class="mb-0">Alamat: <span id="userAlamat"></span></p>
+                        <p class="mb-0">Jenis Instansi: <span id="userJenisInstansi"></span></p>
+                        <p class="mb-0">Nama Instansi: <span id="userInstansi"></span></p>
+                        <p class="mb-0">Jabatan: <span id="userJabatan"></span></p>
+                        <p class="mb-0">Status Aktif: <span id="userStatus"></span></p>
+                        <p class="mb-0">Status Ban: <span id="userIsDelete"></span></p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" onclick="jadikanInstruktur()" class="btn btn-primary rounded">Jadikan Instruktur</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{-- End Modal Detal --}}
+
+{{-- Start Modal Update --}}
+<div class="modal fade" id="updateUserModal" tabindex="-1" role="dialog" aria-labelledby="updateUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ModalLabel">Update Detail User</h5>
+                <button type="button" class="btn px-2 py-0" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="fs-3">&times;</span>
+                </button>
+            </div>
+            <form id="updateUserForm" action="update_user" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
-                    <div class="modal-body">
-                        <input type="hidden" name="up_id_user" value="" readonly>
-                        <div class="form-group">
-                            <label>Foto Profil</label>
-                            <div class="custom-file photo">
-                                <input type="file" name="up_foto_profile" class="custom-file-input dropify" data-allowed-file-extensions="png jpg jpeg" data-max-file-size="1M" data-default-file="">
-                            </div>
-                        </div>
-                        <div class="form-group mb-3">
-                            <label>Nama Lengkap</label>
-                            <input placeholder="Nama Lengkap" type="text" name="up_name" class="form-control" required>
-                        </div>
-                        <div class="form-group mb-3">
-                            <label>Jenis Kelamin</label>
-                            <div class="col-md-5">
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="up_jk" id="inlineRadio11" value="Laki-Laki" checked>
-                                    <label class="form-check-label" for="inlineRadio11">Laki-laki</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="up_jk" id="inlineRadio22" value="Perempuan">
-                                    <label class="form-check-label" for="inlineRadio22">Perempuan</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group mb-3">
-                            <label>Email</label>
-                            <input placeholder="Email@gmail.com" type="text" name="up_email" class="form-control" required>
-                        </div>
-                        <div class="form-group mb-3">
-                            <label>Nomor HP</label>
-                            <input placeholder="085141xxxx" type="text" name="up_contact" class="form-control" required>
-                        </div>
-                        <div class="form-group mb-3">
-                            <button type="button" class="btn btn-danger" id="cancel">Batalkan</button>
-                        </div>
+                    <div class="nav-link rounded-circle d-flex justify-content-center">
+                        <input type="file" id="file" name="foto_profile" accept="image/jpeg, image/png" style="display: none;">
+                        <button type="button" id="choose-button" style="border: none; background-color: transparent; position: relative;">
+                            <i class="fa fa-pencil" hidden style="position: absolute; bottom: 140px; right: 30px; font-size: 20px; color: #000; background-color: #a7abb5; border-radius: 50%; padding: 10px;"></i>
+                            <img class="nav-link rounded-circle mb-2" src="<?= (!empty($data_personal->FOTO_PROFILE) ? $data_personal->FOTO_PROFILE : 'assets/images/person-circle.svg') ?>" id="up_preview" style="height:150px; width:150px; object-fit: cover;" />
+                        </button>
+                    </div>
+                    <input type="hidden" class="form-control" name="up_userId" id="up_userId" value="12345" readonly>
+                    <div class="form-group">
+                        <label for="userName">Nama</label>
+                        <input type="text" class="form-control" name="up_userName" id="up_userName" value="John Doe">
+                    </div>
+                    <div class="form-group">
+                        <label for="userEmail">Email</label>
+                        <input type="email" class="form-control" name="up_userEmail" id="up_userEmail" value="john.doe@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="userTelp">Telepon</label>
+                        <input type="text" class="form-control" name="up_userTelp" id="up_userTelp" value="08123456789">
+                    </div>
+                    <div class="form-group">
+                        <label for="userJK">Jenis Kelamin</label>
+                        <select class="form-select" name="up_userJK" id="up_userJK">
+                            <option value="Laki-Laki">Laki-laki</option>
+                            <option value="Perempuan">Perempuan</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="userNIK">NIK</label>
+                        <input type="text" class="form-control" name="up_userNIK" id="up_userNIK" value="1234567890123456">
+                    </div>
+                    <div class="form-group">
+                        <label for="userTglLahir">Tanggal Lahir</label>
+                        <input type="date" class="form-control" name="up_userTglLahir" id="up_userTglLahir" value="2000-01-01">
+                    </div>
+                    <div class="form-group">
+                        <label for="userTempatLahir">Tempat Lahir</label>
+                        <input type="text" class="form-control" name="up_userTempatLahir" id="up_userTempatLahir" value="Jakarta">
+                    </div>
+                    <div class="form-group">
+                        <label for="userIdProvinsi">Provinsi</label>
+                        <select class="form-select woocommerce-Input woocommerce-Input--text provinsi" name="up_userIdProvinsi" id="up_userIdProvinsi" required>
+                        <option disabled value="" {{empty($data_personal->ID_PROVINSI) ? 'selected' : ''}}>Pilih Provinsi...</option>
+                            @foreach ($provinsi as $item)
+                                <option value="{{$item->id_provinsi}}">{{$item->nama_province}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="userIdKota">Kota</label>
+                        <select class="form-select woocommerce-Input woocommerce-Input--text kota" name="up_userIdKota" id="up_userIdKota" required>
+                            <option disabled value="" {{empty($data_personal->ID_PROVINSI) ? 'selected' : ''}}>Pilih Kota...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="userAlamat">Alamat</label>
+                        <textarea class="form-control" name="up_userAlamat" id="up_userAlamat">Jl. Contoh No. 1</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="userInstansi">Nama Instansi</label>
+                        <input type="text" class="form-control" name="up_userInstansi" id="up_userInstansi" value="Instansi Contoh">
+                    </div>
+                    <div class="form-group">
+                        <label for="userJabatan">Jabatan</label>
+                        <input type="text" class="form-control" name="up_userJabatan" id="up_userJabatan" value="Manager">
+                    </div>
+                    <div class="form-group">
+                        <label for="userJenisInstansi">Jenis Instansi</label>
+                        <select class="form-select" id="up_userJenisInstansi" name="up_userJenisInstansi" placeholder="Pilih Jenis Instansi">
+                            <option></option>
+                            <option value="UKM">UKM</option>
+                            <option value="KOPERASI">KOPERASI</option>
+                            <option value="INSTANSI">INSTANSI</option>
+                            <option value="UMUM">UMUM</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="userStatus">Status Aktif</label>
+                        <select class="form-select" name="up_userStatus" id="up_userStatus">
+                            <option value="1" selected>Aktif</option>
+                            <option value="0">Tidak Aktif</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="user IsDelete">Status Ban</label>
+                        <select class="form-select" name="up_userIsDelete" id="up_userIsDelete">
+                            <option value="0" selected>Tidak</option>
+                            <option value="1">Ya</option>
+                        </select>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    @if (session('user')[0]['ID_ROLE'] == 1 || session('user')[0]['ID_ROLE'] == 4)
-                        <button type="button" onclick="jadikanInstruktur()" class="btn btn-primary rounded">Jadikan Instruktur</button>
-                    @endif
-                    @if (session('user')[0]['ID_ROLE'] == 1)
-                        <button type="button" onclick="jadikanAdmin()" class="btn btn-primary rounded">Jadikan Admin</button>
-                    @endif
-                    <button type="submit" class="btn btn-primary rounded">Simpan Perubahan</button>
+                    <button type="button" class="btn btn-primary" onclick="jadikanInstruktur()">Jadikan Instruktur</button>
+                    <button type="button" class="btn btn-primary" onclick="jadikanAdmin()">Jadikan Admin</button>
+                    <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
                 </div>
             </form>
         </div>
@@ -294,29 +396,6 @@
     const password = document.querySelector("#password");
     const password2 = document.querySelector("#cnfirm_password");
 
-    const semesterInput = document.getElementById('semester');
-    const semesterInput2 = document.getElementById('up_semester');
-    const radioGraduatedYes = document.getElementById('inlineRadio4');
-    const radioGraduatedNo = document.getElementById('inlineRadio3');
-    const radioGraduatedYes2 = document.getElementById('inlineRadio44');
-    const radioGraduatedNo2 = document.getElementById('inlineRadio33');
-
-    $('#cancel').hide();
-
-    $('#ganti').click(function(e) {
-        $(this).hide();
-        $('#cancel').show();
-        $('.show-file').hide();
-        $('.hidden').show();
-    });
-
-    $('#cancel').click(function(e) {
-        $(this).hide();
-        $('#ganti').show();
-        $('.show-file').show();
-        $('.hidden').hide();
-    });
-
     function validatePassword() {
         if (password.value != password2.value) {
             password2.setCustomValidity("Passwords Don't Match");
@@ -325,43 +404,88 @@
         }
     }
 
-    function toggleSemesterReadonly() {
-        if (radioGraduatedYes.checked || radioGraduatedYes2.checked) {
-            semesterInput.setAttribute('readonly', 'readonly');
-            semesterInput2.setAttribute('readonly', 'readonly');
-            $('#semester').val('0')
-            $('#up_semester').val('0')
-        } else {
-            semesterInput.removeAttribute('readonly');
-            semesterInput2.removeAttribute('readonly');
-            $('#semester').val('')
-            $('#up_semester').val('')
-        }
-    }
-
-    toggleSemesterReadonly();
-
-    radioGraduatedYes.addEventListener('change', toggleSemesterReadonly);
-    radioGraduatedNo.addEventListener('change', toggleSemesterReadonly);
-    radioGraduatedYes2.addEventListener('change', toggleSemesterReadonly);
-    radioGraduatedNo2.addEventListener('change', toggleSemesterReadonly);
-
     function openaddModal() {
         $('#addModal').modal('show')
     }
 
     function openviewModal(viewData) {
+        var data = JSON.parse(viewData);
+
+        // Set user details
+        $('#userName').text('Nama: ' + data.NAME);
+        $('#userEmail').text(data.EMAIL);
+        $('#userTelp').text(data.TELP);
+        $('#userJK').text(data.JK);
+        $('#userNIK').text(data.NIK);
+        $('#userAlamat').text(data.ALAMAT);
+        $('#userTglLahir').text(data.TGL_LAHIR);
+        $('#userTempatLahir').text(data.TEMPAT_LAHIR);
+        $('#userInstansi').text(data.NAMA_INSTANSI);
+        $('#userJabatan').text(data.JABATAN);
+        $('#userJenisInstansi').text(data.JENIS_INSTANSI);
+        
+        if (data.STATUS == 1) {
+            $('#userStatus').text('Aktif').attr('class', 'badge bg-success');
+        } else {
+            $('#userStatus').text('Tidak Aktif').attr('class', 'badge bg-danger');
+        }
+        
+        if (data.IS_DELETE == 0) {
+            $('#userIsDelete').text('Tidak Di Ban').attr('class', 'badge bg-success');
+        } else {
+            $('#userIsDelete').text('Di Banned').attr('class', 'badge bg-danger');
+        }
+
+        $('#userIdKota').text(data.nama_kota);
+        $('#userIdProvinsi').text(data.nama_province);
+        $('#preview').attr('src', (data.FOTO_PROFILE == null) ? 'assets/images/person-circle.svg' : data.FOTO_PROFILE);
+
+        $('#userDetailModal').modal('show');
+    }
+
+    function openUpdateModal(viewData) {
         var data = JSON.parse(viewData)
-        $('input[name="up_id_user"]').val(data.ID_USER)
-        $('input[name="up_name"]').val(data.NAME)
-        $('input[name="up_email"]').val(data.EMAIL)
-        $('input[name="up_contact"]').val(data.TELP)
-        $('input[name="up_jk"][value="' + data.JK + '"]').prop('checked', true);
-        $('#updateModal').modal('show')
+
+        $.ajax({
+            url: 'get-kota-option',
+            type: 'POST',
+            data: {
+                _token: '{{ csrf_token() }}',
+                id: data.ID_PROVINSI ?? 'null',
+                id_kota: 'null'
+            },
+            success: function(response) {
+                $('#up_userIdKota').empty().append('<option disabled value="">Pilih Kota...</option>');
+
+                $.each(response, function(index, value) {
+                    $('#up_userIdKota').append(
+                        $('<option></option>').val(value.id_kota).text(value.nama_kota)
+                    );
+                });
+                $('#up_userIdKota').val(data.ID_KOTA)
+                
+            }
+        });
+        $('#up_userId').val(data.ID_USER)
+        $('#up_userName').val(data.NAME)
+        $('#up_userEmail').val(data.EMAIL)
+        $('#up_userTelp').val(data.TELP)
+        $('#up_userJK').val(data.JK)
+        $('#up_userNIK').val(data.NIK)
+        $('#up_userAlamat').val(data.ALAMAT)
+        $('#up_userTglLahir').val(data.TGL_LAHIR)
+        $('#up_userTempatLahir').val(data.TEMPAT_LAHIR)
+        $('#up_userInstansi').val(data.NAMA_INSTANSI)
+        $('#up_userJabatan').val(data.JABATAN)
+        $('#up_userJenisInstansi').val(data.JENIS_INSTANSI)
+        $('#up_userStatus').val(data.STATUS)
+        $('#up_userIsDelete').val(data.IS_DELETE)
+        $('#up_userIdProvinsi').val(data.ID_PROVINSI)
+        $('#up_preview').attr('src', (data.FOTO_PROFILE == null) ? 'assets/images/person-circle.svg' : data.FOTO_PROFILE)
+        $('#updateUserModal').modal('show')
     }
 
     function opendeleteModal(id_user) {
-        console.log(id_user);
         $('input[name="del_id_user"]').val(id_user)
         $('#deleteModal').modal('show')
     }
@@ -387,6 +511,7 @@
         })
     
     }
+    
     function jadikanInstruktur() {
         var id_user = $('input[name="up_id_user"]').val()
         var csrfToken = $('meta[name="csrf-token"]').attr('content');
@@ -407,6 +532,24 @@
             }
         })
     }
+    
+    $('#choose-button').click(function() {
+        $('#file').click();
+    });
+
+    $('#file').change(function() {
+        var file = this.files[0];
+        if (file.type.match(/image.*/)) {
+            var reader = new FileReader();
+            reader.onload = function(event) {
+                var dataURL = event.target.result;
+                $('#up_preview').attr('src', dataURL);
+            };
+            reader.readAsDataURL(file);
+        } else {
+            $('#up_preview').empty();
+        }
+    });
 
     $(document).ready(function() {
         $('.dropify').dropify({
@@ -420,3 +563,23 @@
     });
 </script>
 @endsection
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

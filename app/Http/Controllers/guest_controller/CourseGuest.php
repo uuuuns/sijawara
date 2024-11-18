@@ -150,7 +150,7 @@ class CourseGuest extends Controller
 				"ID_ACTIVITY" => $data['id_activity'],
 				"NO_SERTIFIKAT" => $sertif_number,
 				"FILE_SERTIFIKAT" => null,
-				"JENIS_SERTIFIKAT" => $data['event']->TYPE_ACTIVITY,
+				"JENIS_SERTIFIKAT" => $data['course']->TYPE_ACTIVITY,
 				"LOG_TIME" => date('Y-m-d H:i:s')
 			);
 			$id_sertif = DB::table('sertifikat_activity')->insertGetId($data_sertif);

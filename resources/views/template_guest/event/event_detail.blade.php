@@ -215,29 +215,28 @@
                 <h4 class="mb-4">Event Lainnya</h4>
                 <div class="row course-gallery ">
                     <?php foreach ($other_event as $item) : ?>
-                    <div class="course-item cat1 cat5 col-lg-6 col-md-6">
-                        <div class="px-0 px-sm-3">
-                            <div class="single-course style-2 bg-shade border-0">
-                                <div class="row g-0 align-items-center">
-                                    <div class="col-xl-5">
-                                        <div class="course-thumb"
-                                            style="min-height: 150px !important;background:url(<?= str_replace(' ', '%20', $item->IMAGE_ACTIVITY) ?>)">
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-7">
-                                        <div class="course-content">
-                                            <div class="course-price">
-                                                <?= date_format(date_create($item->LOG_TIME), 'j F Y') ?></div>
-                                            <h3 class="course-title"> <a
-                                                    href="<?= 'event/detail/' . preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $item->TITLE_ACTIVITY)) . '?id_activity=' . $item->ID_ACTIVITY ?>"><?= $item->TITLE_ACTIVITY ?>
-                                                </a> </h3>
+                        <div class="course-item cat1 cat5 col-lg-6 col-md-6">
+                            <a href="<?= url('event/detail/' . preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $item->TITLE_ACTIVITY)) . '?id_activity=' . $item->ID_ACTIVITY) ?>">
+                                <div class="px-0 px-sm-3">
+                                    <div class="single-course style-2 bg-shade border-0">
+                                        <div class="row g-0 align-items-center">
+                                            <div class="col-xl-5">
+                                                <div class="course-thumb"
+                                                    style="min-height: 150px !important;background:url(<?= str_replace(' ', '%20', $item->IMAGE_ACTIVITY) ?>)">
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-7">
+                                                <div class="course-content">
+                                                    <div class="course-price">
+                                                        <?= date_format(date_create($item->LOG_TIME), 'j F Y') ?></div>
+                                                    <h3 class="course-title"> <?= $item->TITLE_ACTIVITY ?> </h3>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </a>
                         </div>
-
-                    </div>
                     <?php endforeach; ?>
                 </div>
             </div>
