@@ -43,9 +43,7 @@
                 <div style="font-size: 25px; font-weight: bold;">
                     <?= $ROLES?>
                 </div>
-                dalam kegiatan <span style="font-weight: bold"><?= $JUDUL?></span> dengan tema
-                <br>
-                <span style="font-weight: bold">Meningkatkan Kreatifitasan Fotografi</span> yang diselenggarakan oleh
+                dalam kegiatan <span style="font-weight: bold"><?= $JUDUL?></span> yang diselenggarakan oleh
                 <br>
                 UPT Pelatihan Koperasi dan UKM Provinsi Jawa Timur, 
                 <br>

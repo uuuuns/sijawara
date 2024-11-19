@@ -183,7 +183,7 @@
               @endforeach
             </select>
           </div>
-          <div class="mb-3 kota" hidden>
+          <div class="mb-3" id="div_kota">
             
           </div>
           <div class="d-flex justify-content-end">
@@ -289,24 +289,6 @@
         @endif
     });
 
-    $('#provinsi').change(function() {
-        let id = $(this).val();
-        let id_kota = {{ $data_ukm->id_kota ?? 'null' }};
-        $.ajax({
-            url: "get-kota",
-            type: "POST",
-            data: {
-                id: id,
-                id_kota: id_kota,
-                _token: "{{ csrf_token() }}"
-            },
-            success: function(data) {
-                $('.kota').show();
-                $('.kota').html(data);
-            }
-        });
-    });
-
     function formatCurrency(num) {
         return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     }
@@ -366,8 +348,9 @@
                 _token: "{{ csrf_token() }}"
             },
             success: function(data) {
-                $('.kota').show();  // Better readability than removeAttr('hidden')
-                $('.kota').html(data);
+                $('#div_kota').show();
+                $('#div_kota').empty();
+                $('#div_kota').html(data);
             }
         });
     });
@@ -385,8 +368,9 @@
                 _token: "{{ csrf_token() }}"
             },
             success: function(data) {
-                $('.kota').show();
-                $('.kota').html(data);
+              $('#div_kota').show();
+              $('#div_kota').empty();
+              $('#div_kota').html(data);
             }
         });
       });

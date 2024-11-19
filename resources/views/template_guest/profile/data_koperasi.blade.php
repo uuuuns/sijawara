@@ -59,7 +59,7 @@
               @endforeach
             </select>
           </div>
-          <div class="mb-3 kota" hidden>
+          <div class="mb-3 kota">
           </div>
           <div class="mb-3">
             <label for="bentukKoperasi" class="form-label">Bentuk Koperasi</label>
@@ -345,7 +345,8 @@
                 _token: "{{ csrf_token() }}"
             },
             success: function(data) {
-                $('.kota').removeAttr('hidden');
+                $('.kota').show();
+                $('.kota').empty();
                 $('.kota').html(data);
             }
         });
@@ -367,7 +368,8 @@
                 id_kota : id_kota
             },
             success: function(data) {
-                $('.kota').removeAttr('hidden');
+                $('.kota').show();
+                $('.kota').empty();
                 $('.kota').html(data);
             }
         });
