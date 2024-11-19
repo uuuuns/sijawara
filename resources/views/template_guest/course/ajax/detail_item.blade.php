@@ -15,12 +15,14 @@
                 function ShowDocument(e) {
                     $(e).hide();
                     const file = '<?= $detail_item_course->FILE ?>';
-                    var pptxRegex = /^https?:\/\/[\w.-]+\/[\w\/.-]+\.pptx(\?.*)?$/;
+                    var pptxRegex = /^https?:\/\/[\w.-]+\/[\w\/.()%-]+\.pptx(\?.*)?$/;
+
                     if (!file) {
                         $('#document-frame').html('<p>Dokumen Tidak ditemukan hubungi Instruktur</p>');
                     } else if (pptxRegex.test(file)) {
                         $('#document-frame').html(
-                            `<iframe src="https://view.officeapps.live.com/op/embed.aspx?src=${file}#toolbar=0&navpanes=0" style="width:600px; height:500px;" frameborder="0"></iframe>`
+                            // `<iframe src="https://view.officeapps.live.com/op/embed.aspx?src=${file}" style="width:100%; height:500px;" frameborder="0"></iframe>`
+                            `<iframe src="https://docs.google.com/gview?embedded=true&url=${file}" style="width:100%; height:500px;" frameborder="0" sandbox="allow-same-origin allow-scripts"></iframe>`
                         );
                     } else {
                         $('#document-frame').html(
