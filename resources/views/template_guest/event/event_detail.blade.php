@@ -279,7 +279,7 @@
             const newFileInput = `
                 <div class="file-input-wrapper mb-2 d-flex justify-content-between align-items-center">
                     <input type="hidden" name="id_activity" value="{{ $event->ID_ACTIVITY }}">
-                    <input type="hidden" name="id_user" value="{{ session('user')[0]['ID_USER'] }}">
+                    <input type="hidden" name="id_user" value="{{ session('user')[0]['ID_USER'] ?? null }}">
                     <input type="file" name="file_materi[]" accept=".pdf" data-allowed-file-extensions="pdf" class="form-control d-inline-block">
                     <button class="btn btn-danger btn-sm remove-file-btn" type="button">X</button>
                 </div>
