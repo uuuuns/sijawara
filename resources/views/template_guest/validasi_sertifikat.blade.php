@@ -9,7 +9,47 @@
         <p class="text-center">{{$sertifikat->TITLE_ACTIVITY}}</p>
         
         <h3 class="text-center my-3">Sertifikat</h3>
-        <iframe src="{{$sertifikat->FILE_SERTIFIKAT}}#toolbar=0&navpanes=0" style="width:600px; height:420px;" class="img-fluid mx-auto d-block" frameborder="0"></iframe>
+        <div id="document-frame" class="d-flex align-self-center justify-content-center row">
+            <p class="text-center loader">Memuat dokumen...</p>
+            <img class="loader d-flex align-self-center justify-content-center" style="max-height: 70px; max-width: 70px;" src="https://icons8.com/preloaders/preloaders/1476/Rocket.gif" alt="Loader.gif" />
+        </div>
     </div>
 </div>
+
+<script>
+    $(document).ready(function() {
+        const file = '<?= $sertifikat->FILE_SERTIFIKAT ?>';
+        const maxRetries = 3;
+        let attempts = 0;
+        let isLoaded = false;
+
+        function loadIframe() {
+            if (isLoaded) return;
+
+            attempts++;
+            const iframeHTML = `<iframe id="document-iframe" src="https://docs.google.com/gview?embedded=true&url=${file}" 
+                        style="width:100%; height:500px;" 
+                        frameborder="0" sandbox="allow-same-origin allow-scripts"></iframe>`;
+            $('#document-frame').html(iframeHTML);
+
+            $('#document-iframe').on('load', function() {
+                $('.loader').hide();
+                console.log('Document loaded successfully.');
+                isLoaded = true;
+            });
+
+            if (attempts < maxRetries && !isLoaded) {
+                setTimeout(() => {
+                    loadIframe();
+                }, 5000);
+            } else if (!isLoaded) {
+                console.log("Percobaan selesai, dokumen gagal dimuat.");
+                $('#document-frame').html('<p class="text-center">Gagal memuat dokumen. Silakan coba lagi nanti.</p>');
+            }
+        }
+
+        loadIframe();
+    });
+    
+</script>
 
