@@ -164,8 +164,8 @@ class AuthController extends Controller
     {
         $check_user = DB::table('user')
             ->where('EMAIL', $req->input('email'))
-            ->get();
-        if ($check_user->isEmpty()) {
+            ->first();
+        if (empty($check_user)) {
             $KODE_USER = $this->GenerateUniqID($req->input('name'));
             try {
                 $User = new User();
@@ -207,6 +207,40 @@ class AuthController extends Controller
             ];
             DB::table('token')->insert($formDataToken);
 
+            return redirect('login')->with('succ_msg', 'Anda Berhasil Mendaftar, Periksa Email Anda Untuk Mengaktifkan Akun!');
+        } else if($check_user->STATUS == 0){
+
+            $data_user = [
+                'NAME' => $req->input('name'),
+                'PASS' => hash('sha256', md5($req->input('password'))),
+                'REG_TIME' => now(),
+                'JENIS_INSTANSI' => $req->input('jenis_instansi'),
+            ];
+
+            DB::table('user')->where('ID_USER', $check_user->ID_USER)->update($data_user);
+
+            // SEND EMAIL VERIFICATION
+            $token_key = bin2hex(random_bytes(32));
+            $details = [
+                'name' => $req->input('name'),
+                'body' => 'Tekan Tombol dibawah ini untuk mengaktifkan akun.',
+                'link' => url('verification/confirm?token=' . $token_key),
+                'button' => "Aktifkan",
+            ];
+            $mail = new MailSender($details);
+            $mail->subject("Email Verification");
+            Mail::to($req->input('email'))->send($mail);
+            // END SEND EMAIL VERIFICATION
+
+            // SAVE TOKEN
+            $formDataToken = [
+                'ID_USER' => $check_user->ID_USER,
+                'KEY' => $token_key,
+                'TYPE' => 2,
+                'STATUS' => 0,
+                'LOG_TIME' => date('Y-m-d H:i:s'),
+            ];
+            DB::table('token')->where('ID_USER', $check_user->ID_USER)->updateOrInsert($formDataToken);
             return redirect('login')->with('succ_msg', 'Anda Berhasil Mendaftar, Periksa Email Anda Untuk Mengaktifkan Akun!');
         } else {
             return redirect('register')->with('error_msg', 'Email Telah Digunakan!');
