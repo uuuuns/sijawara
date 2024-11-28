@@ -36,16 +36,14 @@
                     $('#document-frame').html(iframeHTML);
 
                     $('#document-iframe').on('load', function() {
-                        console.log('Document loaded successfully.');
                         isLoaded = true;
                     });
-
+                    
                     if (attempts < maxRetries && !isLoaded) {
                         setTimeout(() => {
                             loadIframe();
-                        }, 5000);
+                        }, 20000);
                     } else if (!isLoaded) {
-                        console.log("Percobaan selesai, dokumen gagal dimuat.");
                         $('#document-frame').html('<p>Gagal memuat dokumen. Silakan coba lagi nanti.</p>');
                     }
                 }
