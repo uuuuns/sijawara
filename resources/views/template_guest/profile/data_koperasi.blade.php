@@ -311,9 +311,9 @@
     });
 
     document.getElementById('noBadanHukum').addEventListener('input', function(e) {
-      const allowedCharacters = /^[A-Z.\-/ ]*$/;
+      const allowedCharacters = /^[A-Z0-9.\-/ ]*$/;
       e.target.value = e.target.value.toUpperCase();
-      e.target.value = e.target.value.replace(/[^A-Z.\-/ ]/g, '');
+      e.target.value = e.target.value.replace(/[^A-Z0-9.\-/ ]/g, '');
     });
 
 
