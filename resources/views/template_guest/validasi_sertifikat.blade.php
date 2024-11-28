@@ -41,9 +41,8 @@
             if (attempts < maxRetries && !isLoaded) {
                 setTimeout(() => {
                     loadIframe();
-                }, 5000);
+                }, 20000);
             } else if (!isLoaded) {
-                console.log("Percobaan selesai, dokumen gagal dimuat.");
                 $('#document-frame').html('<p class="text-center">Gagal memuat dokumen. Silakan coba lagi nanti.</p>');
             }
         }
