@@ -156,7 +156,7 @@
             @csrf
           <div class="mb-3">
             <label for="noBadanHukum" class="form-label">No Badan Hukum UKM</label>
-            <input type="text" value="{{$data_koperasi->no_badan_hukum}}" class="form-control number" id="noBadanHukum" name="noBadanHukum" placeholder="XX/BH/X.XX/XX/XXX" required>
+            <input type="text" value="{{$data_koperasi->no_badan_hukum}}" class="form-control" id="noBadanHukum" name="noBadanHukum" placeholder="XX/BH/X.XX/XX/XXX" required>
           </div>
           <div class="mb-3">
             <label for="tglBadanHukum" class="form-label">Tanggal Badan Hukum</label>
@@ -309,6 +309,13 @@
             $('#process2-tab').addClass('active');
         @endif
     });
+
+    document.getElementById('noBadanHukum').addEventListener('input', function(e) {
+      const allowedCharacters = /^[A-Z.\-/ ]*$/;
+      e.target.value = e.target.value.toUpperCase();
+      e.target.value = e.target.value.replace(/[^A-Z.\-/ ]/g, '');
+    });
+
 
     function formatCurrency(num) {
         return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
