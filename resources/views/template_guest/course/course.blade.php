@@ -36,7 +36,9 @@
                         <label><i class="fa fa-search"></i></label>
                     </div>
                     <div class="dropdown mt-2">
-                        <div id="search-result" class="col-12 dropdown-menu rounded-2 custom-scrollbar-js dropdown-primary" style="min-height: 512px; overflow-y:scroll;">
+                        <div id="search-result"
+                            class="col-12 dropdown-menu rounded-2 custom-scrollbar-js dropdown-primary"
+                            style="min-height: 512px; overflow-y:scroll;">
                         </div>
                     </div>
                 </div>
@@ -47,16 +49,20 @@
     <div>
         <div class="filter-wrap text-center">
             <ul class="course-filter ">
-                <li class="py-2 py-md-0"><a href="#" data-value="0" id="nav-all" onclick="ChangeNav(this, event)">Lihat Semua</a></li>
+                <li class="py-2 py-md-0"><a href="#" data-value="0" id="nav-all"
+                        onclick="ChangeNav(this, event)">Lihat Semua</a></li>
                 <?php foreach ($kategori as $item_kategori) : ?>
-                    <li class="py-2 py-md-0"><a href="#" data-value="<?= $item_kategori->ID_KATEGORI ?>" id="nav-<?= $item_kategori->ID_KATEGORI ?>" onclick="ChangeNav(this, event)"><?= $item_kategori->KATEGORI ?></a></li>
+                <li class="py-2 py-md-0"><a href="#" data-value="<?= $item_kategori->ID_KATEGORI ?>"
+                        id="nav-<?= $item_kategori->ID_KATEGORI ?>"
+                        onclick="ChangeNav(this, event)"><?= $item_kategori->KATEGORI ?></a></li>
                 <?php endforeach;?>
             </ul>
         </div>
         <div class="container-fluid container-padding">
             <div class="row course-gallery justify-content-center">
                 <div class="tab-content" id="nav-tabContent">
-                    <div class="tab-pane fade show active show" id="nav-content" role="tabpanel" aria-labelledby="nav-content-tab" tabindex="0">
+                    <div class="tab-pane fade show active show" id="nav-content" role="tabpanel"
+                        aria-labelledby="nav-content-tab" tabindex="0">
                         <div class="row justify-content-center" id="nav-content-item">
                             <h3 class="font-sm text-center">Tidak ada kursus tersedia</h2>
                         </div>
@@ -69,6 +75,8 @@
 </section>
 
 <script>
+    var cat_now = ''
+
     $(document).on('click', function(event) {
         var clickedElement = $(event.target);
         var element = $('#search-result');
@@ -111,7 +119,7 @@
         event.preventDefault()
         $("#nav-all").parent().removeClass("active")
         <?php foreach ($kategori as $item_kategori) : ?>
-            $("#nav-<?= $item_kategori->ID_KATEGORI ?>").parent().removeClass("active")
+        $("#nav-<?= $item_kategori->ID_KATEGORI ?>").parent().removeClass("active")
         <?php endforeach; ?>
         $(element).parent().addClass("active")
         GetCourse($(element).data('value'))
@@ -125,30 +133,53 @@
                 </div>
             </div>
         </div>`);
-
-        // Retrieve CSRF token from meta tag
+        
         var csrfToken = $('meta[name="csrf-token"]').attr('content');
 
-        // Set up AJAX request with CSRF token included in headers
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': csrfToken
             }
         });
-
+        
         $.ajax({
             url: "course/category",
-            method: 'POST',
+            method: 'GET',
             data: {
                 category: category
             },
-            success: function(result) {
+            success: function(result) {                
                 $('#nav-content-item').html();
                 $('#nav-content-item').html(result);
             },
             error: function(xhr, status, error) {
                 console.error(xhr.responseText);
             }
+        });
+    }
+
+    $(document).on('click', '.pagination a', function(event) {
+        event.preventDefault();
+        let url = $(this).attr('href');
+        loadPaginatedContent(url);
+    });
+
+    function loadPaginatedContent(url) {
+        $('#nav-content-item').html(`
+        <div class="col-12 col-lg-12 px-3 py-3 py-lg-0 pb-lg-3 d-flex justify-content-center">
+            <div class="rounded-5 p-3 pb-4 h-auto d-flex flex-column">
+                <div class="d-flex justify-content-center py-4">
+                    <img src="https://icons8.com/preloaders/preloaders/1476/Rocket.gif" alt="Loader.gif" />
+                </div>
+            </div>
+        </div>
+    `);
+
+        // Kirim request AJAX
+        $.get(url, function(result) {
+            $('#nav-content-item').html(result);
+        }).fail(function(xhr) {
+            console.error(xhr.responseText);
         });
     }
 </script>

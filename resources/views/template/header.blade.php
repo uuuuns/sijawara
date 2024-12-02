@@ -4,7 +4,8 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="description" content="Edumel- Education Html Template by dreambuzz">
-    <meta name="keywords" content="education,edumel,instructor,lms,online,instructor,dreambuzz,bootstrap,kindergarten,tutor,e learning">
+    <meta name="keywords"
+        content="education,edumel,instructor,lms,online,instructor,dreambuzz,bootstrap,kindergarten,tutor,e learning">
     <meta name="author" content="dreambuzz">
 
     <title>{{ $title }}</title>
@@ -79,7 +80,7 @@
     <!-- Vendor Chart -->
     <script src="<?= asset('assets_admin/vendors/chartjs/Chart.min.js') ?>"></script>
     <!-- Dashboard JS -->
-    <script src="<?= asset('assets_admin/js/pages/dashboard-default.js') ?>"></script>
+    {{-- <script src="<?= asset('assets_admin/js/pages/dashboard-default.js') ?>"></script> --}}
     <!-- DataTable JS -->
     <script src="<?= asset('assets_admin/vendors/datatables/jquery.dataTables.min.js') ?>"></script>
     <!-- Core Bootstrap JS -->
@@ -546,15 +547,12 @@
                         <a href="{{ url('') }}" class="d-flex">
                             <img class="logo-img" style="width: auto;"
                                 src="<?= asset('assets_new\images\new\sponsor\sijawara.png') ?>" alt="">
-                            <!-- <img class="ms-3" style="width: auto; height: 35px;" src="<?= asset('assets_admin\images\logo\Logo MBKM.png') ?>" alt="">
-                            <img class="ms-3" style="width: auto; height: 35px;" src="<?= asset('assets_admin\images\logo\logo-STIKI-PNG.png') ?>" alt=""> -->
                         </a>
                     </div>
 
                     <div class="offcanvas-icon d-block d-lg-none">
                         <a href="#" class="nav-toggler"><i class="fal fa-bars"></i></a>
                     </div>
-
 
                     <nav class="site-navbar ms-auto">
                         <ul class="primary-menu">
@@ -567,27 +565,27 @@
 
                             <?php if (!empty(session('user')[0])) { ?>
                             @if (session('user')[0]['ID_ROLE'] != 1)
-                                <li class="d-md-none">
+                                <li class="d-lg-none">
                                     <a href="{{ url('profile') }}">Profil</a>
                                 </li>
                             @endif
-                            <li class="d-md-none">
+                            <li class="d-lg-none">
                                 <a href="{{ url('profile/mycourses') }}">Kursus Ku</a>
                             </li>
-                            <li class="d-md-none">
+                            <li class="d-lg-none">
                                 <a href="{{ url('profile/myevents') }}">Webinar Ku</a>
                             </li>
-                            <li class="d-md-none">
+                            <li class="d-lg-none">
                                 <a target="_blank" href="https://perpustakaan.uptkukm.id/">Perpustakaan</a>
                             </li>
-                            <li class="d-md-none">
+                            <li class="d-lg-none">
                                 <a href="{{ url('logout') }}">Keluar</a>
                             </li>
                             <?php } else { ?>
-                            <li class="d-md-none">
+                            <li class="d-lg-none">
                                 <a href="{{ url('login') }}">Masuk</a>
                             </li>
-                            <li class="d-md-none">
+                            <li class="d-lg-none">
                                 <a href="{{ url('register') }}">Daftar</a>
                             </li>
                             <?php } ?>
@@ -597,7 +595,7 @@
                     </nav>
 
                     <style>
-                        .site-navbar .primary-menu li.d-md-none a {
+                        .site-navbar .primary-menu li.d-lg-none a {
                             font-weight: bold;
                             /* Different style for the current page */
                         }
@@ -625,7 +623,6 @@
                         }
                     </style>
 
-
                     <div class="d-none">
                         <form id="form_checkout" action="<?= url('checkout') ?>" method="post">
                             @csrf
@@ -652,23 +649,23 @@
                                 <ul class="submenu" style="left: initial;right:0">
                                     <?php if (session('user')[0]['ID_ROLE'] == 1 || session('user')[0]['ID_ROLE'] == 4) { ?>
                                     <li><a class="" href="<?= url('dashboard') ?>">Beranda </a></li>
-                                    <?php    } else { ?>
+                                    <?php } else { ?>
                                     <li><a class="" href="<?= url('profile') ?>">Profile</a></li>
                                     <li><a class=" " href="<?= url('profile/mycourses') ?>">Kursus Ku</a></li>
                                     <li><a class="" href="<?= url('profile/myevents') ?>">Webinar Ku</a></li>
-                                    <li><a class="" href="<?= url('profile/mysertificate') ?>">Sertifikat Ku</a></li>
+                                    <li><a class="" href="<?= url('profile/mysertificate') ?>">Sertifikat Ku</a>
+                                    </li>
                                     <li><a class="" target="_blank"
                                             href="https://perpustakaan.uptkukm.id/">Perpustakaan</a></li>
-                                    <?php    } ?>
+                                    <?php } ?>
                                     <hr>
                                     <li><a class="text-danger" href="<?= url('logout') ?>">Keluar</a></li>
                                 </ul>
                             </li>
                         </ul>
-
                     </nav>
-                    <?php  } else { ?>
-                    <div class="header-btn d-none d-xl-block">
+                    <?php } else { ?>
+                    <div class="header-btn d-none d-lg-block">
                         <a href="{{ url('login') }}" class="login rounded">Masuk</a>
                         <a href="{{ url('register') }}" class="btn btn-main-2 btn-sm-2 rounded">Daftar</a>
                     </div>

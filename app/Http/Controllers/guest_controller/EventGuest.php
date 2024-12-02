@@ -29,72 +29,68 @@ class EventGuest extends Controller
         $this->certificateModel = new Certificate();
     }
 
-	// EVENT CONTROLLER
 	public function index()
 	{
-
 		$data['title'] = 'Event';
 		$data_user =  (session('user') == null) ? null : Session::get('user')[0]->get('ID_USER');
 		$data['checkout'] = $this->checkoutModel->get_all_order($data_user);
 		
-		// Pagination settings
 		$perPage = 9; // Jumlah item per halaman
 		$currentPage = request()->query('page', 1);
-		// Query untuk menghitung total baris
 		$totalRows = DB::table('activity')->where('TYPE_ACTIVITY', 2)->count();
 
-		// Data event untuk halaman saat ini
 		if (empty(session('user'))) {
 			$events = DB::table('activity')
-					->selectRaw('activity.*, 
-								event.KUOTA_PESERTA,
-								(
-									SELECT 
-										COUNT(*) 
-									FROM 
-										`order` o
-									WHERE 
-										o.ID_PRODUCT = activity.ID_ACTIVITY 
-								) as participant, 
-								(DATEDIFF(CURDATE(), activity.DATE_END) >= 1) as EXPIRED')
-					->leftJoin('event', 'event.ID_ACTIVITY', '=', 'activity.ID_ACTIVITY')
-					->where('TYPE_ACTIVITY', 2)
-					->Paginate($perPage, ['*'], 'page', $currentPage);
-			}else {
-				$events = DB::table('activity')
-					->selectRaw('activity.*, 
-								event.ID_EVENT, 
-								event.CATEGORY_EVENT, 
-								event.LOCATION, 
-								event.ORGANIZER, 
-								event.CONTACT_CUSTOMER, 
-								event.DESKRIPSI_EVENT, 
-								event.LINK_ZOOM, 
-								event.KUOTA_PESERTA, 
-								(
-									SELECT 
-										COUNT(*) 
-									FROM 
-										`order` o
-									WHERE 
-										o.ID_USER = ? 
-										AND o.ID_PRODUCT = activity.ID_ACTIVITY 
-								) as DATA_CHECKING, 
-								(
-									SELECT 
-										COUNT(*) 
-									FROM 
-										`order` o
-									WHERE 
-										o.ID_PRODUCT = activity.ID_ACTIVITY 
-								) as participant, 
-								(DATEDIFF(CURDATE(), activity.DATE_END) >= 1) as EXPIRED', [session('user')[0]->get('ID_USER')])
-					->leftJoin('event', 'event.ID_ACTIVITY', '=', 'activity.ID_ACTIVITY')
-					->where('activity.TYPE_ACTIVITY', 2)
-					->paginate($perPage, ['*'], 'page', $currentPage);
+				->selectRaw('
+					activity.*, 
+					event.KUOTA_PESERTA,
+					(
+						SELECT 
+							COUNT(*) 
+						FROM 
+							`order` o
+						WHERE 
+							o.ID_PRODUCT = activity.ID_ACTIVITY 
+					) as participant, 
+					(DATEDIFF(CURDATE(), activity.DATE_END) >= 1) as EXPIRED')
+				->leftJoin('event', 'event.ID_ACTIVITY', '=', 'activity.ID_ACTIVITY')
+				->where('TYPE_ACTIVITY', 2)
+				->Paginate($perPage, ['*'], 'page', $currentPage);
+		}else {
+			$events = DB::table('activity')
+				->selectRaw('
+					activity.*, 
+					event.ID_EVENT, 
+					event.CATEGORY_EVENT, 
+					event.LOCATION, 
+					event.ORGANIZER, 
+					event.CONTACT_CUSTOMER, 
+					event.DESKRIPSI_EVENT, 
+					event.LINK_ZOOM, 
+					event.KUOTA_PESERTA, 
+					(
+						SELECT 
+							COUNT(*) 
+						FROM 
+							`order` o
+						WHERE 
+							o.ID_USER = ? 
+							AND o.ID_PRODUCT = activity.ID_ACTIVITY 
+					) as DATA_CHECKING, 
+					(
+						SELECT 
+							COUNT(*) 
+						FROM 
+							`order` o
+						WHERE 
+							o.ID_PRODUCT = activity.ID_ACTIVITY 
+					) as participant, 
+					(DATEDIFF(CURDATE(), activity.DATE_END) >= 1) as EXPIRED', [session('user')[0]->get('ID_USER')])
+				->leftJoin('event', 'event.ID_ACTIVITY', '=', 'activity.ID_ACTIVITY')
+				->where('activity.TYPE_ACTIVITY', 2)
+				->paginate($perPage, ['*'], 'page', $currentPage);
 			}
 
-		// Load views
 		return 
 			view('template.header', $data) .
 			view('template_guest.event.event', compact('events', 'totalRows')) .
