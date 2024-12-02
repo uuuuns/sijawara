@@ -13,7 +13,7 @@
                 <!-- VIEW SUDAH BAYAR -->
                 <div class="col-xl-4 col-lg-6 col-md-6">
                     <div class="px-0 px-sm-3">
-                        <div class="course-grid course-style-4 bg-white" style="padding: 30px 30px 10px 30px;">
+                        <div class="course-grid course-style-4 bg-white px-1 px-md-2 mt-4 pb-2">
                             <div class="course-header">
                                 <a <?= $check_is_invited ? 'href="' . url('course/detail/' . preg_replace("/[^A-Za-z0-9\-]/", "", str_replace(" ", "-", $item->TITLE_ACTIVITY))) . '?id_activity=' . $item->ID_ACTIVITY . '"' : 'class="link_kursus"' ?>>
                                     <img src="<?= $item->IMAGE_ACTIVITY ?>" alt="" style="width: 100%; height: 300px; object-fit: cover;">
@@ -45,7 +45,7 @@
                 <!-- VIEW BELUM BAYAR -->
                 <div class="col-xl-4 col-lg-6 col-md-6">
                     <div class="px-0 px-sm-3">
-                        <div class="course-grid course-style-4 bg-white" style="padding: 30px 30px 10px 30px;">
+                        <div class="course-grid course-style-4 bg-white px-1 px-md-2 mt-4 pb-2">
                             <div class="course-header">
                                 <div class="" style="width: 100%; height: 300px; overflow: hidden;">
                                     <a <?= $check_is_invited ? 'href="' . url('course/info/' . preg_replace("/[^A-Za-z0-9\-]/", "", str_replace(" ", "-", $item->TITLE_ACTIVITY))) . '?id_activity=' . $item->ID_ACTIVITY . '"' : 'class="link_kursus"' ?>>
@@ -72,6 +72,10 @@
             <?php } ?>
         <?php endforeach; ?>
     </div>
+    <div>
+        {{ $course->links() }}
+    </div>
+
 
 <?php } else { ?>
     <div class="col-12 col-lg-12 px-3 py-3 py-lg-0 pb-lg-3 d-flex justify-content-center">

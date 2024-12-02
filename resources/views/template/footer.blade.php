@@ -7,7 +7,7 @@
                     <div class="footer-logo mb-3">
                         <img src="<?= url('assets_admin/images/logo/logo_sijawara.png') ?>" class="w-160 img-fluid">
                     </div>
-                    <div class="widget footer-widget mb-5 mb-lg-0">
+                    <div class="widget footer-widget mb-5 mb-lg-0 text-center">
                         <p>Semua bisa berbagi dan belajar</p>
                     </div>
                 </div>

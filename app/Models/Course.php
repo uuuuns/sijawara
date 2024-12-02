@@ -181,17 +181,19 @@ class Course extends Model
     }
     public function get_course_by_id($keyword, $type)
     {
+        $condition = !empty(Session::get('user')) ? "AND o.ID_USER = '" . Session::get('user')[0]->get('ID_USER') . "'" : '';
+
         $query = DB::select("
             SELECT 
                 activity.*,
                 (
-                    SELECT
+                    SELECT      
                         COUNT(*)
                     FROM
                         `order` o
                     WHERE
-                        o.ID_USER = '" . Session::get('user')[0]->get('ID_USER') . "'
-                        AND o.ID_PRODUCT = activity.ID_ACTIVITY	
+                        o.ID_PRODUCT = activity.ID_ACTIVITY	
+                    $condition
                 ) AS DATA_CHECKING
             FROM 
                 activity

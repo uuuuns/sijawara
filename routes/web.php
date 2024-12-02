@@ -27,7 +27,7 @@ Route::post('guest/category', 'GuestController@courseCategories');
 //COURSE GUEST
 Route::get('course', 'guest_controller\CourseGuest@index');
 Route::get('course/search', 'guest_controller\CourseGuest@SearchCourse');
-Route::post('course/category', 'guest_controller\CourseGuest@getFilterByKat');
+Route::get('course/category', 'guest_controller\CourseGuest@getFilterByKat');
 Route::get('course/info/{any}', 'guest_controller\CourseGuest@infoCourse');
 //END COURSE GUEST
 
