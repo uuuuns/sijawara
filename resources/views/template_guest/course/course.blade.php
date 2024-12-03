@@ -75,8 +75,6 @@
 </section>
 
 <script>
-    var baseUrl = "{{ url(Request::segment(0)) }}";
-
     $(document).on('click', function(event) {
         var clickedElement = $(event.target);
         var element = $('#search-result');
@@ -163,10 +161,6 @@
     });
 
     function loadPaginatedContent(url) {
-        if (!url.startsWith('http')) {
-            url = baseUrl + url;
-        }
-
         $('#nav-content-item').html(`
             <div class="col-12 col-lg-12 px-3 py-3 py-lg-0 pb-lg-3 d-flex justify-content-center">
                 <div class="rounded-5 p-3 pb-4 h-auto d-flex flex-column">
