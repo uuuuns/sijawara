@@ -135,15 +135,14 @@
         </div>`);
         
         var csrfToken = $('meta[name="csrf-token"]').attr('content');
-
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': csrfToken
             }
         });
-        
         $.ajax({
-            url: '<?= url('/course/category') ?>',
+            // url: '<?= Request::segment(0) ?>/course/category',
+            url: '{{ route("course.category") }}',
             method: 'GET',
             data: {
                 category: category
