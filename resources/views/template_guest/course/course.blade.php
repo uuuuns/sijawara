@@ -141,7 +141,7 @@
             }
         });
         $.ajax({
-            url: '{{ url("course/category") }}',
+            url: '<?= Request::segment(0) ?>/course/category',
             method: 'GET',
             data: {
                 category: category
