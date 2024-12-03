@@ -2,7 +2,7 @@
 
 <style>
     .page-header-custom {
-        background: url('<?= asset(' assets_new') ?>/images/bg/illustration-bg.png') 50% 50%;
+        background: url('<?= asset('assets_new') ?>/images/bg/illustration-bg.png') 50% 50%;
         background-size: cover;
         background-repeat: no-repeat;
         z-index: initial;
@@ -75,7 +75,7 @@
 </section>
 
 <script>
-    var cat_now = ''
+    var baseUrl = "{{ url(Request::segment(0)) }}";
 
     $(document).on('click', function(event) {
         var clickedElement = $(event.target);
@@ -163,8 +163,6 @@
     });
 
     function loadPaginatedContent(url) {
-        var baseUrl = "{{ url(Request::segment(0)) }}";
-        
         if (!url.startsWith('http')) {
             url = baseUrl + url;
         }
