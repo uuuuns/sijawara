@@ -141,8 +141,7 @@
             }
         });
         $.ajax({
-            // url: '<?= Request::segment(0) ?>/course/category',
-            url: '{{ route("course.category") }}',
+            url: '{{ url("course/category") }}',
             method: 'GET',
             data: {
                 category: category
@@ -165,16 +164,15 @@
 
     function loadPaginatedContent(url) {
         $('#nav-content-item').html(`
-        <div class="col-12 col-lg-12 px-3 py-3 py-lg-0 pb-lg-3 d-flex justify-content-center">
-            <div class="rounded-5 p-3 pb-4 h-auto d-flex flex-column">
-                <div class="d-flex justify-content-center py-4">
-                    <img src="https://icons8.com/preloaders/preloaders/1476/Rocket.gif" alt="Loader.gif" />
+            <div class="col-12 col-lg-12 px-3 py-3 py-lg-0 pb-lg-3 d-flex justify-content-center">
+                <div class="rounded-5 p-3 pb-4 h-auto d-flex flex-column">
+                    <div class="d-flex justify-content-center py-4">
+                        <img src="https://icons8.com/preloaders/preloaders/1476/Rocket.gif" alt="Loader.gif" />
+                    </div>
                 </div>
             </div>
-        </div>
-    `);
+        `);
 
-        // Kirim request AJAX
         $.get(url, function(result) {
             $('#nav-content-item').html(result);
         }).fail(function(xhr) {
