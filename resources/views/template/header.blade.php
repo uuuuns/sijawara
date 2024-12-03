@@ -3,10 +3,10 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="description" content="Edumel- Education Html Template by dreambuzz">
-    <meta name="keywords"
-        content="education,edumel,instructor,lms,online,instructor,dreambuzz,bootstrap,kindergarten,tutor,e learning">
-    <meta name="author" content="dreambuzz">
+    <meta name="description"
+        content="SIJAWARA adalah akronim dari Sistem Informasi Pembelajaran dan Peningkatan Wawasan Perkoperasian. Melalui sijawara, sobat bisa mempelajari secara mandiri ilmu perkoperasian. Tak hanya itu, sobat sijawara bisa juga mempelajari ilmu terkait pengembangan UMKM.">
+    <meta name="keywords" content="education,instructor,lms,online,e learning,SIJAWARA,SIJAWARA+,UMKM,">
+    <meta name="author" content="SIJAWARA">
 
     <title>{{ $title }}</title>
     <link rel="shortcut icon" href="<?= asset('assets_admin\images\logo\favicon_sijawara.svg') ?>">
