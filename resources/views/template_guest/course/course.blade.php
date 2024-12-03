@@ -2,7 +2,7 @@
 
 <style>
     .page-header-custom {
-        background: url('<?= asset('assets_new') ?>/images/bg/illustration-bg.png') 50% 50%;
+        background: url('<?= asset(' assets_new') ?>/images/bg/illustration-bg.png') 50% 50%;
         background-size: cover;
         background-repeat: no-repeat;
         z-index: initial;
@@ -140,7 +140,7 @@
         });
         $.ajax({
             url: '<?= Request::segment(0) ?>/course/category',
-            // url: "<?= url("course/category") ?>",
+            // url: "<?= url('course/category') ?>",
             method: 'GET',
             data: {
                 category: category
@@ -158,6 +158,9 @@
     $(document).on('click', '.pagination a', function(event) {
         event.preventDefault();
         let url = $(this).attr('href');
+        if (url.startsWith('http://')) {
+            url = url.replace('http://', 'https://');
+        }
         console.log(url);
         loadPaginatedContent(url);
     });
