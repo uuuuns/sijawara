@@ -139,7 +139,8 @@
             }
         });
         $.ajax({
-            url: '<?= Request::segment(0) ?>/course/category',
+            // url: '<?= Request::segment(0) ?>/course/category',
+            url: "<?= url("course/category") ?>",
             method: 'GET',
             data: {
                 category: category
@@ -157,6 +158,7 @@
     $(document).on('click', '.pagination a', function(event) {
         event.preventDefault();
         let url = $(this).attr('href');
+        console.log(url);
         loadPaginatedContent(url);
     });
 
