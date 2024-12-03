@@ -139,8 +139,8 @@
             }
         });
         $.ajax({
-            // url: '<?= Request::segment(0) ?>/course/category',
-            url: "<?= url("course/category") ?>",
+            url: '<?= Request::segment(0) ?>/course/category',
+            // url: "<?= url("course/category") ?>",
             method: 'GET',
             data: {
                 category: category
