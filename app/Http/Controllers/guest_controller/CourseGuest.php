@@ -685,7 +685,7 @@ class CourseGuest extends Controller
 				$data['course']->where('KATEGORI', $cat_value);
 			}
 
-			$data['course']->paginate($perPage, ['*'], 'page', $currentPage)->appends(['category' => $cat_value]);
+			$data['course'] = $data['course']->paginate($perPage, ['*'], 'page', $currentPage)->appends(['category' => $cat_value]);
 		} else {
 			$data['course'] = DB::table('activity')
 				->selectRaw('
