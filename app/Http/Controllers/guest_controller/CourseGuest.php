@@ -628,7 +628,6 @@ class CourseGuest extends Controller
 		if ($id_user != null) {
 			$data['course'] = DB::table('activity')
 				->selectRaw('
-				SELECT 
 					activity.*, 
 					course.DESKRIPSI_COURSE,
 					(
