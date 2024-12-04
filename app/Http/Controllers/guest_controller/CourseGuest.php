@@ -717,6 +717,7 @@ class CourseGuest extends Controller
 			$data['course'] = $data['course']->paginate($perPage, ['*'], 'page', $currentPage)->appends(['category' => $cat_value]);
 		}
 
+		dd($data['course']);
 		return
 			view('template_guest.course.ajax.course_by_category', $data)->render();
 	}
