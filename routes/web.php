@@ -191,8 +191,8 @@ Route::middleware(['usersession:4,1'])->group(function () {
     Route::post('statistik_per_provinsi', 'DashboardController@statistik_per_provinsi');
     Route::post('statistik_per_kota', 'DashboardController@statistik_per_kota');
 
-    Route::post('user/jadikanAdmin', 'DashboardController@jadikanAdmin');
-    Route::post('user/jadikanInstruktur', 'DashboardController@jadikanInstruktur');
+    Route::post('user/jadikanAdmin', 'UserController@jadikanAdmin');
+    Route::post('user/jadikanInstruktur', 'UserController@jadikanInstruktur');
     Route::get('user/detail_pengambilan', 'UserController@detail_pengambilan');
     
     Route::post('instruktur/delete', 'InstructorController@deleteInstruktur');

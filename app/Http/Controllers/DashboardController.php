@@ -82,24 +82,6 @@ class DashboardController extends Controller
             view('template_admin/dashboard', $data) .
             view('template.footer', $data);
     }
-    public function jadikanAdmin(Request $request) {
-        $id_user = $request->input('id_user');
-
-        DB::table('user')
-            ->where('ID_USER', $id_user)
-            ->update(['ID_ROLE' => 4]);
-
-        return redirect()->back();
-    }
-    public function jadikanInstruktur(Request $request) {
-        $id_user = $request->input('id_user');
-
-        DB::table('user')
-            ->where('ID_USER', $id_user)
-            ->update(['ID_ROLE' => 2]);
-
-        return redirect()->back();
-    }
     public function get_data_chart() {
         $data['register_per_month'] = DB::select("
             SELECT 

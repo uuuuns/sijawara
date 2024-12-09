@@ -352,9 +352,21 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" onclick="jadikanInstruktur()">Jadikan Instruktur</button>
-                    <button type="button" class="btn btn-primary" onclick="jadikanAdmin()">Jadikan Admin</button>
-                    <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                    <button type="button" class="btn btn-primary btn-update" onclick="jadikanInstruktur()">
+                        <span class="loading">
+                            <i class="bx bx-loader bx-spin font-size-16 align-middle me-2"></i>
+                        </span> Jadikan Instruktur
+                    </button>
+                    <button type="button" class="btn btn-primary btn-update" onclick="jadikanAdmin()">
+                        <span class="loading">
+                            <i class="bx bx-loader bx-spin font-size-16 align-middle me-2"></i>
+                        </span> Jadikan Admin
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <span class="loading">
+                            <i class="bx bx-loader bx-spin font-size-16 align-middle me-2"></i>
+                        </span> Simpan Perubahan
+                    </button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
                 </div>
             </form>
@@ -395,6 +407,18 @@
 
     const password = document.querySelector("#password");
     const password2 = document.querySelector("#cnfirm_password");
+
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    })
 
     function validatePassword() {
         if (password.value != password2.value) {
@@ -482,6 +506,9 @@
         $('#up_userIsDelete').val(data.IS_DELETE)
         $('#up_userIdProvinsi').val(data.ID_PROVINSI)
         $('#up_preview').attr('src', (data.FOTO_PROFILE == null) ? 'assets/images/person-circle.svg' : data.FOTO_PROFILE)
+        $('.loading').hide();
+        $('.btn-update').data('id_role', data.ID_ROLE);
+
         $('#updateUserModal').modal('show')
     }
 
@@ -491,8 +518,19 @@
     }
 
     function jadikanAdmin() {
-        var id_user = $('input[name="up_id_user"]').val()
+        var id_user = $('#up_userId').val()
         var csrfToken = $('meta[name="csrf-token"]').attr('content');
+        $('.loading').show();
+        $('.btn').prop('disabled', true);
+        if ($('.btn-update').data('id_role') == 4) {
+            Toast.fire({
+                icon: 'error',
+                title: 'User Sudah Menjadi Admin'
+            });
+            $('.loading').hide();
+            $('.btn').prop('disabled', false);
+            return;
+        }
         $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': csrfToken
@@ -506,31 +544,76 @@
             },
             success: function(data) {
                 $('#updateModal').modal('hide')
+                Swal.fire({
+                    title: 'Success',
+                    text: 'User berhasil dijadikan admin',
+                    icon: 'success',
+                    showCancelButton: false,
+                    showConfirmButton: false,
+                    clickOutside: false,
+                });
                 location.reload()
+            },error: function(data) {
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Gagal Menjadikan Admin'
+                });
+                console.log(data)
+                $('.loading').hide();
+                $('.btn').prop('disabled', false);
             }
         })
     
     }
     
     function jadikanInstruktur() {
-        var id_user = $('input[name="up_id_user"]').val()
+        var id_user = $('#up_userId').val()
         var csrfToken = $('meta[name="csrf-token"]').attr('content');
+        $('.loading').show();
+        $('.btn').prop('disabled', true);
+        console.log($('.btn-update').data('id_role'));
+        
+        if ($('.btn-update').data('id_role') == 2) {
+            Toast.fire({
+                icon: 'error',
+                title: 'User Sudah Menjadi Instruktur'
+            });
+            $('.loading').hide();
+            $('.btn').prop('disabled', false);
+            return;
+        }
         $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': csrfToken
                 }
             });
-        $.ajax({
-            url: 'user/jadikanInstruktur',
-            type: 'POST',
-            data: {
-                id_user: id_user,
-            },
-            success: function(data) {
-                $('#updateModal').modal('hide')
-                location.reload()
-            }
-        })
+        // $.ajax({
+        //     url: 'user/jadikanInstruktur',
+        //     type: 'POST',
+        //     data: {
+        //         id_user: id_user,
+        //     },
+        //     success: function(data) {
+        //         $('#updateModal').modal('hide')
+        //         Swal.fire({
+        //             title: 'Success',
+        //             text: 'User berhasil dijadikan instruktur',
+        //             icon: 'success',
+        //             showCancelButton: false,
+        //             showConfirmButton: false,
+        //             clickOutside: false,
+        //         });
+        //         location.reload()
+        //     },error: function(data) {
+        //         Toast.fire({
+        //             icon: 'error',
+        //             title: 'Gagal Menjadikan Instruktur'
+        //         });
+        //         console.log(data)
+        //         $('.loading').hide();
+        //         $('.btn').prop('disabled', false);
+        //     }
+        // })
     }
     
     $('#choose-button').click(function() {

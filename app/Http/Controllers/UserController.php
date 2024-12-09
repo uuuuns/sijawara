@@ -194,4 +194,22 @@ class UserController extends Controller
         $uniqid = strtoupper($begin);
         return "ACT_" . $uniqid . substr(md5(time()), 0, 3);
     }
+
+    public function jadikanAdmin(Request $request) {
+        $id_user = $request->input('id_user');
+        DB::table('user')
+            ->where('ID_USER', $id_user)
+            ->update(['ID_ROLE' => 4]);
+
+        return redirect()->back();
+    }
+
+    public function jadikanInstruktur(Request $request) {
+        $id_user = $request->input('id_user');
+        DB::table('user')
+            ->where('ID_USER', $id_user)
+            ->update(['ID_ROLE' => 2]);
+
+        return redirect()->back();
+    }
 }
