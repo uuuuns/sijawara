@@ -72,10 +72,16 @@
             <?php } ?>
         <?php endforeach; ?>
     </div>
-    <div>
-        {{ $course->links() }}
+    <div
+        class="px-3 d-grid d-md-flex text-center justify-content-md-between justify-content-center align-items-center">
+        <div class="order-2 order-md-1 pt-3 pt-md-0">
+            <span class="fs-8 pagination-text">Menampilkan {{ $course->currentPage() }} dari
+                {{ $course->lastPage() }} Halaman</span>
+        </div>
+        <div class="order-1 order-md-2">
+            {{ $course->links() }}
+        </div>
     </div>
-
 
 <?php } else { ?>
     <div class="col-12 col-lg-12 px-3 py-3 py-lg-0 pb-lg-3 d-flex justify-content-center">

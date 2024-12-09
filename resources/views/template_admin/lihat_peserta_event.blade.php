@@ -171,11 +171,7 @@
             $editor.summernote({
                 height: 200,
                 callbacks: {
-                    onPaste: function(e) {
-                        console.log('Called event paste', e);
-                    },
                     onImageUpload: function(files) {
-                        console.log(files);
                         $summernote.summernote('insertNode', imgNode);
                     }
                 },
@@ -204,11 +200,7 @@
             $editor.summernote({
                 height: 200,
                 callbacks: {
-                    onPaste: function(e) {
-                        console.log('Called event paste', e);
-                    },
                     onImageUpload: function(files) {
-                        console.log(files);
                         $summernote.summernote('insertNode', imgNode);
                     }
                 },
@@ -241,24 +233,18 @@
 
         function openlinkModal(viewData) {
             var data = JSON.parse(viewData)
-
             var fileContainer = document.getElementById('file-container');
-
             var file = data.FILE.split(';');
 
-            // Clear any previous content inside the container
             fileContainer.innerHTML = '';
 
-            // Loop through each item and append it to the modal body
             file.forEach(function(file, index) {
-                // Create a new paragraph element for each file
                 var a = document.createElement('a');
-                a.href = file; // Set the file URL
-                a.textContent = (index + 1) + ". file berkas "; // Set the text for the link
-                a.target = "_blank"; // Open the link in a new tab
-                a.classList.add('d-block'); // Optional: Add a class for styling (e.g., block display)
+                a.href = file;
+                a.textContent = (index + 1) + ". Buka berkas ";
+                a.target = "_blank";
+                a.classList.add('d-block');
 
-                // Append the <a> element to the file container
                 fileContainer.appendChild(a);
             });
 

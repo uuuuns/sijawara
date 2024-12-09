@@ -34,7 +34,6 @@
 
             $('#document-iframe').on('load', function() {
                 $('.loader').hide();
-                console.log('Document loaded successfully.');
                 isLoaded = true;
             });
 

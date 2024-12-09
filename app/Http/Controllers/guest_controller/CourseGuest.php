@@ -611,19 +611,6 @@ class CourseGuest extends Controller
 
 		$perPage = 9;
 		$currentPage = request()->query('page', 1);
-		if ($cat_value == 0) {
-			$totalRows = DB::table('activity')->where('TYPE_ACTIVITY', 1)->count();
-		} else {
-			$totalRows = DB::table('activity')
-				->where('TYPE_ACTIVITY', 1)
-				->whereExists(function ($query) use ($cat_value) {
-					$query->select(DB::raw(1))
-						->from('course')
-						->where('course.KATEGORI', $cat_value)
-						->whereColumn('course.ID_ACTIVITY', 'activity.ID_ACTIVITY');
-				})
-				->count();
-		}
 
 		if ($id_user != null) {
 			$data['course'] = DB::table('activity')

@@ -269,7 +269,6 @@
     });
 
     $('#process3-tab').click(function() {
-      console.log({{$check->COUNT_DATA_UKM}});
         @if ($check->COUNT_DATA_PEMILIK < 8)
             Swal.fire({
                 icon: 'error',

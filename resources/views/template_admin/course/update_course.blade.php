@@ -181,7 +181,6 @@
     var limit = 0;
 
     var data = {!! $jsonData !!};
-    console.log(data);
     
     var id_course = data.ID_COURSE;
     var id_act = data.ID_ACTIVITY;

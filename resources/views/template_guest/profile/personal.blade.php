@@ -163,8 +163,6 @@
         $('#setProvinsi').val($(this).val())
     })
     $('.kota').change(function() {
-        console.log();
-        
         $('#setKota').val($(this).val())
     })
 

@@ -377,11 +377,7 @@
         $editor.summernote({
             height: 200,
             callbacks: {
-                onPaste: function (e) {
-                    console.log('Called event paste', e);
-                },
                 onImageUpload: function (files) {
-                    console.log(files);
                     $summernote.summernote('insertNode', imgNode);
                 }
             },
@@ -410,11 +406,7 @@
         $editor.summernote({
             height: 200,
             callbacks: {
-                onPaste: function (e) {
-                    console.log('Called event paste', e);
-                },
                 onImageUpload: function (files) {
-                    console.log(files);
                     $summernote.summernote('insertNode', imgNode);
                 }
             },

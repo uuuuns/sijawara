@@ -166,7 +166,6 @@
                 },
                 dataType: 'json',
                 success: function(response) {
-                    console.log(response)
                     if (response.token) {
                         Swal.fire({
                             title: 'Open payment gateway ...',
