@@ -190,7 +190,7 @@
         $('#up_id_testimoni').val(data.id_testimoni)
         $('#up_testimoni').val(data.testimoni)
         $('#up_nama').val(data.nama)
-        console.log(data)
+        
         var gambar_testimoni = $('input[name="up_gambar_testimoni"]').dropify();
         gambar_testimoni = gambar_testimoni.data('dropify');
         gambar_testimoni.resetPreview();

@@ -354,11 +354,7 @@
             $editor.summernote({
                 height: 200,
                 callbacks: {
-                    onPaste: function(e) {
-                        console.log('Called event paste', e);
-                    },
                     onImageUpload: function(files) {
-                        console.log(files);
                         $summernote.summernote('insertNode', imgNode);
                     }
                 },
@@ -387,11 +383,7 @@
             $editor.summernote({
                 height: 200,
                 callbacks: {
-                    onPaste: function(e) {
-                        console.log('Called event paste', e);
-                    },
                     onImageUpload: function(files) {
-                        console.log(files);
                         $summernote.summernote('insertNode', imgNode);
                     }
                 },
@@ -430,7 +422,6 @@
             var data = JSON.parse(viewData)
             var price = data.PRICE_ACTIVITY
             var cat = data.CATEGORY_EVENT
-            console.log(data);
             
             function initializeDropify(inputName, fileUrl) {
                 var dropifyElement = $('input[name="' + inputName + '"]').dropify();
@@ -472,7 +463,6 @@
                 dataType: 'JSON',
 
                 success: function(response) {
-                    // make with summernote
                     $('#up_desc_event').summernote('code', response[0].event.DESKRIPSI_EVENT);
                 },
                 error: function(xhr, status, error) {}
