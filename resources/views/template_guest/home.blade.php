@@ -342,6 +342,48 @@
             .nav {
                 flex-wrap: nowrap;
             }
+
+
+
+            .mandiri-img {
+                max-width: 85%;
+                height: auto;
+            }
+
+            .mandiri-text {
+                margin-top: -40px;
+            }
+
+            .webinar-img {
+                max-width: 85%;
+                height: auto;
+                margin-top: -11px;
+            }
+
+            .webinar-text {
+                margin-top: -53px
+            }
+
+            @media (max-width: 767.98px) {
+                .mandiri-img {
+                    max-width: 100%;
+                    height: auto;
+                }
+
+                .mandiri-text {
+                    margin-top: -20px;
+                }
+
+                .webinar-img {
+                    max-width: 100%;
+                    height: auto;
+                    margin-top: -4px;
+                }
+
+                .webinar-text {
+                    margin-top: -1.6rem;
+                }
+            }
         </style>
 
         <div style="margin:auto;max-width: 1208px;max-height: 400px;">
@@ -366,18 +408,18 @@
         <div class="bg-danger" style="background-color: rgb(255 255 255 / 25%) !important;backdrop-filter: blur(10px);">
             <div class="container py-5 ">
                 <h3 class="text-center" style="font-weight:600">Mulai dan Pilih Pelatihan Anda</h3>
-                <div class="row">
-                    <div class="col-12 col-lg-6 text-center">
+                <div class="row pt-3 pt-lg-0">
+                    <div class=" col-6 text-center">
                         <a href="{{ url('course') }}">
-                            <img src="{{ asset('assets_new') }}/images/new/event.png" style="max-width: 85%;height: auto;" />
+                            <img class="mandiri-img" src="{{ asset('assets_new') }}/images/new/event.png" />
                         </a>
-                        <h4 class="fw-semibold pt-2" style="margin-top:-40px">Belajar Mandiri</h4>
+                        <h4 class="fw-semibold pt-2 mandiri-text">Belajar Mandiri</h4>
                     </div>
-                    <div class="col-12 col-lg-6 text-center pt-4 pt-sm-0">
+                    <div class=" col-6 text-center">
                         <a href="{{ url('event') }}">
-                            <img src="{{ asset('assets_new') }}/images/new/webinar.png" style="max-width: 85%;height: auto; margin-top: -11px;" />
+                            <img class="webinar-img" src="{{ asset('assets_new') }}/images/new/webinar.png" />
                         </a>
-                        <h4 class="fw-semibold pt-2" style="margin-top:-53px">Webinar</h4>
+                        <h4 class="fw-semibold pt-2 webinar-text">Webinar</h4>
                     </div>
                 </div>
             </div>
