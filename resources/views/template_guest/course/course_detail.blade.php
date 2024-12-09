@@ -177,7 +177,11 @@
                                             <label>Kode Sertifikat</label>
                                             <form action="javascript:void(0)">
                                                 <input type="text" class="form-control mb-4" name="" id="input-code" style="text-transform:uppercase">
-                                                <button type="button" class="btn btn-primary rounded col-md-12 my-3" onclick="DownloadPdf(this)">Unduh PDF</button>
+                                                <button type="button" id="downloadSertif" class="btn btn-primary rounded col-md-12 my-3" onclick="DownloadPdf(this)">
+                                                    <span class="loading">
+                                                        <i class="bx bx-loader bx-spin font-size-16 align-middle me-2"></i>
+                                                    </span> Unduh PDF
+                                                </button>
                                             </form>
                                         </div>
                                     </div>
@@ -262,6 +266,7 @@
         // Reload the page
         location.reload();
     });
+    $('.loading').hide();
     
     const Toast = Swal.mixin({
         toast: true,
@@ -278,8 +283,9 @@
     $('#show-detail-' + <?= $last_item[0]->ID_ITEM ?>).trigger('click')
 
     <?php if ($tot_proggress == 100) { ?>
-
         function DownloadPdf(e) {
+            $('#downloadSertif').prop('disabled', true);
+            $('.loading').show();
             if ($('#input-code').val() == '<?= $course->SERTIF_CODE ?>') {
                 var csrfToken = $('meta[name="csrf-token"]').attr('content');
                 $.ajaxSetup({
@@ -307,13 +313,19 @@
                                     window.location.href = '<?= Request::segment(0) ?>/profile';
                                 }
                             });
+                            $('#downloadSertif').prop('disabled', false);
+                            $('.loading').hide();
                         } else {
                             window.open('<?= $sertif->FILE_SERTIFIKAT ?>', '_blank');
+                            $('#downloadSertif').prop('disabled', false);
+                            $('.loading').hide();
                         }
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
                         console.error("AJAX Error: ", textStatus, errorThrown);
                         console.error("Response Text: ", jqXHR.responseText);
+                        $('#downloadSertif').prop('disabled', false);
+                        $('.loading').hide();
                     }
                 });
             } else {
@@ -321,6 +333,8 @@
                     icon: 'error',
                     title: 'Wrong Code!'
                 })
+                $('#downloadSertif').prop('disabled', false);
+                $('.loading').hide();
             }
         }
 
