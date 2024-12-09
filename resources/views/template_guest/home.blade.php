@@ -364,22 +364,22 @@
 
             @media (max-width: 767.98px) {
                 .mandiri-img {
-                    max-width: 100%;
+                    max-width: 70%;
                     height: auto;
                 }
 
                 .mandiri-text {
-                    margin-top: -20px;
+                    margin-top: -37px;
                 }
 
                 .webinar-img {
-                    max-width: 100%;
+                    max-width: 70%;
                     height: auto;
-                    margin-top: -4px;
+                    margin-top: -11px;
                 }
 
                 .webinar-text {
-                    margin-top: -1.6rem;
+                    margin-top: -42px;
                 }
             }
         </style>
@@ -406,14 +406,14 @@
         <div class="bg-danger" style="background-color: rgb(255 255 255 / 25%) !important;backdrop-filter: blur(10px);">
             <div class="container py-5 ">
                 <h3 class="text-center" style="font-weight:600">Mulai dan Pilih Pelatihan Anda</h3>
-                <div class="row pt-3 pt-lg-0">
-                    <div class=" col-6 text-center">
+                <div class="row  pt-3 pt-lg-0">
+                    <div class="col-12 col-lg-6 text-center">
                         <a href="{{ url('course') }}">
                             <img class="mandiri-img" src="{{ asset('assets_new') }}/images/new/event.png" />
                         </a>
                         <h4 class="fw-semibold pt-2 mandiri-text">Belajar Mandiri</h4>
                     </div>
-                    <div class=" col-6 text-center">
+                    <div class="col-12 col-lg-6 text-center pt-4 pt-sm-0">
                         <a href="{{ url('event') }}">
                             <img class="webinar-img" src="{{ asset('assets_new') }}/images/new/webinar.png" />
                         </a>
