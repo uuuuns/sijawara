@@ -233,7 +233,7 @@
                 );
                 $("#footer_modal_<?= $item->ID_ITEM ?>").html("");
                 jQuery.ajax({
-                    url: "<?= Request::segment(0) ?>/course/quiz/evaluation/",
+                    url: "<?= Request::segment(0) ?>/course/quiz/evaluation",
                     type: "POST",
                     data: {
                         "id_quiz": $('input[name="id_quiz"]').val(),
