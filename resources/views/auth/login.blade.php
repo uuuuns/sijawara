@@ -11,7 +11,7 @@
                         msg error
                     --}}
                     <h4 class="ps-1 fw-semibold">Masuk</h4>
-                    <form class="fw-normal" action="<?= url('login/authentication') ?>" method="POST">
+                    <form class="fw-normal" action="<?= url('masuk/authentication') ?>" method="POST">
                         @csrf
                         <div class="my-4 float-label-control">
                             <input type="email" class="form-control input-text woocommerce-Input woocommerce-Input--text" id="exampleInputEmail1" name="email" placeholder="Email" aria-describedby="emailHelp" required>
