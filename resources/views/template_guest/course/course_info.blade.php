@@ -175,7 +175,7 @@
                             <ul class="course-sidebar-list">
                                 <li>
                                     <div class="d-flex justify-content-between align-items-center">
-                                        <span><i class="far fa-sliders-h"></i>Total Bab</span>
+                                        <span><i class="far fa-sliders-h"></i>Total Materi</span>
                                         <?= $total_item['materi'] ?>
                                     </div>
                                 </li>

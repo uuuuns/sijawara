@@ -206,34 +206,34 @@ Route::middleware(['usersession:4,3,2,1'])->group(function () {
     Route::post('webinar/upload_file', 'guest_controller\EventGuest@upload_file');
 
     // DATA UKM
-    Route::get('data_ukm', 'ProfileGuest@data_ukm_index'); // [ProfileGuest::class, 'data_ukm_index']
-    Route::post('data_ukm/store_ukm', 'ProfileGuest@store_data_ukm'); // [ProfileGuest::class, 'store_data_ukm']
-    Route::post('data_ukm/store_pemilik', 'ProfileGuest@store_data_pemilik'); // [ProfileGuest::class, 'store_data_pemilik']
-    Route::post('data_ukm/store_lain', 'ProfileGuest@store_data_lain'); // [ProfileGuest::class, 'store_data_lain']
+    Route::get('data_ukm', 'guest_controller\ProfileGuest@data_ukm_index'); // [ProfileGuest::class, 'data_ukm_index']
+    Route::post('data_ukm/store_ukm', 'guest_controller\ProfileGuest@store_data_ukm'); // [ProfileGuest::class, 'store_data_ukm']
+    Route::post('data_ukm/store_pemilik', 'guest_controller\ProfileGuest@store_data_pemilik'); // [ProfileGuest::class, 'store_data_pemilik']
+    Route::post('data_ukm/store_lain', 'guest_controller\ProfileGuest@store_data_lain'); // [ProfileGuest::class, 'store_data_lain']
 
     // DATA KOPERASI
-    Route::get('data_koperasi', 'ProfileGuest@data_koperasi_index'); // [ProfileGuest::class, 'data_koperasi_index']
-    Route::post('data_koperasi/store_data_koperasi', 'ProfileGuest@store_data_koperasi'); // [ProfileGuest::class, 'store_data_koperasi']
-    Route::post('data_koperasi/store_hukum_koperasi', 'ProfileGuest@store_hukum_koperasi'); // [ProfileGuest::class, 'store_hukum_koperasi']
-    Route::post('data_koperasi/store_anggota_koperasi', 'ProfileGuest@store_anggota_koperasi'); // [ProfileGuest::class, 'store_anggota_koperasi']
-    Route::post('data_koperasi/store_masalah_koperasi', 'ProfileGuest@store_masalah_koperasi'); // [ProfileGuest::class, 'store_masalah_koperasi']
-    Route::post('get-kota', 'ProfileGuest@get_kota'); // [ProfileGuest::class, 'get_kota']
-    Route::post('get-kota-option', 'ProfileGuest@get_kota_option'); // [ProfileGuest::class, 'get_kota_option']
+    Route::get('data_koperasi', 'guest_controller\ProfileGuest@data_koperasi_index'); // [ProfileGuest::class, 'data_koperasi_index']
+    Route::post('data_koperasi/store_data_koperasi', 'guest_controller\ProfileGuest@store_data_koperasi'); // [ProfileGuest::class, 'store_data_koperasi']
+    Route::post('data_koperasi/store_hukum_koperasi', 'guest_controller\ProfileGuest@store_hukum_koperasi'); // [ProfileGuest::class, 'store_hukum_koperasi']
+    Route::post('data_koperasi/store_anggota_koperasi', 'guest_controller\ProfileGuest@store_anggota_koperasi'); // [ProfileGuest::class, 'store_anggota_koperasi']
+    Route::post('data_koperasi/store_masalah_koperasi', 'guest_controller\ProfileGuest@store_masalah_koperasi'); // [ProfileGuest::class, 'store_masalah_koperasi']
+    Route::post('get-kota', 'guest_controller\ProfileGuest@get_kota'); // [ProfileGuest::class, 'get_kota']
+    Route::post('get-kota-option', 'guest_controller\ProfileGuest@get_kota_option'); // [ProfileGuest::class, 'get_kota_option']
 
     // PROFILE
-    Route::get('profil', 'ProfileGuest@profile'); // [ProfileGuest::class, 'profile']
-    Route::get('profil/overview', 'ProfileGuest@overview'); // [ProfileGuest::class, 'overview']
-    Route::get('profil/myebook', 'ProfileGuest@ebook'); // [ProfileGuest::class, 'ebook']
-    Route::get('profil/academic', 'ProfileGuest@academic'); // [ProfileGuest::class, 'academic']
-    Route::get('profil/document', 'ProfileGuest@document'); // [ProfileGuest::class, 'document']
-    Route::get('profil/kursusku', 'ProfileGuest@mycourses'); // [ProfileGuest::class, 'mycourses
-    Route::get('profil/webinarku', 'ProfileGuest@myevents'); // [ProfileGuest::class, 'myevents']
-    Route::get('profil/sertifikatku', 'ProfileGuest@mysertificate'); // [ProfileGuest::class, 'mysertificate']
-    Route::post('profil/update', 'ProfileGuest@update_profile'); // [ProfileGuest::class, 'update_profile']
-    Route::post('profil/academic/change', 'ProfileGuest@academic_change'); //[ProfileGuest::class, 'academic_change']
-    Route::post('profil/document/change', 'ProfileGuest@doc_up'); // [ProfileGuest::class, 'doc_up']
-    Route::post('profil/cekEmail', 'ProfileGuest@cek_email'); // [ProfileGuest::class, 'cek_email']
-    Route::post('update-sertif', 'ProfileGuest@update_sertif'); // [ProfileGuest::class, 'update_sertif']
+    Route::get('profil', 'guest_controller\ProfileGuest@profile'); // [ProfileGuest::class, 'profile']
+    Route::get('profil/overview', 'guest_controller\ProfileGuest@overview'); // [ProfileGuest::class, 'overview']
+    Route::get('profil/myebook', 'guest_controller\ProfileGuest@ebook'); // [ProfileGuest::class, 'ebook']
+    Route::get('profil/academic', 'guest_controller\ProfileGuest@academic'); // [ProfileGuest::class, 'academic']
+    Route::get('profil/document', 'guest_controller\ProfileGuest@document'); // [ProfileGuest::class, 'document']
+    Route::get('profil/kursusku', 'guest_controller\ProfileGuest@mycourses'); // [ProfileGuest::class, 'mycourses
+    Route::get('profil/webinarku', 'guest_controller\ProfileGuest@myevents'); // [ProfileGuest::class, 'myevents']
+    Route::get('profil/sertifikatku', 'guest_controller\ProfileGuest@mysertificate'); // [ProfileGuest::class, 'mysertificate']
+    Route::post('profil/update', 'guest_controller\ProfileGuest@update_profile'); // [ProfileGuest::class, 'update_profile']
+    Route::post('profil/academic/change', 'guest_controller\ProfileGuest@academic_change'); //[ProfileGuest::class, 'academic_change']
+    Route::post('profil/document/change', 'guest_controller\ProfileGuest@doc_up'); // [ProfileGuest::class, 'doc_up']
+    Route::post('profil/cekEmail', 'guest_controller\ProfileGuest@cek_email'); // [ProfileGuest::class, 'cek_email']
+    Route::post('update-sertif', 'guest_controller\ProfileGuest@update_sertif'); // [ProfileGuest::class, 'update_sertif']
     Route::get('apply_instructor', 'InstructorController@apply_instructor');
     //END PROFILE
 });
