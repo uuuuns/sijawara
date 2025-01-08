@@ -175,7 +175,7 @@ class EventController extends Controller
         DB::table('activity')->insert($activity);
         DB::table('event')->insert($event);
 
-        return redirect('events')->with(['succ_msg' => 'Berhasil Menambahkan Webinar', 'location' => 'events']);
+        return redirect('webinar-admin')->with(['succ_msg' => 'Berhasil Menambahkan Webinar', 'location' => 'webinar-admin']);
     }
 
     public function update(Request $req)
@@ -216,7 +216,7 @@ class EventController extends Controller
         DB::table('activity')->WHERE(['ID_ACTIVITY' => $req->input('up_id_activity')])->update($activity);
         DB::table('event')->WHERE(['ID_ACTIVITY' => $req->input('up_id_activity')])->update($event);
 
-        return redirect('events')->with(['succ_msg' => 'Berhasil Memperbarui Webinar', 'location' => 'events']);
+        return redirect('webinar-admin')->with(['succ_msg' => 'Berhasil Memperbarui Webinar', 'location' => 'webinar-admin']);
     }
 
     public function delete(Request $req)
@@ -224,7 +224,7 @@ class EventController extends Controller
         DB::table('event')->WHERE(['ID_ACTIVITY' => $req->input('id_activity')])->delete();
         DB::table('activity')->WHERE(['ID_ACTIVITY' => $req->input('id_activity')])->delete();
 
-        return redirect('events')->with('succ_msg', 'Webinar Berhasil Dihapus');
+        return redirect('webinar-admin')->with('succ_msg', 'Webinar Berhasil Dihapus');
     }
 
     public function deskripsi_get($id)

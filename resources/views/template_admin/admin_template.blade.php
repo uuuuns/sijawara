@@ -69,7 +69,7 @@
                                             </a>
                                         </li> -->
                                         <li class="nav-item w-100">
-                                                <a href="/category" class="nav-link  {{ request()->is('category') ? 'active' : '' }}  d-flex align-middle px-4 py-3 rounded-0">
+                                                <a href="/kategori" class="nav-link  {{ request()->is('kategori') ? 'active' : '' }}  d-flex align-middle px-4 py-3 rounded-0">
                                                     <i class="fs-6 d-flex align-items-center far fa-th-large"></i> <span class="ms-1 ps-2 fs-6 align-self-center ">
                                                         Kategori
                                                     </span>
@@ -122,14 +122,14 @@
                                             <hr class="my-0 border border-1 mx-3">
                                         </li>
                                         <li class="nav-item w-100">
-                                            <a href="/instructor" class="nav-link  {{ request()->is('instructor') ? 'active' : '' }}  d-flex align-middle px-4 py-3 rounded-0">
+                                            <a href="/instruktur" class="nav-link  {{ request()->is('instruktur') ? 'active' : '' }}  d-flex align-middle px-4 py-3 rounded-0">
                                                 <i class="fs-6 d-flex align-items-center far fa-user-md"></i> <span class="ms-1 ps-2 fs-6 align-self-center ">
                                                     Instruktur
                                                 </span>
                                             </a>
                                         </li>
                                         <li class="nav-item w-100">
-                                            <a data-bs-toggle="collapse" data-bs-target="#submenu_master_data" aria-expanded="true" aria-controls="submenu" class="nav-link d-flex align-middle px-4 py-3 rounded-0 {{ (request()->is('testimoni*') || request()->is('setting*')) ? 'active' :  '' }}" style="cursor: pointer;">
+                                            <a data-bs-toggle="collapse" data-bs-target="#submenu_master_data" aria-expanded="true" aria-controls="submenu" class="nav-link d-flex align-middle px-4 py-3 rounded-0 {{ (request()->is('testimoni*') || request()->is('pengaturan*')) ? 'active' :  '' }}" style="cursor: pointer;">
                                                 <i class="fs-6 d-flex align-items-center far fa-tools"></i>
                                                 <span class="ms-1 ps-2 fs-6 align-self-center ">Master Data</span>
                                                 <svg class="svg-inline--fa fa-chevron-down ms-auto" style="width: 18px" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-down" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="">
@@ -139,7 +139,7 @@
                                             </a>
                                             <ul class="nav nav-list collapse" id="submenu_master_data">
                                                 <li class="nav-item w-100">
-                                                    <a data-bs-toggle="collapse" data-bs-target="#submenu_master_data_1" aria-expanded="true" aria-controls="submenu" class="nav-link d-flex align-middle px-4 py-3 rounded-0 {{ (request()->is('testimoni*') || request()->is('setting*')) ? 'active' :  '' }}" style="cursor: pointer;">
+                                                    <a data-bs-toggle="collapse" data-bs-target="#submenu_master_data_1" aria-expanded="true" aria-controls="submenu" class="nav-link d-flex align-middle px-4 py-3 rounded-0 {{ (request()->is('testimoni*') || request()->is('pengaturan*')) ? 'active' :  '' }}" style="cursor: pointer;">
                                                         <span class="ms-3 ps-3 fs-6 align-self-center ">UKM</span>
                                                         <svg class="svg-inline--fa fa-chevron-down ms-auto" style="width: 18px" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-down" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="">
                                                             <path fill="currentColor" d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
@@ -182,7 +182,7 @@
                                                     <hr class="my-0 border border-1 mx-3">
                                                 </li>
                                                 <li class="nav-item w-100">
-                                                    <a data-bs-toggle="collapse" data-bs-target="#submenu_master_data_2" aria-expanded="true" aria-controls="submenu" class="nav-link d-flex align-middle px-4 py-3 rounded-0 {{ (request()->is('testimoni*') || request()->is('setting*')) ? 'active' :  '' }}" style="cursor: pointer;">
+                                                    <a data-bs-toggle="collapse" data-bs-target="#submenu_master_data_2" aria-expanded="true" aria-controls="submenu" class="nav-link d-flex align-middle px-4 py-3 rounded-0 {{ (request()->is('testimoni*') || request()->is('pengaturan*')) ? 'active' :  '' }}" style="cursor: pointer;">
                                                         <span class="ms-3 ps-3 fs-6 align-self-center ">Koperasi</span>
                                                         <svg class="svg-inline--fa fa-chevron-down ms-auto" style="width: 18px" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-down" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="">
                                                             <path fill="currentColor" d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
@@ -209,13 +209,13 @@
                                                         </li>
                                                     </ul>
                                                 </li>
-                                                <a href="/widyaiswara" class="nav-link  {{ request()->is('instructor') ? 'active' : '' }}  d-flex align-middle px-4 py-3 rounded-0">
+                                                <a href="/widyaiswara" class="nav-link  {{ request()->is('instruktur') ? 'active' : '' }}  d-flex align-middle px-4 py-3 rounded-0">
                                                     <span class="ms-3 ps-3 fs-6 align-self-center ">Widyaiswara</span>
                                                 </a>
                                             </ul>
                                         </li>
                                         <li class="nav-item w-100">
-                                            <a data-bs-toggle="collapse" data-bs-target="#submenu_setting" aria-expanded="true" aria-controls="submenu" class="nav-link d-flex align-middle px-4 py-3 rounded-0 {{ (request()->is('testimoni*') || request()->is('setting*')) ? 'active' :  '' }}" style="cursor: pointer;">
+                                            <a data-bs-toggle="collapse" data-bs-target="#submenu_setting" aria-expanded="true" aria-controls="submenu" class="nav-link d-flex align-middle px-4 py-3 rounded-0 {{ (request()->is('testimoni*') || request()->is('pengaturan*')) ? 'active' :  '' }}" style="cursor: pointer;">
                                                 <i class="fs-6 d-flex align-items-center far fa-tools"></i>
                                                 <span class="ms-1 ps-2 fs-6 align-self-center ">Pengaturan</span>
                                                 <svg class="svg-inline--fa fa-chevron-down ms-auto" style="width: 18px" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-down" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="">
@@ -225,7 +225,7 @@
                                             </a>
                                             <ul class="nav nav-list collapse" id="submenu_setting">
                                                 <li class="nav-item w-100">
-                                                    <a href="/setting" class="nav-link d-flex align-middle px-4 py-3 rounded-0">
+                                                    <a href="{{ url('pengaturan') }}" class="nav-link d-flex align-middle px-4 py-3 rounded-0">
                                                         <span class="ms-3 ps-3 fs-6 align-self-center ">Carousel</span>
                                                     </a>
                                                 </li>
@@ -243,7 +243,7 @@
                                             <hr class="my-0 border border-1 mx-3">
                                         </li>
                                         <li class="nav-item w-100 pb-3">
-                                            <a href="<?= url('logout') ?>" class="nav-link d-flex align-middle px-4 py-3 rounded-0">
+                                            <a href="<?= url('keluar') ?>" class="nav-link d-flex align-middle px-4 py-3 rounded-0">
                                                 <i class="fs-6 d-flex align-items-center far fa-arrow-alt-to-left"></i> <span class="ms-1 ps-2 fs-6 align-self-center ">Keluar
                                                 </span>
                                             </a>

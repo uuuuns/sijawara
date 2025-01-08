@@ -92,7 +92,7 @@
 
     function getData(key) {
         $.ajax({
-            url: "course/search",
+            url: "kursus/search",
             method: 'GET',
             data: {
                 keyword: key
@@ -139,7 +139,7 @@
             }
         });
         $.ajax({
-            url: '<?= Request::segment(0) ?>/course/category',
+            url: '<?= Request::segment(0) ?>/kursus/category',
             method: 'GET',
             data: {
                 category: category

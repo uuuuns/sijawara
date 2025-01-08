@@ -49,7 +49,7 @@
                                 <td><?= $item->JK ?></td>
                                 <td>
                                     <div class="d-flex flex-column gap-2">
-                                        <button type="button" onclick="location.href='user/detail_pengambilan?id_user=<?=$item->ID_USER?>'" class="btn btn-dark px-4 py-2 rounded">
+                                        <button type="button" onclick="location.href='pengguna/detail_pengambilan?id_user=<?=$item->ID_USER?>'" class="btn btn-dark px-4 py-2 rounded">
                                             <i class="bx bx-list-ul font-size-16 align-middle"></i>
                                         </button>
                                         @if (session('user')[0]['ID_ROLE'] == 1)
@@ -88,7 +88,7 @@
                     <span aria-hidden="true" class="fs-3">&times;</span>
                 </button>
             </div>
-            <form id="form-add" action="user/store" method="POST" enctype="multipart/form-data">
+            <form id="form-add" action="pengguna/store" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
                     <div class="form-group">
@@ -257,7 +257,7 @@
                     <span aria-hidden="true" class="fs-3">&times;</span>
                 </button>
             </div>
-            <form id="updateUserForm" action="update_user" method="post" enctype="multipart/form-data">
+            <form id="updateUserForm" action="{{ url('pengguna/update') }}" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
                     <div class="nav-link rounded-circle d-flex justify-content-center">
@@ -385,7 +385,7 @@
                     <span aria-hidden="true" class="fs-3">&times;</span>
                 </button>
             </div>
-            <form id="form-delete" action="user/delete" method="POST" enctype="multipart/form-data">
+            <form id="form-delete" action="pengguna/delete" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
                     <p>Apakah anda ingin menghapus user ini ?</p>
@@ -537,7 +537,7 @@
                 }
             });
         $.ajax({
-            url: 'user/jadikanAdmin',
+            url: 'pengguna/jadikanAdmin',
             type: 'POST',
             data: {
                 id_user: id_user,
@@ -588,7 +588,7 @@
                 }
             });
         // $.ajax({
-        //     url: 'user/jadikanInstruktur',
+        //     url: 'pengguna/jadikanInstruktur',
         //     type: 'POST',
         //     data: {
         //         id_user: id_user,

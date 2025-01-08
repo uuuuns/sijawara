@@ -73,7 +73,7 @@
                                         <?php endif; ?>
                                     </div>
                                     <h3 class="course-title mb-0"> <a
-                                            href="<?= url('event/detail/' . preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $item->TITLE_ACTIVITY))) . '?id_activity=' . $item->ID_ACTIVITY ?>"><?= $item->TITLE_ACTIVITY ?>
+                                            href="<?= url('webinar/detail/' . preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $item->TITLE_ACTIVITY))) . '?id_activity=' . $item->ID_ACTIVITY ?>"><?= $item->TITLE_ACTIVITY ?>
                                         </a> </h3>
                                 </div>
                                 <div class="course-meta mb-3">
@@ -144,7 +144,7 @@
 
     function getData(key) {
         $.ajax({
-            url: 'event/search',
+            url: 'webinar/search',
             method: 'GET',
             data: {
                 keyword: key

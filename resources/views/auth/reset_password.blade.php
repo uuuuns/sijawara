@@ -8,7 +8,7 @@
                 <div class="d-flex ps-4 flex-column justify-content-center h-100">
                     <h4 class="ps-1 fw-semibold">Buat Kata Sandi Baru</h4>
                     <h5 class="fw-normal mt-5">Kata sandi baru harus berbeda dengan kata sandi lama</h5>
-                    <form class="fw-normal" action="<?= url('resetPassword') ?>" method="POST">
+                    <form class="fw-normal" action="<?= url('resetkatasandi') ?>" method="POST">
                     <input type="hidden" value="<?= $token->ID_USER?>" name="id_user">
                     @csrf
                         <div class="input-group my-4">
@@ -24,7 +24,7 @@
                                 Kata Sandi</button>
                         </div>
                         <div class="my-4 text-center">
-                            <a href="<?= url('login') ?>" class="text-decoration-none text-black">Masuk</a>
+                            <a href="<?= url('masuk') ?>" class="text-decoration-none text-black">Masuk</a>
                         </div>
                     </form>
                 </div>

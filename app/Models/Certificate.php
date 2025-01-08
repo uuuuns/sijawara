@@ -47,7 +47,7 @@ class Certificate extends Model
         $data['ROLES'] = strtoupper($role); //PESERTA
         $data['TGL_ACARA'] = $date; //25 Oktober 2024
         $data['TGL_TTD'] = strtoupper($date); //MALANG, 25 OKTOBER 2024
-        $data['QR'] = base64_encode(QrCode::format("svg")->size(516)->generate(URL::to('/').'/verification/sertifikat?ID_SERTIFIKAT='.$encryptedId));
+        $data['QR'] = base64_encode(QrCode::format("svg")->size(516)->generate(URL::to('/').'/verifikasi/sertifikat?ID_SERTIFIKAT='.$encryptedId));
         
         $html = view('pdf_template.sertifikat', $data)->render();
         $resPdf = PDFGenerator::generate($html, $file_pdf, $paper, $orientation);

@@ -57,7 +57,7 @@
                                     id="next-2">Daftar</button>
                             </div>
                             <div class="my-4 text-center">
-                                <span>Sudah punya akun? <a href="<?= url('login') ?>" class="text-decoration-none fw-bold text-black">Masuk</a></span>
+                                <span>Sudah punya akun? <a href="<?= url('masuk') ?>" class="text-decoration-none fw-bold text-black">Masuk</a></span>
                             </div>
                         </div>
                     </form>

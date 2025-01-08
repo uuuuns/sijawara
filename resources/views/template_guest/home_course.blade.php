@@ -11,7 +11,7 @@
                 </div>
 
                 <div class="course-content">
-                    <h3 class="course-title "> <a href="<?= url('course/info/' . preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $item->TITLE_ACTIVITY)) . '?id_activity=' . $item->ID_ACTIVITY) ?>"><?= $item->TITLE_ACTIVITY ?></a> </h3>
+                    <h3 class="course-title "> <a href="<?= url('kursus/info/' . preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $item->TITLE_ACTIVITY)) . '?id_activity=' . $item->ID_ACTIVITY) ?>"><?= $item->TITLE_ACTIVITY ?></a> </h3>
                     <div class="course-footer mb-20 d-flex align-items-center justify-content-between ">
                         <div class="text-muted m-0 pt-2 fs-6" style="overflow: hidden !important;
                             text-overflow: ellipsis !important;

@@ -232,8 +232,9 @@
                     '<div class="d-flex justify-content-center align-items-center h-100 mt-40 py-4"><img src="https://icons8.com/preloaders/preloaders/1476/Rocket.gif" alt="Loader.gif" /></div>'
                 );
                 $("#footer_modal_<?= $item->ID_ITEM ?>").html("");
-                jQuery.ajax({
-                    url: "<?= Request::segment(0) ?>/course/quiz/evaluation",
+
+                $.ajax({
+                    url: "<?= Request::segment(0) ?>/kursus/quiz/evaluation",
                     type: "POST",
                     data: {
                         "id_quiz": $('input[name="id_quiz"]').val(),

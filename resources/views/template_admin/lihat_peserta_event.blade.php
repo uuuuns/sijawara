@@ -92,7 +92,7 @@
                             <a href="/events" class="btn btn-sm btn-danger">
                                 <i class="fas fa-chevron-left"></i> KEMBALI</a>
                             <button id="exportButton"
-                                onclick="location.href='/events/laporan_event?ID_ACTIVITY=<?= $event->ID_ACTIVITY ?>'"
+                                onclick="location.href='/webinar-admin/laporan_event?ID_ACTIVITY=<?= $event->ID_ACTIVITY ?>'"
                                 class="btn btn-sm btn-success"><i class="fas fa-file-excel"></i> LAPORAN</button>
                         </div>
                     </div>
@@ -305,10 +305,10 @@
 
         function laporan(id) {
             $.ajax({
-                url: '/events/laporan_event?ID_ACTIVITY=' + id,
+                url: '/webinar-admin/laporan_event?ID_ACTIVITY=' + id,
                 method: 'GET',
                 success: function(response) {
-                    window.location.href = '/events/laporan/' + id;
+                    window.location.href = '/webinar-admin/laporan/' + id;
                 },
                 error: function(xhr, status, error) {
                     console.log(xhr.responseText);
