@@ -71,9 +71,9 @@
                     </div>
                 </div>
                 <div class="col-md-12">
-                    <a href="/courses" class="btn btn-sm btn-danger">
+                    <a href="{{ url('kursus-admin') }}" class="btn btn-sm btn-danger">
                     <i class="fas fa-chevron-left"></i> KEMBALI</a> 
-                    <button id="exportButton" onclick="location.href='/courses/laporan_course?ID_ACTIVITY=<?=$kursus->ID_ACTIVITY?>'" class="btn btn-sm btn-success text-white"><i class="fas fa-file-excel text-white"></i> LAPORAN</button>
+                    <button id="exportButton" onclick="location.href='/kursus-admin/laporan_course?ID_ACTIVITY=<?=$kursus->ID_ACTIVITY?>'" class="btn btn-sm btn-success text-white"><i class="fas fa-file-excel text-white"></i> LAPORAN</button>
                 </div>
             </div>
             <div class="mt-5">
@@ -123,7 +123,7 @@
                     <span aria-hidden="true" class="fs-3">&times;</span>
                 </button>
             </div>
-            <form id="form-user" action="events/add" method="POST" enctype="multipart/form-data">
+            <form id="form-user" action="webinar-admin/add" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
                     <div class="form-group">
@@ -236,7 +236,7 @@
                     <span aria-hidden="true" class="fs-3">&times;</span>
                 </button>
             </div>
-            <form id="form-user" action="events/update" method="POST" enctype="multipart/form-data">
+            <form id="form-user" action="webinar-admin/update" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
                     <div class="hidden">
@@ -351,7 +351,7 @@
                     <span aria-hidden="true" class="fs-3">&times;</span>
                 </button>
             </div>
-            <form id="form-user" action="events/delete" method="POST" enctype="multipart/form-data">
+            <form id="form-user" action="webinar-admin/delete" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
                     <label>Apakah Anda Ingin Menghapus Event ini ?</label>
@@ -479,7 +479,7 @@
         $('input[name="up_location"]').val(data.LOCATION)
         $('input[name="up_link_zoom"]').val(data.LINK_ZOOM)
         $.ajax({
-            url: 'events/get/' + data.ID_ACTIVITY,
+            url: 'webinar-admin/get/' + data.ID_ACTIVITY,
             method: 'GET',
             dataType: 'JSON',
 

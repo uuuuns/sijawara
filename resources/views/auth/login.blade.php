@@ -38,13 +38,13 @@
                             </svg>
                         </div>
                         <div class="mt-3 my-3">
-                            <a href="<?= url('forgot-password') ?>" class="text-decoration-none fw-bold text-black">Lupa Password?</a>
+                            <a href="<?= url('lupa-katasandi') ?>" class="text-decoration-none fw-bold text-black">Lupa Password?</a>
                         </div>
                         <div class="my-4">
                             <button id="btn-login" type="submit" class="btn  btn-main-2 btn-primary w-100 rounded-3 fw-semibold py-2 text-black border-0" disabled">Masuk</button>
                         </div>
                         <div class="my-4 text-center">
-                            <span>Tidak punya akun? <a href="<?= url('register') ?>" class="text-decoration-none fw-bold text-black">Daftar Sekarang</a></span>
+                            <span>Tidak punya akun? <a href="<?= url('daftar') ?>" class="text-decoration-none fw-bold text-black">Daftar Sekarang</a></span>
                         </div>
                     </form>
                 </div>

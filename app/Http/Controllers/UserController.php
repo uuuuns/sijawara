@@ -85,7 +85,7 @@ class UserController extends Controller
         DB::table('user')->INSERT($user);
         DB::table('user_data')->INSERT($userdata);
 
-        return redirect('user')->with(['succ_msg' => 'Berhasil menambahkan user baru', 'location' => 'user']);
+        return redirect('pengguna')->with(['succ_msg' => 'Berhasil menambahkan user baru', 'location' => 'user']);
     }
 
     public function update(Request $req)
@@ -103,7 +103,7 @@ class UserController extends Controller
 
         DB::table('user')->WHERE(['ID_USER' => $req->input('up_id_user')])->update($user);
 
-        return redirect('user')->with(['succ_msg' => 'Berhasil memperbarui user', 'location' => 'user']);
+        return redirect('pengguna')->with(['succ_msg' => 'Berhasil memperbarui user', 'location' => 'user']);
     }
     public function update_profile(Request $request)
     {
@@ -130,7 +130,7 @@ class UserController extends Controller
         }
 
         DB::table('user')->where('ID_USER', $request->input('up_userId'))->update($user);
-        return redirect('user')->with([
+        return redirect('pengguna')->with([
             'msg' => 'Berhasil memperbarui data user '.$request->input('up_userName'),
             'location' => 'user',
         ]);
@@ -143,9 +143,9 @@ class UserController extends Controller
                 'IS_DELETE'    => 1
             ];
             DB::table('user')->WHERE(['ID_USER' => $req->input('del_id_user')])->update($user);
-            return redirect('user')->with(['msg' => 'Berhasil menghapus user', 'location' => 'user']);    
+            return redirect('pengguna')->with(['msg' => 'Berhasil menghapus user', 'location' => 'user']);    
         } catch (\Throwable $e) {
-            return redirect('user')->with(['msg' => 'Error'.$e, 'location' => 'user']);  
+            return redirect('pengguna')->with(['msg' => 'Error'.$e, 'location' => 'user']);  
         }
     }
     public function detail_pengambilan(Request $req)
@@ -181,7 +181,7 @@ class UserController extends Controller
                 view('template_admin.detail_pengambilan_user', $data) .
                 view('template.footer', $data);  
         } catch (\Throwable $e) {
-            return redirect('user/detail_pengambilan')->with(['msg' => 'Error'.$e, 'location' => 'user']);  
+            return redirect('pengguna/detail_pengambilan')->with(['msg' => 'Error'.$e, 'location' => 'user']);  
         }
     }
 

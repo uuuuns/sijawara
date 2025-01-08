@@ -125,14 +125,14 @@
             </div>
 
             <div class="modal-footer">
-                <form id="form-user" action="instructor/decline" method="POST" enctype="multipart/form-data">
+                <form id="form-user" action="instruktur/decline" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="hidden">
                         <input placeholder="Title" type="hidden" name="dec_id_instructor" id="dec_id_instructor" class="form-control" readonly>
                     </div>
                     <button type="submit" class="btn btn-danger btn-reject">Tolak</button>
                 </form>
-                <form id="form-user" action="instructor/accept" method="POST" enctype="multipart/form-data">
+                <form id="form-user" action="instruktur/accept" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="hidden">
                         <input placeholder="Title" type="hidden" name="acc_id_instructor" id="acc_id_instructor" class="form-control" readonly>

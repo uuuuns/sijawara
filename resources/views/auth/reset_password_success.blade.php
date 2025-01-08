@@ -10,7 +10,7 @@
                     <h5 class="fw-normal mt-5" style="line-height:inherit">Kata Sandi Anda Telah direset<br>
                         Klik disini untuk masuk</h5>
                     <div class="my-4">
-                        <a href="<?= url('login') ?>" type="submit" class="btn btn-main-2 btn-primary w-100 rounded-3 fw-semibold py-2 text-black border-0">Lanjut</a>
+                        <a href="<?= url('masuk') ?>" type="submit" class="btn btn-main-2 btn-primary w-100 rounded-3 fw-semibold py-2 text-black border-0">Lanjut</a>
                     </div>
                 </div>
 

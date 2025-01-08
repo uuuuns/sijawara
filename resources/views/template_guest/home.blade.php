@@ -11,9 +11,9 @@
                     Tersedia video pembelajaran, materi tertulis, dan dilengkapi soal-soal. Kamu juga akan mendapatkan sertifikat. Sijawara juga hadir untuk pembelajaran daring. Pilih materi yang disukai dan segera daftarkan dirimu !!!
                 </p>
                 <div class="d-flex gap-2">
-                    <button class="btn btn-main py-2 px-4 rounded" onclick="window.location.href = '/course'">Mulai Belajar</button>
+                    <button class="btn btn-main py-2 px-4 rounded" onclick="window.location.href = '/kursus'">Mulai Belajar</button>
                     @if (empty(session('user')))
-                        <button class="btn btn-main-outline py-2 px-4 rounded" onclick="window.location.href = '/register'">Daftar</button>
+                        <button class="btn btn-main-outline py-2 px-4 rounded" onclick="window.location.href = '/daftar'">Daftar</button>
                     @endif
                 </div>
             </div>
@@ -410,13 +410,13 @@
                 <h3 class="text-center" style="font-weight:600">Mulai dan Pilih Pelatihan Anda</h3>
                 <div class="row  pt-3 pt-lg-0">
                     <div class="col-12 col-lg-6 text-center">
-                        <a href="{{ url('course') }}">
+                        <a href="{{ url('kursus') }}">
                             <img class="mandiri-img" src="{{ asset('assets_new') }}/images/new/event.png" />
                         </a>
                         <h4 class="fw-semibold pt-2 mandiri-text">Belajar Mandiri</h4>
                     </div>
                     <div class="col-12 col-lg-6 text-center pt-4 pt-sm-0">
-                        <a href="{{ url('event') }}">
+                        <a href="{{ url('webinar') }}">
                             <img class="webinar-img" src="{{ asset('assets_new') }}/images/new/webinar.png" />
                         </a>
                         <h4 class="fw-semibold pt-2 webinar-text">Webinar</h4>

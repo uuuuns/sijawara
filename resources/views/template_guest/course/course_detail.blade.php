@@ -424,7 +424,7 @@
             }
         });
         $.ajax({
-            url: "<?= Request::segment(0) ?>/course/item/mapping",
+            url: "<?= Request::segment(0) ?>/kursus/item/mapping",
             type: "POST",
             data: {
                 id_activity: "<?= $id_activity; ?>"
@@ -456,7 +456,7 @@
         });
 
         $.ajax({
-            url: '<?= Request::segment(0) ?>/course/item',
+            url: '<?= Request::segment(0) ?>/kursus/item',
             type: "POST",
             data: {
                 id_item: $(e).data("iditem"),

@@ -34,7 +34,7 @@ class CategoryController extends Controller
 
         DB::table('kategori')->INSERT($data);
 
-        return redirect('category')->with(['succ_msg' => 'Berhasil menambahkan kategori', 'location' => 'category']);
+        return redirect('kategori')->with(['succ_msg' => 'Berhasil menambahkan kategori', 'location' => 'kategori']);
     }
 
     public function update(Request $req)
@@ -45,13 +45,13 @@ class CategoryController extends Controller
 
         DB::table('kategori')->WHERE(['ID_KATEGORI' => $req->input('up_id_kategori')])->update($data);
 
-        return redirect('category')->with(['succ_msg' => 'Berhasil memperbarui kategori', 'location' => 'category']);
+        return redirect('kategori')->with(['succ_msg' => 'Berhasil memperbarui kategori', 'location' => 'kategori']);
     }
 
     public function delete(Request $req)
     {
         DB::table('kategori')->WHERE(['ID_KATEGORI' => $req->input('del_id_kategori')])->delete();
 
-        return redirect('category')->with(['succ_msg' => 'Berhasil menghapus kategori', 'location' => 'category']);
+        return redirect('kategori')->with(['succ_msg' => 'Berhasil menghapus kategori', 'location' => 'kategori']);
     }
 }

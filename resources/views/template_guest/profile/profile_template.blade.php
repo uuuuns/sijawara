@@ -138,7 +138,7 @@
                                     <li class="w-100">
                                         <hr class="my-0 border border-1 mx-3">
                                     </li>
-                                    <form action="/forgotPassword" id="forgot" method="POST">
+                                    <form action="/lupakatasandi" id="forgot" method="POST">
                                         @csrf
                                         <li class="nav-item w-100">
                                             <a href="#" class="nav-link  d-flex align-middle px-4 py-3 rounded-0" onclick="forgot()">
@@ -152,7 +152,7 @@
                                         <hr class="my-0 border border-1 mx-3">
                                     </li>
                                     <li class="nav-item w-100 pb-3">
-                                        <a href="<?= url('logout') ?>" class="nav-link d-flex align-middle px-4 py-3 rounded-0">
+                                        <a href="<?= url('keluar') ?>" class="nav-link d-flex align-middle px-4 py-3 rounded-0">
                                             <i class="fs-6 d-flex align-items-center far fa-arrow-alt-to-left"></i> <span class="ms-1 ps-2 fs-6 align-self-center ">Keluar
                                             </span>
                                         </a>

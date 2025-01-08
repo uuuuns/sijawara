@@ -76,7 +76,7 @@
                     <span aria-hidden="true" class="fs-3">&times;</span>
                 </button>
             </div>
-            <form id="form-user" action="category/store" method="POST" enctype="multipart/form-data">
+            <form id="form-user" action="kategori/store" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
                     <div class="form-group mb-3">
@@ -103,7 +103,7 @@
                     <span aria-hidden="true" class="fs-3">&times;</span>
                 </button>
             </div>
-            <form id="form-user" action="category/update" method="POST" enctype="multipart/form-data">
+            <form id="form-user" action="kategori/update" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
                     <input type="hidden" name="up_id_kategori" value="" readonly>
@@ -130,7 +130,7 @@
                     <span aria-hidden="true" class="fs-3">&times;</span>
                 </button>
             </div>
-            <form id="form-user" action="category/delete" method="POST" enctype="multipart/form-data">
+            <form id="form-user" action="kategori/delete" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
                     <p>Apakah Anda ingin menghapus kategori ini ?</p>

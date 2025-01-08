@@ -13,7 +13,7 @@
             </thead>
             <tbody class="table-group-divider text-black" style="border-color:#C8C8C8; border-top-width: 2px !important">
                 <?php foreach ($event as $item) : ?>
-                    <tr onclick="window.location = '<?= url('/event/detail/' . preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $item->TITLE_ACTIVITY)) . '?id_activity=' . $item->ID_ACTIVITY) ?>'" style="cursor:pointer">
+                    <tr onclick="window.location = '<?= url('/webinar/detail/' . preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $item->TITLE_ACTIVITY)) . '?id_activity=' . $item->ID_ACTIVITY) ?>'" style="cursor:pointer">
                         <td class="py-3">
                             <div class="d-flex align-items-center" style="width: max-content;">
                                 <img src="<?= $item->IMAGE_ACTIVITY ?>" class="d-block img-fluid rounded-2" style="width: 80px; height: 80px; object-fit: cover">
