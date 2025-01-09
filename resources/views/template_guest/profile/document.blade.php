@@ -30,7 +30,7 @@
             </div>
         </div>
         <div id="input-data" class="d-none">
-            <form action="/profile/document/change" method="post" enctype="multipart/form-data">
+            <form action="{{ url('profil/document/change') }}" method="post" enctype="multipart/form-data">
                 @csrf
                 <input id="input-file1" name="file_cv" type="file" accept="application/pdf" />
                 <button type="submit" title="Upload selected files" id="upload-button1" style="display: none;"
@@ -67,7 +67,7 @@
             </div>
         </div>
         <div id="input-data" class="d-none">
-            <form action="/profile/document/change" method="post" enctype="multipart/form-data">
+            <form action="{{ url('profil/document/change') }}" method="post" enctype="multipart/form-data">
                 @csrf
                 <input id="input-file2" name="file_porto" type="file" accept="application/pdf" />
                 <button type="submit" title="Upload selected files" id="upload-button2" style="display: none;"
@@ -107,7 +107,7 @@
             </div>
         </div>
         <div id="input-data" class="d-none">
-            <form action="/profile/document/change" method="post" enctype="multipart/form-data">
+            <form action="{{ url('profil/document/change') }}" method="post" enctype="multipart/form-data">
                 @csrf
                 <input id="input-file3" name="file_cert" type="file" accept="application/pdf" multiple />
                 <button type="submit" title="Upload selected files" id="upload-button3" style="display: none;"
@@ -144,7 +144,7 @@
             </div>
         </div>
         <div id="input-data" class="d-none">
-            <form action="/profile/document/change" method="post" enctype="multipart/form-data">
+            <form action="{{ url('profil/document/change') }}" method="post" enctype="multipart/form-data">
                 @csrf
                 <input id="input-file4" name="file_recom" type="file" accept="application/pdf" />
                 <button type="submit" title="Upload selected files" id="upload-button4" style="display: none;"

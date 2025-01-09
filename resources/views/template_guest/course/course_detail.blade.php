@@ -71,14 +71,6 @@
                         <div class="course-widget course-details-info">
                             <div class="course-thumbnail">
                                 <img src="<?= $course->IMAGE_ACTIVITY ?>" alt="" class="img-fluid w-100" />
-                                <!-- <div class="my-3 fw-bold d-flex align-self-end justify-content-end pe-0 align-items-center text-black">
-                                    Bagikan :
-                                    <span class="fs-5">
-                                        <a href="{{ url('auth/facebook') }}"><i class="fab fa-facebook mx-2" style="cursor: pointer"></i></a>
-                                        <a href="{{ url('auth/twitter') }}"><i class="fab fa-twitter me-2" style="cursor: pointer"></i></a>
-                                        <a href="{{ url('auth/instagram') }}"><i class="fab fa-instagram" style="cursor: pointer"></i></a>
-                                    </span>
-                                </div> -->
                             </div>
 
                             <ul class="course-sidebar-list">
@@ -189,7 +181,7 @@
                             </div>
                             <div class="tab-pane fade" id="nav-komen" role="tabpanel" aria-labelledby="nav-komen-tab" tabindex="0">
                                 <div style="display: flex; justify-content: center; width: 100%;">
-                                    <form action="addkomen" method="POST" style="width: 100%; max-width: 800px;">
+                                    <form action="{{ ('kursus/detail/addkomen') }}" method="POST" style="width: 100%; max-width: 800px;">
                                         @csrf
                                         <input type="hidden" name="id_activity" value="<?=$id_activity?>">
                                         <input type="hidden" name="id_user" value="<?= session('user')[0]['ID_USER']?>">
@@ -310,7 +302,7 @@
                                 cancelButtonText: 'Nanti'
                             }).then((result) => {
                                 if (result.isConfirmed) {
-                                    window.location.href = '<?= Request::segment(0) ?>/profile';
+                                    window.location.href = '<?= Request::segment(0) ?>/profil';
                                 }
                             });
                             $('#downloadSertif').prop('disabled', false);

@@ -630,7 +630,7 @@
                     </style>
 
                     <div class="d-none">
-                        <form id="form_checkout" action="<?= url('checkout') ?>" method="post">
+                        <form id="form_checkout" action="{{ url('checkout') }}" method="post">
                             @csrf
                             <input type="hidden" value="">
                         </form>

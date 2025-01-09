@@ -11,23 +11,8 @@
                     <div class="my-4">
                         <a href="<?= url('masuk') ?>" class="btn  btn-main-2 btn-primary w-100 rounded-3 fw-semibold py-2 text-black border-0">Masuk</a>
                     </div>
-                    <!-- <form class="fw-normal" action="<?= url('resetkatasandi') ?>" method="POST">
-                        <div class="my-4">
-                            <button type="submit" class="btn btn-primary w-100 rounded-3 fw-semibold py-2 text-black border-0">Open email
-                                app</button>
-                        </div>
-                        <div class="mt-4 text-center">
-                            <span>Didn't get code? <a href="" class="text-decoration-none fw-bold text-black">RESEND!</a></span>
-                        </div>
-                        <div class="my-4 text-center">
-                            <a href="<?= url('masuk') ?>" class="text-decoration-none text-black">Back
-                                to Login</a>
-                        </div>
-                    </form> -->
                 </div>
-
             </div>
         </div>
-
     </div>
 </div>

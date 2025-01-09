@@ -11,7 +11,7 @@
                         msg error
                     --}}
                     <h4 class="ps-1 fw-semibold">Masuk</h4>
-                    <form class="fw-normal" action="<?= url('masuk/authentication') ?>" method="POST">
+                    <form class="fw-normal" action="{{ url('masuk/authentication') }}" method="POST">
                         @csrf
                         <div class="my-4 float-label-control">
                             <input type="email" class="form-control input-text woocommerce-Input woocommerce-Input--text" id="exampleInputEmail1" name="email" placeholder="Email" aria-describedby="emailHelp" required>
@@ -20,9 +20,6 @@
                             <input type="password" class="form-control input-text woocommerce-Input woocommerce-Input--text" name="password" id="exampleInputPassword1" placeholder="Kata Sandi" aria-describedby="passwordHelp" required>
                             <span class="align-self-center fw-semibold" id="togglePassword" style="cursor: pointer;margin-left: -46px;z-index: 5;padding: 10px;"><i class="far fa-eye fs-4"></i></span>
                         </div>
-                        <!-- <div class="mt-4 my-3">
-                            <div class="g-recaptcha" data-sitekey="6LfZlSETAAAAAC5VW4R4tQP8Am_to4bM3dddxkEt"></div>
-                        </div> -->
                         <div class="slidercaptcha card" id="card-captcha">
                             <div class="card-header">
                                 <span>Please complete security verification before Login!</span>

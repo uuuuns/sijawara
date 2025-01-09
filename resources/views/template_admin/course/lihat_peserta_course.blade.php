@@ -123,7 +123,7 @@
                     <span aria-hidden="true" class="fs-3">&times;</span>
                 </button>
             </div>
-            <form id="form-user" action="webinar-admin/add" method="POST" enctype="multipart/form-data">
+            <form id="form-user" action="{{ url('webinar-admin/add') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
                     <div class="form-group">
@@ -236,7 +236,7 @@
                     <span aria-hidden="true" class="fs-3">&times;</span>
                 </button>
             </div>
-            <form id="form-user" action="webinar-admin/update" method="POST" enctype="multipart/form-data">
+            <form id="form-user" action="{{ url('webinar-admin/update') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
                     <div class="hidden">
@@ -351,7 +351,7 @@
                     <span aria-hidden="true" class="fs-3">&times;</span>
                 </button>
             </div>
-            <form id="form-user" action="webinar-admin/delete" method="POST" enctype="multipart/form-data">
+            <form id="form-user" action="{{ url('webinar-admin/delete') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
                     <label>Apakah Anda Ingin Menghapus Event ini ?</label>
