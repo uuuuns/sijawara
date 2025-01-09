@@ -23,7 +23,7 @@
                                 @if ($is_full == false)
                                     <div class="">
                                         <form class="" id="FormBuyNow-info" method="POST"
-                                            action="<?= url('webinar/add') ?>">
+                                            action="{{ url('webinar/add') }}">
                                             @csrf
                                             <div id="data-input-info"></div>
                                             <input type="hidden" name="id_event" value="<?= $event->ID_ACTIVITY ?>">
@@ -331,7 +331,7 @@
                             cancelButtonText: 'Nanti'
                         }).then((result) => {
                             if (result.isConfirmed) {
-                                window.location.href = '<?= Request::segment(0) ?>/profile';
+                                window.location.href = '<?= Request::segment(0) ?>/profil';
                             }
                         });
                     } else {

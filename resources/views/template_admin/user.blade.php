@@ -88,7 +88,7 @@
                     <span aria-hidden="true" class="fs-3">&times;</span>
                 </button>
             </div>
-            <form id="form-add" action="pengguna/store" method="POST" enctype="multipart/form-data">
+            <form id="form-add" action="{{ url('pengguna/store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
                     <div class="form-group">
@@ -385,7 +385,7 @@
                     <span aria-hidden="true" class="fs-3">&times;</span>
                 </button>
             </div>
-            <form id="form-delete" action="pengguna/delete" method="POST" enctype="multipart/form-data">
+            <form id="form-delete" action="{{ url('pengguna/delete') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
                     <p>Apakah anda ingin menghapus user ini ?</p>

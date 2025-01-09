@@ -34,7 +34,7 @@
                                     </li>
 
                                     <li class="nav-item w-100">
-                                        <a data-bs-toggle="collapse" data-bs-target="#submenu" aria-expanded="true" aria-controls="submenu" class="nav-link d-flex align-middle px-4 py-3 rounded-0 {{ (request()->is('events*') || request()->is('courses*')) ? 'active' :  '' }}" style="cursor: pointer;">
+                                        <a data-bs-toggle="collapse" data-bs-target="#submenu" aria-expanded="true" aria-controls="submenu" class="nav-link d-flex align-middle px-4 py-3 rounded-0 {{ (request()->is('webinar-admin*') || request()->is('kursus-admin*')) ? 'active' :  '' }}" style="cursor: pointer;">
                                             <i class="fs-6 d-flex align-items-center far fa-book-open"></i>
                                             <span class="ms-1 ps-2 fs-6 align-self-center ">Aktifitas</span>
                                             <svg class="svg-inline--fa fa-chevron-down ms-auto" style="width: 18px" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-down" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="">
@@ -44,7 +44,7 @@
                                         </a>
                                         <ul class="nav nav-list collapse" id="submenu">
                                             <li class="nav-item w-100">
-                                                <a href="/courses" class="nav-link d-flex align-middle px-4 py-3 rounded-0">
+                                                <a href="{{ url('kursus-admin') }}" class="nav-link d-flex align-middle px-4 py-3 rounded-0">
                                                     <span class="ms-3 ps-3 fs-6 align-self-center ">Kursus</span>
                                                 </a>
                                             </li>
@@ -52,7 +52,7 @@
                                                 <hr class="my-0 border border-1 mx-3">
                                             </li>
                                             <li class="nav-item w-100">
-                                                <a href="/events" class="nav-link d-flex align-middle px-4 py-3 rounded-0">
+                                                <a href="{{ url('webinar-admin') }}" class="nav-link d-flex align-middle px-4 py-3 rounded-0">
                                                     <span class="ms-3 ps-3 fs-6 align-self-center ">Webinar</span>
                                                 </a>
                                             </li>

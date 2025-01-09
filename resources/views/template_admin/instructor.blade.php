@@ -125,14 +125,14 @@
             </div>
 
             <div class="modal-footer">
-                <form id="form-user" action="instruktur/decline" method="POST" enctype="multipart/form-data">
+                <form id="form-user" action="{{ url('instruktur/decline') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="hidden">
                         <input placeholder="Title" type="hidden" name="dec_id_instructor" id="dec_id_instructor" class="form-control" readonly>
                     </div>
                     <button type="submit" class="btn btn-danger btn-reject">Tolak</button>
                 </form>
-                <form id="form-user" action="instruktur/accept" method="POST" enctype="multipart/form-data">
+                <form id="form-user" action="{{ url('instruktur/accept') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="hidden">
                         <input placeholder="Title" type="hidden" name="acc_id_instructor" id="acc_id_instructor" class="form-control" readonly>
@@ -155,7 +155,7 @@
                     <span aria-hidden="true" class="fs-3">&times;</span>
                 </button>
             </div>
-            <form id="form-delete" action="instruktur/delete" method="POST" enctype="multipart/form-data">
+            <form id="form-delete" action="{{ url('instruktur/delete') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
                     <p>Apakah anda ingin menghapus user ini ?</p>

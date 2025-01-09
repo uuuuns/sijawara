@@ -10,7 +10,7 @@
 </style>
 <div class="col ms-0 ms-md-4 px-5 py-5 shadow rounded-3 overflow-hidden bg-white">
 
-    <form action="profile/update" method="POST" enctype="multipart/form-data" id="form-profile">
+    <form action="{{ url('profil/update') }}" method="POST" enctype="multipart/form-data" id="form-profile">
         @csrf
         <div class="nav-link rounded-circle">
             <input type="file" id="file" name="foto_profile" accept="image/jpeg, image/png" style="display: none;">
@@ -210,7 +210,7 @@
 
     function cekEmail(email, callback) {
         $.ajax({
-            url: 'profile/cekEmail',
+            url: 'profil/cekEmail',
             type: 'POST',
             data: {
                 _token: '{{ csrf_token() }}',

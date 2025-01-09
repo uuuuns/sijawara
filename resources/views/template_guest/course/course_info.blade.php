@@ -191,7 +191,7 @@
                                 <?php if ($course->KUOTA_PESERTA == 0 || $course->KUOTA_PESERTA >= $course->CURRENT_PARTISIPAN) { ?>
                                 <?php if (!empty($course->REQUIREMENT) && $course->REQ == 1) { ?>
                                 <form class="" id="FormBuyNow-info" method="POST"
-                                    action="<?= url('kursus/add') ?>">
+                                    action="{{ url('kursus/add') }}">
                                     @csrf
                                     <div id="data-input-info"></div>
                                     <input type="hidden" name="id_activity" value="<?= $course->ID_ACTIVITY ?>">
@@ -199,7 +199,7 @@
                                 </form>
                                 <?php } else if (empty($course->REQUIREMENT)) { ?>
                                 <form class="" id="FormBuyNow-info" method="POST"
-                                    action="<?= url('kursus/add') ?>">
+                                    action="{{ url('kursus/add') }}">
                                     @csrf
                                     <div id="data-input-info"></div>
                                     <input type="hidden" name="id_activity" value="<?= $course->ID_ACTIVITY ?>">

@@ -61,7 +61,7 @@
                 </div>
             </div>
             <div class="mt-3">
-                <form id="invitation-form" class="mt-3" action="invite_batch" method="POST">
+                <form id="invitation-form" class="mt-3" action="{{ url('kursus-admin/invite_batch') }}" method="POST">
                     @csrf
                     <input type="hidden" name="id_act" value="<?= $activity->ID_ACTIVITY ?>">
                     <input type="hidden" name="selected_users" id="selected-users">
@@ -129,7 +129,7 @@
                     <span aria-hidden="true" class="fs-3">&times;</span>
                 </button>
             </div>
-            <form id="form-add" action="invite_individu" method="POST" enctype="multipart/form-data">
+            <form id="form-add" action="{{ url('kursus-admin/invite_individu') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
                     <div class="form-group mb-3">
@@ -159,7 +159,7 @@
                     <span aria-hidden="true" class="fs-3">&times;</span>
                 </button>
             </div>
-            <form id="form-delete" action="batalkan_undangan" method="POST" enctype="multipart/form-data">
+            <form id="form-delete" action="{{ url('kursus-admin/batalkan_undangan') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
                     <div class="form-group mb-3">

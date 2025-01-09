@@ -75,7 +75,7 @@
                     <span aria-hidden="true" class="fs-3">&times;</span>
                 </button>
             </div>
-            <form id="form-add" action="testimoni/edit" method="POST" enctype="multipart/form-data">
+            <form id="form-add" action="{{ url('testimoni/edit') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" id="up_id_testimoni" name="up_id_testimoni" class="form-control" required>
                 <div class="modal-body">
@@ -113,7 +113,7 @@
                     <span aria-hidden="true" class="fs-3">&times;</span>
                 </button>
             </div>
-            <form id="form-add" action="testimoni/store" method="POST" enctype="multipart/form-data">
+            <form id="form-add" action="{{ url('testimoni/store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
                     <div class="form-group">
@@ -142,7 +142,7 @@
 <!-- Confirmation Delete Modal -->
 <div class="modal" id="deleteModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-        <form action="testimoni/delete" method="post">
+        <form action="{{ url('testimoni/delete') }}" method="post">
             @csrf
             <input type="hidden" id="id_testimoni" name="id_testimoni">
             <div class="modal-content">

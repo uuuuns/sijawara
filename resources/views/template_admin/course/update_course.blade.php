@@ -9,7 +9,7 @@
                     </div>
                 </div>
                 <div class="mt-5">
-                    <form id="form-user" action="update" method="POST" enctype="multipart/form-data">
+                    <form id="form-user" action="{{ ('kursus-admin/update') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <input type="hidden" name="ID_ACTIVITY">
                         <input type="hidden" name="ID_COURSE">
