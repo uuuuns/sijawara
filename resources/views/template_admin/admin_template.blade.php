@@ -23,7 +23,7 @@
                             <div class="d-flex flex-column align-items-center align-items-sm-start text-white">
                                 <ul class="sidebar-profile nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start w-100" id="menu">
                                     <li class="nav-item w-100 pt-2">
-                                        <a href="/dashboard" class=" {{ request()->is('dashboard') ? 'active' : '' }}    nav-link d-flex align-middle px-4 py-3 rounded-0">
+                                        <a href="{{ url('dashboard') }}" class=" {{ request()->is('dashboard') ? 'active' : '' }}    nav-link d-flex align-middle px-4 py-3 rounded-0">
                                             <i class="fs-6 d-flex align-items-center far fa-tachometer"></i> <span class="ms-1 ps-2 fs-6 align-self-center ">
                                                 Dashboard
                                             </span>
@@ -62,14 +62,8 @@
                                         <li class="w-100">
                                             <hr class="my-0 border border-1 mx-3">
                                         </li>
-                                        <!-- <li class="nav-item w-100">
-                                            <a target="_blank" href="https://perpustakaan.uptkukm.id/" class="nav-link {{ request()->is('ebook') ? 'active' : '' }}   d-flex align-middle px-4 py-3 rounded-0">
-                                                <i class="fs-6 d-flex align-items-center far fa-book"></i> <span class="ms-1 ps-2 fs-6 align-self-center ">My
-                                                    E-book</span>
-                                            </a>
-                                        </li> -->
                                         <li class="nav-item w-100">
-                                                <a href="/kategori" class="nav-link  {{ request()->is('kategori') ? 'active' : '' }}  d-flex align-middle px-4 py-3 rounded-0">
+                                                <a href="{{ url('kategori') }}" class="nav-link  {{ request()->is('kategori') ? 'active' : '' }}  d-flex align-middle px-4 py-3 rounded-0">
                                                     <i class="fs-6 d-flex align-items-center far fa-th-large"></i> <span class="ms-1 ps-2 fs-6 align-self-center ">
                                                         Kategori
                                                     </span>
@@ -89,7 +83,7 @@
                                             </a>
                                             <ul class="nav nav-list collapse" id="statistik_menu">
                                                 <li class="nav-item w-100">
-                                                    <a href="/statistik-peserta" class="nav-link  {{ request()->is('statistik-peserta') ? 'active' : '' }}  d-flex align-middle px-4 py-3 rounded-0">
+                                                    <a href="{{ url('statistik-peserta') }}" class="nav-link  {{ request()->is('statistik-peserta') ? 'active' : '' }}  d-flex align-middle px-4 py-3 rounded-0">
                                                         <i class="fs-6 d-flex align-items-center far fa-file-chart-pie"></i> <span class="ms-1 ps-2 fs-6 align-self-center ">
                                                             Statistik Peserta
                                                         </span>
@@ -99,7 +93,7 @@
                                                     <hr class="my-0 border border-1 mx-3">
                                                 </li>
                                                 <li class="nav-item w-100">
-                                                    <a href="/statistik-kategori" class="nav-link  {{ request()->is('statistik-kategori') ? 'active' : '' }}  d-flex align-middle px-4 py-3 rounded-0">
+                                                    <a href="{{ url('statistik-kategori') }}" class="nav-link  {{ request()->is('statistik-kategori') ? 'active' : '' }}  d-flex align-middle px-4 py-3 rounded-0">
                                                         <i class="fs-6 d-flex align-items-center far fa-file-chart-pie"></i> <span class="ms-1 ps-2 fs-6 align-self-center ">
                                                             Statistik Kategori Kursus
                                                         </span>
@@ -112,7 +106,7 @@
                                             <hr class="my-0 border border-1 mx-3">
                                         </li>
                                         <li class="nav-item w-100">
-                                            <a href="/user" class="nav-link  {{ request()->is('user') ? 'active' : '' }}  d-flex align-middle px-4 py-3 rounded-0">
+                                            <a href="{{ url('pengguna') }}" class="nav-link  {{ request()->is('user') ? 'active' : '' }}  d-flex align-middle px-4 py-3 rounded-0">
                                                 <i class="fs-6 d-flex align-items-center far fa-user"></i> <span class="ms-1 ps-2 fs-6 align-self-center ">
                                                     Peserta
                                                 </span>
@@ -122,7 +116,7 @@
                                             <hr class="my-0 border border-1 mx-3">
                                         </li>
                                         <li class="nav-item w-100">
-                                            <a href="/instruktur" class="nav-link  {{ request()->is('instruktur') ? 'active' : '' }}  d-flex align-middle px-4 py-3 rounded-0">
+                                            <a href="{{ url('instruktur') }}" class="nav-link  {{ request()->is('instruktur') ? 'active' : '' }}  d-flex align-middle px-4 py-3 rounded-0">
                                                 <i class="fs-6 d-flex align-items-center far fa-user-md"></i> <span class="ms-1 ps-2 fs-6 align-self-center ">
                                                     Instruktur
                                                 </span>
@@ -209,7 +203,7 @@
                                                         </li>
                                                     </ul>
                                                 </li>
-                                                <a href="/widyaiswara" class="nav-link  {{ request()->is('instruktur') ? 'active' : '' }}  d-flex align-middle px-4 py-3 rounded-0">
+                                                <a href="{{ url('widyaiswara') }}" class="nav-link  {{ request()->is('instruktur') ? 'active' : '' }}  d-flex align-middle px-4 py-3 rounded-0">
                                                     <span class="ms-3 ps-3 fs-6 align-self-center ">Widyaiswara</span>
                                                 </a>
                                             </ul>
@@ -233,7 +227,7 @@
                                                     <hr class="my-0 border border-1 mx-3">
                                                 </li>
                                                 <li class="nav-item w-100">
-                                                    <a href="/testimoni" class="nav-link d-flex align-middle px-4 py-3 rounded-0">
+                                                    <a href="{{ url('testimoni') }}" class="nav-link d-flex align-middle px-4 py-3 rounded-0">
                                                         <span class="ms-3 ps-3 fs-6 align-self-center ">Testimoni</span>
                                                     </a>
                                                 </li>
@@ -243,7 +237,7 @@
                                             <hr class="my-0 border border-1 mx-3">
                                         </li>
                                         <li class="nav-item w-100 pb-3">
-                                            <a href="<?= url('keluar') ?>" class="nav-link d-flex align-middle px-4 py-3 rounded-0">
+                                            <a href="{{ url('keluar') }}" class="nav-link d-flex align-middle px-4 py-3 rounded-0">
                                                 <i class="fs-6 d-flex align-items-center far fa-arrow-alt-to-left"></i> <span class="ms-1 ps-2 fs-6 align-self-center ">Keluar
                                                 </span>
                                             </a>
