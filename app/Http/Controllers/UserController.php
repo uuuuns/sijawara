@@ -13,6 +13,29 @@ class UserController extends Controller
     public function index() {
         $data['title'] = "User";
 
+        $data['provinsi'] = DB::select("
+            SELECT 
+                *
+            FROM 
+                md_provinsi
+            ");
+
+        $data['admin'] = true;
+
+        return
+            view('template.header', $data) .
+            view('template_admin.user.user', $data) .
+            view('template.footer', $data);
+    }
+
+    public function filter_user(Request $req)
+    {
+        $condition = '';
+
+        if ($req->input('JENIS_INSTANSI') != 'ALL') {
+            $condition = " AND u.JENIS_INSTANSI = '".$req->input('JENIS_INSTANSI')."'";
+        }        
+
         $data["user"] = DB::select("
             SELECT
                 u.*,
@@ -26,20 +49,11 @@ class UserController extends Controller
                 u.ID_KOTA = k.ID_KOTA
             WHERE
                 u.IS_DELETE = 0
+            $condition
         ");
-
-        $data['provinsi'] = DB::select("
-            SELECT 
-                *
-            FROM 
-                md_provinsi
-            ");
-
-        $data['admin'] = true;
-        return
-            view('template.header', $data) .
-            view('template_admin/user', $data) .
-            view('template.footer', $data);
+        
+        return 
+            view('template_admin.user.paper_ajax', $data);
     }
 
     public function store(Request $req)

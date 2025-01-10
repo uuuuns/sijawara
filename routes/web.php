@@ -81,6 +81,8 @@ Route::middleware(['usersession:4,1'])->group(function () {
     Route::post('pengguna/jadikanInstruktur', 'UserController@jadikanInstruktur');
     Route::get('pengguna/detail_pengambilan', 'UserController@detail_pengambilan');
 
+    Route::get('pengguna/ajax/paper-view', 'UserController@filter_user');
+
     Route::get('instruktur', 'InstructorController@index');
     Route::post('instruktur/accept', 'InstructorController@accept');
     Route::post('instruktur/decline', 'InstructorController@decline');
