@@ -401,7 +401,8 @@
             </div>
         `)
         $.ajax({
-            url: '<?= url('pengguna/ajax/paper-view') ?>?JENIS_INSTANSI=' + Instansi,
+            url: '<?= Request::segment(0) ?>/pengguna/ajax/paper-view?JENIS_INSTANSI=' + Instansi,
+
             method: 'GET',
             success: function(data) {
                 $('#user-paper').html(data)
