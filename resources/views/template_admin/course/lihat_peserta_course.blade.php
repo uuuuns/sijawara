@@ -77,8 +77,6 @@
                 </div>
                 <div class="col-md-6">
                     <a href="{{ url()->previous() }}" class="btn btn-sm btn-danger">
-                <div class="col-md-12">
-                    <a href="{{ url('kursus-admin') }}" class="btn btn-sm btn-danger">
                     <i class="fas fa-chevron-left"></i> KEMBALI</a> 
                     <button id="exportButton" onclick="location.href='/kursus-admin/laporan_course?ID_ACTIVITY=<?=$kursus->ID_ACTIVITY?>'" class="btn btn-sm btn-success text-white"><i class="fas fa-file-excel text-white"></i> LAPORAN</button>
                 </div>
