@@ -15,7 +15,7 @@ class EventController extends Controller
 {
     public function index()
     {
-        $data['title'] = "Webinar";
+        $data['title'] = "Webinar & Pelatihan";
         $role = session('user')[0]['ID_ROLE'];
         if ($role == 1 || $role == 4) {
             $data['event'] = DB::select("
@@ -153,6 +153,7 @@ class EventController extends Controller
             'DATE_START' => $req->input('date_start'),
             'DATE_END' => $req->input('date_end'),
             'LOG_TIME' => date('Y-m-d H:i:s'),
+            'IS_PUBLIC' => $req->input('status_public'),
             'SERTIF_IMAGE' => $req->hasFile('sertif_image') ? FileUpload::S3($req->file('sertif_image'), 'SERTIF_IMAGE', 'Template-Certifiace-' . strtotime(now())) : null
         ];
 
@@ -175,7 +176,7 @@ class EventController extends Controller
         DB::table('activity')->insert($activity);
         DB::table('event')->insert($event);
 
-        return redirect('webinar-admin')->with(['succ_msg' => 'Berhasil Menambahkan Webinar', 'location' => 'webinar-admin']);
+        return redirect('webinar-admin')->with(['succ_msg' => 'Berhasil Menambahkan Webinar/Pelatihan', 'location' => 'webinar-admin']);
     }
 
     public function update(Request $req)
@@ -186,6 +187,7 @@ class EventController extends Controller
             'SERTIF_CODE' => $req->input('up_sertif_code'),
             'DATE_START' => $req->input('up_date_start'),
             'DATE_END' => $req->input('up_date_end'),
+            'IS_PUBLIC' => $req->input('up_status_public'),
             'STATUS' => $req->has('up_status') ? 1 : 0,
             'LOG_TIME' => date('Y-m-d H:i:s')
         ];
@@ -216,7 +218,7 @@ class EventController extends Controller
         DB::table('activity')->WHERE(['ID_ACTIVITY' => $req->input('up_id_activity')])->update($activity);
         DB::table('event')->WHERE(['ID_ACTIVITY' => $req->input('up_id_activity')])->update($event);
 
-        return redirect('webinar-admin')->with(['succ_msg' => 'Berhasil Memperbarui Webinar', 'location' => 'webinar-admin']);
+        return redirect('webinar-admin')->with(['succ_msg' => 'Berhasil Memperbarui Webinar/Pelatihan', 'location' => 'webinar-admin']);
     }
 
     public function delete(Request $req)
@@ -224,7 +226,7 @@ class EventController extends Controller
         DB::table('event')->WHERE(['ID_ACTIVITY' => $req->input('id_activity')])->delete();
         DB::table('activity')->WHERE(['ID_ACTIVITY' => $req->input('id_activity')])->delete();
 
-        return redirect('webinar-admin')->with('succ_msg', 'Webinar Berhasil Dihapus');
+        return redirect('webinar-admin')->with('succ_msg', 'Webinar/Pelatihan Berhasil Dihapus');
     }
 
     public function deskripsi_get($id)

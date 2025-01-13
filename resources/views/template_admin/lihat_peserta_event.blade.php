@@ -26,7 +26,7 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6 align-self-center">
-                        <h3 class="fw-bold" style="color:#45b104">List Peserta Webinar</h3>
+                        <h3 class="fw-bold" style="color:#45b104">List Peserta Webinar/Pelatihan</h3>
                     </div>
                     <div class="mb-3 mt-3 row headerz" style="">
                         <div class="col-md-6 col-sm-12">
@@ -89,7 +89,7 @@
                             </div>
                         </div>
                         <div class="col-md-12 mt-2">
-                            <a href="/events" class="btn btn-sm btn-danger">
+                            <a href="{{ url()->previous() }}" class="btn btn-sm btn-danger">
                                 <i class="fas fa-chevron-left"></i> KEMBALI</a>
                             <button id="exportButton"
                                 onclick="location.href='/webinar-admin/laporan_event?ID_ACTIVITY=<?= $event->ID_ACTIVITY ?>'"

@@ -1,7 +1,7 @@
 @extends('template_guest.profile.profile_template')
 @section('content')
 <div class="col ms-0 ms-md-4 px-5 py-5 shadow rounded-3 overflow-hidden bg-white">
-    <h3 class="fw-bold pb-4" style="color:#45b104">Webinar Ku</h3>
+    <h3 class="fw-bold pb-4" style="color:#45b104">Webinar/Pelatihan Ku</h3>
     <div class="table-responsive">
         <table class="table table-hover" style="color: #8A8A8E">
             <thead>

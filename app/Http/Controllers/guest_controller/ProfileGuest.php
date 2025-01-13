@@ -163,7 +163,7 @@ class ProfileGuest extends Controller
     }
     public function myevents()
     {
-        $data['title'] = "Webinar Ku";
+        $data['title'] = "Webinar & PelatihanKu";
         $data['data_personal'] = DB::selectOne("
         SELECT
             u.*

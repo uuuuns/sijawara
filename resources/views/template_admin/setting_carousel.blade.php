@@ -79,7 +79,7 @@
             </div>
             <form id="form-add" action="{{ url('carousel/edit') }}" method="POST" enctype="multipart/form-data">
                 @csrf
-                <input placeholder="Link Pada Kursus Atau Webinar" type="hidden" id="up_id_carousel" name="up_link" class="form-control" required>
+                <input type="hidden" id="up_id_carousel" name="up_link" class="form-control" required>
                 <div class="modal-body">
                     <div class="form-group">
                         <label>Gambar Carousel <span class="text-danger">*</span></label> Ukuran yang sesuai adalah 1208px x 400px atau yang serasio.

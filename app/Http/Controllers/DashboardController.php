@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class DashboardController extends Controller
 {
@@ -263,7 +264,7 @@ class DashboardController extends Controller
             HAVING 
                 Total_user != 0
             ORDER BY
-                a.LOG_TIME DESC
+                Total_user DESC
             LIMIT 10
         ");
     
@@ -297,7 +298,7 @@ class DashboardController extends Controller
     
         // Populate labels and datasets
         foreach ($dataKursus as $row) {
-            $chartData['labels'][] = $row->TITLE_ACTIVITY;
+            $chartData['labels'][] = Str::limit($row->TITLE_ACTIVITY, 20);
             $chartData['datasets'][0]['data'][] = $row->Total_user;
             $chartData['datasets'][1]['data'][] = $row->Total_not_complete;
             $chartData['datasets'][2]['data'][] = $row->Total_complete;
@@ -309,7 +310,6 @@ class DashboardController extends Controller
                view('template_admin/statistik_kategori', $data) .
                view('template.footer', $data);
     }
-    
     public function get_data_chart_kategori() {
         DB::statement("SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));");
         $data['per_kategori'] = DB::select("
@@ -337,8 +337,8 @@ class DashboardController extends Controller
         $chartData['Total'] = array_sum(array_column($data['per_kategori'], 'COUNT(o.ID_USER)'));
 
         foreach ($data['per_kategori'] as $kategori) {
-            $chartData['labels'][] = $kategori->KATEGORI;   // Adding city names to labels
-            $chartData['data'][] = $kategori->TOTAL;    // Adding user totals to data array
+            $chartData['labels'][] = $kategori->KATEGORI;
+            $chartData['data'][] = $kategori->TOTAL;
         }
 
         return response()->json($chartData);

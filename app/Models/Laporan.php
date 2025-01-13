@@ -66,7 +66,7 @@ class Laporan extends Model
         $ObjSheet->getColumnDimension('G')->setAutoSize(true);
         $ObjSheet->getColumnDimension('H')->setAutoSize(true);
         
-        $ObjSheet->mergeCells('B2:H2')->setCellValue('B2', "DATA PESERTA WEBINAR")->getStyle('B2:H2')->applyFromArray($this->styling_title_template('ff948a54', 'ffffffff'))->getFont()->setSize(14)->setUnderline(\PhpOffice\PhpSpreadsheet\Style\Font::UNDERLINE_SINGLE);
+        $ObjSheet->mergeCells('B2:H2')->setCellValue('B2', "DATA PESERTA WEBINAR/PELATIHAN")->getStyle('B2:H2')->applyFromArray($this->styling_title_template('ff948a54', 'ffffffff'))->getFont()->setSize(14)->setUnderline(\PhpOffice\PhpSpreadsheet\Style\Font::UNDERLINE_SINGLE);
         $ObjSheet->mergeCells('B3:H3')->setCellValue('B3', $data[0]->TITLE_ACTIVITY)->getStyle('B3:H3')->applyFromArray($this->styling_title_template('ff948a54', 'ffffffff'));
 
         $ObjSheet->setCellValue('B7', 'No')->getStyle('B7')->applyFromArray($this->styling_title_template('FFFFD966', 'FF000000'));
@@ -92,7 +92,7 @@ class Laporan extends Model
 
         $spreadsheet->setActiveSheetIndex(0);
 
-        $fileName = 'Laporan Peserta Webinar '.$data[0]->TITLE_ACTIVITY;
+        $fileName = 'Laporan Peserta Webinar/Pelatihan '.$data[0]->TITLE_ACTIVITY;
         $writer = new Xlsx($spreadsheet);
 
         header('Content-Type: application/vnd.ms-excel'); // generate excel file

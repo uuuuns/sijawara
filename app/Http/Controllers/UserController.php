@@ -168,13 +168,16 @@ class UserController extends Controller
             $data['title'] = "Detail Pengambilan";
             $data['nama_user'] = DB::selectOne("
                 SELECT 
-                    NAME 
+                    NAME,
+                    JENIS_INSTANSI,
+                    NAMA_INSTANSI 
                 FROM 
-                    user 
+                    user
                 WHERE 
                     ID_USER = '".$req->input('id_user')."'");
             $data['activities'] = DB::select("
                 SELECT
+                    a.ID_ACTIVITY ,
                     a.TITLE_ACTIVITY ,
                     o.LOG_TIME ,
                     u.NAME ,

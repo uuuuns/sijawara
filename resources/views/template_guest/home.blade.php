@@ -419,7 +419,7 @@
                         <a href="{{ url('webinar') }}">
                             <img class="webinar-img" src="{{ asset('assets_new') }}/images/new/webinar.png" />
                         </a>
-                        <h4 class="fw-semibold pt-2 webinar-text">Webinar</h4>
+                        <h4 class="fw-semibold pt-2 webinar-text">Webinar & Pelatihan</h4>
                     </div>
                 </div>
             </div>

@@ -102,7 +102,7 @@
                     <nav class="course-single-tabs learn-press-nav-tabs">
                         <div class="nav nav-tabs course-nav" id="nav-tab" role="tablist">
                             <a class="nav-item nav-link active" id="nav-course-tab" data-bs-toggle="tab" href="#nav-course" role="tab" aria-controls="nav-course-tab" aria-selected="true">Kursus</a>
-                            <a class="nav-item nav-link" id="nav-announcement-tab" data-bs-toggle="tab" href="#nav-announcement" role="tab" aria-controls="nav-announcement-tab" aria-selected="false">Pengumuman</a>
+                            <!-- <a class="nav-item nav-link" id="nav-announcement-tab" data-bs-toggle="tab" href="#nav-announcement" role="tab" aria-controls="nav-announcement-tab" aria-selected="false">Pengumuman</a> -->
                             <?php if ($tot_proggress == 100) { ?>
                                 <a class="nav-item nav-link" id="nav-sertif-tab" data-bs-toggle="tab" href="#nav-sertif" role="tab" aria-controls="nav-sertif-tab" aria-selected="false">Sertifikat</a>
                                 <a class="nav-item nav-link" id="nav-komen-tab" data-bs-toggle="tab" href="#nav-komen" role="tab" aria-controls="nav-komen-tab" aria-selected="false">Komentar</a>
@@ -152,11 +152,11 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="nav-announcement" role="tabpanel" aria-labelledby="nav-announcement-tab" tabindex="0">
+                        <!-- <div class="tab-pane fade" id="nav-announcement" role="tabpanel" aria-labelledby="nav-announcement-tab" tabindex="0">
                             <div class="mx-3 mx-lg-7 my-4 text-muted">
                                 <?= (!empty($course->PENGUMUMAN)) ? $course->PENGUMUMAN : "Tidak ada pengumuman" ?>
                             </div>
-                        </div>
+                        </div> -->
                         <?php
                         if ($tot_proggress == 100) { ?>
                             <div class="tab-pane fade" id="nav-sertif" role="tabpanel" aria-labelledby="nav-sertif-tab" tabindex="0">

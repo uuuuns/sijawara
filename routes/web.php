@@ -190,7 +190,23 @@ Route::middleware(['usersession:4,1'])->group(function () {
     Route::get('get-data-chart-kategori', 'DashboardController@get_data_chart_kategori');
     Route::get('statistik_per_kategori', 'DashboardController@statistik_per_kategori');
     Route::post('statistik_per_provinsi', 'DashboardController@statistik_per_provinsi');
-    Route::post('statistik_per_kota', 'DashboardController@statistik_per_kota');    
+    Route::post('statistik_per_kota', 'DashboardController@statistik_per_kota');
+
+    Route::post('user/jadikanAdmin', 'UserController@jadikanAdmin');
+    Route::post('user/jadikanInstruktur', 'UserController@jadikanInstruktur');
+    Route::get('user/detail_pengambilan', 'UserController@detail_pengambilan');
+    
+    Route::post('instruktur/delete', 'InstructorController@deleteInstruktur');
+
+    //ranking user
+    Route::get('ranking', 'RankingController@index');
+    Route::post('ranking/filter_jenis_instansi', 'RankingController@filter_jenis_instansi');
+    Route::post('ranking/filter_kategori', 'RankingController@filter_kategori');
+});
+
+//2 INSTRUKTUR
+Route::middleware(['usersession:2'])->group(function () {
+    // Route::get('profile','guest_controller\ProfileGuest@index');
 });
 
 // 3 USER

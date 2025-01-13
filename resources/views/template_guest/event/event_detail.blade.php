@@ -4,7 +4,7 @@
         <div class="container">
             <?php if ($event->EXPIRED == 1) { ?>
             <div class="alert alert-danger text-center" role="alert">
-                <h5 class="py-2">Webinar telah dilaksanakan</h5>
+                <h5 class="py-2">Webinar/Pelatihan telah dilaksanakan</h5>
             </div>
             <?php } ?>
             <div class="row pt-3">
@@ -59,7 +59,7 @@
                                 aria-selected="false">Deskripsi</a>
                             <?php if (!empty(session('user')) && $event->DATA_CHECKING <> 0) : ?>
                             <a class="nav-item nav-link" id="nav-link-tab" data-bs-toggle="tab" href="#nav-link"
-                                role="tab" aria-controls="nav-link-tab" aria-selected="false">Link Konferensi</a>
+                                role="tab" aria-controls="nav-link-tab" aria-selected="false">Link Zoom</a>
                             @if (!is_null($event->SERTIF_CODE))
                                 <a class="nav-item nav-link" id="nav-certificate-tab" data-bs-toggle="tab"
                                     href="#nav-certificate" role="tab" aria-controls="nav-certificate-tab"

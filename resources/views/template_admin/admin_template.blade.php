@@ -99,6 +99,13 @@
                                                         </span>
                                                     </a>
                                                 </li>
+                                                <li class="nav-item w-100">
+                                                    <a href="/ranking" class="nav-link  {{ request()->is('ranking') ? 'active' : '' }}  d-flex align-middle px-4 py-3 rounded-0">
+                                                        <i class="fs-6 d-flex align-items-center bx bx-trophy"></i> <span class="ms-1 ps-2 fs-6 align-self-center ">
+                                                            Top 10 User Teraktif
+                                                        </span>
+                                                    </a>
+                                                </li>
                                             </ul>
                                         </li>
 

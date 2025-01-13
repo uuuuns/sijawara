@@ -1,6 +1,11 @@
 @extends('template_admin.admin_template')
 @section('content')
 <!-- Content Wrapper START -->
+<style>
+    [onclick] {
+        cursor: pointer;
+    }
+</style>
 <div class="col ms-0 ms-md-4 p-4 shadow rounded-3 overflow-hidden bg-white">
     <?php if (!empty(session('err_msg'))) { ?>
     <div class="alert alert-danger">
@@ -70,14 +75,17 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-12">
-                    <a href="{{ url('kursus-admin') }}" class="btn btn-sm btn-danger">
+                <div class="col-md-6">
+                    <a href="{{ url()->previous() }}" class="btn btn-sm btn-danger">
                     <i class="fas fa-chevron-left"></i> KEMBALI</a> 
                     <button id="exportButton" onclick="location.href='/kursus-admin/laporan_course?ID_ACTIVITY=<?=$kursus->ID_ACTIVITY?>'" class="btn btn-sm btn-success text-white"><i class="fas fa-file-excel text-white"></i> LAPORAN</button>
                 </div>
+                <div class="col-md-6 d-flex justify-content-end">
+                    <button id="lihatKomen" class="btn btn-sm btn-success text-white"><i class="bx bx-comment-dots text-white"></i> Lihat Komentar</button>
+                </div>
             </div>
             <div class="mt-5">
-                <table class="table mb-0" id="dtTable">
+                <table class="table mb-0 table-hover" id="dtTable">
                     <thead>
                         <tr>
                             <th>No</th>
@@ -94,7 +102,7 @@
 
                         @foreach ($list_peserta as $item)
                             <?php $number++; ?>
-                            <tr>
+                            <tr onclick="window.open('/user/detail_pengambilan?id_user=<?=$item->ID_USER?>', '_blank')">
                                 <td><?= $number ?></td>
                                 <td><?= $item->NAME ?></td>
                                 <td><?= $item->EMAIL?></td>
@@ -369,6 +377,45 @@
 </div>
 {{-- End Modal Delete --}}
 
+{{-- Start Modal Komentar --}}
+<div class="modal fade" id="modalKomentar" tabindex="-1" aria-labelledby="modalKomentarLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">List Komentar</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Table inside the modal -->
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">No</th>
+                            <th scope="col">Nama</th>
+                            <th scope="col">Komentar</th>
+                            <th scope="col">Tanggal Komentar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($komentar as $key => $item)
+                        <tr>
+                            <td>{{$key+1}}</td>
+                            <td>{{$item->NAME}}</td>
+                            <td>{{$item->komentar}}</td>
+                            <td>{{ date('H:i d-m-Y', strtotime($item->LOG_TIME)) }}</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{-- End Modal Komentar --}}
+
 <script>
     $('#dtTable').DataTable();
 
@@ -436,6 +483,10 @@
     $('.modal').on('shown.bs.modal', function () {
         $('#myInput').trigger('focus')
     })
+
+    $('#lihatKomen').click(function () {
+        $('#modalKomentar').modal('show');
+    });
 
     function openModal() {
         $('#addModal').modal('show')
