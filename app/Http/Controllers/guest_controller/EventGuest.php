@@ -52,6 +52,15 @@ class EventGuest extends Controller
 						WHERE 
 							o.ID_PRODUCT = activity.ID_ACTIVITY 
 					) as participant, 
+					(
+						SELECT
+							COUNT(ti.ID_INVITED)
+						FROM
+							tb_invited ti 
+						WHERE
+							ti.ID_USER = "'.$data_user.'"
+							AND ti.ID_ACTIVITY = activity.ID_ACTIVITY
+					) AS is_invited,
 					(DATEDIFF(CURDATE(), activity.DATE_END) >= 1) as EXPIRED')
 				->leftJoin('event', 'event.ID_ACTIVITY', '=', 'activity.ID_ACTIVITY')
 				->where('TYPE_ACTIVITY', 2)
@@ -84,7 +93,16 @@ class EventGuest extends Controller
 							`order` o
 						WHERE 
 							o.ID_PRODUCT = activity.ID_ACTIVITY 
-					) as participant, 
+					) as participant,
+					(
+						SELECT
+							COUNT(ti.ID_INVITED)
+						FROM
+							tb_invited ti 
+						WHERE
+							ti.ID_USER = "'.$data_user.'"
+							AND ti.ID_ACTIVITY = activity.ID_ACTIVITY
+					) AS is_invited,
 					(DATEDIFF(CURDATE(), activity.DATE_END) >= 1) as EXPIRED', [session('user')[0]->get('ID_USER')])
 				->leftJoin('event', 'event.ID_ACTIVITY', '=', 'activity.ID_ACTIVITY')
 				->where('activity.TYPE_ACTIVITY', 2)
@@ -119,9 +137,9 @@ class EventGuest extends Controller
 			];
 	
 			DB::table('order')->insert($order);
-			return redirect()->back()->with(['succ_msg' => 'Berhasil join webinar', 'location' => 'event']);
+			return redirect()->back()->with(['succ_msg' => 'Berhasil join', 'location' => 'event']);
 		} else {
-			return redirect()->back()->with(['err_msg' => 'Sudah mengambil join webinar ini', 'location' => 'event']);
+			return redirect()->back()->with(['err_msg' => 'Anda Sudah mengambil join', 'location' => 'event']);
 		}
 	}
 	public function detailEvent()

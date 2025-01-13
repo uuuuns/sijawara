@@ -880,6 +880,20 @@ class CourseController extends Controller
                 o.ID_PRODUCT  = '" . $req->input('ID_ACTIVITY') . "'
         ");
 
+        $data['komentar'] = DB::select("
+            SELECT
+                u.NAME,
+                u.EMAIL,
+                k.komentar,
+                k.LOG_TIME
+            FROM
+                tb_komentar k
+            LEFT JOIN user u ON
+                u.ID_USER = k.ID_USER
+            WHERE
+                k.ID_ACTIVITY = '" . $req->input('ID_ACTIVITY') . "'
+        ");
+
         $data['kursus'] = DB::selectOne("
             SELECT
                 a.* ,

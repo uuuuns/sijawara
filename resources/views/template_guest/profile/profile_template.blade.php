@@ -79,7 +79,7 @@
                                             </li>
                                             <li class="nav-item w-100">
                                                 <a href="{{ url ("profile/myevents") }}" class="nav-link d-flex align-middle px-4 py-3 rounded-0">
-                                                    <span class="ms-3 ps-3 fs-6 align-self-center ">Webinar Ku</span>
+                                                    <span class="ms-3 ps-3 fs-6 align-self-center ">Webinar & Pelatihan Ku</span>
                                                 </a>
                                             </li>
                                             <li class="nav-item w-100">

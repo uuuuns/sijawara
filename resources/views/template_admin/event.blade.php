@@ -26,13 +26,13 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6 align-self-center">
-                        <h3 class="fw-bold" style="color:#45b104">Webinar</h3>
+                        <h3 class="fw-bold" style="color:#45b104">Pelatihan dan Webinar</h3>
                     </div>
                     <div class="col-md-6 d-flex justify-content-md-end justify-content-end align-items-center">
                         <div class="mt-3 mt-md-0">
                             <button type="button" class="btn btn-primary btn-sm-2 rounded" onclick="openModal()">
                                 <i class="mdi mdi-plus me-1"></i>
-                                Tambah Webinar</button>
+                                Tambah Webinar / Pelatihan</button>
                         </div>
                     </div>
                 </div>
@@ -41,8 +41,9 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th style="width: 500px;">Nama Event</th>
+                                <th style="width: 500px;">Nama</th>
                                 <th>Status</th>
+                                <th>Status Private</th>
                                 <th>Kuota Peserta</th>
                                 <th>Tanggal Mulai</th>
                                 <th>Tanggal Selesai</th>
@@ -55,6 +56,7 @@
                                     <td><?= $key + 1 ?></td>
                                     <td><?= $item->TITLE_ACTIVITY ?></td>
                                     <td><?= $item->STATUS == 1 ? '<span class="badge bg-success">Aktif</span>' : '<span class="badge bg-danger">Tidak Aktif</span>' ?>
+                                    <td><?= $item->IS_PUBLIC == 1 ? '<span class="badge bg-success">Publik</span>' : '<span class="badge bg-danger">Private</span>' ?>
                                     </td>
                                     <td><?= empty($item->KUOTA_PESERTA) ? 'Tidak Ada batasan' : $item->KUOTA_PESERTA ?></td>
                                     </td>
@@ -68,17 +70,25 @@
                                                 style="min-width: 155px !important;">
                                                 <i class="bx bxs-user-detail font-size-16 align-middle"></i> Lihat Peserta
                                             </button>
+                                            @if ($item->IS_PUBLIC == 0)
+                                                <form action="courses/invite" method="GET">
+                                                    <input type="hidden" name="id_activity" value="<?= $item->ID_ACTIVITY ?>">
+                                                    <button type="submit" class="btn btn-primary btn-sm-2 w-100 fs-8 rounded waves-effect waves-light px-2" style="min-width: 155px !important;">
+                                                        <i class="bx bx-send font-size-16 align-middle"></i> Undang User
+                                                    </button>
+                                                </form>
+                                            @endif
                                             <button type="button"
                                                 onclick="openviewModal(`<?= htmlentities(json_encode($item)) ?>`)"
                                                 class="btn btn-dark btn-sm-2 w-100 fs-8 rounded waves-effect waves-light px-2"
                                                 style="min-width: 155px !important; margin: 5px 0px;">
-                                                <i class="bx bx-edit-alt font-size-16 align-middle"></i> Edit Webinar
+                                                <i class="bx bx-edit-alt font-size-16 align-middle"></i> Edit Webinar/Pelatihan
                                             </button>
                                             <button type="button"
                                                 onclick="opendeleteModal(`<?= htmlentities(json_encode($item)) ?>`)"
                                                 class="btn btn-danger btn-sm-2 w-100 fs-8 rounded waves-effect waves-light px-2"
                                                 style="min-width: 155px !important;">
-                                                <i class="bx bx-trash font-size-16 align-middle"></i> Hapus Webinar
+                                                <i class="bx bx-trash font-size-16 align-middle"></i> Hapus Webinar/Pelatihan
                                             </button>
                                         </div>
                                     </td>
@@ -182,6 +192,13 @@
                                 </div>
                                 Aktif
                             </span>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label>Status Public <span class="text-danger">*</span></label>
+                            <select class="form-control select-category" name="status_public" id="status_public" required>
+                                <option value="0">Private</option>
+                                <option value="1">Public</option>
+                            </select>
                         </div>
                         <div class="form-group mb-3">
                             <label>Deskripsi Event</label>
@@ -297,6 +314,13 @@
                                 </div>
                                 Aktif
                             </span>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label>Status Public <span class="text-danger">*</span></label>
+                            <select class="form-control select-category" name="up_status_public" id="up_status_public" required>
+                                <option value="0">Private</option>
+                                <option value="1">Public</option>
+                            </select>
                         </div>
                         <div class="form-group mb-3">
                             <label>Deskripsi Event</label>
@@ -457,6 +481,7 @@
             $('input[name="up_kuota_peserta"]').val(data.KUOTA_PESERTA)
             $('input[name="up_location"]').val(data.LOCATION)
             $('input[name="up_link_zoom"]').val(data.LINK_ZOOM)
+            $('input[name="up_status_public"]').val(data.IS_PUBLIC)
             $.ajax({
                 url: 'events/get/' + data.ID_ACTIVITY,
                 method: 'GET',

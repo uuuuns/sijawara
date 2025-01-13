@@ -560,7 +560,7 @@
                                 <a href="{{ url('course') }}">Kursus</a>
                             </li>
                             <li class="me-0">
-                                <a href="{{ url('event') }}">Webinar</a>
+                                <a href="{{ url('event') }}">Webinar & Pelatihan</a>
                             </li>
 
                             <?php if (!empty(session('user')[0])) { ?>
@@ -573,7 +573,7 @@
                                 <a href="{{ url('profile/mycourses') }}">Kursus Ku</a>
                             </li>
                             <li class="d-lg-none">
-                                <a href="{{ url('profile/myevents') }}">Webinar Ku</a>
+                                <a href="{{ url('profile/myevents') }}">Webinar/Pelatihan Ku</a>
                             </li>
                             <li class="d-lg-none">
                                 <a target="_blank" href="https://perpustakaan.uptkukm.id/">Perpustakaan</a>
@@ -652,7 +652,7 @@
                                     <?php } else { ?>
                                     <li><a class="" href="<?= url('profile') ?>">Profile</a></li>
                                     <li><a class=" " href="<?= url('profile/mycourses') ?>">Kursus Ku</a></li>
-                                    <li><a class="" href="<?= url('profile/myevents') ?>">Webinar Ku</a></li>
+                                    <li><a class="" href="<?= url('profile/myevents') ?>">Webinar & Pelatihan Ku</a></li>
                                     <li><a class="" href="<?= url('profile/mysertificate') ?>">Sertifikat Ku</a>
                                     </li>
                                     <li><a class="" target="_blank"

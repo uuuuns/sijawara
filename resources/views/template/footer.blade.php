@@ -18,7 +18,7 @@
                         <ul class="list-unstyled footer-links">
                             <li><a href="<?= url('') ?>">Beranda</a></li>
                             <li><a href="<?= url('course') ?>">Kursus</a></li>
-                            <li><a href="<?= url('event') ?>">Webinar</a></li>
+                            <li><a href="<?= url('event') ?>">Webinar/Pelatihan</a></li>
                             <li><a href="<?= url('') ?>">Tentang</a></li>
                         </ul>
                     </div>

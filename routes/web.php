@@ -196,6 +196,11 @@ Route::middleware(['usersession:4,1'])->group(function () {
     Route::get('user/detail_pengambilan', 'UserController@detail_pengambilan');
     
     Route::post('instruktur/delete', 'InstructorController@deleteInstruktur');
+
+    //ranking user
+    Route::get('ranking', 'RankingController@index');
+    Route::post('ranking/filter_jenis_instansi', 'RankingController@filter_jenis_instansi');
+    Route::post('ranking/filter_kategori', 'RankingController@filter_kategori');
 });
 
 //2 INSTRUKTUR

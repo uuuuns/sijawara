@@ -16,7 +16,7 @@
                             <h2 class="m-b-0">
                                 <?= isset($total_event[0]->TOTAL) && $total_event[0]->TOTAL !== null ? $total_event[0]->TOTAL : '0' ?>
                             </h2>
-                            <p class="m-b-0 text-muted">Total Webinar</p>
+                            <p class="m-b-0 text-muted">Total Webinar & Pelatihan</p>
                         </div>
                     </div>
                 </div>

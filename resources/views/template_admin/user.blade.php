@@ -49,21 +49,21 @@
                                 <td><?= $item->JK ?></td>
                                 <td>
                                     <div class="d-flex flex-column gap-2">
-                                        <button type="button" onclick="location.href='user/detail_pengambilan?id_user=<?=$item->ID_USER?>'" class="btn btn-dark px-4 py-2 rounded">
-                                            <i class="bx bx-list-ul font-size-16 align-middle"></i>
+                                        <button type="button" onclick="location.href='user/detail_pengambilan?id_user=<?=$item->ID_USER?>'" style="min-width: 155px !important;" class="btn btn-dark btn-sm-2 w-100 fs-8 rounded waves-effect waves-light px-2">
+                                            <i class="bx bx-list-ul font-size-16 align-middle"></i> Lihat Aktivitas User
                                         </button>
                                         @if (session('user')[0]['ID_ROLE'] == 1)
-                                        <button type="button" onclick="openUpdateModal(`<?= htmlentities(json_encode($item)) ?>`)" class="btn btn-warning px-4 py-2 rounded">
-                                            <i class="bx bx-edit-alt font-size-16 align-middle"></i>
+                                        <button type="button" onclick="openUpdateModal(`<?= htmlentities(json_encode($item)) ?>`)" style="min-width: 155px !important;" class="btn btn-warning btn-sm-2 w-100 fs-8 rounded waves-effect waves-light px-2">
+                                            <i class="bx bx-edit-alt font-size-16 align-middle"></i> Edit User
                                         </button>
                                         @endif
                                         @if (session('user')[0]['ID_ROLE'] == 4)
-                                        <button type="button" onclick="openviewModal(`<?= htmlentities(json_encode($item)) ?>`)" class="btn btn-warning px-4 py-2 rounded">
-                                            <i class="bx bx-edit-alt font-size-16 align-middle"></i>
+                                        <button type="button" onclick="openviewModal(`<?= htmlentities(json_encode($item)) ?>`)" style="min-width: 155px !important;" class="btn btn-warning btn-sm-2 w-100 fs-8 rounded waves-effect waves-light px-2">
+                                            <i class="bx bx-edit-alt font-size-16 align-middle"></i> Edit User
                                         </button>
                                         @endif
-                                        <button type="button" onclick="opendeleteModal('<?= $item->ID_USER?>')" class="btn btn-danger px-4 py-2 rounded">
-                                            <i class="bx bx-trash font-size-16 align-middle"></i>
+                                        <button type="button" onclick="opendeleteModal('<?= $item->ID_USER?>')" style="min-width: 155px !important;" class="btn btn-danger btn-sm-2 w-100 fs-8 rounded waves-effect waves-light px-2">
+                                            <i class="bx bx-trash font-size-16 align-middle"></i> Nonaktifkan User
                                         </button>
                                     </div>
                                 </td>
