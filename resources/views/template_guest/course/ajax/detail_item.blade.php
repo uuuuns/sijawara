@@ -57,19 +57,24 @@
         <?php
             $pattern = '/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/i';
             $url = $detail_item_course->LINK_YT;
-            if (preg_match('/\/d\/(.*?)\//', $url, $matches)) { ?>
+            if (preg_match('/\/d|folders\/(.*?)\//', $url, $matches)) { ?>
         <h6 class="fw-semibold pb-3">File Kursus :</h6>
         <button type="button" class="btn btn-main-2 rounded w-100" data-toggle="modal" data-target="#YTModal"
             onclick=" window.open('<?= $detail_item_course->LINK_YT ?>')">
             Buka File </button>
         <?php } else if (preg_match($pattern, $url, $matches)) { ?>
         <h6 class="fw-semibold pb-3">Video Kursus :</h6>
-        <button type="button" class="btn btn-main-2 rounded w-100" data-toggle="modal" data-target="#YTModal"
-            onclick=" window.open('<?= $detail_item_course->LINK_YT ?>')">
-            Buka Video
-        </button>
+
+        <iframe width="700" height="500" src="https://www.youtube.com/embed/0mvhgSddBxw?si=dYhLNAOKvAvYqvtn"
+            title="fhána - Air (Official Music Video)" frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        {{-- <button type="button" class="btn btn-main-2 rounded w-100" data-toggle="modal" data-target="#YTModal"
+                    onclick=" window.open('<?= $detail_item_course->LINK_YT ?>')">
+                    Buka Video
+                </button> --}}
         <?php } else {
-                echo '<h6>Video cannot be opened. Contact instructor for more information.</h6>';
+                echo '<h6>Video cannot be opened. Contact instructor for more information. </h6>';
             }
             ?>
         <!-- <div class="modal fade" id="YTModal">
@@ -103,6 +108,13 @@
                 </div>
             </div> -->
     </section>
+    <script>
+        const tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+
+        const firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    </script>
     <hr>
     <section id="desc-course">
         <h6 class="fw-semibold">Deskripsi Kursus :</h6>
@@ -232,8 +244,9 @@
                     '<div class="d-flex justify-content-center align-items-center h-100 mt-40 py-4"><img src="https://icons8.com/preloaders/preloaders/1476/Rocket.gif" alt="Loader.gif" /></div>'
                 );
                 $("#footer_modal_<?= $item->ID_ITEM ?>").html("");
-                jQuery.ajax({
-                    url: "<?= Request::segment(0) ?>/course/quiz/evaluation",
+
+                $.ajax({
+                    url: "<?= Request::segment(0) ?>/kursus/quiz/evaluation",
                     type: "POST",
                     data: {
                         "id_quiz": $('input[name="id_quiz"]').val(),

@@ -19,60 +19,31 @@
                     <h3 class="fw-bold" style="color:#45b104">Users</h3>
                 </div>
                 <div class="col-md-6 d-flex justify-content-md-end justify-content-end align-items-center">
-                    <!-- <div class="mt-3 mt-md-0">
-                        <button type="button" class="btn btn-primary btn-sm-2 rounded" onclick="openaddModal()">
-                            <i class="mdi mdi-plus me-1"></i>
-                            Tambah User</button>
-                    </div>
-                </div> -->
             </div>
-            <div class="mt-5">
-                <div class="table-responsive">
-                    <table class="table mb-0" id="dtTable">
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Nama User</th>
-                                <th>Email</th>
-                                <th>No Telepon</th>
-                                <th>Jenis Kelamin</th>
-                                <th width="100px">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($user as $key => $item)
-                            <tr>
-                                <td><?= ($key + 1) ?></td>
-                                <td><?= $item->NAME ?></td>
-                                <td><?= $item->EMAIL ?></td>
-                                <td><?= $item->TELP ?></td>
-                                <td><?= $item->JK ?></td>
-                                <td>
-                                    <div class="d-flex flex-column gap-2">
-                                        <button type="button" onclick="location.href='user/detail_pengambilan?id_user=<?=$item->ID_USER?>'" style="min-width: 155px !important;" class="btn btn-dark btn-sm-2 w-100 fs-8 rounded waves-effect waves-light px-2">
-                                            <i class="bx bx-list-ul font-size-16 align-middle"></i> Lihat Aktivitas User
-                                        </button>
-                                        @if (session('user')[0]['ID_ROLE'] == 1)
-                                        <button type="button" onclick="openUpdateModal(`<?= htmlentities(json_encode($item)) ?>`)" style="min-width: 155px !important;" class="btn btn-warning btn-sm-2 w-100 fs-8 rounded waves-effect waves-light px-2">
-                                            <i class="bx bx-edit-alt font-size-16 align-middle"></i> Edit User
-                                        </button>
-                                        @endif
-                                        @if (session('user')[0]['ID_ROLE'] == 4)
-                                        <button type="button" onclick="openviewModal(`<?= htmlentities(json_encode($item)) ?>`)" style="min-width: 155px !important;" class="btn btn-warning btn-sm-2 w-100 fs-8 rounded waves-effect waves-light px-2">
-                                            <i class="bx bx-edit-alt font-size-16 align-middle"></i> Edit User
-                                        </button>
-                                        @endif
-                                        <button type="button" onclick="opendeleteModal('<?= $item->ID_USER?>')" style="min-width: 155px !important;" class="btn btn-danger btn-sm-2 w-100 fs-8 rounded waves-effect waves-light px-2">
-                                            <i class="bx bx-trash font-size-16 align-middle"></i> Nonaktifkan User
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+
+            <div class="row">
+                <div class="mt-4 col-5">
+                    <select class="form-control instansi" name="filter-instansi" id="filter-instansi">
+                        <option value="ALL">Tampilkan Semua</option>
+                        <option value="UKM">UKM</option>
+                        <option value="KOPERASI">KOPERASI</option>
+                        <option value="INSTANSI">INSTANSI</option>
+                        <option value="UMUM">UMUM</option>
+                    </select>
+                </div>
+                <div class="mt-4 col-3"></div>
+                <div class="mt-4 col-2">
+                    <button class="btn btn-primary" onclick="openaddModal()">Reporting UKM</button>
+                </div>
+                <div class="mt-4 col-2">
+                    <button class="btn btn-primary" onclick="openaddModal()">Reporting Koperasi</button>
                 </div>
             </div>
+
+            <div class="row">
+                <div class="col-md-12" id="user-paper"></div>
+            </div>
+
         </div>
     </div>
 </div>
@@ -88,7 +59,7 @@
                     <span aria-hidden="true" class="fs-3">&times;</span>
                 </button>
             </div>
-            <form id="form-add" action="user/store" method="POST" enctype="multipart/form-data">
+            <form id="form-add" action="{{ url('pengguna/store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
                     <div class="form-group">
@@ -257,7 +228,7 @@
                     <span aria-hidden="true" class="fs-3">&times;</span>
                 </button>
             </div>
-            <form id="updateUserForm" action="update_user" method="post" enctype="multipart/form-data">
+            <form id="updateUserForm" action="{{ url('pengguna/update') }}" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
                     <div class="nav-link rounded-circle d-flex justify-content-center">
@@ -385,7 +356,7 @@
                     <span aria-hidden="true" class="fs-3">&times;</span>
                 </button>
             </div>
-            <form id="form-delete" action="user/delete" method="POST" enctype="multipart/form-data">
+            <form id="form-delete" action="{{ url('pengguna/delete') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
                     <p>Apakah anda ingin menghapus user ini ?</p>
@@ -404,6 +375,43 @@
 
 <script>
     $('#dtTable').DataTable();
+
+    $('.instansi').select2();
+    var Instansi = 'ALL'
+
+    setPaper()
+
+    $('.instansi').on('change', function() {
+        var instansi = $(this).val();
+        Instansi = instansi
+
+        setPaper()
+    });
+
+    function setPaper() {
+        $('#user-paper').html(`
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-center">
+                        <div class="column text-center">
+                            <i class="anticon anticon-loading"></i> Sedang Memuat ...
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `)
+        $.ajax({
+            url: '<?= Request::segment(0) ?>/pengguna/ajax/paper-view?JENIS_INSTANSI=' + Instansi,
+
+            method: 'GET',
+            success: function(data) {
+                $('#user-paper').html(data)
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.error('Error:', textStatus, errorThrown);
+            }
+        });
+    }
 
     const password = document.querySelector("#password");
     const password2 = document.querySelector("#cnfirm_password");
@@ -537,7 +545,7 @@
                 }
             });
         $.ajax({
-            url: 'user/jadikanAdmin',
+            url: 'pengguna/jadikanAdmin',
             type: 'POST',
             data: {
                 id_user: id_user,
@@ -588,7 +596,7 @@
                 }
             });
         // $.ajax({
-        //     url: 'user/jadikanInstruktur',
+        //     url: 'pengguna/jadikanInstruktur',
         //     type: 'POST',
         //     data: {
         //         id_user: id_user,

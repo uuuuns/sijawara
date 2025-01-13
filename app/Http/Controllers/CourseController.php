@@ -150,7 +150,7 @@ class CourseController extends Controller
 
         $data['ID_COURSE'] = $course['ID_COURSE'];
         $this->item_materi($data, $req);
-        return redirect('courses')->with(['succ_msg' => 'Berhasil Menambahkan Kursus', 'location' => 'courses']);
+        return redirect('kursus-admin')->with(['succ_msg' => 'Berhasil Menambahkan Kursus', 'location' => 'courses']);
     }
 
     public function deskripsi_get($id)
@@ -416,7 +416,7 @@ class CourseController extends Controller
             $data['ID_COURSE'] = $req->input('ID_COURSE');
             $this->update_item_materi($data, $req);
 
-            return redirect('courses')->with(['succ_msg' => 'Berhasi Memperbarui Kursus', 'location' => 'courses']);
+            return redirect('kursus-admin')->with(['succ_msg' => 'Berhasi Memperbarui Kursus', 'location' => 'courses']);
         } catch (ValidationException $e) {
             return response()->json([
                 'status' => 'failure',
@@ -530,7 +530,7 @@ class CourseController extends Controller
         DB::table('activity')->WHERE(['ID_ACTIVITY' => $find_id_course->ID_ACTIVITY])->delete();
         DB::statement('SET FOREIGN_KEY_CHECKS=1');
 
-        return redirect('courses')->with(['succ_msg' => 'Berhasil Menghapus Kursus', 'location' => 'courses']);
+        return redirect('kursus-admin')->with(['succ_msg' => 'Berhasil Menghapus Kursus', 'location' => 'courses']);
     }
 
     public function item_materi($data, $req)
@@ -666,9 +666,9 @@ class CourseController extends Controller
 
         if (!empty($cek_data)) {
             DB::table('tb_invited')->WHERE(['ID_USER' => $id_user, 'ID_ACTIVITY' => $id_activity])->delete();
-            return redirect('courses/invite?id_activity=' . $id_activity)->with(['succ_msg' => 'Undangan telah dibatalkan', 'location' => 'courses/invite?id_activity=' . $id_activity]);
+            return redirect('kursus-admin/invite?id_activity=' . $id_activity)->with(['succ_msg' => 'Undangan telah dibatalkan', 'location' => 'kursus-admin/invite?id_activity=' . $id_activity]);
         } else {
-            return redirect('courses/invite?id_activity=' . $id_activity)->with(['succ_msg' => 'User belum diundang', 'courses/invite?id_activity=' . $id_activity]);
+            return redirect('kursus-admin/invite?id_activity=' . $id_activity)->with(['succ_msg' => 'User belum diundang', 'kursus-admin/invite?id_activity=' . $id_activity]);
         }
     }
     public function invite_individu(Request $req)
@@ -688,7 +688,7 @@ class CourseController extends Controller
         ");
 
         if (!empty($cek_data)) {
-            return redirect('courses/invite?id_activity=' . $id_activity)->with(['err_msg' => 'User telah diundang', 'location' => 'courses/invite?id_activity=' . $id_activity]);
+            return redirect('kursus-admin/invite?id_activity=' . $id_activity)->with(['err_msg' => 'User telah diundang', 'location' => 'kursus-admin/invite?id_activity=' . $id_activity]);
         } else {
             $invited = [
                 'ID_USER'       => $id_user,
@@ -713,7 +713,7 @@ class CourseController extends Controller
                 ");
 
                 $this->send_email_invited($data);
-            return redirect('courses/invite?id_activity=' . $id_activity)->with(['succ_msg' => 'User berhasil diundang', 'courses/invite?id_activity=' . $id_activity]);
+            return redirect('kursus-admin/invite?id_activity=' . $id_activity)->with(['succ_msg' => 'User berhasil diundang', 'kursus-admin/invite?id_activity=' . $id_activity]);
         }
     }
 
@@ -734,7 +734,7 @@ class CourseController extends Controller
         }
 
         if (empty($id_users)) {
-            return redirect('courses/invite?id_activity=' . $id_activity)->with(['err_msg' => 'Pilih setidaknya satu pengguna', 'location' => 'courses/invite?id_activity=' . $id_activity]);
+            return redirect('kursus-admin/invite?id_activity=' . $id_activity)->with(['err_msg' => 'Pilih setidaknya satu pengguna', 'location' => 'kursus-admin/invite?id_activity=' . $id_activity]);
         }
 
         foreach ($id_users as $id_user) {
@@ -750,7 +750,7 @@ class CourseController extends Controller
             ");
 
             if (!empty($cek_data)) {
-                return redirect('courses/invite?id_activity=' . $id_activity)->with(['err_msg' => 'Pilih setidaknya satu pengguna', 'location' => 'courses/invite?id_activity=' . $id_activity]);
+                return redirect('kursus-admin/invite?id_activity=' . $id_activity)->with(['err_msg' => 'Pilih setidaknya satu pengguna', 'location' => 'kursus-admin/invite?id_activity=' . $id_activity]);
             } else {
                 $invited = [
                     'ID_USER'       => $id_user,
@@ -778,7 +778,7 @@ class CourseController extends Controller
                 $this->send_email_invited($data);
             }
         }
-        return redirect('courses/invite?id_activity=' . $id_activity)->with(['succ_msg' => 'Berhasil mengundang user', 'courses/invite?id_activity=' . $id_activity]);
+        return redirect('kursus-admin/invite?id_activity=' . $id_activity)->with(['succ_msg' => 'Berhasil mengundang user', 'kursus-admin/invite?id_activity=' . $id_activity]);
     }
 
     public function send_email_invited($data) {
@@ -1044,8 +1044,8 @@ class CourseController extends Controller
         $materiTitleList    = $req->input('materi_title');
         $descMateriList     = $req->input('desc_materi');
         $linkYT             = $req->input('materi_link');
-        $file = $req->file('materi_file');
-        $file_default = $req->input('default_file');
+        $file               = $req->file('materi_file');
+        $file_default       = $req->input('default_file');
         $nomor = 0;
 
         $idQuiz = [];

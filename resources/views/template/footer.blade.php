@@ -16,10 +16,9 @@
                     <div class="footer-widget mb-5 mb-xl-0 float-start float-sm-end" style="width: fit-content;float: inline-end;padding-right: 50px;">
                         <h5 class="widget-title">Jelajahi</h5>
                         <ul class="list-unstyled footer-links">
-                            <li><a href="<?= url('') ?>">Beranda</a></li>
-                            <li><a href="<?= url('course') ?>">Kursus</a></li>
-                            <li><a href="<?= url('event') ?>">Webinar/Pelatihan</a></li>
-                            <li><a href="<?= url('') ?>">Tentang</a></li>
+                            <li><a href="<?= url('/') ?>">Beranda</a></li>
+                            <li><a href="<?= url('kursus') ?>">Kursus</a></li>
+                            <li><a href="<?= url('webinar') ?>">Webinar</a></li>
                         </ul>
                     </div>
                 </div>
@@ -54,13 +53,6 @@
             <div class="row align-items-center">
                 <div class="col-xl-6 col-sm-12 col-lg-6">
                     <p class="mb-0 copyright text-center text-sm-start">© 2024 Sijawara+. All rights reserved.</p>
-                </div>
-                <div class="col-xl-6 col-sm-12 col-lg-6">
-                    <div class="footer-btm-links text-center text-sm-end ">
-                        <a class="ms-0" href="#">Legal</a>
-                        <a href="#">Supports</a>
-                        <a href="#">Terms</a>
-                    </div>
                 </div>
             </div>
         </div>

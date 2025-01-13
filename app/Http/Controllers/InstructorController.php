@@ -31,14 +31,14 @@ class InstructorController extends Controller
     public function apply_instructor()
     {
         if (empty(Session::get('user'))) {
-            redirect('logout');
+            redirect('keluar');
         }
         $data = [
             'ID_USER' => Session::get('user')[0]['ID_USER'],
             'STATUS' => 0
         ];
         DB::table('instructor_req')->insert($data);
-        return redirect('profile')->with(['succ_msg' => 'Berhasil melamar sebagai instruktur, menunggu Admin untuk mengkonfirmasi', 'location' => 'profile']);
+        return redirect('profil')->with(['succ_msg' => 'Berhasil melamar sebagai instruktur, menunggu Admin untuk mengkonfirmasi', 'location' => 'profile']);
     }
 
     public function accept(Request $req)
@@ -49,7 +49,7 @@ class InstructorController extends Controller
 
         DB::table('instructor_req')->WHERE(['ID_USER' => $req->input('acc_id_instructor')])->update($accept);
         DB::table('user')->WHERE(['ID_USER' => $req->input('acc_id_instructor')])->update(['ID_ROLE' => 2]);
-        return redirect('instructor')->with(['succ_msg' => 'Berhasil memperbarui data', 'location' => 'instructor']);
+        return redirect('instruktur')->with(['succ_msg' => 'Berhasil memperbarui data', 'location' => 'instructor']);
     }
 
     public function decline(Request $req)
@@ -60,7 +60,7 @@ class InstructorController extends Controller
 
         DB::table('instructor_req')->WHERE(['ID_USER' => $req->input('dec_id_instructor')])->update($decline);
 
-        return redirect('instructor')->with(['succ_msg' => 'Berhasil memperbarui data', 'location' => 'instructor']);
+        return redirect('instruktur')->with(['succ_msg' => 'Berhasil memperbarui data', 'location' => 'instructor']);
     }
 
     public function deleteInstruktur(Request $req)
@@ -70,9 +70,9 @@ class InstructorController extends Controller
                 'ID_ROLE'    => 3
             ];
             DB::table('user')->WHERE(['ID_USER' => $req->input('del_id_user')])->update($user);
-            return redirect('instructor')->with(['msg' => 'Berhasil menjadikan user biasa', 'location' => 'instructor']);
+            return redirect('instruktur')->with(['msg' => 'Berhasil menjadikan user biasa', 'location' => 'instructor']);
         } catch (\Throwable $e) {
-            return redirect('instructor')->with(['msg' => 'Error' . $e, 'location' => 'instructor']);
+            return redirect('instruktur')->with(['msg' => 'Error' . $e, 'location' => 'instructor']);
         }
     }
 }

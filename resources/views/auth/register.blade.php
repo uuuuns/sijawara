@@ -9,7 +9,7 @@
             <div class="col-12 col-lg-6 h-100 p-4 bg-white rounded-5 position-absolute" id="formLogin">
                 <div class="d-flex ps-md-4 flex-column justify-content-center h-100">
                     <h4 class="ps-1 fw-semibold">Daftar Sebagai Peserta</h4>
-                    <form class="fw-normal" id="form_regist" action="<?= url('register/store') ?>" method="POST">
+                    <form class="fw-normal" id="form_regist" action="<{{ url('register/store') }}" method="POST">
                         @csrf
                         <div id="form-1">
                             <div class="my-4 float-label-control">
@@ -57,7 +57,7 @@
                                     id="next-2">Daftar</button>
                             </div>
                             <div class="my-4 text-center">
-                                <span>Sudah punya akun? <a href="<?= url('login') ?>" class="text-decoration-none fw-bold text-black">Masuk</a></span>
+                                <span>Sudah punya akun? <a href="<?= url('masuk') ?>" class="text-decoration-none fw-bold text-black">Masuk</a></span>
                             </div>
                         </div>
                     </form>

@@ -82,7 +82,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form id="form-user" action="<?= url('widyaiswara/store') ?>" method="POST" enctype="multipart/form-data">
+            <form id="form-user" action="{{ url('widyaiswara/store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
                     <div class="form-group row">
@@ -122,7 +122,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form id="form-user" action="widyaiswara/update" method="POST" enctype="multipart/form-data">
+            <form id="form-user" action="{{ url('widyaiswara/update') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
                 <label>Foto Profil</label>
@@ -158,7 +158,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form id="form-user" action="widyaiswara/delete" method="POST" enctype="multipart/form-data">
+            <form id="form-user" action="{{ url('widyaiswara/delete') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
                     <p>Apakah kamu ingin menghapus data ini?</p>

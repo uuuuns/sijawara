@@ -56,7 +56,7 @@ class CourseGuest extends Controller
 	public function detailCourse()
 	{
 		if (session('user') == null) {
-			return redirect('login');
+			return redirect('masuk');
 		}
 		$data['title'] = 'Course';
 
@@ -143,7 +143,7 @@ class CourseGuest extends Controller
 		");
 		if ($data['tot_proggress'] == 100 && empty($sertifCheck)) {
 			$bln = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'];
-			$sertif_number = $data['course']->ID_COURSE . '/' . (($data['course']->TYPE_ACTIVITY == 1) ? 'CRS' : 'EVT') . '/TBH/' . $bln[(date('m', strtotime($data['course']->DATE_START)) - 1)] . '/' . date('Y');
+			$sertif_number = $data['course']->ID_COURSE . '/' . (($data['course']->TYPE_ACTIVITY == 1) ? 'CRS' : 'EVT') . '/SIJAWARA/' . $bln[(date('m', strtotime($data['course']->DATE_START)) - 1)] . '/' . date('Y');
 
 			$data_sertif = array(
 				"ID_USER" => session('user')[0]->get('ID_USER'),
@@ -381,7 +381,7 @@ class CourseGuest extends Controller
 		$data_user = (session('user') == null) ? null : Session::get('user')[0]->get('ID_USER');
 
 		if (empty(session('user'))) {
-			return redirect('login');
+			return redirect('masuk');
 		}
 
 		DB::statement("SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));");
@@ -447,6 +447,7 @@ class CourseGuest extends Controller
 			view('template_guest.course.course_info', $data) .
 			view('template.footer', $data);
 	}
+
 	public function add_event(Request $req)
 	{
 		$check_data = DB::select("
@@ -482,9 +483,9 @@ class CourseGuest extends Controller
 			}
 
 			DB::table('order')->insert($order);
-			return redirect('profile/mycourses')->with(['succ_msg' => 'Berhasil join kursus', 'location' => 'profile/mycourses']);
+			return redirect('profil/kursusku')->with(['succ_msg' => 'Berhasil join kursus', 'location' => 'profil/kursusku']);
 		} else {
-			return redirect('profile/mycourses')->with(['err_msg' => 'Sudah mengambil join Kursus ini', 'location' => 'profile/mycourses']);
+			return redirect('profil/kursusku')->with(['err_msg' => 'Sudah mengambil join Kursus ini', 'location' => 'profil/kursusku']);
 		}
 	}
 	public function InsertDataMapping($item)

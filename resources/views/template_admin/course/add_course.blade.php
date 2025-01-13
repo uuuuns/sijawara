@@ -36,7 +36,7 @@
                     </div>
                 </div>
                 <div class="mt-5 px-3">
-                    <form id="form-user" action="store" method="POST" enctype="multipart/form-data">
+                    <form id="form-user" action="{{ url('kursus-admin/store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="form-group row">
                             <label class="col-sm-2 col-form-label control-label">Kover Depan <span

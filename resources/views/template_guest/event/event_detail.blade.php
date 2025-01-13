@@ -23,7 +23,7 @@
                                 @if ($is_full == false)
                                     <div class="">
                                         <form class="" id="FormBuyNow-info" method="POST"
-                                            action="<?= url('event/add') ?>">
+                                            action="{{ url('webinar/add') }}">
                                             @csrf
                                             <div id="data-input-info"></div>
                                             <input type="hidden" name="id_event" value="<?= $event->ID_ACTIVITY ?>">
@@ -133,7 +133,7 @@
                                                 <small class="text-danger">* Hanya bisa mengumpulkan sekali, konfirmasi
                                                     sebelum mengumpulkan</small>
                                                 <?php if (empty($materi_file)) { ?>
-                                                <form action="{{ url('event/upload_file') }}" method="POST"
+                                                <form action="{{ url('webinar/upload_file') }}" method="POST"
                                                     enctype="multipart/form-data">
                                                     @csrf
                                                     <div id="file-upload-container">
@@ -216,7 +216,7 @@
                 <div class="row course-gallery ">
                     <?php foreach ($other_event as $item) : ?>
                         <div class="course-item cat1 cat5 col-lg-6 col-md-6">
-                            <a href="<?= url('event/detail/' . preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $item->TITLE_ACTIVITY)) . '?id_activity=' . $item->ID_ACTIVITY) ?>">
+                            <a href="<?= url('webinar/detail/' . preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $item->TITLE_ACTIVITY)) . '?id_activity=' . $item->ID_ACTIVITY) ?>">
                                 <div class="px-0 px-sm-3">
                                     <div class="single-course style-2 bg-shade border-0">
                                         <div class="row g-0 align-items-center">
@@ -331,7 +331,7 @@
                             cancelButtonText: 'Nanti'
                         }).then((result) => {
                             if (result.isConfirmed) {
-                                window.location.href = '<?= Request::segment(0) ?>/profile';
+                                window.location.href = '<?= Request::segment(0) ?>/profil';
                             }
                         });
                     } else {

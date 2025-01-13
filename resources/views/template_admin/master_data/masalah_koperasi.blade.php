@@ -74,7 +74,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form id="form-user" action="<?= url('masalah/store') ?>" method="POST" enctype="multipart/form-data">
+            <form id="form-user" action="{{ url('masalah/store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
                     <div class="form-group mb-3">
@@ -101,7 +101,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form id="form-user" action="masalah/update" method="POST" enctype="multipart/form-data">
+            <form id="form-user" action="{{ url('masalah/update') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
                     <input type="hidden" name="up_id_masalah" value="" readonly>
@@ -129,7 +129,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form id="form-user" action="masalah/delete" method="POST" enctype="multipart/form-data">
+            <form id="form-user" action="{{ url('masalah/delete') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
                     <p>Apakah kamu ingin menghapus data ini?</p>

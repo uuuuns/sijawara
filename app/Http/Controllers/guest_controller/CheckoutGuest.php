@@ -44,7 +44,7 @@ class CheckoutGuest extends Controller
 	public function index()
 	{
 		if (session('user') == null) {
-			return redirect('login');
+			return redirect('masuk');
 		}
 		$data['title'] = 'Konfirmasi Pembayaran';
 
@@ -58,7 +58,7 @@ class CheckoutGuest extends Controller
 	}
 	public function purchase()
 	{
-		(session('user')[0] == null) ? redirect('login') : "";
+		(session('user')[0] == null) ? redirect('masuk') : "";
 		$data['title'] = 'Purchase';
 		$data['id_trans'] = $this->GenerateUniqID_Transaction(time());
 
@@ -314,7 +314,7 @@ class CheckoutGuest extends Controller
 	}
 	public function check_status(Request $req)
 	{
-		(session('user')[0]->get('ID_USER') == null) ? redirect('login') : "";
+		(session('user')[0]->get('ID_USER') == null) ? redirect('masuk') : "";
 		$id_item = $_POST['id_activity'];
 		$id_order = $_POST['id_order_whenPay'];
 		$id_trans = $_POST['id_trans'];

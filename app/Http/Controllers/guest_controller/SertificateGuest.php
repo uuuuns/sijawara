@@ -15,7 +15,7 @@ class SertificateGuest extends Controller
 {
     public function generate()
     {
-        $data['QR'] = base64_encode(QrCode::format("svg")->size(516)->generate(URL::to('/').'/verification/sertifikat?ID_SERTIFIKAT=100'));
+        $data['QR'] = base64_encode(QrCode::format("svg")->size(516)->generate(URL::to('/').'/verifikasi/sertifikat?ID_SERTIFIKAT=100'));
 
         $file_pdf = strtoupper("Tamarin Hamaji" . "_CERTIFICATE_" . "Fotografi Dalam 5 Menit") . ".pdf";
         $paper = 'A4';

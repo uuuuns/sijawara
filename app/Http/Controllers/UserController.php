@@ -13,6 +13,29 @@ class UserController extends Controller
     public function index() {
         $data['title'] = "User";
 
+        $data['provinsi'] = DB::select("
+            SELECT 
+                *
+            FROM 
+                md_provinsi
+            ");
+
+        $data['admin'] = true;
+
+        return
+            view('template.header', $data) .
+            view('template_admin.user.user', $data) .
+            view('template.footer', $data);
+    }
+
+    public function filter_user(Request $req)
+    {
+        $condition = '';
+
+        if ($req->input('JENIS_INSTANSI') != 'ALL') {
+            $condition = " AND u.JENIS_INSTANSI = '".$req->input('JENIS_INSTANSI')."'";
+        }        
+
         $data["user"] = DB::select("
             SELECT
                 u.*,
@@ -26,20 +49,11 @@ class UserController extends Controller
                 u.ID_KOTA = k.ID_KOTA
             WHERE
                 u.IS_DELETE = 0
+            $condition
         ");
-
-        $data['provinsi'] = DB::select("
-            SELECT 
-                *
-            FROM 
-                md_provinsi
-            ");
-
-        $data['admin'] = true;
-        return
-            view('template.header', $data) .
-            view('template_admin/user', $data) .
-            view('template.footer', $data);
+        
+        return 
+            view('template_admin.user.paper_ajax', $data);
     }
 
     public function store(Request $req)
@@ -85,7 +99,7 @@ class UserController extends Controller
         DB::table('user')->INSERT($user);
         DB::table('user_data')->INSERT($userdata);
 
-        return redirect('user')->with(['succ_msg' => 'Berhasil menambahkan user baru', 'location' => 'user']);
+        return redirect('pengguna')->with(['succ_msg' => 'Berhasil menambahkan user baru', 'location' => 'user']);
     }
 
     public function update(Request $req)
@@ -103,7 +117,7 @@ class UserController extends Controller
 
         DB::table('user')->WHERE(['ID_USER' => $req->input('up_id_user')])->update($user);
 
-        return redirect('user')->with(['succ_msg' => 'Berhasil memperbarui user', 'location' => 'user']);
+        return redirect('pengguna')->with(['succ_msg' => 'Berhasil memperbarui user', 'location' => 'user']);
     }
     public function update_profile(Request $request)
     {
@@ -130,7 +144,7 @@ class UserController extends Controller
         }
 
         DB::table('user')->where('ID_USER', $request->input('up_userId'))->update($user);
-        return redirect('user')->with([
+        return redirect('pengguna')->with([
             'msg' => 'Berhasil memperbarui data user '.$request->input('up_userName'),
             'location' => 'user',
         ]);
@@ -143,9 +157,9 @@ class UserController extends Controller
                 'IS_DELETE'    => 1
             ];
             DB::table('user')->WHERE(['ID_USER' => $req->input('del_id_user')])->update($user);
-            return redirect('user')->with(['msg' => 'Berhasil menghapus user', 'location' => 'user']);    
+            return redirect('pengguna')->with(['msg' => 'Berhasil menghapus user', 'location' => 'user']);    
         } catch (\Throwable $e) {
-            return redirect('user')->with(['msg' => 'Error'.$e, 'location' => 'user']);  
+            return redirect('pengguna')->with(['msg' => 'Error'.$e, 'location' => 'user']);  
         }
     }
     public function detail_pengambilan(Request $req)
@@ -184,7 +198,7 @@ class UserController extends Controller
                 view('template_admin.detail_pengambilan_user', $data) .
                 view('template.footer', $data);  
         } catch (\Throwable $e) {
-            return redirect('user/detail_pengambilan')->with(['msg' => 'Error'.$e, 'location' => 'user']);  
+            return redirect('pengguna/detail_pengambilan')->with(['msg' => 'Error'.$e, 'location' => 'user']);  
         }
     }
 

@@ -77,7 +77,7 @@
                     <span aria-hidden="true" class="fs-3">&times;</span>
                 </button>
             </div>
-            <form id="form-add" action="carousel/edit" method="POST" enctype="multipart/form-data">
+            <form id="form-add" action="{{ url('carousel/edit') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" id="up_id_carousel" name="up_link" class="form-control" required>
                 <div class="modal-body">
@@ -112,7 +112,7 @@
                     <span aria-hidden="true" class="fs-3">&times;</span>
                 </button>
             </div>
-            <form id="form-add" action="carousel/store" method="POST" enctype="multipart/form-data">
+            <form id="form-add" {{ url('carousel/store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
                     <div class="form-group">
@@ -138,7 +138,7 @@
 <!-- Confirmation Delete Modal -->
 <div class="modal" id="deleteModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-        <form action="carousel/delete" method="post">
+        <form action="{{ url('carousel/delete') }}" method="post">
             @csrf
             <input type="hidden" id="id_carousel" name="id_carousel">
             <div class="modal-content">

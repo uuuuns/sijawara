@@ -30,7 +30,7 @@
                 </div>
                 <div class="col-md-6 d-flex justify-content-md-end justify-content-end align-items-center">
                     <div class="mt-3 mt-md-0">
-                        <a href="courses/add" style="color: white"><button type="button" class="btn btn-primary btn-sm-2 rounded">
+                        <a href="kursus-admin/add" style="color: white"><button type="button" class="btn btn-primary btn-sm-2 rounded">
                                 <i class="mdi mdi-plus me-1"></i>
                                 Tambahkan Kursus</button></a>
                     </div>
@@ -67,18 +67,18 @@
                             <td><?= date_format(date_create($item->DATE_START), 'j F Y H:i:s') ?></td>
                             <td><?= date_format(date_create($item->DATE_END), 'j F Y H:i:s') ?></td>
                             <td>
-                                <button type="button" onclick="location.href='courses/lihat_peserta?ID_ACTIVITY={{$item->ID_ACTIVITY}}'" class="btn btn-warning mb-1 btn-sm-2 w-100 fs-8 rounded waves-effect waves-light px-2" style="min-width: 155px !important;">
+                                <button type="button" onclick="location.href='kursus-admin/lihat_peserta?ID_ACTIVITY={{$item->ID_ACTIVITY}}'" class="btn btn-warning mb-1 btn-sm-2 w-100 fs-8 rounded waves-effect waves-light px-2" style="min-width: 155px !important;">
                                     <i class="bx bxs-user-detail font-size-16 align-middle"></i> Lihat Peserta
                                 </button>
                                 @if ($item->IS_PUBLIC == 0)
-                                    <form action="courses/invite" method="GET">
+                                    <form action="{{ url('kursus-admin/invite') }}" method="GET">
                                         <input type="hidden" name="id_activity" value="<?= $item->ID_ACTIVITY ?>">
                                         <button type="submit" class="btn btn-primary btn-sm-2 w-100 fs-8 rounded waves-effect waves-light px-2" style="min-width: 155px !important;">
                                             <i class="bx bx-send font-size-16 align-middle"></i> Undang User
                                         </button>
                                     </form>
                                 @endif
-                                <form action="courses/edit" method="POST">
+                                <form action="{{ url('kursus-admin/edit') }}" method="POST">
                                     @csrf
                                     <input type="hidden" name="id_activity" value="<?= $item->ID_ACTIVITY ?>">
                                     <button type="submit" class="btn btn-dark btn-sm-2 w-100 fs-8 rounded waves-effect waves-light px-2" style="min-width: 155px !important; margin: 5px 0px;">
@@ -109,7 +109,7 @@
                     <span aria-hidden="true" class="fs-3">&times;</span>
                 </button>
             </div>
-            <form id="form-user" action="courses/delete" method="POST" enctype="multipart/form-data">
+            <form id="form-user" action="{{ url('kursus-admin/delete') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
                     <div class="modal-body">

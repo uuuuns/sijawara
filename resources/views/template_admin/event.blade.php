@@ -65,7 +65,7 @@
                                     <td>
                                         <div class="d-flex flex-column gap-2">
                                             <button type="button"
-                                                onclick="location.href='events/lihat_peserta?ID_ACTIVITY={{ $item->ID_ACTIVITY }}'"
+                                                onclick="location.href='webinar-admin/lihat_peserta?ID_ACTIVITY={{ $item->ID_ACTIVITY }}'"
                                                 class="btn btn-warning mb-1 btn-sm-2 w-100 fs-8 rounded waves-effect waves-light px-2"
                                                 style="min-width: 155px !important;">
                                                 <i class="bx bxs-user-detail font-size-16 align-middle"></i> Lihat Peserta
@@ -113,7 +113,7 @@
                         <span aria-hidden="true" class="fs-3">&times;</span>
                     </button>
                 </div>
-                <form id="form-user" action="events/add" method="POST" enctype="multipart/form-data">
+                <form id="form-user" action="{{ url('webinar-admin/add') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
                         <div class="form-group">
@@ -230,7 +230,7 @@
                         <span aria-hidden="true" class="fs-3">&times;</span>
                     </button>
                 </div>
-                <form id="form-user" action="events/update" method="POST" enctype="multipart/form-data">
+                <form id="form-user" action="{{ url('webinar-admin/update') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
                         <div class="hidden">
@@ -352,7 +352,7 @@
                         <span aria-hidden="true" class="fs-3">&times;</span>
                     </button>
                 </div>
-                <form id="form-user" action="events/delete" method="POST" enctype="multipart/form-data">
+                <form id="form-user" action="{{ ('webinar-admin/delete') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-body">
                         <label>Apakah Anda Ingin Menghapus Event ini ?</label>
@@ -483,7 +483,7 @@
             $('input[name="up_link_zoom"]').val(data.LINK_ZOOM)
             $('input[name="up_status_public"]').val(data.IS_PUBLIC)
             $.ajax({
-                url: 'events/get/' + data.ID_ACTIVITY,
+                url: 'webinar-admin/get/' + data.ID_ACTIVITY,
                 method: 'GET',
                 dataType: 'JSON',
 

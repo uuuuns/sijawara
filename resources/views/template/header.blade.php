@@ -557,36 +557,42 @@
                     <nav class="site-navbar ms-auto">
                         <ul class="primary-menu">
                             <li class="current">
-                                <a href="{{ url('course') }}">Kursus</a>
+                                <a href="{{ url('kursus') }}">Kursus</a>
                             </li>
                             <li class="me-0">
-                                <a href="{{ url('event') }}">Webinar & Pelatihan</a>
+                                <a href="{{ url('webinar') }}">Webinar</a>
                             </li>
 
                             <?php if (!empty(session('user')[0])) { ?>
                             @if (session('user')[0]['ID_ROLE'] != 1)
                                 <li class="d-lg-none">
-                                    <a href="{{ url('profile') }}">Profil</a>
+                                    <a href="{{ url('profil') }}">Profil</a>
                                 </li>
                             @endif
                             <li class="d-lg-none">
-                                <a href="{{ url('profile/mycourses') }}">Kursus Ku</a>
+                                <a href="{{ url('profil/kursusku') }}">Kursus Ku</a>
                             </li>
                             <li class="d-lg-none">
-                                <a href="{{ url('profile/myevents') }}">Webinar/Pelatihan Ku</a>
+                                <a href="{{ url('profil/webinarku') }}">Webinar Ku</a>
                             </li>
+                            <?php if (!empty(session('user')[0]) && session('user')[0]['ID_ROLE'] == 1 || session('user')[0]['ID_ROLE'] == 4) { ?>
                             <li class="d-lg-none">
-                                <a target="_blank" href="https://perpustakaan.uptkukm.id/">Perpustakaan</a>
+                                <a target="_blank" href="https://kubuku.id/perpus/login.php">Perpustakaan</a>
                             </li>
+                            <?php } else { ?>
+                                <li class="d-lg-none">
+                                    <a target="_blank" href="https://kubuku.id/download/e-perpus-sijawara+">Perpustakaan</a>
+                                </li>
+                            <?php } ?>
                             <li class="d-lg-none">
-                                <a href="{{ url('logout') }}">Keluar</a>
+                                <a href="{{ url('keluar') }}">Keluar</a>
                             </li>
                             <?php } else { ?>
                             <li class="d-lg-none">
-                                <a href="{{ url('login') }}">Masuk</a>
+                                <a href="{{ url('masuk') }}">Masuk</a>
                             </li>
                             <li class="d-lg-none">
-                                <a href="{{ url('register') }}">Daftar</a>
+                                <a href="{{ url('daftar') }}">Daftar</a>
                             </li>
                             <?php } ?>
                         </ul>
@@ -624,7 +630,7 @@
                     </style>
 
                     <div class="d-none">
-                        <form id="form_checkout" action="<?= url('checkout') ?>" method="post">
+                        <form id="form_checkout" action="{{ url('checkout') }}" method="post">
                             @csrf
                             <input type="hidden" value="">
                         </form>
@@ -648,26 +654,26 @@
                                 </a>
                                 <ul class="submenu" style="left: initial;right:0">
                                     <?php if (session('user')[0]['ID_ROLE'] == 1 || session('user')[0]['ID_ROLE'] == 4) { ?>
-                                    <li><a class="" href="<?= url('dashboard') ?>">Beranda </a></li>
+                                        <li><a class="" href="<?= url('dashboard') ?>">Beranda </a></li>
                                     <?php } else { ?>
-                                    <li><a class="" href="<?= url('profile') ?>">Profile</a></li>
-                                    <li><a class=" " href="<?= url('profile/mycourses') ?>">Kursus Ku</a></li>
-                                    <li><a class="" href="<?= url('profile/myevents') ?>">Webinar & Pelatihan Ku</a></li>
-                                    <li><a class="" href="<?= url('profile/mysertificate') ?>">Sertifikat Ku</a>
+                                    <li><a class="" href="<?= url('profil') ?>">Profile</a></li>
+                                    <li><a class=" " href="<?= url('profil/kursusku') ?>">Kursus Ku</a></li>
+                                    <li><a class="" href="<?= url('profil/webinarku') ?>">Webinar Ku</a></li>
+                                    <li><a class="" href="<?= url('profil/sertifikatku') ?>">Sertifikat Ku</a>
                                     </li>
                                     <li><a class="" target="_blank"
                                             href="https://perpustakaan.uptkukm.id/">Perpustakaan</a></li>
                                     <?php } ?>
                                     <hr>
-                                    <li><a class="text-danger" href="<?= url('logout') ?>">Keluar</a></li>
+                                    <li><a class="text-danger" href="<?= url('keluar') ?>">Keluar</a></li>
                                 </ul>
                             </li>
                         </ul>
                     </nav>
                     <?php } else { ?>
                     <div class="header-btn d-none d-lg-block">
-                        <a href="{{ url('login') }}" class="login rounded">Masuk</a>
-                        <a href="{{ url('register') }}" class="btn btn-main-2 btn-sm-2 rounded">Daftar</a>
+                        <a href="{{ url('masuk') }}" class="login rounded">Masuk</a>
+                        <a href="{{ url('daftar') }}" class="btn btn-main-2 btn-sm-2 rounded">Daftar</a>
                     </div>
                     <?php } ?>
                 </div>
