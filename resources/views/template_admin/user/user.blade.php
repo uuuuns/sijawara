@@ -33,10 +33,10 @@
                 </div>
                 <div class="mt-4 col-3"></div>
                 <div class="mt-4 col-2">
-                    <button class="btn btn-primary" onclick="openaddModal()">Reporting UKM</button>
+                    <button onclick="location.href='/pengguna/reporting/ukm'" class="btn btn-sm btn-success text-white"><i class="fas fa-file-excel text-white"></i> LAPORAN UKM</button>
                 </div>
                 <div class="mt-4 col-2">
-                    <button class="btn btn-primary" onclick="openaddModal()">Reporting Koperasi</button>
+                    <button onclick="location.href='/pengguna/reporting/koperasi'" class="btn btn-sm btn-success text-white"><i class="fas fa-file-excel text-white"></i> LAPORAN KOPERASI</button>
                 </div>
             </div>
 
@@ -374,8 +374,6 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
 <script>
-    $('#dtTable').DataTable();
-
     $('.instansi').select2();
     var Instansi = 'ALL'
 
