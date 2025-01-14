@@ -7,10 +7,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use App\Models\FileUpload;
+use App\Models\Laporan;
 
 class UserController extends Controller
 {
-    public function index() {
+    public function index()
+    {
         $data['title'] = "User";
 
         $data['provinsi'] = DB::select("
@@ -33,8 +35,8 @@ class UserController extends Controller
         $condition = '';
 
         if ($req->input('JENIS_INSTANSI') != 'ALL') {
-            $condition = " AND u.JENIS_INSTANSI = '".$req->input('JENIS_INSTANSI')."'";
-        }        
+            $condition = " AND u.JENIS_INSTANSI = '" . $req->input('JENIS_INSTANSI') . "'";
+        }
 
         $data["user"] = DB::select("
             SELECT
@@ -51,8 +53,8 @@ class UserController extends Controller
                 u.IS_DELETE = 0
             $condition
         ");
-        
-        return 
+
+        return
             view('template_admin.user.paper_ajax', $data);
     }
 
@@ -110,7 +112,7 @@ class UserController extends Controller
             'TELP'          => $req->input('up_contact'),
             'JK'            => $req->input('up_jk'),
         ];
-    
+
         if (!empty($req->input('up_foto_profile'))) {
             $user['FOTO_PROFILE'] = FileUpload::S3($req->file('up_foto_profile'), 'IMAGE_ACTIVITY', 'Image-Activity-' . strtotime(now()));
         }
@@ -132,7 +134,7 @@ class UserController extends Controller
             'TEMPAT_LAHIR'  => $request->input('up_userTempatLahir'),
             'NAMA_INSTANSI' => $request->input('up_userInstansi'),
             'JABATAN'       => $request->input('up_userJabatan'),
-            'JENIS_INSTANSI'=> $request->input('up_userJenisInstansi'),
+            'JENIS_INSTANSI' => $request->input('up_userJenisInstansi'),
             'STATUS'        => $request->input('up_userStatus'),
             'IS_DELETE'     => $request->input('up_userIsDelete'),
             'ID_PROVINSI'   => $request->input('up_userIdProvinsi'),
@@ -145,7 +147,7 @@ class UserController extends Controller
 
         DB::table('user')->where('ID_USER', $request->input('up_userId'))->update($user);
         return redirect('pengguna')->with([
-            'msg' => 'Berhasil memperbarui data user '.$request->input('up_userName'),
+            'msg' => 'Berhasil memperbarui data user ' . $request->input('up_userName'),
             'location' => 'user',
         ]);
     }
@@ -157,9 +159,9 @@ class UserController extends Controller
                 'IS_DELETE'    => 1
             ];
             DB::table('user')->WHERE(['ID_USER' => $req->input('del_id_user')])->update($user);
-            return redirect('pengguna')->with(['msg' => 'Berhasil menghapus user', 'location' => 'user']);    
+            return redirect('pengguna')->with(['msg' => 'Berhasil menghapus user', 'location' => 'user']);
         } catch (\Throwable $e) {
-            return redirect('pengguna')->with(['msg' => 'Error'.$e, 'location' => 'user']);  
+            return redirect('pengguna')->with(['msg' => 'Error' . $e, 'location' => 'user']);
         }
     }
     public function detail_pengambilan(Request $req)
@@ -174,7 +176,7 @@ class UserController extends Controller
                 FROM 
                     user
                 WHERE 
-                    ID_USER = '".$req->input('id_user')."'");
+                    ID_USER = '" . $req->input('id_user') . "'");
             $data['activities'] = DB::select("
                 SELECT
                     a.ID_ACTIVITY ,
@@ -189,16 +191,16 @@ class UserController extends Controller
                 LEFT JOIN user u ON   
                     o.ID_USER  = u.ID_USER 
                 WHERE
-                    o.ID_USER = '".$req->input('id_user')."'
+                    o.ID_USER = '" . $req->input('id_user') . "'
             ");
             $data['admin'] = true;
-            
+
             return
                 view('template.header', $data) .
                 view('template_admin.detail_pengambilan_user', $data) .
-                view('template.footer', $data);  
+                view('template.footer', $data);
         } catch (\Throwable $e) {
-            return redirect('pengguna/detail_pengambilan')->with(['msg' => 'Error'.$e, 'location' => 'user']);  
+            return redirect('pengguna/detail_pengambilan')->with(['msg' => 'Error' . $e, 'location' => 'user']);
         }
     }
 
@@ -212,7 +214,8 @@ class UserController extends Controller
         return "ACT_" . $uniqid . substr(md5(time()), 0, 3);
     }
 
-    public function jadikanAdmin(Request $request) {
+    public function jadikanAdmin(Request $request)
+    {
         $id_user = $request->input('id_user');
         DB::table('user')
             ->where('ID_USER', $id_user)
@@ -221,12 +224,128 @@ class UserController extends Controller
         return redirect()->back();
     }
 
-    public function jadikanInstruktur(Request $request) {
+    public function jadikanInstruktur(Request $request)
+    {
         $id_user = $request->input('id_user');
         DB::table('user')
             ->where('ID_USER', $id_user)
             ->update(['ID_ROLE' => 2]);
 
         return redirect()->back();
+    }
+
+    public function laporan_ukm()
+    {
+        set_time_limit(300);
+
+        $ukm = DB::select("
+            SELECT
+                u.NIK,
+                u.NAME,
+                u.EMAIL,
+                u.TELP,
+                u.JK,
+                u.ALAMAT,
+                u.JABATAN,
+                (
+                    SELECT nama_province
+                    FROM md_provinsi mp
+                    WHERE mp.ID_PROVINSI = u.ID_PROVINSI
+                ) AS nama_provinsi_peserta,
+                (
+                    SELECT nama_kota
+                    FROM md_kota mk
+                    WHERE mk.ID_KOTA = u.ID_KOTA
+                ) AS nama_kota_peserta,
+                (
+                    SELECT nama_province
+                    FROM md_provinsi mp
+                    WHERE mp.ID_PROVINSI = tu.ID_PROVINSI
+                ) AS nama_provinsi_pemilik,
+                (
+                    SELECT nama_kota
+                    FROM md_kota mk
+                    WHERE mk.ID_KOTA = tu.ID_KOTA
+                ) AS nama_kota_pemilik,
+                k.NAMA_KATEGORI_UKM,
+                b.NAMA_BADAN_USAHA,
+                tu.*
+            FROM 
+                user u
+            LEFT JOIN tb_ukm tu ON
+                tu.ID_USER = u.ID_USER
+            LEFT JOIN md_kategori_ukm k ON
+                tu.id_kategori_ukm = k.ID
+            LEFT JOIN md_badan_usaha b ON
+                tu.id_badan_usaha = b.ID
+            WHERE
+                u.IS_DELETE = 0
+            AND
+                u.JENIS_iNSTANSI like '%UKM%'
+        ");
+
+        app(Laporan::class)->laporan_ukm($ukm);
+    }
+
+    public function laporan_koperasi()
+    {
+        set_time_limit(3600);
+
+        $koperasi = DB::select("
+            SELECT
+                u.NIK,
+                u.NAME,
+                u.EMAIL,
+                u.TELP,
+                u.JK,
+                u.ALAMAT,
+                u.JABATAN,
+                (
+                    SELECT nama_province
+                    FROM md_provinsi mp
+                    WHERE mp.ID_PROVINSI = u.ID_PROVINSI
+                ) AS nama_provinsi_peserta,
+                (
+                    SELECT nama_kota
+                    FROM md_kota mk
+                    WHERE mk.ID_KOTA = u.ID_KOTA
+                ) AS nama_kota_peserta,
+                (
+                    SELECT nama_province
+                    FROM md_provinsi mp
+                    WHERE mp.ID_PROVINSI = ko.id_provinsi
+                ) AS nama_provinsi_koperasi,
+                (
+                    SELECT nama_kota
+                    FROM md_kota mk
+                    WHERE mk.ID_KOTA = ko.id_kota
+                ) AS nama_kota_koperasi,
+                bk.NAMA AS NAMA_BENTUK_KOPERASI,
+                jk.NAMA AS NAMA_JENIS_KOPERASI,
+                kk.NAMA AS NAMA_KELOMPOK_KOPERASI,
+                su.NAMA AS NAMA_SEKTOR_USAHA,
+                uu.name AS NAMA_UNIT_USAHA,
+                ko.*
+            FROM
+                user u
+            LEFT JOIN tb_koperasi ko ON
+                u.ID_USER = u.ID_USER
+            LEFT JOIN md_bentuk_koperasi bk ON
+                ko.id_bentuk_koperasi = bk.ID
+            LEFT JOIN md_jenis_koperasi jk ON
+                ko.id_jenis_koperasi = jk.ID
+            LEFT JOIN md_kelompok_koperasi kk ON
+                ko.id_kelompok_koperasi = kk.ID
+            LEFT JOIN md_sektor_usaha su ON
+                ko.id_sektor_usaha = su.ID
+            LEFT JOIN md_unit_usaha uu ON
+                ko.id_unit_usaha = uu.ID
+            WHERE
+                u.IS_DELETE = 0
+            AND
+                u.JENIS_iNSTANSI like '%KOPERASI%'
+        ");
+
+        app(Laporan::class)->laporan_koperasi($koperasi);
     }
 }

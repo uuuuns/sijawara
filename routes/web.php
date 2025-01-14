@@ -83,6 +83,9 @@ Route::middleware(['usersession:4,1'])->group(function () {
 
     Route::get('pengguna/ajax/paper-view', 'UserController@filter_user');
 
+    Route::get('pengguna/reporting/ukm', 'UserController@laporan_ukm');
+    Route::get('pengguna/reporting/koperasi', 'UserController@laporan_koperasi');
+
     Route::get('instruktur', 'InstructorController@index');
     Route::post('instruktur/accept', 'InstructorController@accept');
     Route::post('instruktur/decline', 'InstructorController@decline');
