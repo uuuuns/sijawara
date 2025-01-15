@@ -53,6 +53,8 @@ Route::get('verifikasi/confirm', 'AuthController@verifAccount');
 //VERIFICATION ACCOUNT
 Route::get('verifikasi/{any}', 'guest_controller\SertificateGuest@verifSertif');
 
+Route::get('404', 'GuestController@notfound')->name('notfound');
+
 //SERTIFIKAT
 // Route::get('sertifikat', 'guest_controller\SertificateGuest@generate');
 

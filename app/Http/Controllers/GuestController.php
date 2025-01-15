@@ -54,4 +54,13 @@ class GuestController extends Controller
 		$data['course'] = $courseModel->get_home_course($condition);
 		return view('template_guest.home_course', $data);
 	}
+
+	public function notfound(){
+		$data['title'] = '404';
+
+		return
+			view('template.header', $data) .
+			view('template_guest.404', $data).
+			view('template.footer', $data);
+	}
 }
