@@ -85,7 +85,7 @@
                                                 <i class="bx bx-edit-alt font-size-16 align-middle"></i> Edit Webinar/Pelatihan
                                             </button>
                                             <button type="button"
-                                                onclick="opendeleteModal(`<?= htmlentities(json_encode($item)) ?>`)"
+                                                onclick="<?= $item->CHECK_PARTICIPANT ? "opendeleteModal('{$item->ID_ACTIVITY}')" : "NotifDelete()" ?>"
                                                 class="btn btn-danger btn-sm-2 w-100 fs-8 rounded waves-effect waves-light px-2"
                                                 style="min-width: 155px !important;">
                                                 <i class="bx bx-trash font-size-16 align-middle"></i> Hapus Webinar/Pelatihan
@@ -495,9 +495,8 @@
             $('#updateModal').modal('show')
         }
 
-        function opendeleteModal(viewData) {
-            var data = JSON.parse(viewData)
-            $('input[name="id_activity"]').val(data.ID_ACTIVITY)
+        function opendeleteModal(id_activity) {
+            $('input[name="id_activity"]').val(id_activity)
             $('#deleteModal').modal('show')
         }
 
@@ -553,5 +552,15 @@
             }
         });
         $(document).ready(function() {});
+
+        function NotifDelete() {
+        Swal.fire({
+            title: 'Mohon Maaf',
+            text: 'Webinar ini tidak bisa dihapus karena sudah ada peserta yang mengambil Webinar ini',
+            icon: 'warning',
+            confirmButtonText: 'Oke',
+            confirmButtonColor: '#3085d6'
+        })
+    }
     </script>
 @endsection
