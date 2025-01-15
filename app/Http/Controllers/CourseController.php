@@ -36,7 +36,15 @@ class CourseController extends Controller
         if (session('user')[0]->get('ID_ROLE') == 1 || session('user')[0]->get('ID_ROLE') == 4) {
             $data["activity"] = DB::select("
             SELECT
-                c.*
+                c.*,
+                (
+                    SELECT
+                        count(*)
+                    FROM 
+                        `order` o
+                    WHERE
+                        ID_PRODUCT = c.ID_ACTIVITY
+                ) AS CHECK_PARTICIPANT
             FROM
                 activity c
             LEFT JOIN activity a ON
@@ -73,7 +81,9 @@ class CourseController extends Controller
             FROM
                 kategori k
         ");
+
         $data['admin'] = true;
+
         return
             view('template.header', $data) .
             view('template_admin/course/course', $data) .
@@ -306,7 +316,8 @@ class CourseController extends Controller
                     SELECT
                         dq.*,
                         ic.LIMIT_QUIZ,
-                        ic.MIN_NILAI
+                        ic.MIN_NILAI,
+                        ic.MAX_ATTEMPT
                     FROM
                         detail_quiz dq
                     LEFT JOIN item_course ic ON
@@ -320,24 +331,26 @@ class CourseController extends Controller
                 foreach ($dataquiz as $quiz) {
                     list($quiz->PIL_A, $quiz->PIL_B, $quiz->PIL_C, $quiz->PIL_D) = explode(";", $quiz->PIL_JWB);
                     $data['quiz'][$quiz->ID_QUIZ][] = [
-                        'ID_DETAIL'  => $quiz->ID_DETAIL,
-                        'ID_QUIZ'    => $quiz->ID_QUIZ,
-                        'ID_COURSE'  => $quiz->ID_COURSE,
-                        'SOAL'       => $quiz->SOAL,
-                        'PIL_A'      => $quiz->PIL_A,
-                        'PIL_B'      => $quiz->PIL_B,
-                        'PIL_C'      => $quiz->PIL_C,
-                        'PIL_D'      => $quiz->PIL_D,
-                        'KUNCI'      => $quiz->KUNCI,
-                        'LIMIT_QUIZ' => $quiz->LIMIT_QUIZ,
-                        'MIN_NILAI' => $quiz->MIN_NILAI,
-                        'NO'         => $data['no_index']
+                        'ID_DETAIL'   => $quiz->ID_DETAIL,
+                        'ID_QUIZ'     => $quiz->ID_QUIZ,
+                        'ID_COURSE'   => $quiz->ID_COURSE,
+                        'SOAL'        => $quiz->SOAL,
+                        'PIL_A'       => $quiz->PIL_A,
+                        'PIL_B'       => $quiz->PIL_B,
+                        'PIL_C'       => $quiz->PIL_C,
+                        'PIL_D'       => $quiz->PIL_D,
+                        'KUNCI'       => $quiz->KUNCI,
+                        'LIMIT_QUIZ'  => $quiz->LIMIT_QUIZ,
+                        'MIN_NILAI'   => $quiz->MIN_NILAI,
+                        'MAX_ATTEMPT' => $quiz->MAX_ATTEMPT,
+                        'NO'          => $data['no_index']
                     ];
 
                     foreach ($data['quiz'][$quiz->ID_QUIZ] as $ID_ITEM) {
                         $data['ID_ITEM'] = $ID_ITEM['ID_QUIZ'];
                         $data['LIMIT_QUIZ'] = $quiz->LIMIT_QUIZ;
                         $data['MIN_NILAI'] = $quiz->MIN_NILAI;
+                        $data['MAX_ATTEMPT'] = $quiz->MAX_ATTEMPT;
                     }
                     $data['no_index']++;
                 }
@@ -568,7 +581,8 @@ class CourseController extends Controller
                         'ORDER_LIST'    => $orderList[$i],
                         'TYPE'          => $categoryList[$i],
                         'LIMIT_QUIZ'    => $req->input('limit_soal_'.$nomor),
-                        'MIN_NILAI'    => $req->input('min_nilai_'.$nomor)
+                        'MIN_NILAI'     => $req->input('min_nilai_'.$nomor),
+                        'MAX_ATTEMPT'   => $req->input('max_attempt_'.$nomor)
                     ];
                     $idQuiz[] = DB::table('item_course')->insertGetId($data_item);
                 }
@@ -1073,7 +1087,8 @@ class CourseController extends Controller
                         'ORDER_LIST'    => $orderList[$i],
                         'TYPE'          => $categoryList[$i],
                         'LIMIT_QUIZ'    => $req->input('limit_soal_'.$nomor),
-                        'MIN_NILAI'    => $req->input('min_nilai_'.$nomor)
+                        'MIN_NILAI'     => $req->input('min_nilai_'.$nomor),
+                        'MAX_ATTEMPT'   => $req->input('max_attempt_'.$nomor)
                     ];
                     $idQuiz[] = DB::table('item_course')->insertGetId($data_item);
                 }

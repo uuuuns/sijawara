@@ -62,6 +62,11 @@ class CourseGuest extends Controller
 
 		$data['id_activity'] = $_GET['id_activity'];
 		$data['course'] = $this->courseModel->get_course($data['id_activity']);
+
+		if($data['course'] == NULL ) {
+			return redirect('404');
+		}
+
 		$condition = "item_course.ID_COURSE = '" . $data['course']->ID_COURSE . "'" .
 			" AND mapping_course.ID_ACTIVITY = '" . $_GET['id_activity'] . "'" .
 			" AND mapping_course.ID_USER = '" . session('user')[0]->get('ID_USER') . "'";
@@ -380,14 +385,15 @@ class CourseGuest extends Controller
 		$data['title'] = 'Course';
 		$data_user = (session('user') == null) ? null : Session::get('user')[0]->get('ID_USER');
 
-		if (empty(session('user'))) {
-			return redirect('masuk');
-		}
-
 		DB::statement("SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));");
 		$id_activity = $_GET['id_activity'];
 		$data['checking_trans'] = $this->checkoutModel->get_trans($data_user);
 		$data['course'] = $this->courseModel->get_course($id_activity);
+
+		if($data['course'] == NULL ) {
+			return redirect('404');
+		}
+		
 		$condition = "item_course.ID_COURSE = '" . $data['course']->ID_COURSE . "'";
 		$data_itemCourse = $this->courseModel->get_item_course($condition);
 		$data['item_course'] = array();
