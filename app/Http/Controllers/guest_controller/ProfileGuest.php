@@ -392,6 +392,8 @@ class ProfileGuest extends Controller
             'KOPERASI' => 'koperasi',
             'UKM' => 'ukm',
             'INSTANSI' => 'instansi',
+            'INSTANSI; UKM' => 'instansi_ukm',
+            'UKM; INSTANSI' => 'instansi_ukm',
             'UMUM' => 'umum'
         ];
 
@@ -400,6 +402,9 @@ class ProfileGuest extends Controller
             $joinCond = 'LEFT JOIN tb_ukm tu ON tu.ID_USER = u.ID_USER';
         } else if ($mappingInstansi[$instansi] === 'koperasi') {
             $joinCond = 'LEFT JOIN tb_koperasi tk ON tk.ID_USER = u.ID_USER';
+        } else if ($mappingInstansi[$instansi] === 'instansi_ukm') {
+            $joinCond = 'LEFT JOIN tb_koperasi tk ON tk.ID_USER = u.ID_USER
+                        LEFT JOIN tb_ukm tk ON tu.ID_USER = u.ID_USER';
         }
     
         // Query the database
@@ -420,6 +425,8 @@ class ProfileGuest extends Controller
                         return "Lengkapi data profil dan data " . $data->JENIS_INSTANSI . " anda terlebih dahulu";
                     } else if ($data->JENIS_INSTANSI === 'KOPERASI') {
                         return "Lengkapi data profil dan data " . $data->JENIS_INSTANSI . " anda terlebih dahulu";
+                    } else if ($data->JENIS_INSTANSI === 'INSTANSI; UKM' || $data->JENIS_INSTANSI === 'UKM; INSTANSI') {
+                        return "Lengkapi data profil dan data ukm serta koperasi anda terlebih dahulu";
                     } else {
                         return "Lengkapi data profil anda terlebih dahulu";
                     }
@@ -570,7 +577,10 @@ class ProfileGuest extends Controller
             DB::table('tb_ukm')->updateOrInsert(['ID_USER' => session('user')[0]['ID_USER']], $data);
             return redirect('data_ukm')->with('success', 'Data Pemilik UKM berhasil disimpan');
         } catch (\Throwable $e) {
-            dd($e->getMessage());
+            return response()->json([
+                'status' => 'failure',
+                'errors' => $e
+            ], 422);
         }
     }
     public function store_data_pemilik (Request $request) {
@@ -591,7 +601,10 @@ class ProfileGuest extends Controller
             DB::table('tb_ukm')->updateOrInsert(['ID_USER' => session('user')[0]['ID_USER']], $data);
             return redirect('data_ukm')->with('success', 'Data Pemilik UKM berhasil disimpan');
         } catch (\Throwable $e) {
-            dd($e->getMessage());
+            return response()->json([
+                'status' => 'failure',
+                'errors' => $e
+            ], 422);
         }
     }
     public function store_data_lain (Request $request) {
@@ -634,7 +647,10 @@ class ProfileGuest extends Controller
 
             return redirect('data_ukm')->with('success', 'Data berhasil disimpan');
         } catch (\Throwable $e) {
-            dd($e->getMessage());
+            return response()->json([
+                'status' => 'failure',
+                'errors' => $e
+            ], 422);
         }
     }
     public function get_kota (Request $request) {
@@ -802,7 +818,10 @@ class ProfileGuest extends Controller
             DB::table('tb_koperasi')->updateOrInsert(['ID_USER' => session('user')[0]['ID_USER']], $data);
             return redirect('data_koperasi')->with('success', 'Data Koperasi berhasil disimpan');
         } catch (\Throwable $e) {
-            dd($e->getMessage());
+            return response()->json([
+                'status' => 'failure',
+                'errors' => $e
+            ], 422);
         }
     }
     public function store_hukum_koperasi (Request $request) {
@@ -820,7 +839,10 @@ class ProfileGuest extends Controller
             DB::table('tb_koperasi')->updateOrInsert(['ID_USER' => session('user')[0]['ID_USER']], $data);
             return redirect('data_koperasi')->with('success', 'Data Koperasi berhasil disimpan');
         } catch (\Throwable $e) {
-            dd($e->getMessage());
+            return response()->json([
+                'status' => 'failure',
+                'errors' => $e
+            ], 422);
         }
     }
     public function store_anggota_koperasi (Request $request) {
@@ -843,7 +865,10 @@ class ProfileGuest extends Controller
             DB::table('tb_koperasi')->updateOrInsert(['ID_USER' => session('user')[0]['ID_USER']], $data);
             return redirect('data_koperasi')->with('success', 'Data Koperasi berhasil disimpan');
         } catch (\Throwable $e) {
-            dd($e->getMessage());
+            return response()->json([
+                'status' => 'failure',
+                'errors' => $e
+            ], 422);
         }
     }
 
@@ -873,7 +898,10 @@ class ProfileGuest extends Controller
 
             return redirect('data_koperasi')->with('success', 'Data berhasil disimpan');
         } catch (\Throwable $e) {
-            dd($e->getMessage());
+            return response()->json([
+                'status' => 'failure',
+                'errors' => $e
+            ], 422);
         }
     }
     public function cek_email(Request $request) {

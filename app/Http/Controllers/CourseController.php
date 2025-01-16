@@ -119,48 +119,56 @@ class CourseController extends Controller
 
     public function store(Request $req)
     {
-        $activity = [
-            'ID_ACTIVITY'           => $this->GenerateUniqID('ACT', $req->input('title_activity')),
-            'TITLE_ACTIVITY'        => $req->input('title_activity'),
-            'ID_USER'               => session('user')[0]['ID_USER'],
-            'IMAGE_ACTIVITY'        => FileUpload::S3($req->file('image_activity'), 'IMAGE_ACTIVITY', 'Image-Activity-' . strtotime(now())),
-            'TYPE_ACTIVITY'         => 1,
-            'SERTIF_CODE'           => $req->input('certif_code'),
-            'DATE_START'            => $req->input('date_start'),
-            'DATE_END'              => $req->input('date_end'),
-            'IS_PUBLIC'             => $req->input('is_public'),
-            'LOG_TIME'              => date('Y-m-d H:i:s'),
-            'SERTIF_IMAGE'          => $req->hasFile('sertif_image') ? FileUpload::S3($req->file('sertif_image'), 'SERTIF_IMAGE', 'Template-Certifiace-' . strtotime(now())) : null
-        ];
-        
-        if ($req->input('status') == 'on') {
-            $activity['STATUS'] = 1;
-        } else {
-            $activity['STATUS'] = 0;
+        try {
+            $activity = [
+                'ID_ACTIVITY'           => $this->GenerateUniqID('ACT', $req->input('title_activity')),
+                'TITLE_ACTIVITY'        => $req->input('title_activity'),
+                'ID_USER'               => session('user')[0]['ID_USER'],
+                'IMAGE_ACTIVITY'        => FileUpload::S3($req->file('image_activity'), 'IMAGE_ACTIVITY', 'Image-Activity-' . strtotime(now())),
+                'TYPE_ACTIVITY'         => 1,
+                'SERTIF_CODE'           => $req->input('certif_code'),
+                'DATE_START'            => $req->input('date_start'),
+                'DATE_END'              => $req->input('date_end'),
+                'IS_PUBLIC'             => $req->input('is_public'),
+                'NAMA_INSTRUKTUR'       => $req->input('instruktur_name'),
+                'LOG_TIME'              => date('Y-m-d H:i:s'),
+                'SERTIF_IMAGE'          => $req->hasFile('sertif_image') ? FileUpload::S3($req->file('sertif_image'), 'SERTIF_IMAGE', 'Template-Certifiace-' . strtotime(now())) : null
+            ];
+            
+            if ($req->input('status') == 'on') {
+                $activity['STATUS'] = 1;
+            } else {
+                $activity['STATUS'] = 0;
+            }
+    
+            $course = [
+                'ID_COURSE'             => $this->GenerateUniqID('ACT', $req->input('announcement')),
+                'ID_ACTIVITY'           => $activity['ID_ACTIVITY'],
+                'DESKRIPSI_COURSE'      => $req->input('desc_course'),
+                'BENEFIT'               => $req->input('benefit'),
+                'KATEGORI'              => $req->input('category')
+            ];
+    
+            if (!empty($req->input('kuota_peserta')) || $req->input('kuota_peserta') != 0) {
+                $course['KUOTA_PESERTA'] = $req->input('kuota_peserta');
+            }
+    
+            if ($req->input('req')) {
+                $course['REQUIREMENT']  = $req->input('req');
+            }
+    
+            DB::table('activity')->insert($activity);
+            DB::table('course')->insert($course);
+    
+            $data['ID_COURSE'] = $course['ID_COURSE'];
+            $this->item_materi($data, $req);
+            return redirect('kursus-admin')->with(['succ_msg' => 'Berhasil Menambahkan Kursus', 'location' => 'kursus-admin']);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'status' => 'failure',
+                'errors' => $e
+            ], 422);
         }
-
-        $course = [
-            'ID_COURSE'             => $this->GenerateUniqID('ACT', $req->input('announcement')),
-            'ID_ACTIVITY'           => $activity['ID_ACTIVITY'],
-            'DESKRIPSI_COURSE'      => $req->input('desc_course'),
-            'BENEFIT'               => $req->input('benefit'),
-            'KATEGORI'              => $req->input('category')
-        ];
-
-        if (!empty($req->input('kuota_peserta')) || $req->input('kuota_peserta') != 0) {
-            $course['KUOTA_PESERTA'] = $req->input('kuota_peserta');
-        }
-
-        if ($req->input('req')) {
-            $course['REQUIREMENT']  = $req->input('req');
-        }
-
-        DB::table('activity')->insert($activity);
-        DB::table('course')->insert($course);
-
-        $data['ID_COURSE'] = $course['ID_COURSE'];
-        $this->item_materi($data, $req);
-        return redirect('kursus-admin')->with(['succ_msg' => 'Berhasil Menambahkan Kursus', 'location' => 'courses']);
     }
 
     public function deskripsi_get($id)
@@ -235,6 +243,7 @@ class CourseController extends Controller
                 a.STATUS ,
                 a.IS_PUBLIC ,
                 a.SERTIF_IMAGE ,
+                a.NAMA_INSTRUKTUR ,
                 c.ID_COURSE ,
                 c.DESKRIPSI_COURSE ,
                 c.KUOTA_PESERTA ,
@@ -388,6 +397,7 @@ class CourseController extends Controller
                 'DATE_START'            => $req->input('date_start'),
                 'DATE_END'              => $req->input('date_end'),
                 'IS_PUBLIC'             => $req->input('is_public'),
+                'NAMA_INSTRUKTUR'       => $req->input('instruktur_name'),
                 'LOG_TIME'              => date('Y-m-d H:i:s')
             ];
 

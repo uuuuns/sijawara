@@ -169,7 +169,10 @@ class RankingController extends Controller
             
             return response()->json(['html' => $html, 'filterKategori' => $filterKategori]);
         } catch (\Throwable $e) {
-            dd($e);
+            return response()->json([
+                'status' => 'failure',
+                'errors' => $e
+            ], 422);
         }
     }
     public function filter_kategori(Request $request)
@@ -250,7 +253,10 @@ class RankingController extends Controller
 
             return response()->json(['html' => $html]);
         } catch (\Throwable $e) {
-            dd($e);
+            return response()->json([
+                'status' => 'failure',
+                'errors' => $e
+            ], 422);
         }
     }
 

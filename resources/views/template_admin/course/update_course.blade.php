@@ -128,6 +128,13 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label control-label">Nama Instruktur</label>
+                            <div class="col-md-10">
+                                <input type="text" placeholder="kosongi bila nama instruktur sama dengan nama akun" class="form-control" name="instruktur_name">
+                                <small class="text-danger">kosongi bila nama instruktur sama dengan nama akun yang membuat kursus</small>
+                            </div>
+                        </div>
                         <div class="accordion materi_form" id="accordion-default">
 
                         </div>
@@ -208,6 +215,7 @@
     $('input[name="ID_ACTIVITY"]').val(id_act);
     $('input[name="ID_COURSE"]').val(id_course);
     $('input[name="title_activity"]').val(data.TITLE_ACTIVITY);
+    $('input[name="instruktur_name"]').val(data.NAMA_INSTRUKTUR);
     $('input[name="date_start"]').val(data.DATE_START);
     $('input[name="date_end"]').val(data.DATE_END);
     $('input[name="certif_code"]').val(data.SERTIF_CODE);

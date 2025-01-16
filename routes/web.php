@@ -207,6 +207,9 @@ Route::middleware(['usersession:4,1'])->group(function () {
     Route::get('ranking', 'RankingController@index');
     Route::post('ranking/filter_jenis_instansi', 'RankingController@filter_jenis_instansi');
     Route::post('ranking/filter_kategori', 'RankingController@filter_kategori');
+
+    //Aspirasi
+    Route::get('aspirasi', 'AspirasiController@index');
 });
 
 //2 INSTRUKTUR
@@ -223,6 +226,9 @@ Route::middleware(['usersession:4,3,2,1'])->group(function () {
     Route::post('kursus/quiz/evaluation', 'guest_controller\CourseGuest@QuizEvaluation');
     Route::post('kursus/add', 'guest_controller\CourseGuest@add_event');
     Route::post('kursus/detail/addkomen', 'SocialController@addkomen');
+
+    Route::get('kursus/aspirasi-kursus', 'guest_controller\CourseGuest@AspirasiKursus');
+    Route::post('kursus/store_aspirasi', 'guest_controller\CourseGuest@storeAspirasi');
     //END COURSE
 
     Route::post('webinar/add', 'guest_controller\EventGuest@add_event');

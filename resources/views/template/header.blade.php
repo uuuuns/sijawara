@@ -679,4 +679,22 @@
                 </div>
             </div>
         </div>
+        
+        @if (!empty(session('user')[0]))
+        @if (session('user')[0]['IS_DATA_COMPLETE'] == false)
+        <div class="header-topbar topbar-style-1 bg-warning">
+            <div class="container">
+                <div class="row justify-content-between align-items-center">
+                    <div class="text-center" style="line-height: 1.5;">
+                        <small class="fw-bold text-black">
+                            Segera Lengkapi Data 
+                            <a href="profil" class="text-decoration-underline">Profil</a> 
+                            Serta Data UKM atau Koperasi anda, agar dapat mengunduh Sertifikat yang telah diperoleh.
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endif
+        @endif
     </header>

@@ -70,6 +70,11 @@
                 </div>
             </div>
         </div>
+        <div class="d-flex justify-content-end align-items-end px-6 mt-4">
+            <a href="kursus/aspirasi-kursus" class="btn btn-warning rounded">
+                Tidak menemukan <br> yang anda cari? <br> Klik disini
+            </a>
+        </div>
     </div>
     <!--course-->
 </section>
@@ -180,4 +185,11 @@
             console.error(xhr.responseText);
         });
     }
+
+    @if (session()->has('succ_msg'))
+    Swal.fire({
+        icon: 'success',
+        title: '{{ session('succ_msg') }}'
+    });
+    @endif
 </script>

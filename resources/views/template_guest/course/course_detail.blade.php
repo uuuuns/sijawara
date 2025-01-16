@@ -38,7 +38,7 @@
 
                                         <div class="col-lg-8 col-md-8">
                                             <div class="instructor-content">
-                                                <h4><?= $course->NAME ?></h4>
+                                                <h4><?= $course->NAMA_INSTRUKTUR ?? $course->NAME ?></h4>
                                             </div>
                                         </div>
                                     </div>

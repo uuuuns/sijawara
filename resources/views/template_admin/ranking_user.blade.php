@@ -150,7 +150,7 @@
 
     function filterJenisInstansi(jenis) {        
         $.ajax({
-            url: '<?= url('ranking/filter_jenis_instansi') ?>',
+            url: '<?= Request::segment(0) ?>ranking/filter_jenis_instansi',
             type: 'POST',
             data: {
                 _token: $('meta[name="csrf-token"]').attr('content'),
@@ -165,7 +165,7 @@
 
     function filterKategori(kategori) {
         $.ajax({
-            url: '<?= url('ranking/filter_kategori') ?>',
+            url: '<?= Request::segment(0) ?>ranking/filter_kategori',
             type: 'POST',
             data: {
                 _token: $('meta[name="csrf-token"]').attr('content'),
