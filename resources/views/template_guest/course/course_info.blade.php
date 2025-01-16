@@ -53,7 +53,7 @@
                                                 <div class="d-flex flex-column align-items-center">
                                                     <img src="{{ asset('assets_new') }}/images/empty.svg"
                                                         width="350">
-                                                    <h4 class="font-sm text-center">Tidak ada bab</h4>
+                                                    <h4 class="font-sm text-center">Tidak ada Materi</h4>
                                                 </div>
                                                 <?php } ?>
                                             </ul>

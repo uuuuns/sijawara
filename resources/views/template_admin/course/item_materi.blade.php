@@ -22,7 +22,7 @@
                 <label class="col-sm-2 col-form-label control-label">File Materi<span class="text-danger">*</span></label>
                 <div class="col-md-10">
                     <div class="custom-file">
-                        <input type="file" name="materi_file[]" accept=".pdf, .ppt, .pptx" class="custom-file-input file_materi" required>
+                        <input type="file" name="materi_file[]" accept=".pdf, .ppt, .pptx" class="custom-file-input file_materi" data-max-file-size="20M" required>
                     </div>
                 </div>
             </div>

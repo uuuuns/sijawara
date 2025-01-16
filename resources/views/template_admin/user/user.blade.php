@@ -65,7 +65,7 @@
                     <div class="form-group">
                         <label>Foto Profil <span class="text-danger">*</span></label>
                         <div class="custom-file">
-                            <input type="file" name="foto_profile" class="custom-file-input dropify" data-allowed-file-extensions="png jpg jpeg" data-max-file-size="1M" required>
+                            <input type="file" name="foto_profile" class="custom-file-input dropify" data-allowed-file-extensions="png jpg jpeg" data-max-file-size="5M" required>
                         </div>
                     </div>
                     <div class="form-group mb-3">

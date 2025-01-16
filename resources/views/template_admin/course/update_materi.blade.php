@@ -26,7 +26,7 @@
                 <div class="col-md-5">
                     <div class="custom-file">
                         <input type="file" name="materi_file[]" accept=".pdf, .ppt, .pptx" id="material_file<?=$no?>"
-                            class="custom-file-input file_materi">
+                            class="custom-file-input file_materi" data-max-file-size="20M">
                     </div>
                 </div>
             </div>

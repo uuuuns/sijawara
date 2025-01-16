@@ -90,7 +90,7 @@
                     <div class="form-group mb-3">
                         <label> Gambar Testimoni <span class="text-danger">*</span></label>
                         <input type="file" name="up_gambar_testimoni" class="custom-file-input dropify"
-                            accept=".jpg, .png, .jpeg" data-allowed-file-extensions="jpg png jpeg">
+                            accept=".jpg, .png, .jpeg" data-allowed-file-extensions="jpg png jpeg" data-max-file-size="5M">
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -127,7 +127,7 @@
                     <div class="form-group mb-3">
                         <label> Gambar Testimoni <span class="text-danger">*</span></label>
                         <input type="file" name="gambar_testimoni" class="custom-file-input dropify"
-                            accept=".jpg, .png, .jpeg" data-allowed-file-extensions="jpg png jpeg" required>
+                            accept=".jpg, .png, .jpeg" data-allowed-file-extensions="jpg png jpeg" data-max-file-size="5M" required>
                     </div>
                 </div>
                 <div class="modal-footer">
