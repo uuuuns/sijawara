@@ -119,7 +119,7 @@
                         <div class="form-group">
                             <label>Kover <span class="text-danger">*</span></label>
                             <div class="custom-file">
-                                <input type="file" name="image_activity" accept=".jpg, .png" data-max-file-size="1M"
+                                <input type="file" name="image_activity" accept=".jpg, .png" data-max-file-size="5M"
                                     data-allowed-file-extensions="jpg png" class="custom-file-input dropify" required>
                             </div>
                         </div>
@@ -142,7 +142,7 @@
                             <div class="custom-file">
                             <input type="file" name="sertif_image" class="custom-file-input dropify"
                                         accept=".jpg" data-allowed-file-extensions="jpg" required>
-                                <small class="text-danger">* Hanya Masukkan file JPG dan Ukuran Template adalah Horizontal A4</small>
+                                <small class="text-danger" data-max-file-size="5M">* Hanya Masukkan file JPG dan Ukuran Template adalah Horizontal A4</small>
                             </div>
                         </div>
                         <div class="form-group mb-3">
@@ -240,7 +240,7 @@
                             <label>Kover <span class="text-danger">*</span></label>
                             <div class="custom-file">
                                 <input type="file" name="up_image_activity" accept=".jpg, .png"
-                                    data-max-file-size="1M" data-allowed-file-extensions="jpg png"
+                                    data-max-file-size="5M" data-allowed-file-extensions="jpg png"
                                     class="custom-file-input dropify">
                             </div>
                         </div>
@@ -264,7 +264,7 @@
                             <div class="custom-file">
                             <input type="file" name="up_sertif_image" class="custom-file-input dropify"
                                         accept=".jpg" data-allowed-file-extensions="jpg">
-                            <small class="text-danger">* Hanya Masukkan file JPG dan Ukuran Template adalah Horizontal A4</small>
+                            <small class="text-danger" data-max-file-size="5M">* Hanya Masukkan file JPG dan Ukuran Template adalah Horizontal A4</small>
                             </div>
                         </div>
                         <div class="form-group mb-3">

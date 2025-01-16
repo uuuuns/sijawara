@@ -90,7 +90,7 @@
                         <div class="col-md-12">
                             <div class="custom-file">
                                 <input type="file" name="image_profile" class="custom-file-input dropify"
-                                    accept=".jpg, .png, .jpeg" data-allowed-file-extensions="jpg png jpeg" required>
+                                    accept=".jpg, .png, .jpeg" data-allowed-file-extensions="jpg png jpeg" data-max-file-size="5M" required>
                             </div>
                         </div>
                     </div>
@@ -127,7 +127,7 @@
                 <div class="modal-body">
                 <label>Foto Profil</label>
                     <div class="custom-file">
-                        <input type="file" name="up_image_profile" class="custom-file-input dropify" accept=".jpg, .png, .jpeg" data-allowed-file-extensions="jpg png jpeg">
+                        <input type="file" name="up_image_profile" class="custom-file-input dropify" accept=".jpg, .png, .jpeg" data-allowed-file-extensions="jpg png jpeg" data-max-file-size="5M">
                     </div>
                     <input type="hidden" name="up_id_widyaiswara" value="" readonly>
                     <label>Nama<span class="text-danger">*</span></label>

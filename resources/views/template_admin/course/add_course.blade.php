@@ -45,7 +45,7 @@
                             <div class="col-md-10">
                                 <div class="custom-file">
                                     <input type="file" name="image_activity" class="custom-file-input dropify"
-                                        accept=".jpg, .png, .jpeg" data-allowed-file-extensions="jpg png jpeg" required>
+                                        accept=".jpg, .png, .jpeg" data-allowed-file-extensions="jpg png jpeg" data-max-file-size="5M" required>
                                 </div>
                             </div>
                         </div>
@@ -103,7 +103,7 @@
                             <div class="col-md-10">
                                 <div class="custom-file">
                                     <input type="file" name="sertif_image" class="custom-file-input dropify"
-                                        accept=".jpg" data-allowed-file-extensions="jpg" required>
+                                        accept=".jpg" data-allowed-file-extensions="jpg" data-max-file-size="5M" required>
                                     <small class="text-danger">* Hanya Masukkan file JPG dan Ukuran Template adalah Horizontal A4</small>
                                 </div>
                             </div>
@@ -170,7 +170,7 @@
                             <div class="col-md-12">
                                 <div data-bs-toggle="modal" id="add_item" data-bs-target="#exampleModalCenter"
                                     class="btn btn-primary btn-sm rounded col-md-12" style="cursor: pointer;">
-                                    <span class="col-md-12">Tambahkan Bab atau Kuis</span>
+                                    <span class="col-md-12">Tambahkan Materi atau Kuis</span>
                                 </div>
                             </div>
                         </div>
@@ -189,7 +189,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="exampleModalCenterTitle">Tambahkan Bab atau Kuis?</h4>
+                    <h4 class="modal-title" id="exampleModalCenterTitle">Tambahkan Materi atau Kuis?</h4>
                     <button type="button" class="btn px-2 py-0" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true" class="fs-3">&times;</span>
                     </button>
@@ -198,7 +198,7 @@
                     <div class="col-md-12 text-center d-flex justify-content-around py-4">
                         <a href="javascript.void(0)" id="add_materi" data-bs-dismiss="modal"
                             class="rounded btn btn-success col-md-5 py-5 h-100 text-white">
-                            <h1><i class="far fa-book text-white"></i></h1> BAB
+                            <h1><i class="far fa-book text-white"></i></h1> MATERI
                         </a>
                         <a href="javascript.void(0)" id="add_quiz" data-bs-dismiss="modal"
                             class="rounded btn btn-danger col-md-5 py-5 h-100">
@@ -305,7 +305,7 @@
             success: function(html) {
                 $(".materi_form").append(html);
                 $("#add_item").removeClass("disabled");
-                $("#add_item").html("Tambahkan Bab atau Kuis");
+                $("#add_item").html("Tambahkan Materi atau Kuis");
                 i++;
                 limit++;
             }
@@ -321,7 +321,7 @@
             success: function(html) {
                 $(".materi_form").append(html);
                 $("#add_item").removeClass("disabled");
-                $("#add_item").html("Tambahkan Bab atau Kuis");
+                $("#add_item").html("Tambahkan Materi atau Kuis");
                 i++;
                 limit++;
                 id_quiz++;
