@@ -564,7 +564,6 @@
                     icon: 'error',
                     title: 'Gagal Menjadikan Admin'
                 });
-                console.log(data)
                 $('.loading').hide();
                 $('.btn').prop('disabled', false);
             }
@@ -577,7 +576,6 @@
         var csrfToken = $('meta[name="csrf-token"]').attr('content');
         $('.loading').show();
         $('.btn').prop('disabled', true);
-        console.log($('.btn-update').data('id_role'));
         
         if ($('.btn-update').data('id_role') == 2) {
             Toast.fire({
@@ -615,7 +613,6 @@
         //             icon: 'error',
         //             title: 'Gagal Menjadikan Instruktur'
         //         });
-        //         console.log(data)
         //         $('.loading').hide();
         //         $('.btn').prop('disabled', false);
         //     }

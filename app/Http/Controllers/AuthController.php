@@ -87,6 +87,45 @@ class AuthController extends Controller
             return redirect()->back()->with('error_msg', "Tidak bisa masuk, akun anda telah di ban. Hubungi admin untuk informasi lebih lanjut");
         }
 
+        $mappingInstansi = [
+            'KOPERASI' => 'koperasi',
+            'UKM' => 'ukm',
+            'INSTANSI' => 'instansi',
+            'INSTANSI; UKM' => 'instansi_ukm',
+            'UKM; INSTANSI' => 'instansi_ukm',
+            'UMUM' => 'umum'
+        ];
+
+        $joinCond = '';
+        if ($mappingInstansi[$auth->JENIS_INSTANSI] == 'ukm') {
+            $joinCond = 'LEFT JOIN tb_ukm tu ON tu.ID_USER = u.ID_USER';
+        } else if ($mappingInstansi[$auth->JENIS_INSTANSI] == 'koperasi') {
+            $joinCond = 'LEFT JOIN tb_koperasi tk ON tk.ID_USER = u.ID_USER';
+        } else if ($mappingInstansi[$auth->JENIS_INSTANSI] == 'instansi_ukm') {
+            $joinCond = 'LEFT JOIN tb_koperasi tk ON tk.ID_USER = u.ID_USER
+                        LEFT JOIN tb_ukm tk ON tu.ID_USER = u.ID_USER';
+        }
+    
+        // Query the database
+        $data = DB::selectOne('
+            SELECT 
+                *
+            FROM 
+                `user` u
+            ' . $joinCond . '
+            WHERE 
+                u.ID_USER = ?
+        ', [$auth->ID_USER]);
+        
+        $is_data_complete = true;
+        if ($data) {
+            foreach ($data as $key => $value) {
+                if (is_null($value) || $value === '') {
+                    $is_data_complete = false;
+                }
+            }
+        }
+
         if (!empty($auth)) {
             $data = [
                 'LOG_TIME' => date('Y-m-d H:i:s')
@@ -99,6 +138,7 @@ class AuthController extends Controller
                     'ID_ROLE' => $auth->ID_ROLE,
                     'FOTO_PROFILE' => $auth->FOTO_PROFILE,
                     'EMAIL' => $auth->EMAIL,
+                    'IS_DATA_COMPLETE' => true,
                     'LOGGED_IN' => TRUE
                 ]);
 
@@ -113,6 +153,7 @@ class AuthController extends Controller
                     'ID_ROLE' => $auth->ID_ROLE,
                     'FOTO_PROFILE' => $auth->FOTO_PROFILE,
                     'EMAIL' => $auth->EMAIL,
+                    'IS_DATA_COMPLETE' => $is_data_complete,
                     'LOGGED_IN' => TRUE
                 ]);
 
@@ -126,6 +167,7 @@ class AuthController extends Controller
                     'ID_ROLE' => $auth->ID_ROLE,
                     'FOTO_PROFILE' => $auth->FOTO_PROFILE,
                     'EMAIL' => $auth->EMAIL,
+                    'IS_DATA_COMPLETE' => $is_data_complete,
                     'LOGGED_IN' => TRUE
                 ]);
 
@@ -139,6 +181,7 @@ class AuthController extends Controller
                     'ID_ROLE' => $auth->ID_ROLE,
                     'FOTO_PROFILE' => $auth->FOTO_PROFILE,
                     'EMAIL' => $auth->EMAIL,
+                    'IS_DATA_COMPLETE' => true,
                     'LOGGED_IN' => TRUE
                 ]);
 
@@ -181,7 +224,10 @@ class AuthController extends Controller
     
                 $User->save();
             } catch (\Throwable $e) {
-                dd($e->getMessage());
+                return response()->json([
+                    'status' => 'failure',
+                    'errors' => $e
+                ], 422);
             }
 
             // SEND EMAIL VERIFICATION

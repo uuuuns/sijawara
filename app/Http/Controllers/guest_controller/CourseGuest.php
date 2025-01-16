@@ -724,4 +724,29 @@ class CourseGuest extends Controller
 		$uniqid = strtoupper($begin);
 		return "ORD_" . $uniqid . substr(md5(time()), 0, 6);
 	}
+
+	public function AspirasiKursus()
+	{
+		$data = [
+			'title' => 'Aspirasi',
+		];
+
+		return
+			view('template.header', $data) .
+			view('template_guest.course.aspirasi', $data) .
+			view('template.footer', $data);
+	}
+
+	public function storeAspirasi(Request $req)
+	{
+		$data = [
+			'ID_USER' => session('user')[0]->get('ID_USER'),
+			'KETERANGAN' => $req->input('keterangan'),
+			'TYPE_ACTIVITY' => $req->input('type_activity'),
+			'created_at' => date('Y-m-d H:i:s')
+		];
+
+		DB::table('tb_aspirasi')->insert($data);
+		return redirect('kursus')->with(['succ_msg' => 'Berhasil mengirimkan aspirasi']);
+	}
 }

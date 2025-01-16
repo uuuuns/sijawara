@@ -156,6 +156,13 @@
                                 Aktif
                             </div>
                         </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label control-label">Nama Instruktur</label>
+                            <div class="col-md-10">
+                                <input type="text" placeholder="kosongi bila nama instruktur sama dengan nama akun" class="form-control" name="instruktur_name">
+                                <small class="text-danger">kosongi bila nama instruktur sama dengan nama akun yang membuat kursus</small>
+                            </div>
+                        </div>
                         <div class="accordion d-flex flex-column gap-3 materi_form" id="accordion-default">
 
                         </div>
