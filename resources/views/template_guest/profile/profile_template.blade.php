@@ -93,11 +93,11 @@
                                         <hr class="my-0 border border-1 mx-3">
                                     </li>
                                     <li class="nav-item w-100">
-                                        <a target="_blank" href="https://perpustakaan.uptkukm.id/" class="nav-link  d-flex align-middle px-4 py-3 rounded-0">
+                                        <a target="_blank" href="https://kubuku.id/download/e-perpus-sijawara/" class="nav-link  d-flex align-middle px-4 py-3 rounded-0">
                                             <i class="fs-6 d-flex align-items-center far fa-book"></i> <span class="ms-1 ps-2 fs-6 align-self-center ">Perpustakaan</span>
                                         </a>
                                     </li>
-                                    @if ($data_personal->JENIS_INSTANSI == 'UKM')
+                                    @if ($data_personal->JENIS_INSTANSI == 'UKM' || $data_personal->JENIS_INSTANSI == 'KOPERASI;UKM' || $data_personal->JENIS_INSTANSI == 'UKM;KOPERASI')
                                     <li class="w-100">
                                         <hr class="my-0 border border-1 mx-3">
                                     </li>
@@ -107,7 +107,7 @@
                                         </a>
                                     </li>
                                     @endif
-                                    @if ($data_personal->JENIS_INSTANSI == 'KOPERASI')
+                                    @if ($data_personal->JENIS_INSTANSI == 'KOPERASI' || $data_personal->JENIS_INSTANSI == 'KOPERASI;UKM' || $data_personal->JENIS_INSTANSI == 'UKM;KOPERASI')
                                     <li class="w-100">
                                         <hr class="my-0 border border-1 mx-3">
                                     </li>

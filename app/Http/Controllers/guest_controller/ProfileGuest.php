@@ -288,17 +288,58 @@ class ProfileGuest extends Controller
         }
         $updateStatus = User::update_profile($data);
         if ($updateStatus) {
+            $mappingInstansi = [
+                'KOPERASI' => 'koperasi',
+                'UKM' => 'ukm',
+                'INSTANSI' => 'instansi',
+                'KOPERASI;UKM' => 'koperasi_ukm',
+                'UKM;KOPERASI' => 'koperasi_ukm',
+                'UMUM' => 'umum'
+            ];
+    
+            $joinCond = '';
+            if ($mappingInstansi[$request->input('jenis_instansi')] == 'ukm') {
+                $joinCond = 'LEFT JOIN tb_ukm tu ON tu.ID_USER = u.ID_USER';
+            } else if ($mappingInstansi[$request->input('jenis_instansi')] == 'koperasi') {
+                $joinCond = 'LEFT JOIN tb_koperasi tk ON tk.ID_USER = u.ID_USER';
+            } else if ($mappingInstansi[$request->input('jenis_instansi')] == 'instansi_ukm') {
+                $joinCond = 'LEFT JOIN tb_koperasi tk ON tk.ID_USER = u.ID_USER
+                            LEFT JOIN tb_ukm tk ON tu.ID_USER = u.ID_USER';
+            }
+        
+            // Query the database
+            $data2 = DB::selectOne('
+                SELECT 
+                    *
+                FROM 
+                    `user` u
+                ' . $joinCond . '
+                WHERE 
+                    u.ID_USER = ?
+            ', [session('user')[0]['ID_USER']]);
+            
+            $is_data_complete = true;
+            if ($data2) {
+                foreach ($data2 as $key => $value) {
+                    if (is_null($value) || $value === '') {
+                        $is_data_complete = false;
+                    }
+                }
+            }
+
             $user_data = collect([
                 'EMAIL' => $request->input('email'),
                 'NAME' => $request->input('name_user'),
                 'ID_USER' => session('user')[0]['ID_USER'],
+                'FOTO_PROFILE' => $data[0]['FOTO_PROFILE'],
                 'ID_ROLE' => session('user')[0]['ID_ROLE'],
+                'IS_DATA_COMPLETE' => $is_data_complete,
                 'LOGGED_IN' => TRUE
             ]);
             Session::flush();
             Session::push('user', $user_data);
         }
-        return redirect('/profile');
+        return redirect('/profil');
     }
     public function academic_change(request $request)
     {
