@@ -57,10 +57,10 @@
                                 <td><?= ($key + 1) ?></td>
                                 <td><?= $item->NAME ?></td>
                                 <td><?= $item->EMAIL ?></td>
-                                <td><?= $item->JENIS_INSTANSI ?></td>
+                                <td><?= implode(' & ', explode(';', $item->JENIS_INSTANSI)); ?></td>
                                 <td><?= $item->NAMA_INSTANSI ?? '<span class="badge bg-warning">Belum Mengisi</span>'?></td>
                                 <td>
-                                    <?= ($item->JENIS_INSTANSI != 'KOPERASI' && $item->JENIS_INSTANSI != 'UKM') 
+                                    <?= ($item->JENIS_INSTANSI != 'KOPERASI' && $item->JENIS_INSTANSI != 'UKM' && $item->JENIS_INSTANSI != 'KOPERASI;UKM' & $item->JENIS_INSTANSI != 'UKM;KOPERASI')
                                         ? $item->JENIS_INSTANSI 
                                         : (empty($item->KATEGORI) 
                                             ? '<span class="badge bg-warning">Belum Mengisi</span>' 
@@ -85,51 +85,6 @@
     </div>
 </div>
 <!-- Content Wrapper END -->
-
-{{-- Start Modal Detail --}}
-<div class="modal fade" id="userDetailModal" tabindex="-1" role="dialog" aria-labelledby="userDetailModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="userDetailModalLabel">Detail User</h5>
-                <button type="button" class="btn px-2 py-0" data-bs-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true" class="fs-3">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-4 d-flex justify-content-center">
-                        <div class="nav-link rounded-circle">
-                            <img class="nav-link rounded-circle mb-2" src='assets/images/person-circle.svg' id="preview" style="height:150px; width:150px; object-fit: cover;" />
-                        </div>
-                    </div>
-                    <div class="col-md-8">
-                        <h5 id="userName" class="mb-3"></h5>
-                        <p class="mb-0">Email: <span id="userEmail"></span></p>
-                        <p class="mb-0">Telepon: <span id="userTelp"></span></p>
-                        <p class="mb-0">Jenis Kelamin: <span id="userJK"></span></p>
-                        <p class="mb-0">NIK: <span id="userNIK"></span></p>
-                        <p class="mb-0">Tanggal Lahir: <span id="userTglLahir"></span></p>
-                        <p class="mb-0">Tempat Lahir: <span id="userTempatLahir"></span></p>
-                        <p class="mb-0">ID Kota: <span id="userIdKota"></span></p>
-                        <p class="mb-0">ID Provinsi: <span id="userIdProvinsi"></span></p>
-                        <p class="mb-0">Alamat: <span id="userAlamat"></span></p>
-                        <p class="mb-0">Jenis Instansi: <span id="userJenisInstansi"></span></p>
-                        <p class="mb-0">Nama Instansi: <span id="userInstansi"></span></p>
-                        <p class="mb-0">Jabatan: <span id="userJabatan"></span></p>
-                        <p class="mb-0">Status Aktif: <span id="userStatus"></span></p>
-                        <p class="mb-0">Status Ban: <span id="userIsDelete"></span></p>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" onclick="jadikanInstruktur()" class="btn btn-primary rounded">Jadikan Instruktur</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-            </div>
-        </div>
-    </div>
-</div>
-{{-- End Modal Detal --}}
 
 <meta name="csrf-token" content="{{ csrf_token() }}">
 

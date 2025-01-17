@@ -662,7 +662,7 @@
                                     <li><a class="" href="<?= url('profil/sertifikatku') ?>">Sertifikat Ku</a>
                                     </li>
                                     <li><a class="" target="_blank"
-                                            href="https://perpustakaan.uptkukm.id/">Perpustakaan</a></li>
+                                            href="https://kubuku.id/download/e-perpus-sijawara/">Perpustakaan</a></li>
                                     <?php } ?>
                                     <hr>
                                     <li><a class="text-danger" href="<?= url('keluar') ?>">Keluar</a></li>

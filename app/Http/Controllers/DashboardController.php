@@ -208,13 +208,15 @@ class DashboardController extends Controller
     }
     public function statistik_per_kota(Request $req) {
         $kota = $req->id_kota;
-        
+    
+        // Disable ONLY_FULL_GROUP_BY for the session
         DB::statement("SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));");
+    
+        // Fetch raw data from the database
         $data['kota'] = DB::select("
             SELECT
                 k.nama_kota AS KOTA,
-                u.JENIS_INSTANSI ,
-                COUNT(u.JENIS_INSTANSI) AS TOTAL
+                u.JENIS_INSTANSI
             FROM
                 user u
             JOIN md_provinsi p ON
@@ -226,24 +228,38 @@ class DashboardController extends Controller
                 AND u.JENIS_INSTANSI IS NOT NULL
                 AND u.STATUS = 1
                 AND u.ID_KOTA = $kota
-            GROUP BY 
-                u.JENIS_INSTANSI 
-            ORDER by
-                TOTAL DESC
         ");
-        
-        $chartData = [
-            'labels' => [],
-            'data' => [],
-            'kota' => $data['kota'][0]->KOTA,
-        ];
-        
+    
+        // Initialize arrays to process data
+        $jenisInstansiTotals = [];
+        $kotaName = isset($data['kota'][0]) ? $data['kota'][0]->KOTA : '';
+    
         foreach ($data['kota'] as $kota) {
-            $chartData['labels'][] = $kota->JENIS_INSTANSI;   // Adding city names to labels
-            $chartData['data'][] = $kota->TOTAL;    // Adding user totals to data array
+            // Split JENIS_INSTANSI by ";" and process each value
+            $jenisInstansiList = explode(';', $kota->JENIS_INSTANSI);
+    
+            foreach ($jenisInstansiList as $jenisInstansi) {
+                $jenisInstansi = trim($jenisInstansi); // Remove extra spaces
+                if (!empty($jenisInstansi)) {
+                    // Aggregate the total count for each JENIS_INSTANSI
+                    if (!isset($jenisInstansiTotals[$jenisInstansi])) {
+                        $jenisInstansiTotals[$jenisInstansi] = 0;
+                    }
+                    $jenisInstansiTotals[$jenisInstansi]++;
+                }
+            }
         }
+    
+        // Prepare chart data
+        $chartData = [
+            'labels' => array_keys($jenisInstansiTotals),
+            'data' => array_values($jenisInstansiTotals),
+            'kota' => $kotaName,
+        ];
+    
         return response()->json($chartData);
     }
+    
     public function statistik_kategori_index() {
         $data['title'] = 'Statistik Per Kategori';
     

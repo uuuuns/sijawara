@@ -91,8 +91,8 @@ class AuthController extends Controller
             'KOPERASI' => 'koperasi',
             'UKM' => 'ukm',
             'INSTANSI' => 'instansi',
-            'INSTANSI; UKM' => 'instansi_ukm',
-            'UKM; INSTANSI' => 'instansi_ukm',
+            'KOPERASI;UKM' => 'koperasi_ukm',
+            'UKM;KOPERASI' => 'koperasi_ukm',
             'UMUM' => 'umum'
         ];
 
@@ -101,11 +101,11 @@ class AuthController extends Controller
             $joinCond = 'LEFT JOIN tb_ukm tu ON tu.ID_USER = u.ID_USER';
         } else if ($mappingInstansi[$auth->JENIS_INSTANSI] == 'koperasi') {
             $joinCond = 'LEFT JOIN tb_koperasi tk ON tk.ID_USER = u.ID_USER';
-        } else if ($mappingInstansi[$auth->JENIS_INSTANSI] == 'instansi_ukm') {
+        } else if ($mappingInstansi[$auth->JENIS_INSTANSI] == 'koperasi_ukm') {
             $joinCond = 'LEFT JOIN tb_koperasi tk ON tk.ID_USER = u.ID_USER
-                        LEFT JOIN tb_ukm tk ON tu.ID_USER = u.ID_USER';
+                        LEFT JOIN tb_ukm tu ON tu.ID_USER = u.ID_USER';
         }
-    
+        
         // Query the database
         $data = DB::selectOne('
             SELECT 
@@ -116,7 +116,7 @@ class AuthController extends Controller
             WHERE 
                 u.ID_USER = ?
         ', [$auth->ID_USER]);
-        
+
         $is_data_complete = true;
         if ($data) {
             foreach ($data as $key => $value) {
@@ -220,7 +220,7 @@ class AuthController extends Controller
                 $User->STATUS                = 0;
                 $User->IS_DELETE             = 0;
                 $User->REG_TIME              = date('Y-m-d H:i:s');
-                $User->JENIS_INSTANSI        = $req->input('jenis_instansi');
+                $User->JENIS_INSTANSI        = implode(';', $req->input('jenis_instansi'));
     
                 $User->save();
             } catch (\Throwable $e) {
@@ -260,7 +260,7 @@ class AuthController extends Controller
                 'NAME' => $req->input('name'),
                 'PASS' => hash('sha256', md5($req->input('password'))),
                 'REG_TIME' => date('Y-m-d H:i:s'),
-                'JENIS_INSTANSI' => $req->input('jenis_instansi'),
+                'JENIS_INSTANSI' => implode(';', $req->input('jenis_instansi')),
             ];
 
             DB::table('user')->where('ID_USER', $check_user->ID_USER)->update($data_user);

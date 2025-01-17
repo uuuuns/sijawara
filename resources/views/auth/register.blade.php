@@ -9,7 +9,7 @@
             <div class="col-12 col-lg-6 h-100 p-4 bg-white rounded-5 position-absolute" id="formLogin">
                 <div class="d-flex ps-md-4 flex-column justify-content-center h-100">
                     <h4 class="ps-1 fw-semibold">Daftar Sebagai Peserta</h4>
-                    <form class="fw-normal" id="form_regist" action="<{{ url('register/store') }}" method="POST">
+                    <form class="fw-normal" id="form_regist" action="{{ url('register/store') }}" enctype="multipart/form-data" method="POST">
                         @csrf
                         <div id="form-1">
                             <div class="my-4 float-label-control">
@@ -25,7 +25,7 @@
                                     aria-describedby="emailHelp" required>
                             </div>
                             <div class="my-4 float-label-control">
-                                <select id="jenis_instansi" name="jenis_instansi" placeholder="Pilih Jenis Instansi">
+                                <select id="jenis_instansi" name="jenis_instansi[]" multiple="multiple" placeholder="Pilih Jenis Instansi">
                                     <option></option>
                                     <option value="UKM">UKM</option>
                                     <option value="KOPERASI">KOPERASI</option>
@@ -84,6 +84,22 @@
                 });
             }
         });
+    });
+
+    $("#jenis_instansi").on("change", function () {
+        let selectedValues = $(this).val();
+
+        if (selectedValues.length > 1) {
+            // Filter out invalid values
+            const validValues = selectedValues.filter(value => value === "UKM" || value === "KOPERASI");
+
+            if (selectedValues.length !== validValues.length) {
+                alert("Only UKM and KOPERASI are allowed for multiple selections.");
+                // Update the selection and refresh the UI
+                $(this).val(validValues);
+                $(this).select2().trigger("change");
+            }
+        }
     });
 
     var x = document.getElementById("form-1");

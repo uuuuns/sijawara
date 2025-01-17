@@ -35,7 +35,7 @@ class UserController extends Controller
         $condition = '';
 
         if ($req->input('JENIS_INSTANSI') != 'ALL') {
-            $condition = " AND u.JENIS_INSTANSI = '" . $req->input('JENIS_INSTANSI') . "'";
+            $condition = " AND u.JENIS_INSTANSI = '%" . $req->input('JENIS_INSTANSI') . "%'";
         }
 
         $data["user"] = DB::select("

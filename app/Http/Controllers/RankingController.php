@@ -22,6 +22,8 @@ class RankingController extends Controller
                 CASE 
                     WHEN u.JENIS_INSTANSI = 'UKM' THEN mku.NAMA_KATEGORI_UKM
                     WHEN u.JENIS_INSTANSI = 'KOPERASI' THEN mjk.NAMA
+                    WHEN u.JENIS_INSTANSI = 'KOPERASI;UKM' THEN CONCAT(mjk.NAMA, ' & ', mku.NAMA_KATEGORI_UKM)
+                    WHEN u.JENIS_INSTANSI = 'UKM;KOPERASI' THEN CONCAT(mku.NAMA_KATEGORI_UKM, ' & ', mjk.NAMA)
                     ELSE u.JENIS_INSTANSI
                 END AS KATEGORI,
                 COUNT(o.ID_ORDER) AS TOTAL_AKTIVITAS
@@ -46,7 +48,7 @@ class RankingController extends Controller
                 u.ID_USER
             ORDER BY
                 TOTAL_AKTIVITAS DESC
-            LIMIT 10
+            LIMIT 10;
         ");
 
         return
@@ -58,12 +60,14 @@ class RankingController extends Controller
     {
         try {
             if (!empty($request->jenis)) {
-                $jenisInstansi = "AND u.JENIS_INSTANSI = '" . $request->jenis . "'";
+                $jenisInstansi = "AND u.JENIS_INSTANSI LIKE :jenisInstansi";
             } else {
                 $jenisInstansi = "";
             }
+            
             DB::statement("SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));");
-            $data['ranking'] = DB::select("
+            
+            $query = "
                 SELECT
                     u.ID_USER,
                     u.NAME,
@@ -73,6 +77,8 @@ class RankingController extends Controller
                     CASE 
                         WHEN u.JENIS_INSTANSI = 'UKM' THEN mku.NAMA_KATEGORI_UKM
                         WHEN u.JENIS_INSTANSI = 'KOPERASI' THEN mjk.NAMA
+                        WHEN u.JENIS_INSTANSI = 'KOPERASI;UKM' THEN CONCAT(mjk.NAMA, ' & ', mku.NAMA_KATEGORI_UKM)
+                        WHEN u.JENIS_INSTANSI = 'UKM;KOPERASI' THEN CONCAT(mku.NAMA_KATEGORI_UKM, ' & ', mjk.NAMA)
                         ELSE u.JENIS_INSTANSI
                     END AS KATEGORI,
                     COUNT(o.ID_ORDER) AS TOTAL_AKTIVITAS
@@ -93,13 +99,22 @@ class RankingController extends Controller
                 WHERE
                     u.ID_USER != 'USR_DMNb4b'
                     AND a.ID_ACTIVITY IS NOT NULL
-                    ".$jenisInstansi."
+                    $jenisInstansi
                 GROUP BY
                     u.ID_USER
                 ORDER BY
                     TOTAL_AKTIVITAS DESC
                 LIMIT 10
-            ");
+            ";
+            
+            // Use bindings to prevent SQL injection
+            $bindings = [];
+            if (!empty($request->jenis)) {
+                $bindings['jenisInstansi'] = '%' . $request->jenis . '%';
+            }
+            
+            $data['ranking'] = DB::select($query, $bindings);
+            
 
             // Build HTML
             $html = "";
@@ -109,12 +124,12 @@ class RankingController extends Controller
                     <td>" . ($key + 1) . "</td>
                     <td>" . htmlspecialchars($item->NAME) . "</td>
                     <td>" . htmlspecialchars($item->EMAIL) . "</td>
-                    <td>" . htmlspecialchars($item->JENIS_INSTANSI) . "</td>
+                    <td>" . htmlspecialchars(implode(' & ', explode(';', $item->JENIS_INSTANSI))) . "</td>
                     <td>" . ($item->NAMA_INSTANSI 
                                 ? htmlspecialchars($item->NAMA_INSTANSI) 
                                 : '<span class="badge bg-warning">Belum Mengisi</span>') . "</td>
                     <td>" . 
-                        (($item->JENIS_INSTANSI != 'KOPERASI' && $item->JENIS_INSTANSI != 'UKM') 
+                        (($item->JENIS_INSTANSI != 'KOPERASI' && $item->JENIS_INSTANSI != 'UKM' && $item->JENIS_INSTANSI != 'KOPERASI;UKM' & $item->JENIS_INSTANSI != 'UKM;KOPERASI') 
                             ? htmlspecialchars($item->JENIS_INSTANSI) 
                             : (empty($item->KATEGORI) 
                                 ? '<span class="badge bg-warning">Belum Mengisi</span>' 
@@ -179,9 +194,14 @@ class RankingController extends Controller
     {
         try {
             if (!empty($request->jenis)) {
-                $jenisInstansi = "AND u.JENIS_INSTANSI = '" . $request->jenis . "' AND " . ($request->jenis == 'UKM' ? 'mku.ID' : 'mjk.ID') . " = '" . $request->kategori . "'";
+                if ($request->jenis == 'UKM' || $request->jenis == 'KOPERASI') {
+                    $jenisInstansi = "AND (u.JENIS_INSTANSI LIKE '%" . $request->jenis . "%' AND " . 
+                                     ($request->jenis == 'UKM' ? 'mku.ID' : 'mjk.ID') . " = '" . $request->kategori . "')";
+                } else {
+                    $jenisInstansi = "AND u.JENIS_INSTANSI LIKE '%" . $request->jenis . "%'";
+                }
             } else {
-                $jenisInstansi = "AND u.JENIS_INSTANSI = '" . $request->jenis . "'";
+                $jenisInstansi = ""; // No filter if $request->jenis is empty
             }
             DB::statement("SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));");
             $data['ranking'] = DB::select("
@@ -194,6 +214,8 @@ class RankingController extends Controller
                     CASE 
                         WHEN u.JENIS_INSTANSI = 'UKM' THEN mku.NAMA_KATEGORI_UKM
                         WHEN u.JENIS_INSTANSI = 'KOPERASI' THEN mjk.NAMA
+                        WHEN u.JENIS_INSTANSI = 'KOPERASI;UKM' THEN CONCAT(mjk.NAMA, ' & ', mku.NAMA_KATEGORI_UKM)
+                        WHEN u.JENIS_INSTANSI = 'UKM;KOPERASI' THEN CONCAT(mku.NAMA_KATEGORI_UKM, ' & ', mjk.NAMA)
                         ELSE u.JENIS_INSTANSI
                     END AS KATEGORI,
                     COUNT(o.ID_ORDER) AS TOTAL_AKTIVITAS
@@ -229,12 +251,12 @@ class RankingController extends Controller
                     <td>" . ($key + 1) . "</td>
                     <td>" . htmlspecialchars($item->NAME) . "</td>
                     <td>" . htmlspecialchars($item->EMAIL) . "</td>
-                    <td>" . htmlspecialchars($item->JENIS_INSTANSI) . "</td>
+                    <td>" . htmlspecialchars(implode(' & ', explode(';', $item->JENIS_INSTANSI))) . "</td>
                     <td>" . ($item->NAMA_INSTANSI 
                                 ? htmlspecialchars($item->NAMA_INSTANSI) 
                                 : '<span class="badge bg-warning">Belum Mengisi</span>') . "</td>
                     <td>" . 
-                        (($item->JENIS_INSTANSI != 'KOPERASI' && $item->JENIS_INSTANSI != 'UKM') 
+                        (($item->JENIS_INSTANSI != 'KOPERASI' && $item->JENIS_INSTANSI != 'UKM' && $item->JENIS_INSTANSI != 'KOPERASI;UKM' & $item->JENIS_INSTANSI != 'UKM;KOPERASI') 
                             ? htmlspecialchars($item->JENIS_INSTANSI) 
                             : (empty($item->KATEGORI) 
                                 ? '<span class="badge bg-warning">Belum Mengisi</span>' 
