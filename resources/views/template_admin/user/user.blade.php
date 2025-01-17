@@ -13,7 +13,7 @@
     </div>
     <?php } ?>
     <div class="">
-        <div class="card-body">
+        <div class="card-body" style="min-height: 600px;    ">
             <div class="row">
                 <div class="col-md-6 align-self-center">
                     <h3 class="fw-bold" style="color:#45b104">Users</h3>
@@ -22,7 +22,11 @@
             </div>
 
             <div class="row">
-                <div class="mt-4 col-5">
+                <div class="mt-4 col-2 d-flex align-items-center justify-content-center">
+                    <h5>Filter Instansi :</h5>
+                </div>
+
+                <div class="mt-4 col-4">
                     <select class="form-control instansi" name="filter-instansi" id="filter-instansi">
                         <option value="ALL">Tampilkan Semua</option>
                         <option value="UKM">UKM</option>
@@ -31,19 +35,33 @@
                         <option value="UMUM">UMUM</option>
                     </select>
                 </div>
-                <div class="mt-4 col-3"></div>
-                <div class="mt-4 col-2">
+                <div class="mt-4 col-2"></div>
+                <div class="mt-4 col-4 text-end">
                     <button onclick="location.href='/pengguna/reporting/ukm'" class="btn btn-sm btn-success text-white"><i class="fas fa-file-excel text-white"></i> LAPORAN UKM</button>
-                </div>
-                {{-- <div class="mt-4 col-2">
                     <button onclick="location.href='/pengguna/reporting/koperasi'" class="btn btn-sm btn-success text-white"><i class="fas fa-file-excel text-white"></i> LAPORAN KOPERASI</button>
-                </div> --}}
+                </div>
+            </div>
+
+            <div class="hidden-select" style="display: none;">
+                <div class="row">
+                    <div class="mt-4 col-2 d-flex align-items-center justify-content-center">
+                        Jenis Usaha :
+                    </div>
+                    <div class="mt-4 col-4">
+                        <select class="form-control instansi" name="" id="">
+                            <option value="ALL">Tampilkan Semua</option>
+                            <option value="UKM">Jamu</option>
+                            <option value="KOPERASI">Meh</option>
+                            <option value="INSTANSI">weh</option>
+                            <option value="UMUM">heh</option>
+                        </select>
+                    </div>
+                </div>
             </div>
 
             <div class="row">
                 <div class="col-md-12" id="user-paper"></div>
             </div>
-
         </div>
     </div>
 </div>
@@ -392,7 +410,7 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-center">
                         <div class="column text-center">
-                            <i class="anticon anticon-loading"></i> Sedang Memuat ...
+                            <i class="fa-spinner"></i> Sedang Memuat ...
                         </div>
                     </div>
                 </div>
