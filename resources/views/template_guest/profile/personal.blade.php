@@ -56,7 +56,14 @@
         </div>
         <h5 class="text-black ps-1 mt-4">Jenis Instansi</h5>
         <div class="my-3 float-label-control">
-            <input type="text" name="jenis_instansi" class="form-control input-text woocommerce-Input woocommerce-Input--text" placeholder="Nama Instansi Anda" value="<?= $data_personal->JENIS_INSTANSI ?>" required disabled>
+            <select id="jenis_instansi" name="display_jenis_instansi[]" multiple="multiple" disabled placeholder="Pilih Jenis Instansi">
+                <option></option>
+                <option value="UKM">UKM</option>
+                <option value="KOPERASI">KOPERASI</option>
+                <option value="INSTANSI">INSTANSI</option>
+                <option value="UMUM">UMUM</option>
+            </select>
+            <input type="hidden" name="jenis_instansi" multiple="multiple" class="form-control input-text woocommerce-Input woocommerce-Input--text" placeholder="Nama Instansi Anda" value="<?= $data_personal->JENIS_INSTANSI ?>" required disabled>
         </div>
         <h5 class="text-black ps-1 mt-4">Nama Instansi</h5>
         <div class="my-3 float-label-control">
@@ -185,6 +192,11 @@
     });
 
     $(document).ready(function() {
+        $("#jenis_instansi").select2()
+        @php
+            $value = explode(';', $data_personal->JENIS_INSTANSI);
+        @endphp
+        $('#jenis_instansi').val({!!json_encode($value)!!}).trigger('change');
         var selectedProvince = {{$data_personal->ID_PROVINSI ?? 0}};
         $('#setProvinsi').val(selectedProvince);
         
