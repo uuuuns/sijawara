@@ -33,12 +33,14 @@ class UserController extends Controller
     public function filter_user(Request $req)
     {
         $condition = '';
+        $params = []; // Array untuk menyimpan nilai parameter binding
 
         if ($req->input('JENIS_INSTANSI') != 'ALL') {
-            $condition = " AND u.JENIS_INSTANSI = '%" . $req->input('JENIS_INSTANSI') . "%'";
+            $condition = " AND u.JENIS_INSTANSI = ?";
+            $params[] = $req->input('JENIS_INSTANSI');
         }
 
-        $data["user"] = DB::select("
+        $query = "
             SELECT
                 u.*,
                 p.nama_province,
@@ -52,7 +54,9 @@ class UserController extends Controller
             WHERE
                 u.IS_DELETE = 0
             $condition
-        ");
+        ";
+
+        $data["user"] = DB::select($query, $params);
 
         return
             view('template_admin.user.paper_ajax', $data);
@@ -289,7 +293,7 @@ class UserController extends Controller
 
     public function laporan_koperasi()
     {
-        set_time_limit(3600);
+        set_time_limit(300);
 
         $koperasi = DB::select("
             SELECT
@@ -329,7 +333,7 @@ class UserController extends Controller
             FROM
                 user u
             LEFT JOIN tb_koperasi ko ON
-                u.ID_USER = u.ID_USER
+                ko.ID_USER = u.ID_USER
             LEFT JOIN md_bentuk_koperasi bk ON
                 ko.id_bentuk_koperasi = bk.ID
             LEFT JOIN md_jenis_koperasi jk ON
