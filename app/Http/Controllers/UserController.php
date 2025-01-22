@@ -251,26 +251,10 @@ class UserController extends Controller
                 u.JK,
                 u.ALAMAT,
                 u.JABATAN,
-                (
-                    SELECT nama_province
-                    FROM md_provinsi mp
-                    WHERE mp.ID_PROVINSI = u.ID_PROVINSI
-                ) AS nama_provinsi_peserta,
-                (
-                    SELECT nama_kota
-                    FROM md_kota mk
-                    WHERE mk.ID_KOTA = u.ID_KOTA
-                ) AS nama_kota_peserta,
-                (
-                    SELECT nama_province
-                    FROM md_provinsi mp
-                    WHERE mp.ID_PROVINSI = tu.ID_PROVINSI
-                ) AS nama_provinsi_pemilik,
-                (
-                    SELECT nama_kota
-                    FROM md_kota mk
-                    WHERE mk.ID_KOTA = tu.ID_KOTA
-                ) AS nama_kota_pemilik,
+                mp_peserta.nama_province AS nama_provinsi_peserta,
+                mk_peserta.nama_kota AS nama_kota_peserta,
+                mp_pemilik.nama_province AS nama_provinsi_pemilik,
+                mk_pemilik.nama_kota AS nama_kota_pemilik,
                 k.NAMA_KATEGORI_UKM,
                 b.NAMA_BADAN_USAHA,
                 tu.*
@@ -282,13 +266,27 @@ class UserController extends Controller
                 tu.id_kategori_ukm = k.ID
             LEFT JOIN md_badan_usaha b ON
                 tu.id_badan_usaha = b.ID
+            LEFT JOIN md_provinsi mp_peserta ON
+                mp_peserta.ID_PROVINSI = u.ID_PROVINSI
+            LEFT JOIN md_kota mk_peserta ON
+                mk_peserta.ID_KOTA = u.ID_KOTA
+            LEFT JOIN md_provinsi mp_pemilik ON
+                mp_pemilik.ID_PROVINSI = tu.ID_PROVINSI
+            LEFT JOIN md_kota mk_pemilik ON
+                mk_pemilik.ID_KOTA = tu.ID_KOTA
             WHERE
                 u.IS_DELETE = 0
             AND
-                u.JENIS_iNSTANSI like '%UKM%'
+                u.JENIS_iNSTANSI LIKE '%UKM%';
         ");
 
-        app(Laporan::class)->laporan_ukm($ukm);
+        $laporanService = app(Laporan::class);
+        $filePath = $laporanService->laporan_ukm($ukm);
+
+        return response()->json([
+            'success' => true,
+            'file_url' => asset('reporting/' . $filePath),
+        ]);
     }
 
     public function laporan_koperasi()
@@ -304,26 +302,10 @@ class UserController extends Controller
                 u.JK,
                 u.ALAMAT,
                 u.JABATAN,
-                (
-                    SELECT nama_province
-                    FROM md_provinsi mp
-                    WHERE mp.ID_PROVINSI = u.ID_PROVINSI
-                ) AS nama_provinsi_peserta,
-                (
-                    SELECT nama_kota
-                    FROM md_kota mk
-                    WHERE mk.ID_KOTA = u.ID_KOTA
-                ) AS nama_kota_peserta,
-                (
-                    SELECT nama_province
-                    FROM md_provinsi mp
-                    WHERE mp.ID_PROVINSI = ko.id_provinsi
-                ) AS nama_provinsi_koperasi,
-                (
-                    SELECT nama_kota
-                    FROM md_kota mk
-                    WHERE mk.ID_KOTA = ko.id_kota
-                ) AS nama_kota_koperasi,
+                mp_peserta.nama_province AS nama_provinsi_peserta,
+                mk_peserta.nama_kota AS nama_kota_peserta,
+                mp_pemilik.nama_province AS nama_provinsi_pemilik,
+                mk_pemilik.nama_kota AS nama_kota_pemilik,
                 bk.NAMA AS NAMA_BENTUK_KOPERASI,
                 jk.NAMA AS NAMA_JENIS_KOPERASI,
                 kk.NAMA AS NAMA_KELOMPOK_KOPERASI,
@@ -344,12 +326,26 @@ class UserController extends Controller
                 ko.id_sektor_usaha = su.ID
             LEFT JOIN md_unit_usaha uu ON
                 ko.id_unit_usaha = uu.ID
+            LEFT JOIN md_provinsi mp_peserta ON
+                mp_peserta.ID_PROVINSI = u.ID_PROVINSI
+            LEFT JOIN md_kota mk_peserta ON
+                mk_peserta.ID_KOTA = u.ID_KOTA
+            LEFT JOIN md_provinsi mp_pemilik ON
+                mp_pemilik.ID_PROVINSI = ko.ID_PROVINSI
+            LEFT JOIN md_kota mk_pemilik ON
+                mk_pemilik.ID_KOTA = ko.ID_KOTA
             WHERE
                 u.IS_DELETE = 0
             AND
                 u.JENIS_iNSTANSI like '%KOPERASI%'
         ");
 
-        app(Laporan::class)->laporan_koperasi($koperasi);
+        $laporanService = app(Laporan::class);
+        $filePath = $laporanService->laporan_koperasi($koperasi);
+
+        return response()->json([
+            'success' => true,
+            'file_url' => asset('reporting/' . $filePath),
+        ]);
     }
 }

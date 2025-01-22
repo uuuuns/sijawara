@@ -37,8 +37,8 @@
                 </div>
                 <div class="mt-4 col-2"></div>
                 <div class="mt-4 col-4 text-end">
-                    <button onclick="location.href='/pengguna/reporting/ukm'" class="btn btn-sm btn-success text-white"><i class="fas fa-file-excel text-white"></i> LAPORAN UKM</button>
-                    <button onclick="location.href='/pengguna/reporting/koperasi'" class="btn btn-sm btn-success text-white"><i class="fas fa-file-excel text-white"></i> LAPORAN KOPERASI</button>
+                    <button id="ukm_report" onclick="laporanUKM()" class="btn btn-sm btn-success text-white"><i class="fas fa-file-excel text-white"></i> LAPORAN UKM</button>
+                    <button id="ukm_koperasi" onclick="laporanKoperasi()" class="btn btn-sm btn-success text-white"><i class="fas fa-file-excel text-white"></i> LAPORAN KOPERASI</button>
                 </div>
             </div>
 
@@ -389,6 +389,21 @@
 </div>
 {{-- End Modal Delete --}}
 
+<!-- Modal Loading -->
+<div class="modal fade" id="loadingModal" tabindex="-1" role="dialog" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content text-center">
+            <div class="modal-body">
+                <div class="spinner-border text-primary mt-5" role="status" style="width: 3rem; height: 3rem;">
+                <span class="sr-only">Harap Tunggu</span>
+            </div>
+                <p class="mt-3">Proses ini membutuhkan beberapa menit... </p>
+            </div>
+        </div>
+    </div>
+</div>
+  
+
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
 <script>
@@ -403,6 +418,36 @@
 
         setPaper()
     });
+
+    function laporanUKM()
+    {
+        $('#loadingModal').modal('show');
+        $.ajax({
+            url: 'pengguna/reporting/ukm',
+            method: 'GET',
+            success: function(response) {
+                window.location.href = response.file_url;
+            },
+            complete: function() {
+                $('#loadingModal').modal('hide');
+            }
+        });
+    }
+
+    function laporanKoperasi()
+    {
+        $('#loadingModal').modal('show');
+        $.ajax({
+            url: 'pengguna/reporting/koperasi',
+            method: 'GET',
+            success: function(response) {
+                window.location.href = response.file_url;
+            },
+            complete: function() {
+                $('#loadingModal').modal('hide');
+            }
+        });
+    }
 
     function setPaper() {
         $('#user-paper').html(`

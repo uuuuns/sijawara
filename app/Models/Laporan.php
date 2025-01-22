@@ -49,8 +49,9 @@ class Laporan extends Model
 
         return $styleContent;
     }
-    
-    public function laporan_event($data) {
+
+    public function laporan_event($data)
+    {
         $spreadsheet = new Spreadsheet();
 
         $ObjSheet = $spreadsheet->getActiveSheet();
@@ -63,7 +64,7 @@ class Laporan extends Model
         $ObjSheet->getColumnDimension('F')->setAutoSize(true);
         $ObjSheet->getColumnDimension('G')->setAutoSize(true);
         $ObjSheet->getColumnDimension('H')->setAutoSize(true);
-        
+
         $ObjSheet->mergeCells('B2:H2')->setCellValue('B2', "DATA PESERTA WEBINAR/PELATIHAN")->getStyle('B2:H2')->applyFromArray($this->styling_title_template('ff948a54', 'ffffffff'))->getFont()->setSize(14)->setUnderline(\PhpOffice\PhpSpreadsheet\Style\Font::UNDERLINE_SINGLE);
         $ObjSheet->mergeCells('B3:H3')->setCellValue('B3', $data[0]->TITLE_ACTIVITY)->getStyle('B3:H3')->applyFromArray($this->styling_title_template('ff948a54', 'ffffffff'));
 
@@ -90,7 +91,7 @@ class Laporan extends Model
 
         $spreadsheet->setActiveSheetIndex(0);
 
-        $fileName = 'Laporan Peserta Webinar/Pelatihan '.$data[0]->TITLE_ACTIVITY;
+        $fileName = 'Laporan Peserta Webinar/Pelatihan ' . $data[0]->TITLE_ACTIVITY;
         $writer = new Xlsx($spreadsheet);
 
         header('Content-Type: application/vnd.ms-excel'); // generate excel file
@@ -99,7 +100,8 @@ class Laporan extends Model
         $writer->save('php://output');
     }
 
-    public function laporan_course($data) {
+    public function laporan_course($data)
+    {
         $spreadsheet = new Spreadsheet();
 
         $ObjSheet = $spreadsheet->getActiveSheet();
@@ -115,7 +117,7 @@ class Laporan extends Model
         $ObjSheet->getColumnDimension('I')->setAutoSize(true);
         $ObjSheet->getColumnDimension('J')->setAutoSize(true);
         $ObjSheet->getColumnDimension('K')->setAutoSize(true);
-        
+
         $ObjSheet->mergeCells('B2:K2')->setCellValue('B2', "DATA PESERTA KURSUS")->getStyle('B2:K2')->applyFromArray($this->styling_title_template('ff948a54', 'ffffffff'))->getFont()->setSize(14)->setUnderline(\PhpOffice\PhpSpreadsheet\Style\Font::UNDERLINE_SINGLE);
         $ObjSheet->mergeCells('B3:K3')->setCellValue('B3', $data[0]->TITLE_ACTIVITY)->getStyle('B3:K3')->applyFromArray($this->styling_title_template('ff948a54', 'ffffffff'));
 
@@ -139,7 +141,7 @@ class Laporan extends Model
             $ObjSheet->setCellValue('F' . $rowStart, (empty($item->JK) ? "Belum Mengisi" : $item->JK))->getStyle('F' . $rowStart)->applyFromArray($this->styling_content_template('00FFFFFF', '00000000', 'center', 'left'))->getAlignment()->setWrapText(false);
             $ObjSheet->setCellValue('G' . $rowStart, (empty($item->ALAMAT) ? "Belum Mengisi" : $item->ALAMAT))->getStyle('G' . $rowStart)->applyFromArray($this->styling_content_template('00FFFFFF', '00000000', 'center', 'left'))->getAlignment()->setWrapText(false);
             $ObjSheet->setCellValue('H' . $rowStart, $item->LOG_TIME)->getStyle('H' . $rowStart)->applyFromArray($this->styling_content_template('00FFFFFF', '00000000', 'center', 'left'))->getAlignment()->setWrapText(false);
-            $ObjSheet->setCellValue('I' . $rowStart, ($item->PROGRESS == 100 ? "Selesai" : $item->PROGRESS."%"))->getStyle('I' . $rowStart)->applyFromArray($this->styling_content_template('00FFFFFF', '00000000', 'center', 'left'))->getAlignment()->setWrapText(false);
+            $ObjSheet->setCellValue('I' . $rowStart, ($item->PROGRESS == 100 ? "Selesai" : $item->PROGRESS . "%"))->getStyle('I' . $rowStart)->applyFromArray($this->styling_content_template('00FFFFFF', '00000000', 'center', 'left'))->getAlignment()->setWrapText(false);
             $ObjSheet->setCellValue('J' . $rowStart, (empty($item->Rata_Nilai) ? "Belum Mengerjakan" : $item->Rata_Nilai))->getStyle('J' . $rowStart)->applyFromArray($this->styling_content_template('00FFFFFF', '00000000', 'center', 'left'))->getAlignment()->setWrapText(false);
             $ObjSheet->setCellValue('K' . $rowStart, (empty($item->DATE_COMPLETED) ? "Belum Selesai" : $item->DATE_COMPLETED))->getStyle('K' . $rowStart)->applyFromArray($this->styling_content_template('00FFFFFF', '00000000', 'center', 'left'))->getAlignment()->setWrapText(false);
 
@@ -148,7 +150,7 @@ class Laporan extends Model
 
         $spreadsheet->setActiveSheetIndex(0);
 
-        $fileName = 'Laporan Peserta Kursus '.$data[0]->TITLE_ACTIVITY;
+        $fileName = 'Laporan Peserta Kursus ' . $data[0]->TITLE_ACTIVITY;
         $writer = new Xlsx($spreadsheet);
 
         header('Content-Type: application/vnd.ms-excel'); // generate excel file
@@ -157,7 +159,8 @@ class Laporan extends Model
         $writer->save('php://output');
     }
 
-    public function laporan_ukm($data){
+    public function laporan_ukm($data)
+    {
         set_time_limit(300);
 
         $spreadsheet = new Spreadsheet();
@@ -201,7 +204,7 @@ class Laporan extends Model
         $ObjSheet->getColumnDimension('AI')->setWidth(14);
 
         $ObjSheet->freezePane('A5');
-        
+
         $ObjSheet->mergeCells('B2:K2')->setCellValue('B2', "DATA PESERTA (UKM)")->getStyle('B2:K2')->applyFromArray($this->styling_title_template('ff948a54', 'ffffffff'))->getFont()->setSize(14)->setUnderline(\PhpOffice\PhpSpreadsheet\Style\Font::UNDERLINE_SINGLE);
 
         $ObjSheet->setCellValue('B4', 'No')->getStyle('B4')->applyFromArray($this->styling_title_template('FFFFD966', 'FF000000'));
@@ -242,7 +245,7 @@ class Laporan extends Model
         $rowStart = 5;
         foreach ($data as $key => $item) {
             $ObjSheet->setCellValue('B' . $rowStart, ($key + 1))->getStyle('B' . $rowStart)->applyFromArray($this->styling_content_template('00FFFFFF', '00000000', 'center', 'left'))->getAlignment()->setWrapText(false);
-            $ObjSheet->setCellValue('C' . $rowStart, $item->NIK)->getStyle('C' . $rowStart)->applyFromArray($this->styling_content_template('00FFFFFF', '00000000', 'center', 'left'))->getAlignment()->setWrapText(false);
+            $ObjSheet->setCellValue('C' . $rowStart, (empty($item->NIK) ? "Belum Mengisi" : $item->NIK))->getStyle('C' . $rowStart)->applyFromArray($this->styling_content_template('00FFFFFF', '00000000', 'center', 'left'))->getAlignment()->setWrapText(false);
             $ObjSheet->setCellValue('D' . $rowStart, $item->NAME)->getStyle('D' . $rowStart)->applyFromArray($this->styling_content_template('00FFFFFF', '00000000', 'center', 'left'))->getAlignment()->setWrapText(true);
             $ObjSheet->setCellValue('E' . $rowStart, (empty($item->EMAIL) ? "Belum Mengisi" : $item->EMAIL))->getStyle('E' . $rowStart)->applyFromArray($this->styling_content_template('00FFFFFF', '00000000', 'center', 'left'))->getAlignment()->setWrapText(false);
             $ObjSheet->setCellValue('F' . $rowStart, (empty($item->TELP) ? "Belum Mengisi" : $item->TELP))->getStyle('F' . $rowStart)->applyFromArray($this->styling_content_template('00FFFFFF', '00000000', 'center', 'left'))->getAlignment()->setWrapText(false);
@@ -285,13 +288,12 @@ class Laporan extends Model
 
         $spreadsheet->setActiveSheetIndex(0);
 
-        $fileName = 'Laporan Peserta UKM';
+        $fileName = 'Laporan_UKM.xlsx';
+        $filePath = public_path('reporting/Laporan_UKM.xlsx');
         $writer = new Xlsx($spreadsheet);
+        $writer->save($filePath);
 
-        header('Content-Type: application/vnd.ms-excel'); // generate excel file
-        header('Content-Disposition: attachment;filename="' . $fileName . '.xlsx"');
-        header('Cache-Control: max-age=0');
-        $writer->save('php://output');
+        return $fileName;
     }
 
     public function laporan_koperasi($data)
@@ -348,7 +350,7 @@ class Laporan extends Model
         $ObjSheet->getColumnDimension('AT')->setAutoSize(true);
 
         $ObjSheet->freezePane('A5');
-        
+
         $ObjSheet->mergeCells('B2:K2')->setCellValue('B2', "DATA PESERTA (Koperasi)")->getStyle('B2:K2')->applyFromArray($this->styling_title_template('ff948a54', 'ffffffff'))->getFont()->setSize(14)->setUnderline(\PhpOffice\PhpSpreadsheet\Style\Font::UNDERLINE_SINGLE);
 
         $ObjSheet->setCellValue('B4', 'No')->getStyle('B4')->applyFromArray($this->styling_title_template('FFFFD966', 'FF000000'));
@@ -400,7 +402,7 @@ class Laporan extends Model
         $rowStart = 5;
         foreach ($data as $key => $item) {
             $ObjSheet->setCellValue('B' . $rowStart, ($key + 1))->getStyle('B' . $rowStart)->applyFromArray($this->styling_content_template('00FFFFFF', '00000000', 'center', 'left'))->getAlignment()->setWrapText(false);
-            $ObjSheet->setCellValue('C' . $rowStart, $item->NIK)->getStyle('C' . $rowStart)->applyFromArray($this->styling_content_template('00FFFFFF', '00000000', 'center', 'left'))->getAlignment()->setWrapText(false);
+            $ObjSheet->setCellValue('C' . $rowStart, (empty($item->NIK) ? "Belum Mengisi" : $item->NIK))->getStyle('C' . $rowStart)->applyFromArray($this->styling_content_template('00FFFFFF', '00000000', 'center', 'left'))->getAlignment()->setWrapText(false);
             $ObjSheet->setCellValue('D' . $rowStart, $item->NAME)->getStyle('D' . $rowStart)->applyFromArray($this->styling_content_template('00FFFFFF', '00000000', 'center', 'left'))->getAlignment()->setWrapText(true);
             $ObjSheet->setCellValue('E' . $rowStart, (empty($item->EMAIL) ? "Belum Mengisi" : $item->EMAIL))->getStyle('E' . $rowStart)->applyFromArray($this->styling_content_template('00FFFFFF', '00000000', 'center', 'left'))->getAlignment()->setWrapText(false);
             $ObjSheet->setCellValue('F' . $rowStart, (empty($item->TELP) ? "Belum Mengisi" : $item->TELP))->getStyle('F' . $rowStart)->applyFromArray($this->styling_content_template('00FFFFFF', '00000000', 'center', 'left'))->getAlignment()->setWrapText(false);
@@ -429,11 +431,11 @@ class Laporan extends Model
             $ObjSheet->setCellValue('AC' . $rowStart, (empty($item->nm_bendahara) ? "Belum Mengisi" : $item->nm_bendahara))->getStyle('AC' . $rowStart)->applyFromArray($this->styling_content_template('00FFFFFF', '00000000', 'center', 'left'))->getAlignment()->setWrapText(false);
             $ObjSheet->setCellValue('AD' . $rowStart, (empty($item->phone_bendahara) ? "Belum Mengisi" : $item->phone_bendahara))->getStyle('AD' . $rowStart)->applyFromArray($this->styling_content_template('00FFFFFF', '00000000', 'center', 'left'))->getAlignment()->setWrapText(false);
             $ObjSheet->setCellValue('AE' . $rowStart, ($item->anggota_pria !== NULL ? "Belum Mengisi" : $item->anggota_pria))->getStyle('AE' . $rowStart)->applyFromArray($this->styling_content_template('00FFFFFF', '00000000', 'center', 'left'))->getAlignment()->setWrapText(false);
-            $ObjSheet->setCellValue('AF' . $rowStart, ($item->anggota_wanita !== NULL) ? "Belum Mengisi" : $item->anggota_wanita))->getStyle('AF' . $rowStart)->applyFromArray($this->styling_content_template('00FFFFFF', '00000000', 'center', 'left'))->getAlignment()->setWrapText(false);
-            $ObjSheet->setCellValue('AG' . $rowStart, ($item->manager_pria !== NULL) ? "Belum Mengisi" : $item->manager_pria))->getStyle('AG' . $rowStart)->applyFromArray($this->styling_content_template('00FFFFFF', '00000000', 'center', 'left'))->getAlignment()->setWrapText(false);
-            $ObjSheet->setCellValue('AH' . $rowStart, ($item->manager_wanita !== NULL) ? "Belum Mengisi" : $item->manager_wanita))->getStyle('AH' . $rowStart)->applyFromArray($this->styling_content_template('00FFFFFF', '00000000', 'center', 'left'))->getAlignment()->setWrapText(false);
-            $ObjSheet->setCellValue('AI' . $rowStart, ($item->karyawan_pria !== NULL) ? "Belum Mengisi" : $item->karyawan_pria))->getStyle('AI' . $rowStart)->applyFromArray($this->styling_content_template('00FFFFFF', '00000000', 'center', 'left'))->getAlignment()->setWrapText(false);
-            $ObjSheet->setCellValue('AJ' . $rowStart, ($item->karyawan_wanita !== NULL) ? "Belum Mengisi" : $item->karyawan_wanita))->getStyle('AJ' . $rowStart)->applyFromArray($this->styling_content_template('00FFFFFF', '00000000', 'center', 'left'))->getAlignment()->setWrapText(false);
+            $ObjSheet->setCellValue('AF' . $rowStart, ($item->anggota_wanita !== NULL ? "Belum Mengisi" : $item->anggota_wanita))->getStyle('AF' . $rowStart)->applyFromArray($this->styling_content_template('00FFFFFF', '00000000', 'center', 'left'))->getAlignment()->setWrapText(false);
+            $ObjSheet->setCellValue('AG' . $rowStart, ($item->manager_pria !== NULL ? "Belum Mengisi" : $item->manager_pria))->getStyle('AG' . $rowStart)->applyFromArray($this->styling_content_template('00FFFFFF', '00000000', 'center', 'left'))->getAlignment()->setWrapText(false);
+            $ObjSheet->setCellValue('AH' . $rowStart, ($item->manager_wanita !== NULL ? "Belum Mengisi" : $item->manager_wanita))->getStyle('AH' . $rowStart)->applyFromArray($this->styling_content_template('00FFFFFF', '00000000', 'center', 'left'))->getAlignment()->setWrapText(false);
+            $ObjSheet->setCellValue('AI' . $rowStart, ($item->karyawan_pria !== NULL ? "Belum Mengisi" : $item->karyawan_pria))->getStyle('AI' . $rowStart)->applyFromArray($this->styling_content_template('00FFFFFF', '00000000', 'center', 'left'))->getAlignment()->setWrapText(false);
+            $ObjSheet->setCellValue('AJ' . $rowStart, ($item->karyawan_wanita !== NULL ? "Belum Mengisi" : $item->karyawan_wanita))->getStyle('AJ' . $rowStart)->applyFromArray($this->styling_content_template('00FFFFFF', '00000000', 'center', 'left'))->getAlignment()->setWrapText(false);
             $ObjSheet->setCellValue('AK' . $rowStart, (empty($item->NAMA_BENTUK_KOPERASI) ? "Belum Mengisi" : $item->NAMA_BENTUK_KOPERASI))->getStyle('AK' . $rowStart)->applyFromArray($this->styling_content_template('00FFFFFF', '00000000', 'center', 'left'))->getAlignment()->setWrapText(false);
             $ObjSheet->setCellValue('AL' . $rowStart, (empty($item->NAMA_JENIS_KOPERASI) ? "Belum Mengisi" : $item->NAMA_JENIS_KOPERASI))->getStyle('AL' . $rowStart)->applyFromArray($this->styling_content_template('00FFFFFF', '00000000', 'center', 'left'))->getAlignment()->setWrapText(false);
             $ObjSheet->setCellValue('AM' . $rowStart, (empty($item->NAMA_KELOMPOK_KOPERASI) ? "Belum Mengisi" : $item->NAMA_KELOMPOK_KOPERASI))->getStyle('AM' . $rowStart)->applyFromArray($this->styling_content_template('00FFFFFF', '00000000', 'center', 'left'))->getAlignment()->setWrapText(false);
@@ -463,13 +465,12 @@ class Laporan extends Model
 
         $spreadsheet->setActiveSheetIndex(0);
 
-        $fileName = 'Laporan Peserta Koperasi';
+        $fileName = 'Laporan_Koperasi.xlsx';
+        $filePath = public_path('reporting/Laporan_Koperasi.xlsx');
         $writer = new Xlsx($spreadsheet);
+        $writer->save($filePath);
 
-        header('Content-Type: application/vnd.ms-excel'); // generate excel file
-        header('Content-Disposition: attachment;filename="' . $fileName . '.xlsx"');
-        header('Cache-Control: max-age=0');
-        $writer->save('php://output');
+        return $fileName;
     }
 
     private function formatTanggalIndonesia($tanggal)
@@ -481,14 +482,22 @@ class Laporan extends Model
             $date = new DateTime($tanggal);
             $formattedDate = $date->format('d F Y');
             $monthInIndonesian = [
-                'January' => 'Januari', 'February' => 'Februari', 'March' => 'Maret',
-                'April' => 'April', 'May' => 'Mei', 'June' => 'Juni', 'July' => 'Juli',
-                'August' => 'Agustus', 'September' => 'September', 'October' => 'Oktober',
-                'November' => 'November', 'December' => 'Desember'
+                'January' => 'Januari',
+                'February' => 'Februari',
+                'March' => 'Maret',
+                'April' => 'April',
+                'May' => 'Mei',
+                'June' => 'Juni',
+                'July' => 'Juli',
+                'August' => 'Agustus',
+                'September' => 'September',
+                'October' => 'Oktober',
+                'November' => 'November',
+                'December' => 'Desember'
             ];
-            return str_replace(array_keys($monthInIndonesian), array_values($monthInIndonesian), $formattedDate);   
-        } catch (Exception $e) {
+            return str_replace(array_keys($monthInIndonesian), array_values($monthInIndonesian), $formattedDate);
+        } catch (\Exception $e) {
             return "Belum mengisi";
         }
-    }   
+    }
 }
