@@ -7,6 +7,55 @@
         background-repeat: no-repeat;
         z-index: initial;
     }
+
+    .float-container {
+        position: relative; /* Ensure the tooltip text is positioned relative to the container */
+    }
+
+    .float {
+        position: fixed;
+        width: 50px;
+        height: 50px;
+        bottom: 120px;
+        right: 20px;
+        background-color: #45b104;
+        color: #FFF;
+        border-radius: 50%;
+        text-align: center;
+        font-size: 30px;
+        box-shadow: 2px 2px 3px #999;
+        z-index: 100;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: visible; /* Ensure the tooltip can be seen outside the button */
+    }
+
+    .my-float {
+        font-size: 24px;
+    }
+
+    .float-text {
+        position: absolute;
+        top: 50%;
+        right: 110%; /* Position the text to the left of the button */
+        transform: translateY(-50%);
+        background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent black background */
+        color: #FFF;
+        padding: 8px 12px;
+        border-radius: 6px;
+        font-size: 14px;
+        white-space: nowrap;
+        opacity: 0;
+        pointer-events: none; /* Prevent the tooltip from interfering with hover events */
+        transition: opacity 0.3s ease, right 0.3s ease;
+        z-index: 101; /* Ensure tooltip is above other elements */
+    }
+
+    .float:hover .float-text {
+        opacity: 1;
+        right: 120%; /* Slightly shift the text on hover for animation */
+    }
 </style>
 
 <section class="page-header page-header-custom">
@@ -70,9 +119,10 @@
                 </div>
             </div>
         </div>
-        <div class="d-flex justify-content-end align-items-end px-6 mt-4">
-            <a href="kursus/aspirasi-kursus" class="btn btn-warning rounded">
-                Tidak menemukan <br> yang anda cari? <br> Klik disini
+        <div class="float-container">
+            <a href="<?= !empty(session('user')) ? 'kursus/aspirasi-kursus' : 'masuk'?>" class="btn btn-warning rounded float">
+                <i class="bx bx-help-circle my-float"></i>
+                <span class="float-text">Tidak menemukan yang anda cari? Klik disini</span>
             </a>
         </div>
     </div>
