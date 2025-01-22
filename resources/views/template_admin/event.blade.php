@@ -71,7 +71,7 @@
                                                 <i class="bx bxs-user-detail font-size-16 align-middle"></i> Lihat Peserta
                                             </button>
                                             @if ($item->IS_PUBLIC == 0)
-                                                <form action="courses/invite" method="GET">
+                                                <form action="kursus-admin/invite" method="GET">
                                                     <input type="hidden" name="id_activity" value="<?= $item->ID_ACTIVITY ?>">
                                                     <button type="submit" class="btn btn-primary btn-sm-2 w-100 fs-8 rounded waves-effect waves-light px-2" style="min-width: 155px !important;">
                                                         <i class="bx bx-send font-size-16 align-middle"></i> Undang User
