@@ -196,8 +196,7 @@ class EventController extends Controller
             'DATE_START' => $req->input('up_date_start'),
             'DATE_END' => $req->input('up_date_end'),
             'IS_PUBLIC' => $req->input('up_status_public'),
-            'STATUS' => $req->has('up_status') ? 1 : 0,
-            'LOG_TIME' => date('Y-m-d H:i:s')
+            'STATUS' => $req->has('up_status') ? 1 : 0
         ];
 
         if (!empty($req->file('up_image_activity'))) {

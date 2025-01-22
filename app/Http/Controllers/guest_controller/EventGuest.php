@@ -64,6 +64,7 @@ class EventGuest extends Controller
 					(DATEDIFF(CURDATE(), activity.DATE_END) >= 1) as EXPIRED')
 				->leftJoin('event', 'event.ID_ACTIVITY', '=', 'activity.ID_ACTIVITY')
 				->where('TYPE_ACTIVITY', 2)
+				->orderBy('activity.DATE_START', 'DESC')
 				->Paginate($perPage, ['*'], 'page', $currentPage);
 		}else {
 			$events = DB::table('activity')
@@ -106,6 +107,7 @@ class EventGuest extends Controller
 					(DATEDIFF(CURDATE(), activity.DATE_END) >= 1) as EXPIRED', [session('user')[0]->get('ID_USER')])
 				->leftJoin('event', 'event.ID_ACTIVITY', '=', 'activity.ID_ACTIVITY')
 				->where('activity.TYPE_ACTIVITY', 2)
+				->orderBy('activity.LOG_TIME', 'DESC')
 				->paginate($perPage, ['*'], 'page', $currentPage);
 			}
 
