@@ -32,34 +32,31 @@ class UserController extends Controller
 
     public function filter_user(Request $req)
     {
-        $condition = '';
-        $params = []; // Array untuk menyimpan nilai parameter binding
-
+        $query = DB::table('user as u')
+            ->leftJoin('md_provinsi as p', 'u.ID_PROVINSI', '=', 'p.ID_PROVINSI')
+            ->leftJoin('md_kota as k', 'u.ID_KOTA', '=', 'k.ID_KOTA')
+            ->leftJoin('tb_koperasi as ko', 'ko.ID_USER', '=', 'u.ID_USER')
+            ->leftJoin('tb_ukm as tu', 'tu.ID_USER', '=', 'u.ID_USER')
+            ->leftJoin('md_sektor_usaha as su', 'ko.id_sektor_usaha', '=', 'su.ID')
+            ->leftJoin('md_kategori_ukm as ku', 'tu.id_kategori_ukm', '=', 'ku.ID')
+            ->select('u.*', 'p.nama_province', 'k.nama_kota')
+            ->where('u.IS_DELETE', 0);
+        
         if ($req->input('JENIS_INSTANSI') != 'ALL') {
-            $condition = " AND u.JENIS_INSTANSI = ?";
-            $params[] = $req->input('JENIS_INSTANSI');
+            $query->where('u.JENIS_INSTANSI', $req->input('JENIS_INSTANSI'));
         }
 
-        $query = "
-            SELECT
-                u.*,
-                p.nama_province,
-                k.nama_kota
-            FROM
-                user u
-            LEFT JOIN md_provinsi p ON
-                u.ID_PROVINSI = p.ID_PROVINSI
-            LEFT JOIN md_kota k ON
-                u.ID_KOTA = k.ID_KOTA
-            WHERE
-                u.IS_DELETE = 0
-            $condition
-        ";
+        if ($req->input('USAHA') != 'ALL') {
+            if ($req->input('JENIS_INSTANSI') == 'UKM') {
+                $query->where('tu.id_kategori_ukm', $req->input('USAHA'));
+            } elseif ($req->input('JENIS_INSTANSI') == 'KOPERASI') {
+                $query->where('ko.id_sektor_usaha', $req->input('USAHA'));
+            }
+        }
 
-        $data["user"] = DB::select($query, $params);
+        $data['user'] = $query->get();
 
-        return
-            view('template_admin.user.paper_ajax', $data);
+        return view('template_admin.user.paper_ajax', $data);
     }
 
     public function store(Request $req)
@@ -236,6 +233,30 @@ class UserController extends Controller
             ->update(['ID_ROLE' => 2]);
 
         return redirect()->back();
+    }
+
+    public function filter_ukm()
+    {
+        $kelompok_ukm = DB::Select("
+            SELECT
+                *
+            FROM
+                md_kategori_ukm
+        ");
+        
+        return $kelompok_ukm;
+    }
+
+    public function filter_koperasi()
+    {
+        $sektor_usaha = DB::Select("
+            SELECT
+                *
+            FROM
+                md_sektor_usaha
+        ");
+
+        return $sektor_usaha;
     }
 
     public function laporan_ukm()

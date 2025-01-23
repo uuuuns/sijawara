@@ -12,56 +12,47 @@
         </div>
     </div>
     <?php } ?>
-    <div class="">
-        <div class="card-body" style="min-height: 600px;    ">
-            <div class="row">
-                <div class="col-md-6 align-self-center">
-                    <h3 class="fw-bold" style="color:#45b104">Users</h3>
-                </div>
-                <div class="col-md-6 d-flex justify-content-md-end justify-content-end align-items-center">
+    <div class="card-body" style="min-height: 600px;    ">
+        <div class="row">
+            <div class="col-md-6 align-self-center">
+                <h3 class="fw-bold" style="color:#45b104">Users</h3>
             </div>
-
+            <div class="col-md-6 d-flex justify-content-md-end justify-content-end align-items-center">
+        </div>
+        <div class="row">
+            <div class="mt-4 col-2 d-flex align-items-center justify-content-center">
+                <h5 class="text-end">Instansi :</h5>
+            </div>
+            <div class="mt-4 col-3">
+                <select class="form-control instansi" name="filter-instansi" id="filter-instansi">
+                    <option value="ALL">Tampilkan Semua</option>
+                    <option value="UKM">UKM</option>
+                    <option value="KOPERASI">KOPERASI</option>
+                    <option value="INSTANSI">INSTANSI</option>
+                    <option value="UMUM">UMUM</option>
+                </select>
+            </div>
+            <div class="mt-4 col-3"></div>
+            <div class="mt-4 col-4 text-end">
+                <button id="ukm_report" onclick="laporanUKM()" class="btn btn-sm btn-success text-white"><i class="fas fa-file-excel text-white"></i> LAPORAN UKM</button>
+                <button id="ukm_koperasi" onclick="laporanKoperasi()" class="btn btn-sm btn-success text-white"><i class="fas fa-file-excel text-white"></i> LAPORAN KOPERASI</button>
+            </div>
+        </div>
+        <div class="hidden-select" style="display: none;">
             <div class="row">
                 <div class="mt-4 col-2 d-flex align-items-center justify-content-center">
-                    <h5>Filter Instansi :</h5>
+                    <h5 class="text-end" id="filter-title">Jenis Usaha :</h5>
                 </div>
-
-                <div class="mt-4 col-4">
-                    <select class="form-control instansi" name="filter-instansi" id="filter-instansi">
+                <div class="mt-4 col-3">
+                    <select class="form-control jenis" name="jenis-usaha" id="jenis-usaha">
                         <option value="ALL">Tampilkan Semua</option>
-                        <option value="UKM">UKM</option>
-                        <option value="KOPERASI">KOPERASI</option>
-                        <option value="INSTANSI">INSTANSI</option>
-                        <option value="UMUM">UMUM</option>
+                        <!-- Options for UKM and KOPERASI will be populated dynamically -->
                     </select>
                 </div>
-                <div class="mt-4 col-2"></div>
-                <div class="mt-4 col-4 text-end">
-                    <button id="ukm_report" onclick="laporanUKM()" class="btn btn-sm btn-success text-white"><i class="fas fa-file-excel text-white"></i> LAPORAN UKM</button>
-                    <button id="ukm_koperasi" onclick="laporanKoperasi()" class="btn btn-sm btn-success text-white"><i class="fas fa-file-excel text-white"></i> LAPORAN KOPERASI</button>
-                </div>
             </div>
-
-            <div class="hidden-select" style="display: none;">
-                <div class="row">
-                    <div class="mt-4 col-2 d-flex align-items-center justify-content-center">
-                        Jenis Usaha :
-                    </div>
-                    <div class="mt-4 col-4">
-                        <select class="form-control instansi" name="" id="">
-                            <option value="ALL">Tampilkan Semua</option>
-                            <option value="UKM">Jamu</option>
-                            <option value="KOPERASI">Meh</option>
-                            <option value="INSTANSI">weh</option>
-                            <option value="UMUM">heh</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-12" id="user-paper"></div>
-            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12" id="user-paper"></div>
         </div>
     </div>
 </div>
@@ -229,7 +220,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" onclick="jadikanInstruktur()" class="btn btn-primary rounded">Jadikan Instruktur</button>
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
             </div>
         </div>
     </div>
@@ -395,26 +386,34 @@
       <div class="modal-content text-center">
             <div class="modal-body">
                 <div class="spinner-border text-primary mt-5" role="status" style="width: 3rem; height: 3rem;">
-                <span class="sr-only">Harap Tunggu</span>
-            </div>
+                    <span class="sr-only">Harap Tunggu</span>
+                </div>
                 <p class="mt-3">Proses ini membutuhkan beberapa menit... </p>
             </div>
         </div>
     </div>
 </div>
   
-
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
 <script>
     $('.instansi').select2();
+    $('.jenis').select2();
     var Instansi = 'ALL'
+    var Jenis = 'ALL'
 
     setPaper()
 
     $('.instansi').on('change', function() {
         var instansi = $(this).val();
         Instansi = instansi
+
+        setPaper()
+    });
+
+    $('.jenis').on('change', function() {
+        var jenis = $(this).val();
+        Jenis = jenis
 
         setPaper()
     });
@@ -451,20 +450,23 @@
 
     function setPaper() {
         $('#user-paper').html(`
-            <div class="card">
-                <div class="card-body">
-                    <div class="d-flex justify-content-center">
-                        <div class="column text-center">
-                            <i class="fa-spinner"></i> Sedang Memuat ...
-                        </div>
+            <div class="mt-5">
+                <div class="d-flex justify-content-center">
+                    <div class="column text-center">
+                        <div class="spinner-border text-primary mt-5" role="status" style="width: 3rem; height: 3rem;"></div>
+                        <p class="mt-3">Sedang Memuat Data ... </p>
                     </div>
                 </div>
             </div>
         `)
-        $.ajax({
-            url: '<?= Request::segment(0) ?>/pengguna/ajax/paper-view?JENIS_INSTANSI=' + Instansi,
 
+        $.ajax({
+            url: '<?= Request::segment(0) ?>/pengguna/ajax/paper-view',
             method: 'GET',
+            data: {
+                    JENIS_INSTANSI: Instansi,
+                    USAHA: Jenis
+                },
             success: function(data) {
                 $('#user-paper').html(data)
             },
@@ -654,32 +656,32 @@
                     'X-CSRF-TOKEN': csrfToken
                 }
             });
-        // $.ajax({
-        //     url: 'pengguna/jadikanInstruktur',
-        //     type: 'POST',
-        //     data: {
-        //         id_user: id_user,
-        //     },
-        //     success: function(data) {
-        //         $('#updateModal').modal('hide')
-        //         Swal.fire({
-        //             title: 'Success',
-        //             text: 'User berhasil dijadikan instruktur',
-        //             icon: 'success',
-        //             showCancelButton: false,
-        //             showConfirmButton: false,
-        //             clickOutside: false,
-        //         });
-        //         location.reload()
-        //     },error: function(data) {
-        //         Toast.fire({
-        //             icon: 'error',
-        //             title: 'Gagal Menjadikan Instruktur'
-        //         });
-        //         $('.loading').hide();
-        //         $('.btn').prop('disabled', false);
-        //     }
-        // })
+        $.ajax({
+            url: 'pengguna/jadikanInstruktur',
+            type: 'POST',
+            data: {
+                id_user: id_user,
+            },
+            success: function(data) {
+                $('#updateModal').modal('hide')
+                Swal.fire({
+                    title: 'Success',
+                    text: 'User berhasil dijadikan instruktur',
+                    icon: 'success',
+                    showCancelButton: false,
+                    showConfirmButton: false,
+                    clickOutside: false,
+                });
+                location.reload()
+            },error: function(data) {
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Gagal Menjadikan Instruktur'
+                });
+                $('.loading').hide();
+                $('.btn').prop('disabled', false);
+            }
+        })
     }
     
     $('#choose-button').click(function() {
@@ -701,6 +703,56 @@
     });
 
     $(document).ready(function() {
+        $('#filter-instansi').change(function() {
+            var selectedValue = $(this).val();
+
+            $('.hidden-select').hide();
+
+            if (selectedValue === 'UKM') {
+                $('.hidden-select').show();
+                $('#filter-title').text('Kategori Usaha :');
+
+                $.ajax({
+                    url: 'pengguna/filter_ukm',
+                    type: 'GET',
+                    data: selectedValue,
+                    success: function(response) {
+                        $('#jenis-usaha').empty();
+                        $('#jenis-usaha').append('<option value="ALL">Tampilkan Semua</option>');
+                        
+                        $.each(response, function(index, item) {
+                            $('#jenis-usaha').append('<option value="' + item.ID + '">' + item.NAMA_KATEGORI_UKM + '</option>');
+                        });
+                    },
+                    error: function() {
+                        console.error('Failed to fetch jenis usaha data.');
+                    }
+                });
+            }
+
+            if (selectedValue === 'KOPERASI') {
+                $('.hidden-select').show();
+                $('#filter-title').text('Sektor Usaha :');
+
+                $.ajax({
+                    url: 'pengguna/filter_koperasi',
+                    type: 'GET',
+                    data: selectedValue,
+                    success: function(response) {
+                        $('#jenis-usaha').empty();
+                        $('#jenis-usaha').append('<option value="ALL">Tampilkan Semua</option>');
+                        
+                        $.each(response, function(index, item) {
+                            $('#jenis-usaha').append('<option value="' + item.ID + '">' + item.NAMA + '</option>');
+                        });
+                    },
+                    error: function() {
+                        console.error('Failed to fetch jenis usaha data.');
+                    }
+                });
+            }
+        });
+
         $('.dropify').dropify({
             messages: {
                 default: 'Drag atau drop untuk memilih file',
@@ -712,23 +764,3 @@
     });
 </script>
 @endsection
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
