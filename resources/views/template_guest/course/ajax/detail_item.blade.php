@@ -100,7 +100,7 @@
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
             <?php } else {
-                echo '<h6>Video cannot be opened. Contact instructor for more information. </h6>';
+                echo '<h6> - </h6>';
             } ?>
             <!-- <div class="modal fade" id="YTModal">
                 <div class="modal-dialog modal-lg modal-dialog-centered">
