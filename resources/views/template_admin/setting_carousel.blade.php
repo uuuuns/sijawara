@@ -84,7 +84,7 @@
                     <div class="form-group">
                         <label>Gambar Carousel <span class="text-danger">*</span></label> Ukuran yang sesuai adalah 1208px x 400px atau yang serasio.
                         <div class="custom-file">
-                            <input type="file" name="up_gambar" id="up_gambar" class="custom-file-input dropify" data-allowed-file-extensions="png jpg jpeg" data-max-file-size="5M" required>
+                            <input type="file" name="up_gambar" id="up_gambar" class="custom-file-input dropify" data-allowed-file-extensions="png jpg jpeg" data-max-file-size="5M">
                         </div>
                     </div>
                     <div class="form-group mb-3">
