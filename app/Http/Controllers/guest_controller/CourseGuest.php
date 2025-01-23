@@ -261,7 +261,7 @@ class CourseGuest extends Controller
 			LEFT JOIN detail_quiz dq ON
 				dq.ID_QUIZ = nq.ID_QUIZ
 			LEFT JOIN item_course ic ON
-				ic.ID_COURSE = dq.ID_COURSE
+				ic.ID_ITEM = dq.ID_QUIZ
 			WHERE
 				nq.ID_USER = "' . session('user')[0]->get('ID_USER') . '"
 			AND 

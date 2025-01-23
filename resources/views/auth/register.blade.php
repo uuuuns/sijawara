@@ -94,7 +94,13 @@
             const validValues = selectedValues.filter(value => value === "UKM" || value === "KOPERASI");
 
             if (selectedValues.length !== validValues.length) {
-                alert("Only UKM and KOPERASI are allowed for multiple selections.");
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Jenis Instansi Ganda hanya untuk koperasi dan UKM',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'OK'
+                });
+
                 // Update the selection and refresh the UI
                 $(this).val(validValues);
                 $(this).select2().trigger("change");
