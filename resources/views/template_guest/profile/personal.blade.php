@@ -7,19 +7,70 @@
         padding-left: 20px;
         background-color: #F5F5F5;
     }
+
+    .profile-container {
+        position: relative;
+        display: inline-block;
+    }
+
+    .profile-button {
+        border: none;
+        background-color: transparent;
+        position: relative;
+        cursor: pointer;
+        padding: 0;
+    }
+
+    .profile-button img {
+        height: 150px;
+        width: 150px;
+        object-fit: cover;
+        border-radius: 50%;
+        transition: opacity 0.3s ease;
+    }
+
+    .profile-text {
+        position: absolute;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: rgba(0, 0, 0, 0.6);
+        color: #fff;
+        font-size: 14px;
+        padding: 5px 10px;
+        border-radius: 8px;
+        opacity: 0;
+        white-space: nowrap;
+        transition: opacity 0.3s ease;
+        pointer-events: none;
+    }
+
+    .profile-button:hover .profile-text {
+        opacity: 1;
+    }
+
+    .profile-button:hover img {
+        opacity: 0.8;
+    }
+
 </style>
 <div class="col ms-0 ms-md-4 px-5 py-5 shadow rounded-3 overflow-hidden bg-white">
-
+    <h3 class="fw-bold py-4" style="color:#45b104">Data Pribadi</h3>
     <form action="{{ url('profil/update') }}" method="POST" enctype="multipart/form-data" id="form-profile">
         @csrf
-        <div class="nav-link rounded-circle">
-            <input type="file" id="file" name="foto_profile" accept="image/jpeg, image/png" style="display: none;">
-            <button type="button" id="choose-button" style="border: none; background-color: transparent; position: relative;">
-                <i class="fa fa-pencil" hidden style="position: absolute; bottom: 140px; right: 30px; font-size: 20px; color: #000; background-color: #a7abb5; border-radius: 50%; padding: 10px;"></i>
-                <img class="nav-link rounded-circle mb-2" src="<?= (!empty($data_personal->FOTO_PROFILE) ? $data_personal->FOTO_PROFILE : 'assets/images/person-circle.svg') ?>" id="preview" style="height:150px; width:150px; object-fit: cover;" />
-            </button>
+        <div class="d-flex justify-content-center">
+            <div class="profile-container">
+                <input type="file" id="file" name="foto_profile" accept="image/jpeg, image/png" style="display: none;">
+                <button type="button" id="choose-button" class="profile-button">
+                    <i class="fa fa-pencil" hidden></i>
+                    <img class="nav-link rounded-circle mb-2" 
+                        src="<?= (!empty($data_personal->FOTO_PROFILE) ? $data_personal->FOTO_PROFILE : 'assets/images/person-circle.svg') ?>" 
+                        id="preview" 
+                        alt="Profile Photo" />
+                    <span class="profile-text">Ganti Foto Profil</span>
+                </button>
+            </div>
         </div>
-        <h3 class="fw-bold py-4" style="color:#45b104">Data Pribadi</h3>
         <h5 class="text-black ps-1">NIK</h5>
         <div class="my-3 float-label-control">
             <input type="number" name="nik" class="form-control input-text woocommerce-Input woocommerce-Input--text" id="nik" placeholder="Masukkan NIK Anda" value="<?= $data_personal->NIK ?>" aria-describedby="nik" required>

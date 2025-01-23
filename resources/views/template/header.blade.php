@@ -689,7 +689,7 @@
                         <small class="fw-bold text-black">
                             Segera Lengkapi Data 
                             <a href="profil" class="text-decoration-underline">Profil</a> 
-                            Serta Data UKM atau Koperasi anda, agar dapat mengunduh Sertifikat yang telah diperoleh.
+                            Serta Data UKM atau Koperasi anda, agar dapat mengunduh Sertifikat yang telah diperoleh. Jika sudah lengkap mohon keluar dan masuk lagi.
                         </small>
                     </div>
                 </div>

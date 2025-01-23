@@ -195,7 +195,7 @@
                                     @csrf
                                     <div id="data-input-info"></div>
                                     <input type="hidden" name="id_activity" value="<?= $course->ID_ACTIVITY ?>">
-                                    <button type="submit">Ambil Sekarang</button>
+                                    <button type="submit" class="ambil-sekarang">Ambil Sekarang</button>
                                 </form>
                                 <?php } else if (empty($course->REQUIREMENT)) { ?>
                                 <form class="" id="FormBuyNow-info" method="POST"
@@ -203,7 +203,7 @@
                                     @csrf
                                     <div id="data-input-info"></div>
                                     <input type="hidden" name="id_activity" value="<?= $course->ID_ACTIVITY ?>">
-                                    <button type="submit">Ambil Sekarang</button>
+                                    <button type="submit" class="ambil-sekarang">Ambil Sekarang</button>
                                 </form>
                                 <?php } else { ?>
                                 <label class="alert alert-warning" style="align-items: center">Harap selesaikan kursus
@@ -227,6 +227,31 @@
 </section>
 
 <script>
+    $('.ambil-sekarang').click(function(e) {
+        e.preventDefault();
+        let sessionData = <?= json_encode(session('user') ?? false); ?>;
+
+        if (!sessionData) {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 2000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer);
+                    toast.addEventListener('mouseleave', Swal.resumeTimer);
+                }
+            });
+            Toast.fire({
+                icon: 'error',
+                title: 'Harap Masuk Terlebih Dahulu!'
+            });
+        } else {
+            $(this).closest('form').submit();
+        }
+    });
+
     function AddToCart(e) {
         const Toast = Swal.mixin({
             toast: true,

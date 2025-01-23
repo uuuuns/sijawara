@@ -398,10 +398,14 @@ class ProfileGuest extends Controller
                 ID_USER = "' . session('user')[0]['ID_USER'] . '"
         ');
 
-        $cekData = $this->cekDataProfil(session('user')[0]['ID_USER'], $data['user']->JENIS_INSTANSI);
-        if ($cekData != null) {
-            return response()->json(['status' => 'error', 'message' => $cekData, 'code' => 1]);
+        if (session('user')[0]['IS_DATA_COMPLETE'] == false) {
+            return response()->json(['status' => 'error', 'message' => 'Lengkapi data profil dan UKM/Koperasi anda terlebih dahulu', 'code' => 1]);
         }
+
+        // $cekData = $this->cekDataProfil(session('user')[0]['IS_DATA_COMPLETE'], $data['user']->JENIS_INSTANSI);
+        // if ($cekData != null) {
+        //     return response()->json(['status' => 'error', 'message' => $cekData, 'code' => 1]);
+        // }
         
         DB::table('sertifikat_activity')->where('ID_ACTIVITY', $request->id_activity)->where('ID_USER', session('user')[0]['ID_USER'])->update($data_update);
 
