@@ -219,7 +219,16 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" onclick="jadikanInstruktur()" class="btn btn-primary rounded">Jadikan Instruktur</button>
+                <button type="button" onclick="jadikanInstruktur()" class="btn btn-primary btn-update rounded jadikanInstruktur">
+                    <span class="loading">
+                        <i class="bx bx-loader bx-spin font-size-16 align-middle me-2"></i>
+                    </span> Jadikan Instruktur
+                </button>
+                <button type="button" class="btn btn-danger btn-update batalkanInstruktur" onclick="batalkanInstruktur()">
+                    <span class="loading">
+                        <i class="bx bx-loader bx-spin font-size-16 align-middle me-2"></i>
+                    </span> Batalkan Instruktur
+                </button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
             </div>
         </div>
@@ -332,15 +341,25 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary btn-update" onclick="jadikanInstruktur()">
+                    <button type="button" class="btn btn-primary btn-update jadikanInstruktur" onclick="jadikanInstruktur()">
                         <span class="loading">
                             <i class="bx bx-loader bx-spin font-size-16 align-middle me-2"></i>
                         </span> Jadikan Instruktur
                     </button>
-                    <button type="button" class="btn btn-primary btn-update" onclick="jadikanAdmin()">
+                    <button type="button" class="btn btn-primary btn-update jadikanAdmin" onclick="jadikanAdmin()">
                         <span class="loading">
                             <i class="bx bx-loader bx-spin font-size-16 align-middle me-2"></i>
                         </span> Jadikan Admin
+                    </button>
+                    <button type="button" class="btn btn-danger btn-update batalkanAdmin" onclick="batalkanAdmin()">
+                        <span class="loading">
+                            <i class="bx bx-loader bx-spin font-size-16 align-middle me-2"></i>
+                        </span> Batalkan Admin
+                    </button>
+                    <button type="button" class="btn btn-danger btn-update batalkanInstruktur" onclick="batalkanInstruktur()">
+                        <span class="loading">
+                            <i class="bx bx-loader bx-spin font-size-16 align-middle me-2"></i>
+                        </span> Batalkan Instruktur
                     </button>
                     <button type="submit" class="btn btn-primary">
                         <span class="loading">
@@ -507,6 +526,7 @@
         var data = JSON.parse(viewData);
 
         // Set user details
+        $('#up_userId').val(data.ID_USER)
         $('#userName').text('Nama: ' + data.NAME);
         $('#userEmail').text(data.EMAIL);
         $('#userTelp').text(data.TELP);
@@ -531,9 +551,18 @@
             $('#userIsDelete').text('Di Banned').attr('class', 'badge bg-danger');
         }
 
+        if (data.ID_ROLE == 3) {
+            $('.jadikanInstruktur').show()
+            $('.batalkanInstruktur').hide()
+        } else if (data.ID_ROLE == 2) {
+            $('.jadikanInstruktur').hide()
+            $('.batalkanInstruktur').show()
+        }
         $('#userIdKota').text(data.nama_kota);
         $('#userIdProvinsi').text(data.nama_province);
         $('#preview').attr('src', (data.FOTO_PROFILE == null) ? 'assets/images/person-circle.svg' : data.FOTO_PROFILE);
+        $('.btn-update').data('id_role', data.ID_ROLE);
+        $('.loading').hide();
 
         $('#userDetailModal').modal('show');
     }
@@ -561,6 +590,27 @@
                 
             }
         });
+        if (data.ID_ROLE == 1) {
+            $('.jadikanInstruktur').hide()
+            $('.jadikanAdmin').hide()
+            $('.batalkanAdmin').hide()
+            $('.batalkanInstruktur').hide()
+        } else if (data.ID_ROLE == 2) {
+            $('.jadikanInstruktur').hide()
+            $('.jadikanAdmin').show()
+            $('.batalkanAdmin').hide()
+            $('.batalkanInstruktur').show()
+        } else if (data.ID_ROLE == 3) {
+            $('.jadikanInstruktur').show()
+            $('.jadikanAdmin').show()
+            $('.batalkanAdmin').hide()
+            $('.batalkanInstruktur').hide()
+        } else if (data.ID_ROLE == 4) {
+            $('.jadikanInstruktur').show()
+            $('.jadikanAdmin').hide()
+            $('.batalkanAdmin').show()
+            $('.batalkanInstruktur').hide()
+        }
         $('#up_userId').val(data.ID_USER)
         $('#up_userName').val(data.NAME)
         $('#up_userEmail').val(data.EMAIL)
@@ -635,6 +685,56 @@
         })
     
     }
+
+    function batalkanAdmin() {
+        var id_user = $('#up_userId').val()
+        var csrfToken = $('meta[name="csrf-token"]').attr('content');
+        $('.loading').show();
+        $('.btn').prop('disabled', true);
+        if ($('.btn-update').data('id_role') == 3) {
+            Toast.fire({
+                icon: 'error',
+                title: 'User ini adalah User biasa'
+            });
+            $('.loading').hide();
+            $('.btn').prop('disabled', false);
+            return;
+        }
+        $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken
+                }
+            });
+        $.ajax({
+            url: 'pengguna/batalkanAdmin',
+            type: 'POST',
+            data: {
+                id_user: id_user,
+            },
+            success: function(data) {
+                $('#updateModal').modal('hide')
+                Swal.fire({
+                    title: 'Success',
+                    text: 'User berhasil dijadikan User biasa',
+                    icon: 'success',
+                    showCancelButton: false,
+                    showConfirmButton: false,
+                    clickOutside: false,
+                });
+                location.reload()
+            },error: function(data) {
+                console.log(data);
+                
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Gagal Menjadikan User biasa'
+                });
+                $('.loading').hide();
+                $('.btn').prop('disabled', false);
+            }
+        })
+    
+    }
     
     function jadikanInstruktur() {
         var id_user = $('#up_userId').val()
@@ -677,6 +777,54 @@
                 Toast.fire({
                     icon: 'error',
                     title: 'Gagal Menjadikan Instruktur'
+                });
+                $('.loading').hide();
+                $('.btn').prop('disabled', false);
+            }
+        })
+    }
+
+    function batalkanInstruktur() {
+        var id_user = $('#up_userId').val()
+        var csrfToken = $('meta[name="csrf-token"]').attr('content');
+        $('.loading').show();
+        $('.btn').prop('disabled', true);
+        
+        if ($('.btn-update').data('id_role') == 3) {
+            Toast.fire({
+                icon: 'error',
+                title: 'User ini adalah User biasa'
+            });
+            $('.loading').hide();
+            $('.btn').prop('disabled', false);
+            return;
+        }
+        $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken
+                }
+            });
+        $.ajax({
+            url: 'pengguna/batalkanInstruktur',
+            type: 'POST',
+            data: {
+                id_user: id_user,
+            },
+            success: function(data) {
+                $('#updateModal').modal('hide')
+                Swal.fire({
+                    title: 'Success',
+                    text: 'User berhasil dijadikan User Biasa',
+                    icon: 'success',
+                    showCancelButton: false,
+                    showConfirmButton: false,
+                    clickOutside: false,
+                });
+                location.reload()
+            },error: function(data) {
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Gagal Menjadikan User Biasa'
                 });
                 $('.loading').hide();
                 $('.btn').prop('disabled', false);
