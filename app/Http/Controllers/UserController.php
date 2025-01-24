@@ -306,7 +306,7 @@ class UserController extends Controller
 
         return response()->json([
             'success' => true,
-            'file_url' => asset('reporting/' . $filePath),
+            'file_url' => url(request()->segment(0) . '/reporting/' . $filePath),
         ]);
     }
 
@@ -366,7 +366,7 @@ class UserController extends Controller
 
         return response()->json([
             'success' => true,
-            'file_url' => asset('reporting/' . $filePath),
+            'file_url' => url(request()->segment(0) . '/reporting/' . $filePath),
         ]);
     }
 }
