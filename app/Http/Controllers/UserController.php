@@ -224,6 +224,19 @@ class UserController extends Controller
 
         return redirect()->back();
     }
+    public function batalkanAdmin(Request $request)
+    {
+        try {
+            $id_user = $request->input('id_user');
+            DB::table('user')
+                ->where('ID_USER', $id_user)
+                ->update(['ID_ROLE' => 3]);
+    
+            return redirect()->back();
+        } catch (\Throwable $e) {
+            return $e;
+        }
+    }
 
     public function jadikanInstruktur(Request $request)
     {
@@ -231,6 +244,15 @@ class UserController extends Controller
         DB::table('user')
             ->where('ID_USER', $id_user)
             ->update(['ID_ROLE' => 2]);
+
+        return redirect()->back();
+    }
+    public function batalkanInstruktur(Request $request)
+    {
+        $id_user = $request->input('id_user');
+        DB::table('user')
+            ->where('ID_USER', $id_user)
+            ->update(['ID_ROLE' => 3]);
 
         return redirect()->back();
     }
