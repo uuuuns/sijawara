@@ -67,7 +67,15 @@ class CourseController extends Controller
 
             $data["activity"] = DB::select("
             SELECT
-                c.*
+                c.*,
+                (
+                    SELECT
+                        count(*)
+                    FROM 
+                        `order` o
+                    WHERE
+                        ID_PRODUCT = c.ID_ACTIVITY
+                ) AS CHECK_PARTICIPANT
             FROM
                 activity c
             WHERE
