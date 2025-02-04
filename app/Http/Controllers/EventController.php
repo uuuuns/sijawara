@@ -61,7 +61,15 @@ class EventController extends Controller
                     e.ORGANIZER,
                     e.CONTACT_CUSTOMER,
                     e.LINK_ZOOM,
-                    e.KUOTA_PESERTA
+                    e.KUOTA_PESERTA,
+                    (
+                        SELECT
+                            count(*)
+                        FROM
+                            `order` o
+                        WHERE
+                            o.ID_PRODUCT = a.ID_ACTIVITY
+                    ) AS CHECK_PARTICIPANT
                 FROM
                     activity a
                 LEFT JOIN event e ON
