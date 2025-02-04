@@ -78,8 +78,12 @@
                                                     </button>
                                                 </form>
                                             @endif
+                                            @php
+                                            $judul = $item->TITLE_ACTIVITY;
+                                            unset($item->TITLE_ACTIVITY);
+                                            @endphp
                                             <button type="button"
-                                                onclick="openviewModal(`<?= htmlentities(json_encode($item)) ?>`)"
+                                                onclick="openviewModal(<?=htmlentities(json_encode($judul))?>, `<?= htmlentities(json_encode($item)) ?>`)"
                                                 class="btn btn-dark btn-sm-2 w-100 fs-8 rounded waves-effect waves-light px-2"
                                                 style="min-width: 155px !important; margin: 5px 0px;">
                                                 <i class="bx bx-edit-alt font-size-16 align-middle"></i> Edit Webinar/Pelatihan
@@ -442,11 +446,11 @@
             $('#addModal').modal('show')
         }
 
-        function openviewModal(viewData) {
+        function openviewModal(judul, viewData) {
             var data = JSON.parse(viewData)
             var price = data.PRICE_ACTIVITY
             var cat = data.CATEGORY_EVENT
-            
+            console.log(judul)
             function initializeDropify(inputName, fileUrl) {
                 var dropifyElement = $('input[name="' + inputName + '"]').dropify();
                 var instance = dropifyElement.data('dropify');
@@ -460,7 +464,7 @@
             initializeDropify('up_sertif_image', data.SERTIF_IMAGE);
 
             $('input[name="up_id_activity"]').val(data.ID_ACTIVITY)
-            $('input[name="up_title_activity"]').val(data.TITLE_ACTIVITY)
+            $('input[name="up_title_activity"]').val(judul)
             if (price == 0) {
                 $('#up_setFree').prop('checked', true);
                 $('.up_CurrencyInput').prop('readonly', true)
