@@ -328,7 +328,7 @@ class UserController extends Controller
 
         return response()->json([
             'success' => true,
-            'file_url' => asset('reporting/' . $filePath),
+            'file_url' => secure_asset('reporting/' . $filePath),
         ]);
     }
 
@@ -388,7 +388,7 @@ class UserController extends Controller
 
         return response()->json([
             'success' => true,
-            'file_url' => asset('reporting/' . $filePath),
+            'file_url' => secure_asset('reporting/' . $filePath),
         ]);
     }
 }

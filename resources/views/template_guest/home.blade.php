@@ -13,7 +13,7 @@
                 <div class="d-flex gap-2">
                     <button class="btn btn-main py-2 px-4 rounded" onclick="window.location.href = '/kursus'">Mulai Belajar</button>
                     @if (empty(session('user')))
-                        <button class="btn btn-main-outline py-2 px-4 rounded" onclick="window.location.href = '/daftar'">Daftar</button>
+                    <button class="btn btn-main-outline py-2 px-4 rounded" onclick="window.location.href = '/daftar'">Daftar</button>
                     @endif
                 </div>
             </div>
@@ -409,13 +409,13 @@
             <div class="container py-5 ">
                 <h3 class="text-center" style="font-weight:600">Mulai dan Pilih Pelatihan Anda</h3>
                 <div class="row  pt-3 pt-lg-0">
-                    <div class="col-12 col-lg-6 text-center">
+                    <div class="col-12 col-lg-6 text-center" id="belajar-mandiri">
                         <a href="{{ url('kursus') }}">
                             <img class="mandiri-img" src="{{ asset('assets_new') }}/images/new/event.png" />
                         </a>
                         <h4 class="fw-semibold pt-2 mandiri-text">Belajar Mandiri</h4>
                     </div>
-                    <div class="col-12 col-lg-6 text-center pt-4 pt-sm-0">
+                    <div class="col-12 col-lg-6 text-center pt-4 pt-sm-0" id="webinar">
                         <a href="{{ url('webinar') }}">
                             <img class="webinar-img" src="{{ asset('assets_new') }}/images/new/webinar.png" />
                         </a>
@@ -490,4 +490,119 @@
             }
         }).mount();
     });
+</script>
+
+<script>
+    <?php if (!empty(session('user')[0])) { ?>
+        document.addEventListener('DOMContentLoaded', function() {
+            window.scrollTo(0, 0);
+
+            const intro = introJs();
+
+            intro.setOptions({
+                steps: [{
+                        title: "Hallo",
+                        intro: "Selamat datang di SIJAWARA+"
+                    },
+                    {
+                        element: document.getElementById('belajar-mandiri'),
+                        intro: "Anda bisa mencari kursus kelas untuk belajar mandiri disini!"
+                    }, {
+                        element: document.getElementById('webinar'),
+                        intro: "Anda juga bisa mencari webinar menarik disini!"
+                    }
+                ]
+            }).setOptions({
+                showBullets: false,
+                scrollToElement: false
+            })
+
+            intro.onbeforechange(function(targetElement) {
+                let width = $(window).width();
+
+                if (width > 991) {
+                    if (this._currentStep == 1) {
+                        // window.scrollTo(0, $(targetElement).offset().top - 500);
+
+                        $(".introjs-helperLayer").css('top', '').attr('style', function(i, style) {
+                            return (style || '') + 'top: ' + ($(targetElement).offset().top - (85)) + 'px !important;';
+                        });
+                        $(".introjs-tooltipReferenceLayer").css('top', '').attr('style', function(i, style) {
+                            return (style || '') + 'top:  ' + ($(targetElement).offset().top - (85)) + 'px !important;';
+                        });
+
+                        intro.refresh()
+                    }
+                } else {
+                    if (this._currentStep == 1) {
+
+                        window.scrollTo(0, $(targetElement).offset().top - 400);
+
+                        $(".introjs-helperLayer").css('top', '').attr('style', function(i, style) {
+                            return (style || '') + 'top: ' + ($(targetElement).offset().top - (85)) + 'px !important;';
+                        });
+                        $(".introjs-tooltipReferenceLayer").css('top', '').attr('style', function(i, style) {
+                            return (style || '') + 'top:  ' + ($(targetElement).offset().top - (85)) + 'px !important;';
+                        });
+
+                        intro.refresh()
+                    } else if (this._currentStep == 2) {
+
+                        window.scrollTo(0, $(targetElement).offset().top - 400);
+
+                        $(".introjs-helperLayer").css('top', '').attr('style', function(i, style) {
+                            return (style || '') + 'top: ' + ($(targetElement).offset().top + 10) + 'px !important;';
+                        });
+                        $(".introjs-tooltipReferenceLayer").css('top', '').attr('style', function(i, style) {
+                            return (style || '') + 'top:  ' + ($(targetElement).offset().top + 10) + 'px !important;';
+                        });
+
+                        intro.refresh()
+                    }
+                }
+            });
+
+            window.scrollTo(0, 0)
+
+            function showIntroIfNeeded(userId) {
+                if (!localStorage.getItem(`intro_home_${userId}`)) {
+                    if ($(window).scrollTop() === 0) {
+
+                        intro.start()
+                        intro.oncomplete(() => {
+                            localStorage.setItem(`intro_home_${userId}`, "true")
+                        })
+                        intro.onexit(() => {
+                            localStorage.setItem(`intro_home_${userId}`, "true")
+                        })
+                    } else {
+                        $(window).on('scroll', function checkScroll() {
+                            if ($(window).scrollTop() === 0) {
+                                intro.start()
+                                intro.oncomplete(() => {
+                                    localStorage.setItem(`intro_home_${userId}`, "true")
+                                })
+                                intro.onexit(() => {
+                                    localStorage.setItem(`intro_home_${userId}`, "true")
+                                })
+
+                                $(window).off('scroll', checkScroll)
+                            }
+                        });
+                    }
+
+                    localStorage.setItem(`intro_home_${userId}`, 'true')
+                }
+            }
+
+            function onLogin(userId) {
+                showIntroIfNeeded(userId)
+            }
+
+            onLogin('<?= session('user')[0]['ID_USER'] ?>')
+        });
+
+
+
+    <?php } ?>
 </script>
