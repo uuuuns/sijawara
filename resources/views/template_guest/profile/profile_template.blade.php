@@ -37,7 +37,7 @@
                                     <!-- INSTRUCTOR SIDEBAR START -->
                                     <!-- if(instructor) -->
                                     <?php if (session('user')[0]['ID_ROLE'] == 2) { ?>
-                                        <li class="nav-item w-100">
+                                        <!-- <li class="nav-item w-100">
                                             <a href="{{ url("profil/overview") }}" class="overview  nav-link d-flex align-middle px-4 py-3 rounded-0">
                                                 <i class="fs-6 d-flex align-items-center far fa-bookmark"></i> <span class="ms-1 ps-2 fs-6 align-self-center ">Ringkasan
                                                     Penjualan</span>
@@ -45,7 +45,7 @@
                                         </li>
                                         <li class="w-100">
                                             <hr class="my-0 border border-1 mx-3">
-                                        </li>
+                                        </li> -->
                                         <li class="nav-item w-100">
                                             <a href="{{ url("dashboard") }}" class="nav-link d-flex align-middle px-4 py-3 rounded-0">
                                                 <i class="fs-6 d-flex align-items-center far fa-book-medical"></i> <span class="ms-1 ps-2 fs-6 align-self-center ">Buat
