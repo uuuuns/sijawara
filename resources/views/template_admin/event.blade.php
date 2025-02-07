@@ -89,7 +89,7 @@
                                                 <i class="bx bx-edit-alt font-size-16 align-middle"></i> Edit Webinar/Pelatihan
                                             </button>
                                             <button type="button"
-                                                onclick="<?= $item->CHECK_PARTICIPANT ? "opendeleteModal('{$item->ID_ACTIVITY}')" : "NotifDelete()" ?>"
+                                                onclick="<?= $item->CHECK_PARTICIPANT == 0 ? "opendeleteModal('{$item->ID_ACTIVITY}')" : "NotifDelete()" ?>"
                                                 class="btn btn-danger btn-sm-2 w-100 fs-8 rounded waves-effect waves-light px-2"
                                                 style="min-width: 155px !important;">
                                                 <i class="bx bx-trash font-size-16 align-middle"></i> Hapus Webinar/Pelatihan
