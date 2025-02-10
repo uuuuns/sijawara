@@ -29,7 +29,7 @@
                                             </span>
                                         </a>
                                     </li>
-                                    
+
                                     <li class="w-100">
                                         <hr class="my-0 border border-1 mx-3">
                                     </li>
@@ -71,16 +71,16 @@
                                             </a>
                                         </li>
                                         <li class="nav-item w-100">
-                                                <a href="{{ url('kategori') }}" class="nav-link  {{ request()->is('kategori') ? 'active' : '' }}  d-flex align-middle px-4 py-3 rounded-0">
-                                                    <i class="fs-6 d-flex align-items-center far fa-th-large"></i> <span class="ms-1 ps-2 fs-6 align-self-center ">
-                                                        Kategori
-                                                    </span>
-                                                </a>
-                                            </li>
-                                            <li class="w-100">
-                                                <hr class="my-0 border border-1 mx-3">
-                                            </li>
-                                            <li class="nav-item w-100">
+                                            <a href="{{ url('kategori') }}" class="nav-link  {{ request()->is('kategori') ? 'active' : '' }}  d-flex align-middle px-4 py-3 rounded-0">
+                                                <i class="fs-6 d-flex align-items-center far fa-th-large"></i> <span class="ms-1 ps-2 fs-6 align-self-center ">
+                                                    Kategori
+                                                </span>
+                                            </a>
+                                        </li>
+                                        <li class="w-100">
+                                            <hr class="my-0 border border-1 mx-3">
+                                        </li>
+                                        <li class="nav-item w-100">
                                             <a data-bs-toggle="collapse" data-bs-target="#statistik_menu" aria-expanded="true" aria-controls="submenu" class="nav-link d-flex align-middle px-4 py-3 rounded-0 {{ (request()->is('statistik-kategori*') || request()->is('statistik-peserta*')) ? 'active' :  '' }}" style="cursor: pointer;">
                                                 <i class="fs-6 d-flex align-items-center far fa-file-chart-pie"></i>
                                                 <span class="ms-1 ps-2 fs-6 align-self-center ">Statistik</span>
@@ -138,7 +138,7 @@
                                             </a>
                                         </li>
                                         <li class="nav-item w-100">
-                                            <a data-bs-toggle="collapse" data-bs-target="#submenu_master_data" aria-expanded="true" aria-controls="submenu" class="nav-link d-flex align-middle px-4 py-3 rounded-0 {{ (request()->is('testimoni*') || request()->is('pengaturan*')) ? 'active' :  '' }}" style="cursor: pointer;">
+                                            <a data-bs-toggle="collapse" data-bs-target="#submenu_master_data" aria-expanded="true" aria-controls="submenu" class="nav-link d-flex align-middle px-4 py-3 rounded-0 {{ (request()->is('widyaiswara*') || request()->is('ukm*') || request()->is('koperasi*')) ? 'active' :  '' }}" style="cursor: pointer;">
                                                 <i class="fs-6 d-flex align-items-center far fa-tools"></i>
                                                 <span class="ms-1 ps-2 fs-6 align-self-center ">Master Data</span>
                                                 <svg class="svg-inline--fa fa-chevron-down ms-auto" style="width: 18px" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-down" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="">
@@ -218,9 +218,14 @@
                                                         </li>
                                                     </ul>
                                                 </li>
-                                                <a href="{{ url('widyaiswara') }}" class="nav-link  {{ request()->is('instruktur') ? 'active' : '' }}  d-flex align-middle px-4 py-3 rounded-0">
-                                                    <span class="ms-3 ps-3 fs-6 align-self-center ">Widyaiswara</span>
-                                                </a>
+                                                <li class="w-100">
+                                                    <hr class="my-0 border border-1 mx-3">
+                                                </li>
+                                                <li class="nav-item w-100">
+                                                    <a href="{{ url('widyaiswara') }}" class="nav-link  {{ request()->is('instruktur') ? 'active' : '' }}  d-flex align-middle px-4 py-3 rounded-0">
+                                                        <span class="ms-3 ps-3 fs-6 align-self-center ">Widyaiswara</span>
+                                                    </a>
+                                                </li>
                                             </ul>
                                         </li>
                                         <li class="nav-item w-100">

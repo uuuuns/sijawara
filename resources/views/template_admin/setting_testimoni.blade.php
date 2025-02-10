@@ -15,10 +15,10 @@
     <div class="">
         <div class="card-body">
             <div class="row">
-                <div class="col-md-6 align-self-center">
+                <div class="col-md-6 text-center text-md-start">
                     <h3 class="fw-bold" style="color:#45b104">Setting Testimoni</h3>
                 </div>
-                <div class="col-md-6 d-flex justify-content-md-end justify-content-end align-items-center">
+                <div class="col-md-6 d-flex justify-content-md-end justify-content-center align-items-center">
                     <div class="mt-3 mt-md-0">
                         <button type="button" class="btn btn-primary btn-sm-2 rounded" onclick="openaddModal()">
                             <i class="mdi mdi-plus me-1"></i>
@@ -27,38 +27,40 @@
                 </div>
             </div>
             <div class="mt-5">
-                <table class="table mb-0" id="dtTable">
-                    <thead>
-                        <tr>
-                            <th width="5%">No</th>
-                            <th width="10%">Nama</th>
-                            <th>Testimoni</th>
-                            <th width="10%">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php $number = 0; ?>
+                <div class="table-responsive">
+                    <table class="table mb-0" id="dtTable">
+                        <thead>
+                            <tr>
+                                <th width="5%">No</th>
+                                <th width="10%">Nama</th>
+                                <th>Testimoni</th>
+                                <th width="10%">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php $number = 0; ?>
 
-                        @foreach ($testimoni as $item)
-                        <?php $number++; ?>
-                        <tr>
-                            <td><?= $number ?></td>
-                            <td><?= $item->nama ?></td>
-                            <td style="max-width: 3rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-                                <?= $item->testimoni ?>
-                            </td>
-                            <td>
-                                <button type="button" onclick="openviewModal(`<?= htmlentities(json_encode($item)) ?>`)" class="btn btn-warning px-4 py-2 rounded">
-                                    <i class="bx bx-edit-alt font-size-16 align-middle"></i>
-                                </button>
-                                <button type="button" onclick="deleteModal(<?= $item->id_testimoni ?>)" class="btn btn-danger px-4 py-2 rounded">
-                                    <i class="bx bx-trash-alt font-size-16 align-middle"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                            @foreach ($testimoni as $item)
+                            <?php $number++; ?>
+                            <tr>
+                                <td><?= $number ?></td>
+                                <td><?= $item->nama ?></td>
+                                <td style="max-width: 3rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                    <?= $item->testimoni ?>
+                                </td>
+                                <td>
+                                    <button type="button" onclick="openviewModal(`<?= htmlentities(json_encode($item)) ?>`)" class="btn btn-warning px-4 py-2 rounded">
+                                        <i class="bx bx-edit-alt font-size-16 align-middle"></i>
+                                    </button>
+                                    <button type="button" onclick="deleteModal(<?= $item->id_testimoni ?>)" class="btn btn-danger px-4 py-2 rounded">
+                                        <i class="bx bx-trash-alt font-size-16 align-middle"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -97,9 +99,9 @@
                     <button type="Submit" class="btn btn-primary rounded">Edit Testimoni</button>
                 </div>
             </form>
-            </div>
         </div>
     </div>
+</div>
 </div>
 {{-- End Update Modal View --}}
 
@@ -190,7 +192,7 @@
         $('#up_id_testimoni').val(data.id_testimoni)
         $('#up_testimoni').val(data.testimoni)
         $('#up_nama').val(data.nama)
-        
+
         var gambar_testimoni = $('input[name="up_gambar_testimoni"]').dropify();
         gambar_testimoni = gambar_testimoni.data('dropify');
         gambar_testimoni.resetPreview();
