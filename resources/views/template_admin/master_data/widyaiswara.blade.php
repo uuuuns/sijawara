@@ -15,10 +15,10 @@
     <div class="">
         <div class="card-body">
             <div class="row">
-                <div class="col-md-6 align-self-center">
+                <div class="col-md-6 text-center text-md-start">
                     <h3 class="fw-bold" style="color:#45b104">Widyaiswara</h3>
                 </div>
-                <div class="col-md-6 d-flex justify-content-md-end justify-content-end align-items-center">
+                <div class="col-md-6 d-flex justify-content-md-end justify-content-center align-items-center">
                     <div class="mt-3 mt-md-0">
                         <button type="button" class="btn btn-primary btn-sm-2 rounded" onclick="openaddModal()">
                             <i class="mdi mdi-plus me-1"></i>
@@ -26,45 +26,47 @@
                     </div>
                 </div>
             </div>
-            <div class="m-t-25">
-                <table class="table mb-0" id="dtTable">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th style="width: 15%">Profile</th>
-                            <th style="width: 30%;">Nama</th>
-                            <th style="width: 30%;">Posisi</th>
-                            <th style="width: 25%">Tentang</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php $number = 0; ?>
+            <div class="mt-5">
+                <div class="table-responsive">
+                    <table class="table mb-0" id="dtTable">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th style="width: 15%">Profile</th>
+                                <th style="width: 30%;">Nama</th>
+                                <th style="width: 30%;">Posisi</th>
+                                <th style="width: 25%">Tentang</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php $number = 0; ?>
 
-                        @foreach ($widyaiswara as $item)
-                        <?php $number++; ?>
-                        <tr>
-                            <td><?= $number ?></td>
-                            <td>
-                                <img src="<?= $item->IMAGE ?>" alt="Profile Image" style="width: 80px; height: auto;">
-                            </td>
-                            <td><?= $item->NAMA ?></td>
-                            <td><?= $item->POSISI ?></td>
-                            <td><?= $item->TENTANG ?></td>
-                            <td>
-                                <div class="d-flex flex-row gap-2">
-                                    <button type="button" onclick="openviewModal(`<?= htmlentities(json_encode($item)) ?>`)" class="btn btn-warning px-4 py-2 rounded">
-                                        <i class="bx bx-edit-alt font-size-16 align-middle"></i>
-                                    </button>
-                                    <button type="button" onclick="opendeleteModal(`<?= htmlentities(json_encode($item)) ?>`)" class="btn btn-danger px-4 py-2 rounded">
-                                        <i class="bx bx-trash font-size-16 align-middle"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                            @foreach ($widyaiswara as $item)
+                            <?php $number++; ?>
+                            <tr>
+                                <td><?= $number ?></td>
+                                <td>
+                                    <img src="<?= $item->IMAGE ?>" alt="Profile Image" style="width: 80px; height: auto;">
+                                </td>
+                                <td><?= $item->NAMA ?></td>
+                                <td><?= $item->POSISI ?></td>
+                                <td><?= $item->TENTANG ?></td>
+                                <td>
+                                    <div class="d-flex flex-row gap-2">
+                                        <button type="button" onclick="openviewModal(`<?= htmlentities(json_encode($item)) ?>`)" class="btn btn-warning px-4 py-2 rounded">
+                                            <i class="bx bx-edit-alt font-size-16 align-middle"></i>
+                                        </button>
+                                        <button type="button" onclick="opendeleteModal(`<?= htmlentities(json_encode($item)) ?>`)" class="btn btn-danger px-4 py-2 rounded">
+                                            <i class="bx bx-trash font-size-16 align-middle"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -86,7 +88,7 @@
                 @csrf
                 <div class="modal-body">
                     <div class="form-group row">
-                    <label>Gambar Profil<span class="text-danger">*</span></label>
+                        <label>Gambar Profil<span class="text-danger">*</span></label>
                         <div class="col-md-12">
                             <div class="custom-file">
                                 <input type="file" name="image_profile" class="custom-file-input dropify"
@@ -125,7 +127,7 @@
             <form id="form-user" action="{{ url('widyaiswara/update') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
-                <label>Foto Profil</label>
+                    <label>Foto Profil</label>
                     <div class="custom-file">
                         <input type="file" name="up_image_profile" class="custom-file-input dropify" accept=".jpg, .png, .jpeg" data-allowed-file-extensions="jpg png jpeg" data-max-file-size="5M">
                     </div>

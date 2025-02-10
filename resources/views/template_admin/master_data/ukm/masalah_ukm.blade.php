@@ -16,10 +16,10 @@
     <div class="">
         <div class="card-body">
             <div class="row">
-                <div class="col-md-6 align-self-center">
+                <div class="col-md-6 text-center text-md-start">
                     <h3 class="fw-bold" style="color:#45b104">Masalah UKM</h3>
                 </div>
-                <div class="col-md-6 d-flex justify-content-md-end justify-content-end align-items-center">
+                <div class="col-md-6 d-flex justify-content-md-end justify-content-center align-items-center">
                     <div class="mt-3 mt-md-0">
                         <button type="button" class="btn btn-primary btn-sm-2 rounded" onclick="openaddModal()">
                             <i class="mdi mdi-plus me-1"></i>
