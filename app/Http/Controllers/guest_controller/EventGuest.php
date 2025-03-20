@@ -148,6 +148,11 @@ class EventGuest extends Controller
 	{
 		$data['title'] = 'Event';
 		$data_user =  (session('user') == null) ? null : Session::get('user')[0]->get('ID_USER');
+
+		if(empty($_GET['id_activity'])) {
+			return redirect('404');
+		}
+
 		$id_activity = $_GET['id_activity'];
 		$data['event'] = $this->eventModel->get_event($id_activity);
 		$data['other_event'] = $this->eventModel->get_other_event($id_activity);
