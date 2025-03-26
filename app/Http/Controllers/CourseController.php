@@ -164,14 +164,18 @@ class CourseController extends Controller
             if ($req->input('req')) {
                 $course['REQUIREMENT']  = $req->input('req');
             }
+            DB::beginTransaction();
     
             DB::table('activity')->insert($activity);
             DB::table('course')->insert($course);
     
             $data['ID_COURSE'] = $course['ID_COURSE'];
             $this->item_materi($data, $req);
+            DB::commit();
             return redirect('kursus-admin')->with(['succ_msg' => 'Berhasil Menambahkan Kursus', 'location' => 'kursus-admin']);
         } catch (\Throwable $e) {
+            DB::rollBack();
+            
             return response()->json([
                 'status' => 'failure',
                 'errors' => $e

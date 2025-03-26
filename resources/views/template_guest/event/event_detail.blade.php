@@ -1,5 +1,5 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
-<section class="page-wrapper">
+<section class="page-wrapper" style="padding-top: 40px !important;">
     <div class="tutori-course-content">
         <div class="container">
             <?php if ($event->EXPIRED == 1) { ?>
@@ -10,10 +10,10 @@
             <div class="row pt-3">
                 <div class="col-lg-5">
                     <!-- event Sidebar start -->
-                    <div class="course-sidebar course-sidebar-2 mt-5 mt-lg-0">
+                    <div class="course-sidebar course-sidebar-2 mt-lg-0">
                         <div class="">
                             <div class="course-thumbnail d-flex justify-content-center">
-                                <div class="pe-0 pe-sm-5 rounded-1">
+                                <div class="pe-0 pe-sm-0 rounded-1">
                                     <img src="<?= $event->IMAGE_ACTIVITY ?>" class="d-block img-fluid h-auto ">
                                 </div>
                             </div>
@@ -27,7 +27,11 @@
                                             @csrf
                                             <div id="data-input-info"></div>
                                             <input type="hidden" name="id_event" value="<?= $event->ID_ACTIVITY ?>">
-                                            <button type="submit">Ambil Sekarang</button>
+                                            <button 
+                                                id="colorButton"
+                                                style="border: 1px solid black; width: 100%; background-color: red; color: white; padding: 10px; font-size: 16px; cursor: pointer; transition: background-color 0.4s ease-in-out;">
+                                                Ambil Sekarang
+                                            </button>
                                         </form>
                                     </div>
                                     @endif
@@ -36,14 +40,12 @@
                                     @endif
                                 <?php endif ?>
                             </div>
-
                         </div>
                     </div>
                 </div>
 
-                <div class="col-lg-7 ps-3">
+                <div class="col-lg-7 ps-3 ps-sm-5 mt-5 mt-sm-0">
                     <div class="course-header-wrapper">
-
                         <div>
                             <h2 class="course-title bg-white">
                                 <?= $event->TITLE_ACTIVITY ?>
@@ -261,6 +263,16 @@
 </style>
 
 <script>
+    const button = document.getElementById("colorButton");
+
+    const colors = ["red", "orange", "yellow", "#80FF00", "#40FF00", "green"];
+    let index = 0;
+
+    setInterval(() => {
+      button.style.backgroundColor = colors[index]; 
+      index = (index + 1) % colors.length;
+    }, 200);
+
     const Toast = Swal.mixin({
         toast: true,
         position: 'top-end',
