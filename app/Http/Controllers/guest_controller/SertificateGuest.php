@@ -27,31 +27,56 @@ class SertificateGuest extends Controller
         $getImage = file_get_contents($path);
         $data['IMAGE'] = 'data:image/' . $type . ';base64,' . base64_encode($getImage);
 
+        $path_hal2 = 'assets/images/template_sertifikat_hal2.jpg';
+
+        $type_hal2 = pathinfo($path_hal2, PATHINFO_EXTENSION);
+        $getImage_hal2 = file_get_contents($path_hal2);
+        $data['IMAGE_HAL_2'] = 'data:image/' . $type_hal2 . ';base64,' . base64_encode($getImage_hal2);
+
         // Set certificate details
         $data['NAME'] = "Tamarin Hamaji";
         $data['ROLES'] = "PESERTA"; //PESERTA
         $data['JUDUL'] = "Fotografi Dalam 5 Menit"; //Fotografi Dalam 5 Menit
         $data['TGL_ACARA'] = "25 Oktober 2024"; //25 Oktober 2024
         $data['TGL_TTD'] = "25 OKTOBER 2024"; //MALANG, 25 OKTOBER 2024
+        $data['JP'] = "2 JP"; //MALANG, 25 OKTOBER 2024
+        $data['TOTAL_JP'] = "2 JAM"; //MALANG, 25 OKTOBER 2024
+
+        $data['LIST_TEMA'][] = [
+            'TEMA' => 'Mata Lensa Mata Kita, Lensa Penangkap Cahaya Peawfeawfawf feaengabadian Memori',
+            'JP' => '2 JP',
+        ];
+        
+        $data['LIST_TEMA'][] = [
+            'TEMA' => 'Mata Lensa Mata Kita, Lensa Penangkap Cahaya wefawefwaf awfaefPengabadian Memori',
+            'JP' => '3 JP',
+        ];
+        $data['LIST_TEMA'][] = [
+            'TEMA' => 'Mata Lensa Mata Kita,  Lenw  fwefawefsa Pewaefnawefawefaangkap Cahayafawfwefawefaewf Pengabadian Memori',
+            'JP' => '3 JP',
+        ];
 
         // Render the HTML template for the certificate
-        $html = view('pdf_template.sertifikat', $data)->render();
+        $html1 = view('pdf_template.sertifikat', $data)->render();
+        $html2 = view('pdf_template.sertifikat_webinar', $data)->render();
+        $html = $html1 . $html2;
+
 
         // Generate the PDF
         $resPdf = PDFGenerator::generate($html, $file_pdf, $paper, $orientation);
-        $new_path = FileUpload::UploadFileBlob($file_pdf, $resPdf, 'certificate');
-        return $new_path;
+        // $new_path = FileUpload::UploadFileBlob($file_pdf, $resPdf, 'certificate');
+        // return $new_path;
         // Stream the PDF inline in the browser
-        // return Response::stream(
-        //     function () use ($resPdf) {
-        //         echo $resPdf;
-        //     },
-        //     200,
-        //     [
-        //         'Content-Type' => 'application/pdf',
-        //         'Content-Disposition' => 'inline; filename="' . $file_pdf . '"'
-        //     ]
-        // );
+        return Response::stream(
+            function () use ($resPdf) {
+                echo $resPdf;
+            },
+            200,
+            [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'inline; filename="' . $file_pdf . '"'
+            ]
+        );
     }
 
     public function verifSertif(Request $request) {

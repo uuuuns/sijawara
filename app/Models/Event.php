@@ -108,6 +108,8 @@ class Event extends Model
                 event.DESKRIPSI_EVENT, 
                 event.LINK_ZOOM,
                 event.KUOTA_PESERTA,
+                event.TEMA,
+                event.JAM_PELATIHAN,
                 (SELECT COUNT(*)
                     FROM `order` o
                     WHERE o.ID_USER = "' . session('user')[0]->get('ID_USER') . '"

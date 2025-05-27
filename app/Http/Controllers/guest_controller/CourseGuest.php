@@ -53,6 +53,7 @@ class CourseGuest extends Controller
 			view('template_guest.course.course', $data) .
 			view('template.footer', $data);
 	}
+	
 	public function detailCourse()
 	{
 		if (session('user') == null) {
@@ -160,7 +161,7 @@ class CourseGuest extends Controller
 			);
 			$id_sertif = DB::table('sertifikat_activity')->insertGetId($data_sertif);
 
-			$sertif_path = $this->certificateModel->generate(session('user')[0]->get('NAME'), $data['course']->TITLE_ACTIVITY, $sertif_number, $data['course']->SERTIF_IMAGE, "PESERTA", date('d F Y', strtotime($data['course']->DATE_START)), $id_sertif);
+			$sertif_path = $this->certificateModel->generate(session('user')[0]->get('NAME'), $data['course']->TITLE_ACTIVITY, $sertif_number, $data['course']->SERTIF_IMAGE, "PESERTA", date('d F Y', strtotime($data['course']->DATE_START)), $id_sertif, 1, null, null);
 			$data_sertif = array(
 				"ID_USER" => session('user')[0]->get('ID_USER'),
 				"ID_ACTIVITY" => $data['id_activity'],
@@ -204,6 +205,7 @@ class CourseGuest extends Controller
 			view('template_guest.course.course_detail', $data) .
 			view('template.footer', $data);
 	}
+
 	public function getDetailItemCourse()
 	{
 		$data['id_item'] = $_POST['id_item'];
@@ -366,6 +368,7 @@ class CourseGuest extends Controller
 
 		return view('template_guest.course.ajax.detail_item', $data);
 	}
+
 	public function getMappingCourse()
 	{
 		$newDataItem = DB::select("
@@ -380,6 +383,7 @@ class CourseGuest extends Controller
 		");
 		echo json_encode($newDataItem);
 	}
+
 	public function infoCourse()
 	{
 		$data['title'] = 'Course';
@@ -495,6 +499,7 @@ class CourseGuest extends Controller
 			return redirect('profil/kursusku')->with(['err_msg' => 'Sudah mengambil join Kursus ini', 'location' => 'profil/kursusku']);
 		}
 	}
+
 	public function InsertDataMapping($item)
 	{
 		$data_course = $this->courseModel->get_course($item);
@@ -519,6 +524,7 @@ class CourseGuest extends Controller
 			DB::table('mapping_course')->insert($data_mapping);
 		}
 	}
+
 	public function QuizEvaluation()
 	{
 		$id_quiz = $_POST['id_quiz'];
@@ -603,6 +609,7 @@ class CourseGuest extends Controller
 
 		echo $nilai;
 	}
+
 	public function searchCourse()
 	{
 		$keyword = $_GET['keyword'];

@@ -116,7 +116,6 @@ class EventGuest extends Controller
 			view('template_guest.event.event', compact('events', 'totalRows')) .
 			view('template.footer', $data);
 	}
-
 	public function add_event(Request $req)
 	{
 		$check_data = DB::select("
@@ -156,9 +155,22 @@ class EventGuest extends Controller
 		$id_activity = $_GET['id_activity'];
 		$data['event'] = $this->eventModel->get_event($id_activity);
 		$data['other_event'] = $this->eventModel->get_other_event($id_activity);
+		$HAL_2_SERTIF = $data['event']->SERTIF_IMAGE_BELAKANG;
 		
 		if($data['event'] == NULL ) {
 			return redirect('404');
+		}
+
+		if (!empty($data['event']->TEMA)) {
+			$tema = explode(';', $data['event']->TEMA);
+			$jp = explode(';', $data['event']->JAM_PELATIHAN);
+			$LIST_TEMA = [];
+			foreach ($tema as $key => $value) {
+				$LIST_TEMA[] = [
+					'TEMA' => $value,
+					'JP' => $jp[$key]
+				];
+			}
 		}
 
 		if (empty($data['event']->DATA_CHECKING)){
@@ -192,7 +204,7 @@ class EventGuest extends Controller
 			);
 			$id_sertif = DB::table('sertifikat_activity')->insertGetId($data_sertif);
 
-			$sertif_path = $this->certificateModel->generate(session('user')[0]->get('NAME'), $data['event']->TITLE_ACTIVITY, $sertif_number, $data['event']->SERTIF_IMAGE, "PESERTA", date('d F Y', strtotime($data['event']->DATE_START)), $id_sertif);
+			$sertif_path = $this->certificateModel->generate(session('user')[0]->get('NAME'), $data['event']->TITLE_ACTIVITY, $sertif_number, $data['event']->SERTIF_IMAGE, "PESERTA", date('d F Y', strtotime($data['event']->DATE_START)), $id_sertif, 2, $LIST_TEMA, $HAL_2_SERTIF);
 			$data_sertif = array(
 				"ID_USER" => session('user')[0]->get('ID_USER'),
 				"ID_ACTIVITY" => $id_activity,
@@ -227,7 +239,6 @@ class EventGuest extends Controller
 		 view('template_guest.event.event_detail', $data) .
 		 view('template.footer', $data);
 	}
-
 	public function upload_file(Request $req)
 	{
 		$file = [];
@@ -255,7 +266,6 @@ class EventGuest extends Controller
 		return
 			view('template_guest.event.ajax.item_search', $data);
 	}
-
 	public function GenerateUniqID_Order($var)
 	{
 		$string = preg_replace('/[^a-z]/i', '', $var);

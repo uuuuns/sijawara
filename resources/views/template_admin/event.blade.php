@@ -123,42 +123,60 @@
                 @csrf
                 <div class="modal-body">
                     <div class="form-group">
-                        <label>Kover <span class="text-danger">*</span></label>
+                        <label for="image_activity">Kover <span class="text-danger">*</span></label>
                         <div class="custom-file">
-                            <input type="file" name="image_activity" accept=".jpg, .png" data-max-file-size="5M"
+                            <input type="file" id="image_activity" name="image_activity" accept=".jpg, .png" data-max-file-size="5M"
                                 data-allowed-file-extensions="jpg png" class="custom-file-input dropify" required>
                         </div>
                     </div>
                     <div class="form-group mb-3">
-                        <label>Judul <span class="text-danger">*</span></label>
-                        <input placeholder="Title" type="text" name="title_activity" class="form-control" required>
+                        <label for="title_activity">Judul <span class="text-danger">*</span></label>
+                        <input placeholder="Title" id="title_activity" type="text" name="title_activity" class="form-control" required>
                     </div>
                     <div class="form-group mb-3">
-                        <label>Tanggal Mulai<span class="text-danger">*</span></label>
-                        <input type="datetime-local" class="form-control" name="date_start" required
+                        <div id="tema-container">
+
+                        </div>
+                        <div>
+                            <button type="button" class="btn btn-primary w-100 py-1" onclick="addTema()" title="Tambah Tema">
+                                <i class="fa fa-plus"></i> Tambah Tema
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="date_start">Tanggal Mulai<span class="text-danger">*</span></label>
+                        <input type="datetime-local" id="date_start" class="form-control" name="date_start" required
                             placeholder="Date Start">
                     </div>
                     <div class="form-group mb-3">
-                        <label>Tanggal Selesai<span class="text-danger">*</span></label>
-                        <input type="datetime-local" class="form-control" name="date_end" required
+                        <label for="date_end">Tanggal Selesai<span class="text-danger">*</span></label>
+                        <input type="datetime-local" id="date_end" class="form-control" name="date_end" required
                             placeholder="Date End">
                     </div>
                     <div class="form-group">
-                        <label>Template Sertifikat <span class="text-danger">*</span></label>
+                        <label for="sertif_image" >Template Sertifikat Depan<span class="text-danger">*</span></label>
                         <div class="custom-file">
-                            <input type="file" name="sertif_image" class="custom-file-input dropify"
+                            <input type="file" id="sertif_image" name="sertif_image" class="custom-file-input dropify"
+                                accept=".jpg" data-allowed-file-extensions="jpg" required>
+                            <small class="text-danger" data-max-file-size="5M">* Hanya Masukkan file JPG dan Ukuran Template adalah Horizontal A4</small>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="sertif_image_belakang" >Template Sertifikat Belakang<span class="text-danger">*</span></label>
+                        <div class="custom-file">
+                            <input type="file" id="sertif_image_belakang" name="sertif_image_belakang" class="custom-file-input dropify"
                                 accept=".jpg" data-allowed-file-extensions="jpg" required>
                             <small class="text-danger" data-max-file-size="5M">* Hanya Masukkan file JPG dan Ukuran Template adalah Horizontal A4</small>
                         </div>
                     </div>
                     <div class="form-group mb-3">
-                        <label>Kode Sertifikat <span class="text-danger">*</span></label>
-                        <input placeholder="Kosongi apabila tidak ada sertifikat" type="text" name="sertif_code"
+                        <label for="sertif_code" >Kode Sertifikat <span class="text-danger">*</span></label>
+                        <input placeholder="Kosongi apabila tidak ada sertifikat" id="sertif_code" type="text" name="sertif_code"
                             class="form-control">
                     </div>
                     <div class="form-group mb-3">
-                        <label>Kategori <span class="text-danger">*</span></label>
-                        <select class="form-control select-category" name="category" id="cars"
+                        <label for="category" >Kategori <span class="text-danger">*</span></label>
+                        <select class="form-control select-category" id="category" name="category" id="cars"
                             onchange="zoomLinkCheck(this)" required>
                             <option value="0">Hybrid</option>
                             <option value="1">Online</option>
@@ -166,27 +184,27 @@
                         </select>
                     </div>
                     <div class="form-group mb-3">
-                        <label>Kontak Penyelenggara <span class="text-danger">*</span></label>
-                        <input placeholder="+62 83342457452" type="text" name="contact" class="form-control"
+                        <label for="contact" >Kontak Penyelenggara <span class="text-danger">*</span></label>
+                        <input placeholder="+62 83342457452" type="text" id="contact" name="contact" class="form-control"
                             required>
                     </div>
                     <div class="form-group mb-3">
-                        <label>Penyelenggara <span class="text-danger">*</span></label>
-                        <input placeholder="Penyelenggara" type="text" name="penyelenggara" class="form-control"
+                        <label for="penyelenggara" >Penyelenggara <span class="text-danger">*</span></label>
+                        <input placeholder="Penyelenggara" type="text" id="penyelenggara" name="penyelenggara" class="form-control"
                             required>
                     </div>
                     <div class="form-group mb-3">
-                        <label>Kuota Peserta <span class="text-danger"></span></label>
-                        <input placeholder="Kosongi apabila tidak ada batasan" type="number" name="kuota_peserta"
+                        <label for="kuota_peserta" >Kuota Peserta <span class="text-danger"></span></label>
+                        <input placeholder="Kosongi apabila tidak ada batasan" id="kuota_peserta" type="number" name="kuota_peserta"
                             class="form-control">
                     </div>
                     <div class="form-group mb-3">
-                        <label>Lokasi <span class="text-danger">*</span></label>
-                        <input placeholder="Location" type="text" name="location" class="form-control">
+                        <label for="location" >Lokasi <span class="text-danger">*</span></label>
+                        <input placeholder="Location" type="text" id="location" name="location" class="form-control">
                     </div>
                     <div class="form-group mb-3">
-                        <label>Link Zoom </label>
-                        <input placeholder="zoom.com/" type="text" name="link_zoom" class="form-control">
+                        <label for="link_zoom" >Link Zoom </label>
+                        <input placeholder="zoom.com/" type="text" id="link_zoom" name="link_zoom" class="form-control">
                     </div>
                     <div class="form-group mb-3">
                         <label for="is_aktif">Status Aktif</label>
@@ -200,14 +218,14 @@
                         </span>
                     </div>
                     <div class="form-group mb-3">
-                        <label>Status Public <span class="text-danger">*</span></label>
-                        <select class="form-control select-category" name="status_public" id="status_public" required>
+                        <label for="status_public" >Status Public <span class="text-danger">*</span></label>
+                        <select class="form-control select-category" id="status_public" name="status_public" id="status_public" required>
                             <option value="0">Private</option>
                             <option value="1">Public</option>
                         </select>
                     </div>
                     <div class="form-group mb-3">
-                        <label>Deskripsi Event</label>
+                        <label for="desc_event">Deskripsi Event</label>
                         <textarea name="desc_event" id="desc_event" required></textarea>
                     </div>
                 </div>
@@ -256,6 +274,16 @@
                             required>
                     </div>
                     <div class="form-group mb-3">
+                        <div id="up-tema-container">
+
+                        </div>
+                        <div>
+                            <button type="button" class="btn btn-primary w-100 py-1" onclick="addTemaUp()" title="Tambah Tema">
+                                <i class="fa fa-plus"></i> Tambah Tema
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-group mb-3">
                         <label>Tanggal Mulai<span class="text-danger">*</span></label>
                         <input type="datetime-local" class="form-control" name="up_date_start"
                             placeholder="Date Start">
@@ -266,9 +294,17 @@
                             placeholder="Date Start">
                     </div>
                     <div class="form-group">
-                        <label>Template Sertifikat <span class="text-danger">*</span></label>
+                        <label>Template Sertifikat Depan<span class="text-danger">*</span></label>
                         <div class="custom-file">
                             <input type="file" name="up_sertif_image" class="custom-file-input dropify"
+                                accept=".jpg" data-allowed-file-extensions="jpg">
+                            <small class="text-danger" data-max-file-size="5M">* Hanya Masukkan file JPG dan Ukuran Template adalah Horizontal A4</small>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="up_sertif_image_belakang" >Template Sertifikat Belakang<span class="text-danger">*</span></label>
+                        <div class="custom-file">
+                            <input type="file" id="up_sertif_image_belakang" name="up_sertif_image_belakang" class="custom-file-input dropify"
                                 accept=".jpg" data-allowed-file-extensions="jpg">
                             <small class="text-danger" data-max-file-size="5M">* Hanya Masukkan file JPG dan Ukuran Template adalah Horizontal A4</small>
                         </div>
@@ -445,14 +481,15 @@
     })
 
     function openModal() {
+        $('#tema-container').empty();
         $('#addModal').modal('show')
     }
 
     function openviewModal(judul, viewData) {
+        $('#up-tema-container').empty();
         var data = JSON.parse(viewData)
         var price = data.PRICE_ACTIVITY
         var cat = data.CATEGORY_EVENT
-        console.log(judul)
 
         function initializeDropify(inputName, fileUrl) {
             var dropifyElement = $('input[name="' + inputName + '"]').dropify();
@@ -465,6 +502,7 @@
         }
         initializeDropify('up_image_activity', data.IMAGE_ACTIVITY);
         initializeDropify('up_sertif_image', data.SERTIF_IMAGE);
+        initializeDropify('up_sertif_image_belakang', data.SERTIF_IMAGE_BELAKANG);
 
         $('input[name="up_id_activity"]').val(data.ID_ACTIVITY)
         $('input[name="up_title_activity"]').val(judul)
@@ -476,6 +514,23 @@
             $('#up_setFree').prop('checked', false);
             $('.up_CurrencyInput').prop('readonly', false)
             $('input[name="up_price_activity"]').val(price)
+        }
+        
+        if (Array.isArray(data.TEMA) && !(data.TEMA.length === 1 && data.TEMA[0].TEMA === '' && data.TEMA[0].JAM_PELATIHAN === 0)) {
+            data.TEMA.forEach(element => {
+                $('#up-tema-container').append(`
+                    <div class="input-group">
+                        <label class="input-group-text">Tema</label>
+                        <input type="text" name="up_tema[]" required class="form-control" placeholder="Tema" required value="${element.TEMA}">
+                        
+                        <label class="input-group-text">Jam Pelatihan</label>
+                        <input type="text" name="up_jp[]" required class="form-control w-auto" style="max-width: 70px;" required placeholder="1" min="0" inputmode="numeric" pattern="[0-9]*" value="${element.JAM_PELATIHAN}">
+                        
+                        <button class="btn btn-outline-danger" type="button" onclick="removeTemaUp(this)">Hapus</button>
+                    </div>
+                    <small class="mb-3">Hanya boleh huruf, angka, dan spasi. Tidak boleh menggunakan karakter spesial (seperti @, #, $, %, ;, dll).</small>
+                `);
+            });
         }
 
         $('#up_status').prop('checked', data.STATUS == 1 ? true : false);
@@ -558,7 +613,6 @@
             error: 'error'
         }
     });
-    $(document).ready(function() {});
 
     function NotifDelete() {
         Swal.fire({
@@ -569,5 +623,62 @@
             confirmButtonColor: '#3085d6'
         })
     }
+
+    function addTema() {
+        var container = document.getElementById("tema-container");
+        $(container).append(`
+            <div class="input-group mb-3">
+                <label class="input-group-text">Tema</label>
+                <input type="text" name="tema[]" class="form-control" placeholder="Tema">
+                
+                <label class="input-group-text">Jam Pelatihan</label>
+                <input type="text" name="jp[]" class="form-control w-auto" style="max-width: 70px;" placeholder="1" min="0" inputmode="numeric" pattern="[0-9]*">
+                
+                <button class="btn btn-outline-danger" type="button" onclick="removeTema(this)">Hapus</button>
+            </div>
+        `);
+    }
+    function addTemaUp() {
+        var container = document.getElementById("up-tema-container");
+        $(container).append(`
+            <div class="input-group mb-3">
+                <label class="input-group-text">Tema</label>
+                <input type="text" name="up_tema[]" required class="form-control" placeholder="Tema">
+                
+                <label class="input-group-text">Jam Pelatihan</label>
+                <input type="text" name="up_jp[]" required class="form-control w-auto" style="max-width: 70px;" placeholder="1" min="0" inputmode="numeric" pattern="[0-9]*">
+                
+                <button class="btn btn-outline-danger" type="button" onclick="removeTemaUp(this)">Hapus</button>
+            </div>
+        `);
+    }
+
+    function removeTema(button) {
+        var container = document.getElementById("tema-container");
+        container.removeChild(button.parentNode);
+    }
+    function removeTemaUp(button) {
+        var container = document.getElementById("up-tema-container");
+        container.removeChild(button.parentNode);
+    }
+
+    $(document).on('input', 'input[name="up_tema[]"]', function() {
+        var input = $(this);
+        var value = input.val();
+        var filtered = value.replace(/[^a-zA-Z0-9 ]/g, '');
+        if (value !== filtered) {
+            input.val(filtered);
+        }
+    });
+
+    $(document).on('input', 'input[name="tema[]"]', function() {
+        var input = $(this);
+        var value = input.val();
+        var filtered = value.replace(/[^a-zA-Z0-9 ]/g, '');
+
+        if (value !== filtered) {
+            input.val(filtered);
+        }
+    });
 </script>
 @endsection

@@ -56,7 +56,7 @@ Route::get('verifikasi/{any}', 'guest_controller\SertificateGuest@verifSertif');
 Route::get('404', 'GuestController@notfound')->name('notfound');
 
 //SERTIFIKAT
-// Route::get('sertifikat', 'guest_controller\SertificateGuest@generate');
+Route::get('sertifikat', 'guest_controller\SertificateGuest@generate');
 
 // 1 Admin
 Route::middleware(['usersession:4,1'])->group(function () {

@@ -26,9 +26,9 @@
 
         <div class="box" style="position: absolute;">
             <div class="table-responsive">
-                <table class="valign-middle" style="width: 100%; vertical-align: middle; color: black; padding: 48% 56%;">
+                <table class="valign-middle" style="width: 100%; vertical-align: middle; border: none; border-collapse: collapse; color: black; padding: 48% 56%;">
                     <tr>
-                        <th class="text-align-center" style="text-align: center;">
+                        <th class="text-align-center" style="text-align: center; border: none;">
                             <div class="text name" style="width: 580px; font-size: 29px; font-weight: bold; color: black; line-height: 121%; padding: 1% 0px;">
                                 <?= $NAME ?>
                             </div>
