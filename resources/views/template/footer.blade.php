@@ -29,7 +29,7 @@
                         <div class="d-flex flex-column flex-sm-row gap-2 gap-sm-5">
                             <ul class="list-unstyled footer-links" style="flex:1;">
                                 <li>
-                                    <h6 class="text-white">Nomor HP</h6><a href="#">+62 899-2876-420</a>
+                                    <h6 class="text-white">Nomor HP</h6><a href="#">+62 813-3122-0006</a>
                                 </li>
                                 <li>
                                     <h6 class="text-white">Email</h6><a href="#">sijawara@gmail.com</a>
