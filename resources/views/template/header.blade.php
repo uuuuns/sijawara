@@ -566,7 +566,9 @@
                             <li class="me-0">
                                 <a href="{{ url('webinar') }}">Webinar</a>
                             </li>
-
+                            <li class="me-0">
+                                <a href="https://docs.google.com/document/d/1fo_SotSR-3lgkLbw1yJ7pGetlldvuW84oq2sJhXBoVI/edit?tab=t.0" target="_blank">Panduan</a>
+                            </li>
                             <?php if (!empty(session('user')[0])) { ?>
                                 @if (session('user')[0]['ID_ROLE'] != 1)
                                 <li class="d-lg-none">
@@ -639,7 +641,7 @@
                             <input type="hidden" value="">
                         </form>
                     </div>
-
+                    
                     <?php if (!empty(session('user')[0])) { ?>
                         <nav class="header-btn d-none d-md-block">
                             <ul class="primary-menu">

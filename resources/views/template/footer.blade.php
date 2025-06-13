@@ -19,6 +19,9 @@
                             <li><a href="<?= url('/') ?>">Beranda</a></li>
                             <li><a href="<?= url('kursus') ?>">Kursus</a></li>
                             <li><a href="<?= url('webinar') ?>">Webinar</a></li>
+                            <li>
+                                <a href="https://docs.google.com/document/d/1fo_SotSR-3lgkLbw1yJ7pGetlldvuW84oq2sJhXBoVI/edit?tab=t.0" target="_blank">Panduan</a>
+                            </li>
                         </ul>
                     </div>
                 </div>
