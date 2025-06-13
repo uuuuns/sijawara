@@ -558,52 +558,66 @@
                         <a href="#" class="nav-toggler"><i class="fal fa-bars"></i></a>
                     </div>
 
+                    <style>
+                        @media (max-width: 991.98px) {
+                            .primary-menu {
+                                max-height: 90vh;
+                                overflow-y: auto;
+                                display: flex;
+                                flex-direction: column;
+                            }
+                        }
+                    </style>
+
                     <nav class="site-navbar ms-auto">
                         <ul class="primary-menu">
-                            <li class="current">
+                            <li class="current d-block">
                                 <a href="{{ url('kursus') }}">Kursus</a>
                             </li>
-                            <li class="me-0">
+                            <li class="me-0 d-block">
                                 <a href="{{ url('webinar') }}">Webinar</a>
                             </li>
-                            <li class="ms-lg-5 me-0">
+                            <li class="d-lg-block ms-lg-5">
                                 @if (!empty(session('user')[0]) && session('user')[0]['ID_ROLE'] == 1)
-                                    <a href="https://docs.google.com/document/d/1nnLO-CDrHDWEnnEiNoqKR4z5ZmjH-Uk0QWI80NRXLFM/edit?tab=t.0" target="_blank">Panduan</a>
+                                    <a href="https://docs.google.com/document/d/1nnLO-CDrHDWEnnEiNoqKR4z5ZmjH-Uk0QWI80NRXLFM/edit?tab=t.0"
+                                        target="_blank">Panduan</a>
                                 @else
-                                    <a href="https://docs.google.com/document/d/1fo_SotSR-3lgkLbw1yJ7pGetlldvuW84oq2sJhXBoVI/edit?tab=t.0" target="_blank">Panduan</a>
+                                    <a href="https://docs.google.com/document/d/1fo_SotSR-3lgkLbw1yJ7pGetlldvuW84oq2sJhXBoVI/edit?tab=t.0"
+                                        target="_blank">Panduan</a>
                                 @endif
                             </li>
                             <?php if (!empty(session('user')[0])) { ?>
-                                @if (session('user')[0]['ID_ROLE'] != 1)
+                            @if (session('user')[0]['ID_ROLE'] != 1)
                                 <li class="d-lg-none">
                                     <a href="{{ url('profil') }}">Profil</a>
                                 </li>
-                                @endif
-                                <li class="d-lg-none">
-                                    <a href="{{ url('profil/kursusku') }}">Kursus Ku</a>
-                                </li>
-                                <li class="d-lg-none">
-                                    <a href="{{ url('profil/webinarku') }}">Webinar Ku</a>
-                                </li>
-                                <?php if (!empty(session('user')[0]) && session('user')[0]['ID_ROLE'] == 1 || session('user')[0]['ID_ROLE'] == 4) { ?>
-                                    <li class="d-lg-none">
-                                        <a target="_blank" href="https://kubuku.id/perpus/login.php">Perpustakaan</a>
-                                    </li>
-                                <?php } else { ?>
-                                    <li class="d-lg-none">
-                                        <a target="_blank" href="https://kubuku.id/download/e-perpus-sijawara+">Perpustakaan</a>
-                                    </li>
-                                <?php } ?>
-                                <li class="d-lg-none">
-                                    <a href="{{ url('keluar') }}">Keluar</a>
-                                </li>
+                            @endif
+                            <li class="d-lg-none">
+                                <a href="{{ url('profil/kursusku') }}">Kursus Ku</a>
+                            </li>
+                            <li class="d-lg-none">
+                                <a href="{{ url('profil/webinarku') }}">Webinar Ku</a>
+                            </li>
+                            <?php if (!empty(session('user')[0]) && session('user')[0]['ID_ROLE'] == 1 || session('user')[0]['ID_ROLE'] == 4) { ?>
+                            <li class="d-lg-none">
+                                <a target="_blank" href="https://kubuku.id/perpus/login.php">Perpustakaan</a>
+                            </li>
                             <?php } else { ?>
-                                <li class="d-lg-none">
-                                    <a href="{{ url('masuk') }}">Masuk</a>
-                                </li>
-                                <li class="d-lg-none">
-                                    <a href="{{ url('daftar') }}">Daftar</a>
-                                </li>
+                            <li class="d-lg-none">
+                                <a target="_blank"
+                                    href="https://kubuku.id/download/e-perpus-sijawara+">Perpustakaan</a>
+                            </li>
+                            <?php } ?>
+                            <li class="d-lg-none">
+                                <a href="{{ url('keluar') }}">Keluar</a>
+                            </li>
+                            <?php } else { ?>
+                            <li class="d-lg-none">
+                                <a href="{{ url('masuk') }}">Masuk</a>
+                            </li>
+                            <li class="d-lg-none">
+                                <a href="{{ url('daftar') }}">Daftar</a>
+                            </li>
                             <?php } ?>
                         </ul>
 
@@ -645,66 +659,71 @@
                             <input type="hidden" value="">
                         </form>
                     </div>
-                    
+
                     <?php if (!empty(session('user')[0])) { ?>
-                        <nav class="header-btn d-none d-md-block">
-                            <ul class="primary-menu">
-                                <li>
-                                    <a href="#">
-                                        <?php if (empty(session('user')[0]['PROFILE_PICTURE'])) { ?>
-                                            <i class="far fa-user"></i>
-                                        <?php    } else { ?>
-                                            <img class="nav-link rounded-circle "
-                                                style="height:40px;width:40px;background-size:cover;background-image: url('<?= session('user')[0]['PROFILE_PICTURE'] ?>')">
-                                            </img>
-                                        <?php    } ?>
-                                        <span class="text-truncate mx-2">
-                                            <?= session('user')[0]['NAME'] ?>
-                                        </span>
-                                    </a>
-                                    <ul class="submenu" style="left: initial;right:0">
-                                        <?php if (session('user')[0]['ID_ROLE'] == 1 || session('user')[0]['ID_ROLE'] == 4) { ?>
-                                            <li><a class="" href="<?= url('dashboard') ?>">Beranda </a></li>
-                                        <?php } else { ?>
-                                            <li><a class="" href="<?= url('profil') ?>">Profile</a></li>
-                                            <li><a class=" " href="<?= url('profil/kursusku') ?>">Kursus Ku</a></li>
-                                            <li><a class="" href="<?= url('profil/webinarku') ?>">Webinar Ku</a></li>
-                                            <li><a class="" href="<?= url('profil/sertifikatku') ?>">Sertifikat Ku</a>
-                                            </li>
-                                            <li><a class="" target="_blank"
-                                                    href="https://kubuku.id/download/e-perpus-sijawara/">Perpustakaan</a></li>
-                                        <?php } ?>
-                                        <hr>
-                                        <li><a class="text-danger" href="<?= url('keluar') ?>">Keluar</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </nav>
+                    <nav class="header-btn d-none d-lg-block">
+                        <ul class="primary-menu">
+                            <li>
+                                <a href="#">
+                                    <?php if (empty(session('user')[0]['PROFILE_PICTURE'])) { ?>
+                                    <i class="far fa-user"></i>
+                                    <?php    } else { ?>
+                                    <img class="nav-link rounded-circle "
+                                        style="height:40px;width:40px;background-size:cover;background-image: url('<?= session('user')[0]['PROFILE_PICTURE'] ?>')">
+                                    </img>
+                                    <?php    } ?>
+                                    <span class="text-truncate mx-2">
+                                        <?= session('user')[0]['NAME'] ?>
+                                    </span>
+                                </a>
+                                <ul class="submenu" style="left: initial;right:0">
+                                    <?php if (session('user')[0]['ID_ROLE'] == 1 || session('user')[0]['ID_ROLE'] == 4) { ?>
+                                    <li><a class="" href="<?= url('dashboard') ?>">Beranda </a></li>
+                                    <li><a href="https://docs.google.com/document/d/1nnLO-CDrHDWEnnEiNoqKR4z5ZmjH-Uk0QWI80NRXLFM/edit?tab=t.0"
+                                            target="_blank">Panduan</a></li>
+                                    <?php } else { ?>
+                                    <li><a href="https://docs.google.com/document/d/1fo_SotSR-3lgkLbw1yJ7pGetlldvuW84oq2sJhXBoVI/edit?tab=t.0"
+                                            target="_blank">Panduan</a></li>
+                                    <li><a class="" href="<?= url('profil') ?>">Profile</a></li>
+                                    <li><a class=" " href="<?= url('profil/kursusku') ?>">Kursus Ku</a></li>
+                                    <li><a class="" href="<?= url('profil/webinarku') ?>">Webinar Ku</a></li>
+                                    <li><a class="" href="<?= url('profil/sertifikatku') ?>">Sertifikat Ku</a>
+                                    </li>
+                                    <li><a class="" target="_blank"
+                                            href="https://kubuku.id/download/e-perpus-sijawara/">Perpustakaan</a></li>
+                                    <?php } ?>
+                                    <hr>
+                                    <li><a class="text-danger" href="<?= url('keluar') ?>">Keluar</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </nav>
                     <?php } else { ?>
-                        <div class="header-btn d-none d-lg-block">
-                            <a href="{{ url('masuk') }}" class="login rounded">Masuk</a>
-                            <a href="{{ url('daftar') }}" class="btn btn-main-2 btn-sm-2 rounded">Daftar</a>
-                        </div>
+                    <div class="header-btn d-none d-lg-block">
+                        <a href="{{ url('masuk') }}" class="login rounded">Masuk</a>
+                        <a href="{{ url('daftar') }}" class="btn btn-main-2 btn-sm-2 rounded">Daftar</a>
+                    </div>
                     <?php } ?>
                 </div>
             </div>
         </div>
 
         @if (!empty(session('user')[0]))
-        @if (session('user')[0]['IS_DATA_COMPLETE'] == false)
-        <div class="header-topbar topbar-style-1 bg-warning">
-            <div class="container">
-                <div class="row justify-content-between align-items-center">
-                    <div class="text-center" style="line-height: 1.5;">
-                        <small class="fw-bold text-black">
-                            Segera Lengkapi Data
-                            <a href="{{url('profil')}}" class="text-decoration-underline">Profil</a>
-                            Serta Data UKM atau Koperasi anda, agar dapat mengunduh Sertifikat yang telah diperoleh. Jika sudah lengkap mohon keluar dan masuk lagi.
-                        </small>
+            @if (session('user')[0]['IS_DATA_COMPLETE'] == false)
+                <div class="header-topbar topbar-style-1 bg-warning">
+                    <div class="container">
+                        <div class="row justify-content-between align-items-center">
+                            <div class="text-center" style="line-height: 1.5;">
+                                <small class="fw-bold text-black">
+                                    Segera Lengkapi Data
+                                    <a href="{{ url('profil') }}" class="text-decoration-underline">Profil</a>
+                                    Serta Data UKM atau Koperasi anda, agar dapat mengunduh Sertifikat yang telah
+                                    diperoleh. Jika sudah lengkap mohon keluar dan masuk lagi.
+                                </small>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        @endif
+            @endif
         @endif
     </header>
