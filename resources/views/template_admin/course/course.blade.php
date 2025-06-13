@@ -25,77 +25,79 @@
     <div class="">
         <div class="card-body">
             <div class="row">
-                <div class="col-md-6 align-self-center">
+                <div class="col-md-6 text-center text-md-start">
                     <h3 class="fw-bold" style="color:#45b104">Kursus</h3>
                 </div>
-                <div class="col-md-6 d-flex justify-content-md-end justify-content-end align-items-center">
+                <div class="col-md-6 d-flex justify-content-md-end justify-content-center align-items-center">
                     <div class="mt-3 mt-md-0">
-                        <a href="courses/add" style="color: white"><button type="button" class="btn btn-primary btn-sm-2 rounded">
+                        <a href="kursus-admin/add" style="color: white"><button type="button" class="btn btn-primary btn-sm-2 rounded">
                                 <i class="mdi mdi-plus me-1"></i>
                                 Tambahkan Kursus</button></a>
                     </div>
                 </div>
             </div>
             <div class="mt-5">
-                <table class="table mb-0" id="dtTable">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Nama Kursus</th>
-                            <th>Status Aktif</th>
-                            <th width="15%">Status Private</th>
-                            <th>Tanggal Mulai</th>
-                            <th>Tanggal Berakhir</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php $number = 0; ?>
+                <div class="table-responsive">
+                    <table class="table mb-0" id="dtTable">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Nama Kursus</th>
+                                <th>Status Aktif</th>
+                                <th width="15%">Status Private</th>
+                                <th>Tanggal Mulai</th>
+                                <th>Tanggal Berakhir</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php $number = 0; ?>
 
-                        @foreach ($activity as $item)
-                        <?php $number++; ?>
-                        <tr>
-                            <td><?= $number ?></td>
-                            <td><?= $item->TITLE_ACTIVITY ?></td>
-                            <td><span class="badge {{ $item->STATUS == 0 ? 'bg-danger' : 'bg-success' }}">
-                                    {{ $item->STATUS == 0 ? 'Tidak Aktif' : 'Aktif' }}
-                                </span></td>
-                            <td><span class="badge {{ $item->IS_PUBLIC == 0 ? 'bg-danger' : 'bg-success' }}">
-                                    {{ $item->IS_PUBLIC == 0 ? 'Private' : 'Public' }}
-                                </span>
-                            </td>
-                            <td><?= date_format(date_create($item->DATE_START), 'j F Y H:i:s') ?></td>
-                            <td><?= date_format(date_create($item->DATE_END), 'j F Y H:i:s') ?></td>
-                            <td>
-                                <button type="button" onclick="location.href='courses/lihat_peserta?ID_ACTIVITY={{$item->ID_ACTIVITY}}'" class="btn btn-warning mb-1 btn-sm-2 w-100 fs-8 rounded waves-effect waves-light px-2" style="min-width: 155px !important;">
-                                    <i class="bx bxs-user-detail font-size-16 align-middle"></i> Lihat Peserta
-                                </button>
-                                @if ($item->IS_PUBLIC == 0)
-                                    <form action="courses/invite" method="GET">
+                            @foreach ($activity as $item)
+                            <?php $number++; ?>
+                            <tr>
+                                <td><?= $number ?></td>
+                                <td><?= $item->TITLE_ACTIVITY ?></td>
+                                <td><span class="badge {{ $item->STATUS == 0 ? 'bg-danger' : 'bg-success' }}">
+                                        {{ $item->STATUS == 0 ? 'Tidak Aktif' : 'Aktif' }}
+                                    </span></td>
+                                <td><span class="badge {{ $item->IS_PUBLIC == 0 ? 'bg-danger' : 'bg-success' }}">
+                                        {{ $item->IS_PUBLIC == 0 ? 'Private' : 'Public' }}
+                                    </span>
+                                </td>
+                                <td><?= date_format(date_create($item->DATE_START), 'j F Y H:i:s') ?></td>
+                                <td><?= date_format(date_create($item->DATE_END), 'j F Y H:i:s') ?></td>
+                                <td>
+                                    <button type="button" onclick="location.href='kursus-admin/lihat_peserta?ID_ACTIVITY={{$item->ID_ACTIVITY}}'" class="btn btn-warning mb-1 btn-sm-2 w-100 fs-8 rounded waves-effect waves-light px-2" style="min-width: 155px !important;">
+                                        <i class="bx bxs-user-detail font-size-16 align-middle"></i> Lihat Peserta
+                                    </button>
+                                    @if ($item->IS_PUBLIC == 0)
+                                    <form action="{{ url('kursus-admin/invite') }}" method="GET">
                                         <input type="hidden" name="id_activity" value="<?= $item->ID_ACTIVITY ?>">
                                         <button type="submit" class="btn btn-primary btn-sm-2 w-100 fs-8 rounded waves-effect waves-light px-2" style="min-width: 155px !important;">
                                             <i class="bx bx-send font-size-16 align-middle"></i> Undang User
                                         </button>
                                     </form>
-                                @endif
-                                <form action="courses/edit" method="POST">
-                                    @csrf
-                                    <input type="hidden" name="id_activity" value="<?= $item->ID_ACTIVITY ?>">
-                                    <button type="submit" class="btn btn-dark btn-sm-2 w-100 fs-8 rounded waves-effect waves-light px-2" style="min-width: 155px !important; margin: 5px 0px;">
-                                        <i class="bx bx-edit-alt font-size-16 align-middle"></i> Edit Kursus
+                                    @endif
+                                    <form action="{{ url('kursus-admin/edit') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="id_activity" value="<?= $item->ID_ACTIVITY ?>">
+                                        <button type="submit" class="btn btn-dark btn-sm-2 w-100 fs-8 rounded waves-effect waves-light px-2" style="min-width: 155px !important; margin: 5px 0px;">
+                                            <i class="bx bx-edit-alt font-size-16 align-middle"></i> Edit Kursus
+                                        </button>
+                                    </form>
+                                    <button type="button" onclick="<?= $item->CHECK_PARTICIPANT == 0 ? "opendeleteModal('{$item->ID_ACTIVITY}')" : 'NotifDelete()' ?>" class="btn btn-danger btn-sm-2 w-100 fs-8 rounded waves-effect waves-light px-2" style="min-width: 155px !important;">
+                                        <i class="bx bx-trash font-size-16 align-middle"></i> Hapus Kursus
                                     </button>
-                                </form>
-                                <button type="button" onclick="opendeleteModal('<?= $item->ID_ACTIVITY ?>')" class="btn btn-danger btn-sm-2 w-100 fs-8 rounded waves-effect waves-light px-2" style="min-width: 155px !important;">
-                                    <i class="bx bx-trash font-size-16 align-middle"></i> Hapus Kursus
-                                </button>
-                            </td>
-                            @endforeach
+                                </td>
+                                @endforeach
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
     </div>
+</div>
 </div>
 <!-- Content Wrapper END -->
 
@@ -109,7 +111,7 @@
                     <span aria-hidden="true" class="fs-3">&times;</span>
                 </button>
             </div>
-            <form id="form-user" action="courses/delete" method="POST" enctype="multipart/form-data">
+            <form id="form-user" action="{{ url('kursus-admin/delete') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
                     <div class="modal-body">
@@ -132,6 +134,16 @@
     function opendeleteModal(id_activity) {
         $('input[name="id_activity"]').val(id_activity)
         $('#deleteModal').modal('show')
+    }
+
+    function NotifDelete() {
+        Swal.fire({
+            title: 'Mohon Maaf',
+            text: 'Kursus ini tidak bisa dihapus karena sudah ada peserta yang mengambil kursus ini',
+            icon: 'warning',
+            confirmButtonText: 'Oke',
+            confirmButtonColor: '#3085d6'
+        })
     }
 </script>
 @endsection

@@ -53,7 +53,7 @@
                                                 <div class="d-flex flex-column align-items-center">
                                                     <img src="{{ asset('assets_new') }}/images/empty.svg"
                                                         width="350">
-                                                    <h4 class="font-sm text-center">Tidak ada bab</h4>
+                                                    <h4 class="font-sm text-center">Tidak ada Materi</h4>
                                                 </div>
                                                 <?php } ?>
                                             </ul>
@@ -175,7 +175,7 @@
                             <ul class="course-sidebar-list">
                                 <li>
                                     <div class="d-flex justify-content-between align-items-center">
-                                        <span><i class="far fa-sliders-h"></i>Total Bab</span>
+                                        <span><i class="far fa-sliders-h"></i>Total Materi</span>
                                         <?= $total_item['materi'] ?>
                                     </div>
                                 </li>
@@ -191,24 +191,24 @@
                                 <?php if ($course->KUOTA_PESERTA == 0 || $course->KUOTA_PESERTA >= $course->CURRENT_PARTISIPAN) { ?>
                                 <?php if (!empty($course->REQUIREMENT) && $course->REQ == 1) { ?>
                                 <form class="" id="FormBuyNow-info" method="POST"
-                                    action="<?= url('course/add') ?>">
+                                    action="{{ url('kursus/add') }}">
                                     @csrf
                                     <div id="data-input-info"></div>
                                     <input type="hidden" name="id_activity" value="<?= $course->ID_ACTIVITY ?>">
-                                    <button type="submit">Ambil Sekarang</button>
+                                    <button type="submit" class="ambil-sekarang">Ambil Sekarang</button>
                                 </form>
                                 <?php } else if (empty($course->REQUIREMENT)) { ?>
                                 <form class="" id="FormBuyNow-info" method="POST"
-                                    action="<?= url('course/add') ?>">
+                                    action="{{ url('kursus/add') }}">
                                     @csrf
                                     <div id="data-input-info"></div>
                                     <input type="hidden" name="id_activity" value="<?= $course->ID_ACTIVITY ?>">
-                                    <button type="submit">Ambil Sekarang</button>
+                                    <button type="submit" class="ambil-sekarang">Ambil Sekarang</button>
                                 </form>
                                 <?php } else { ?>
                                 <label class="alert alert-warning" style="align-items: center">Harap selesaikan kursus
                                     <a class="fw-bold text-danger"
-                                        href="<?= url('course/info/' . preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $course->REQ_NAME)) . '?id_activity=' . $course->REQUIREMENT) ?>">
+                                        href="<?= url('kursus/info/' . preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $course->REQ_NAME)) . '?id_activity=' . $course->REQUIREMENT) ?>">
                                         <?= $course->REQ_NAME ?></a> terlebih
                                     dahulu
                                     sebelum mengambil kursus ini</label>
@@ -227,6 +227,31 @@
 </section>
 
 <script>
+    $('.ambil-sekarang').click(function(e) {
+        e.preventDefault();
+        let sessionData = <?= json_encode(session('user') ?? false); ?>;
+
+        if (!sessionData) {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 2000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer);
+                    toast.addEventListener('mouseleave', Swal.resumeTimer);
+                }
+            });
+            Toast.fire({
+                icon: 'error',
+                title: 'Harap Masuk Terlebih Dahulu!'
+            });
+        } else {
+            $(this).closest('form').submit();
+        }
+    });
+
     function AddToCart(e) {
         const Toast = Swal.mixin({
             toast: true,

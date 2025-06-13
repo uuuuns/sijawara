@@ -13,9 +13,9 @@
                 <!-- VIEW SUDAH BAYAR -->
                 <div class="col-xl-4 col-lg-6 col-md-6">
                     <div class="px-0 px-sm-3">
-                        <div class="course-grid course-style-4 bg-white" style="padding: 30px 30px 10px 30px;">
+                        <div class="course-grid course-style-4 bg-white px-1 px-md-2 mt-4 pb-2">
                             <div class="course-header">
-                                <a <?= $check_is_invited ? 'href="' . url('course/detail/' . preg_replace("/[^A-Za-z0-9\-]/", "", str_replace(" ", "-", $item->TITLE_ACTIVITY))) . '?id_activity=' . $item->ID_ACTIVITY . '"' : 'class="link_kursus"' ?>>
+                                <a <?= $check_is_invited ? 'href="' . url('kursus/detail/' . preg_replace("/[^A-Za-z0-9\-]/", "", str_replace(" ", "-", $item->TITLE_ACTIVITY))) . '?id_activity=' . $item->ID_ACTIVITY . '"' : 'class="link_kursus"' ?>>
                                     <img src="<?= $item->IMAGE_ACTIVITY ?>" alt="" style="width: 100%; height: 300px; object-fit: cover;">
                                 </a>
                             </div>
@@ -26,7 +26,7 @@
                                 <?php } else { ?>
                                     <span class="course-price bg-success">Progress <?= ceil($item->PROGRESS) ?>%</span>
                                 <?php } ?>
-                                <h3 class="course-title"> <a <?= $check_is_invited ? 'href="' . url('course/detail/' . preg_replace("/[^A-Za-z0-9\-]/", "", str_replace(" ", "-", $item->TITLE_ACTIVITY))) . '?id_activity=' . $item->ID_ACTIVITY . '"' : 'class="link_kursus"' ?>><?= $item->TITLE_ACTIVITY ?></a></h3>
+                                <h3 class="course-title"> <a <?= $check_is_invited ? 'href="' . url('kursus/detail/' . preg_replace("/[^A-Za-z0-9\-]/", "", str_replace(" ", "-", $item->TITLE_ACTIVITY))) . '?id_activity=' . $item->ID_ACTIVITY . '"' : 'class="link_kursus"' ?>><?= $item->TITLE_ACTIVITY ?></a></h3>
                             </div>
                             <div class="course-meta">
                                 <div class="text-muted m-0 pt-2 fs-6" style="overflow: hidden !important;
@@ -45,10 +45,10 @@
                 <!-- VIEW BELUM BAYAR -->
                 <div class="col-xl-4 col-lg-6 col-md-6">
                     <div class="px-0 px-sm-3">
-                        <div class="course-grid course-style-4 bg-white" style="padding: 30px 30px 10px 30px;">
+                        <div class="course-grid course-style-4 bg-white px-1 px-md-2 mt-4 pb-2">
                             <div class="course-header">
                                 <div class="" style="width: 100%; height: 300px; overflow: hidden;">
-                                    <a <?= $check_is_invited ? 'href="' . url('course/info/' . preg_replace("/[^A-Za-z0-9\-]/", "", str_replace(" ", "-", $item->TITLE_ACTIVITY))) . '?id_activity=' . $item->ID_ACTIVITY . '"' : 'class="link_kursus"' ?>>
+                                    <a <?= $check_is_invited ? 'href="' . url('kursus/info/' . preg_replace("/[^A-Za-z0-9\-]/", "", str_replace(" ", "-", $item->TITLE_ACTIVITY))) . '?id_activity=' . $item->ID_ACTIVITY . '"' : 'class="link_kursus"' ?>>
                                         <img src="<?= $item->IMAGE_ACTIVITY ?>" alt="" style="width: 100%; height: 100%; object-fit: cover;">
                                     </a>
                                 </div>
@@ -57,7 +57,7 @@
                             <div class="course-content">
                                 <span class="course-price <?= ($item->participant == 0) ? 'bg-success' : 'bg-primary' ?>"><?= ($item->participant == 0) ? 'Ayo Segera Ikuti!' : $item->participant . ' Orang' ?></span>
                                 <h3 class="course-title">
-                                    <a <?= $check_is_invited ? 'href="' . url('course/info/' . preg_replace("/[^A-Za-z0-9\-]/", "", str_replace(" ", "-", $item->TITLE_ACTIVITY))) . '?id_activity=' . $item->ID_ACTIVITY . '"' : 'class="link_kursus"' ?>><?= $item->TITLE_ACTIVITY ?></a>
+                                    <a <?= $check_is_invited ? 'href="' . url('kursus/info/' . preg_replace("/[^A-Za-z0-9\-]/", "", str_replace(" ", "-", $item->TITLE_ACTIVITY))) . '?id_activity=' . $item->ID_ACTIVITY . '"' : 'class="link_kursus"' ?>><?= $item->TITLE_ACTIVITY ?></a>
                                 </h3>
                             </div>
                             <div class="course-meta">
@@ -71,6 +71,16 @@
                 </div>
             <?php } ?>
         <?php endforeach; ?>
+    </div>
+    <div
+        class="px-3 d-grid d-md-flex text-center justify-content-md-between justify-content-center align-items-center">
+        <div class="order-2 order-md-1 pt-3 pt-md-0">
+            <span class="fs-8 pagination-text">Menampilkan {{ $course->currentPage() }} dari
+                {{ $course->lastPage() }} Halaman</span>
+        </div>
+        <div class="order-1 order-md-2">
+            {{ $course->links() }}
+        </div>
     </div>
 
 <?php } else { ?>

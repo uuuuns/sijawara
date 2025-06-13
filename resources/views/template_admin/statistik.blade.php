@@ -32,7 +32,7 @@
     </div>
     <div style="display: flex; justify-content: center;" id="div_chart_kota" hidden>
         <div class="row" style="max-width: 60rem; text-align: center;">
-            <h4 id="title_chart">Statistik Pendaftar Tiap Bulan</h4>
+            <h4 id="title_chart">Statistik User Perdaerah Kabupaten/Kota</h4>
             <div id="chart_kota">
                 <canvas id="mybarChart"></canvas>
             </div>
@@ -66,7 +66,7 @@
                         datasets: [{
                             label: 'Total Peserta',
                             data: response.data,
-                            backgroundColor: backgroundColors,
+                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
                             borderWidth: 2
                         }]
                     },

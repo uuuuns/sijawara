@@ -1,7 +1,7 @@
 @extends('template_guest.profile.profile_template')
 @section('content')
 <div class="col ms-0 ms-md-4 px-5 py-5 shadow rounded-3 overflow-hidden bg-white">
-    <h3 class="fw-bold pb-4" style="color:#45b104">Webinar Ku</h3>
+    <h3 class="fw-bold pb-4" style="color:#45b104">Webinar/Pelatihan Ku</h3>
     <div class="table-responsive">
         <table class="table table-hover" style="color: #8A8A8E">
             <thead>
@@ -13,7 +13,7 @@
             </thead>
             <tbody class="table-group-divider text-black" style="border-color:#C8C8C8; border-top-width: 2px !important">
                 <?php foreach ($event as $item) : ?>
-                    <tr onclick="window.location = '<?= url('/event/detail/' . preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $item->TITLE_ACTIVITY)) . '?id_activity=' . $item->ID_ACTIVITY) ?>'" style="cursor:pointer">
+                    <tr onclick="window.location = '<?= url('/webinar/detail/' . preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $item->TITLE_ACTIVITY)) . '?id_activity=' . $item->ID_ACTIVITY) ?>'" style="cursor:pointer">
                         <td class="py-3">
                             <div class="d-flex align-items-center" style="width: max-content;">
                                 <img src="<?= $item->IMAGE_ACTIVITY ?>" class="d-block img-fluid rounded-2" style="width: 80px; height: 80px; object-fit: cover">

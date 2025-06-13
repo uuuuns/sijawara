@@ -36,7 +36,15 @@ class CourseController extends Controller
         if (session('user')[0]->get('ID_ROLE') == 1 || session('user')[0]->get('ID_ROLE') == 4) {
             $data["activity"] = DB::select("
             SELECT
-                c.*
+                c.*,
+                (
+                    SELECT
+                        count(*)
+                    FROM 
+                        `order` o
+                    WHERE
+                        ID_PRODUCT = c.ID_ACTIVITY
+                ) AS CHECK_PARTICIPANT
             FROM
                 activity c
             LEFT JOIN activity a ON
@@ -59,7 +67,15 @@ class CourseController extends Controller
 
             $data["activity"] = DB::select("
             SELECT
-                c.*
+                c.*,
+                (
+                    SELECT
+                        count(*)
+                    FROM 
+                        `order` o
+                    WHERE
+                        ID_PRODUCT = c.ID_ACTIVITY
+                ) AS CHECK_PARTICIPANT
             FROM
                 activity c
             WHERE
@@ -73,7 +89,9 @@ class CourseController extends Controller
             FROM
                 kategori k
         ");
+
         $data['admin'] = true;
+
         return
             view('template.header', $data) .
             view('template_admin/course/course', $data) .
@@ -109,48 +127,60 @@ class CourseController extends Controller
 
     public function store(Request $req)
     {
-        $activity = [
-            'ID_ACTIVITY'           => $this->GenerateUniqID('ACT', $req->input('title_activity')),
-            'TITLE_ACTIVITY'        => $req->input('title_activity'),
-            'ID_USER'               => session('user')[0]['ID_USER'],
-            'IMAGE_ACTIVITY'        => FileUpload::S3($req->file('image_activity'), 'IMAGE_ACTIVITY', 'Image-Activity-' . strtotime(now())),
-            'TYPE_ACTIVITY'         => 1,
-            'SERTIF_CODE'           => $req->input('certif_code'),
-            'DATE_START'            => $req->input('date_start'),
-            'DATE_END'              => $req->input('date_end'),
-            'IS_PUBLIC'             => $req->input('is_public'),
-            'LOG_TIME'              => date('Y-m-d H:i:s'),
-            'SERTIF_IMAGE'          => $req->hasFile('sertif_image') ? FileUpload::S3($req->file('sertif_image'), 'SERTIF_IMAGE', 'Template-Certifiace-' . strtotime(now())) : null
-        ];
-        
-        if ($req->input('status') == 'on') {
-            $activity['STATUS'] = 1;
-        } else {
-            $activity['STATUS'] = 0;
+        try {
+            $activity = [
+                'ID_ACTIVITY'           => $this->GenerateUniqID('ACT', $req->input('title_activity')),
+                'TITLE_ACTIVITY'        => $req->input('title_activity'),
+                'ID_USER'               => session('user')[0]['ID_USER'],
+                'IMAGE_ACTIVITY'        => FileUpload::S3($req->file('image_activity'), 'IMAGE_ACTIVITY', 'Image-Activity-' . strtotime(now())),
+                'TYPE_ACTIVITY'         => 1,
+                'SERTIF_CODE'           => $req->input('certif_code'),
+                'DATE_START'            => $req->input('date_start'),
+                'DATE_END'              => $req->input('date_end'),
+                'IS_PUBLIC'             => $req->input('is_public'),
+                'NAMA_INSTRUKTUR'       => $req->input('instruktur_name'),
+                'LOG_TIME'              => date('Y-m-d H:i:s'),
+                'SERTIF_IMAGE'          => $req->hasFile('sertif_image') ? FileUpload::S3($req->file('sertif_image'), 'SERTIF_IMAGE', 'Template-Certifiace-' . strtotime(now())) : null
+            ];
+            
+            if ($req->input('status') == 'on') {
+                $activity['STATUS'] = 1;
+            } else {
+                $activity['STATUS'] = 0;
+            }
+    
+            $course = [
+                'ID_COURSE'             => $this->GenerateUniqID('ACT', $req->input('announcement')),
+                'ID_ACTIVITY'           => $activity['ID_ACTIVITY'],
+                'DESKRIPSI_COURSE'      => $req->input('desc_course'),
+                'BENEFIT'               => $req->input('benefit'),
+                'KATEGORI'              => $req->input('category')
+            ];
+    
+            if (!empty($req->input('kuota_peserta')) || $req->input('kuota_peserta') != 0) {
+                $course['KUOTA_PESERTA'] = $req->input('kuota_peserta');
+            }
+    
+            if ($req->input('req')) {
+                $course['REQUIREMENT']  = $req->input('req');
+            }
+            DB::beginTransaction();
+    
+            DB::table('activity')->insert($activity);
+            DB::table('course')->insert($course);
+    
+            $data['ID_COURSE'] = $course['ID_COURSE'];
+            $this->item_materi($data, $req);
+            DB::commit();
+            return redirect('kursus-admin')->with(['succ_msg' => 'Berhasil Menambahkan Kursus', 'location' => 'kursus-admin']);
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            
+            return response()->json([
+                'status' => 'failure',
+                'errors' => $e
+            ], 422);
         }
-
-        $course = [
-            'ID_COURSE'             => $this->GenerateUniqID('ACT', $req->input('announcement')),
-            'ID_ACTIVITY'           => $activity['ID_ACTIVITY'],
-            'DESKRIPSI_COURSE'      => $req->input('desc_course'),
-            'BENEFIT'               => $req->input('benefit'),
-            'KATEGORI'              => $req->input('category')
-        ];
-
-        if (!empty($req->input('kuota_peserta')) || $req->input('kuota_peserta') != 0) {
-            $course['KUOTA_PESERTA'] = $req->input('kuota_peserta');
-        }
-
-        if ($req->input('req')) {
-            $course['REQUIREMENT']  = $req->input('req');
-        }
-
-        DB::table('activity')->insert($activity);
-        DB::table('course')->insert($course);
-
-        $data['ID_COURSE'] = $course['ID_COURSE'];
-        $this->item_materi($data, $req);
-        return redirect('courses')->with(['succ_msg' => 'Berhasil Menambahkan Kursus', 'location' => 'courses']);
     }
 
     public function deskripsi_get($id)
@@ -225,6 +255,7 @@ class CourseController extends Controller
                 a.STATUS ,
                 a.IS_PUBLIC ,
                 a.SERTIF_IMAGE ,
+                a.NAMA_INSTRUKTUR ,
                 c.ID_COURSE ,
                 c.DESKRIPSI_COURSE ,
                 c.KUOTA_PESERTA ,
@@ -306,7 +337,8 @@ class CourseController extends Controller
                     SELECT
                         dq.*,
                         ic.LIMIT_QUIZ,
-                        ic.MIN_NILAI
+                        ic.MIN_NILAI,
+                        ic.MAX_ATTEMPT
                     FROM
                         detail_quiz dq
                     LEFT JOIN item_course ic ON
@@ -320,24 +352,26 @@ class CourseController extends Controller
                 foreach ($dataquiz as $quiz) {
                     list($quiz->PIL_A, $quiz->PIL_B, $quiz->PIL_C, $quiz->PIL_D) = explode(";", $quiz->PIL_JWB);
                     $data['quiz'][$quiz->ID_QUIZ][] = [
-                        'ID_DETAIL'  => $quiz->ID_DETAIL,
-                        'ID_QUIZ'    => $quiz->ID_QUIZ,
-                        'ID_COURSE'  => $quiz->ID_COURSE,
-                        'SOAL'       => $quiz->SOAL,
-                        'PIL_A'      => $quiz->PIL_A,
-                        'PIL_B'      => $quiz->PIL_B,
-                        'PIL_C'      => $quiz->PIL_C,
-                        'PIL_D'      => $quiz->PIL_D,
-                        'KUNCI'      => $quiz->KUNCI,
-                        'LIMIT_QUIZ' => $quiz->LIMIT_QUIZ,
-                        'MIN_NILAI' => $quiz->MIN_NILAI,
-                        'NO'         => $data['no_index']
+                        'ID_DETAIL'   => $quiz->ID_DETAIL,
+                        'ID_QUIZ'     => $quiz->ID_QUIZ,
+                        'ID_COURSE'   => $quiz->ID_COURSE,
+                        'SOAL'        => $quiz->SOAL,
+                        'PIL_A'       => $quiz->PIL_A,
+                        'PIL_B'       => $quiz->PIL_B,
+                        'PIL_C'       => $quiz->PIL_C,
+                        'PIL_D'       => $quiz->PIL_D,
+                        'KUNCI'       => $quiz->KUNCI,
+                        'LIMIT_QUIZ'  => $quiz->LIMIT_QUIZ,
+                        'MIN_NILAI'   => $quiz->MIN_NILAI,
+                        'MAX_ATTEMPT' => $quiz->MAX_ATTEMPT,
+                        'NO'          => $data['no_index']
                     ];
 
                     foreach ($data['quiz'][$quiz->ID_QUIZ] as $ID_ITEM) {
                         $data['ID_ITEM'] = $ID_ITEM['ID_QUIZ'];
                         $data['LIMIT_QUIZ'] = $quiz->LIMIT_QUIZ;
                         $data['MIN_NILAI'] = $quiz->MIN_NILAI;
+                        $data['MAX_ATTEMPT'] = $quiz->MAX_ATTEMPT;
                     }
                     $data['no_index']++;
                 }
@@ -375,6 +409,7 @@ class CourseController extends Controller
                 'DATE_START'            => $req->input('date_start'),
                 'DATE_END'              => $req->input('date_end'),
                 'IS_PUBLIC'             => $req->input('is_public'),
+                'NAMA_INSTRUKTUR'       => $req->input('instruktur_name'),
                 'LOG_TIME'              => date('Y-m-d H:i:s')
             ];
 
@@ -416,7 +451,7 @@ class CourseController extends Controller
             $data['ID_COURSE'] = $req->input('ID_COURSE');
             $this->update_item_materi($data, $req);
 
-            return redirect('courses')->with(['succ_msg' => 'Berhasi Memperbarui Kursus', 'location' => 'courses']);
+            return redirect('kursus-admin')->with(['succ_msg' => 'Berhasi Memperbarui Kursus', 'location' => 'courses']);
         } catch (ValidationException $e) {
             return response()->json([
                 'status' => 'failure',
@@ -530,7 +565,7 @@ class CourseController extends Controller
         DB::table('activity')->WHERE(['ID_ACTIVITY' => $find_id_course->ID_ACTIVITY])->delete();
         DB::statement('SET FOREIGN_KEY_CHECKS=1');
 
-        return redirect('courses')->with(['succ_msg' => 'Berhasil Menghapus Kursus', 'location' => 'courses']);
+        return redirect('kursus-admin')->with(['succ_msg' => 'Berhasil Menghapus Kursus', 'location' => 'courses']);
     }
 
     public function item_materi($data, $req)
@@ -568,7 +603,8 @@ class CourseController extends Controller
                         'ORDER_LIST'    => $orderList[$i],
                         'TYPE'          => $categoryList[$i],
                         'LIMIT_QUIZ'    => $req->input('limit_soal_'.$nomor),
-                        'MIN_NILAI'    => $req->input('min_nilai_'.$nomor)
+                        'MIN_NILAI'     => $req->input('min_nilai_'.$nomor),
+                        'MAX_ATTEMPT'   => $req->input('max_attempt_'.$nomor)
                     ];
                     $idQuiz[] = DB::table('item_course')->insertGetId($data_item);
                 }
@@ -666,9 +702,9 @@ class CourseController extends Controller
 
         if (!empty($cek_data)) {
             DB::table('tb_invited')->WHERE(['ID_USER' => $id_user, 'ID_ACTIVITY' => $id_activity])->delete();
-            return redirect('courses/invite?id_activity=' . $id_activity)->with(['succ_msg' => 'Undangan telah dibatalkan', 'location' => 'courses/invite?id_activity=' . $id_activity]);
+            return redirect('kursus-admin/invite?id_activity=' . $id_activity)->with(['succ_msg' => 'Undangan telah dibatalkan', 'location' => 'kursus-admin/invite?id_activity=' . $id_activity]);
         } else {
-            return redirect('courses/invite?id_activity=' . $id_activity)->with(['succ_msg' => 'User belum diundang', 'courses/invite?id_activity=' . $id_activity]);
+            return redirect('kursus-admin/invite?id_activity=' . $id_activity)->with(['succ_msg' => 'User belum diundang', 'kursus-admin/invite?id_activity=' . $id_activity]);
         }
     }
     public function invite_individu(Request $req)
@@ -688,7 +724,7 @@ class CourseController extends Controller
         ");
 
         if (!empty($cek_data)) {
-            return redirect('courses/invite?id_activity=' . $id_activity)->with(['err_msg' => 'User telah diundang', 'location' => 'courses/invite?id_activity=' . $id_activity]);
+            return redirect('kursus-admin/invite?id_activity=' . $id_activity)->with(['err_msg' => 'User telah diundang', 'location' => 'kursus-admin/invite?id_activity=' . $id_activity]);
         } else {
             $invited = [
                 'ID_USER'       => $id_user,
@@ -713,7 +749,7 @@ class CourseController extends Controller
                 ");
 
                 $this->send_email_invited($data);
-            return redirect('courses/invite?id_activity=' . $id_activity)->with(['succ_msg' => 'User berhasil diundang', 'courses/invite?id_activity=' . $id_activity]);
+            return redirect('kursus-admin/invite?id_activity=' . $id_activity)->with(['succ_msg' => 'User berhasil diundang', 'kursus-admin/invite?id_activity=' . $id_activity]);
         }
     }
 
@@ -734,7 +770,7 @@ class CourseController extends Controller
         }
 
         if (empty($id_users)) {
-            return redirect('courses/invite?id_activity=' . $id_activity)->with(['err_msg' => 'Pilih setidaknya satu pengguna', 'location' => 'courses/invite?id_activity=' . $id_activity]);
+            return redirect('kursus-admin/invite?id_activity=' . $id_activity)->with(['err_msg' => 'Pilih setidaknya satu pengguna', 'location' => 'kursus-admin/invite?id_activity=' . $id_activity]);
         }
 
         foreach ($id_users as $id_user) {
@@ -750,7 +786,7 @@ class CourseController extends Controller
             ");
 
             if (!empty($cek_data)) {
-                return redirect('courses/invite?id_activity=' . $id_activity)->with(['err_msg' => 'Pilih setidaknya satu pengguna', 'location' => 'courses/invite?id_activity=' . $id_activity]);
+                return redirect('kursus-admin/invite?id_activity=' . $id_activity)->with(['err_msg' => 'Pilih setidaknya satu pengguna', 'location' => 'kursus-admin/invite?id_activity=' . $id_activity]);
             } else {
                 $invited = [
                     'ID_USER'       => $id_user,
@@ -778,7 +814,7 @@ class CourseController extends Controller
                 $this->send_email_invited($data);
             }
         }
-        return redirect('courses/invite?id_activity=' . $id_activity)->with(['succ_msg' => 'Berhasil mengundang user', 'courses/invite?id_activity=' . $id_activity]);
+        return redirect('kursus-admin/invite?id_activity=' . $id_activity)->with(['succ_msg' => 'Berhasil mengundang user', 'kursus-admin/invite?id_activity=' . $id_activity]);
     }
 
     public function send_email_invited($data) {
@@ -878,6 +914,20 @@ class CourseController extends Controller
                 o.ID_PRODUCT  = a.ID_ACTIVITY
             WHERE
                 o.ID_PRODUCT  = '" . $req->input('ID_ACTIVITY') . "'
+        ");
+
+        $data['komentar'] = DB::select("
+            SELECT
+                u.NAME,
+                u.EMAIL,
+                k.komentar,
+                k.LOG_TIME
+            FROM
+                tb_komentar k
+            LEFT JOIN user u ON
+                u.ID_USER = k.ID_USER
+            WHERE
+                k.ID_ACTIVITY = '" . $req->input('ID_ACTIVITY') . "'
         ");
 
         $data['kursus'] = DB::selectOne("
@@ -1030,8 +1080,8 @@ class CourseController extends Controller
         $materiTitleList    = $req->input('materi_title');
         $descMateriList     = $req->input('desc_materi');
         $linkYT             = $req->input('materi_link');
-        $file = $req->file('materi_file');
-        $file_default = $req->input('default_file');
+        $file               = $req->file('materi_file');
+        $file_default       = $req->input('default_file');
         $nomor = 0;
 
         $idQuiz = [];
@@ -1059,7 +1109,8 @@ class CourseController extends Controller
                         'ORDER_LIST'    => $orderList[$i],
                         'TYPE'          => $categoryList[$i],
                         'LIMIT_QUIZ'    => $req->input('limit_soal_'.$nomor),
-                        'MIN_NILAI'    => $req->input('min_nilai_'.$nomor)
+                        'MIN_NILAI'     => $req->input('min_nilai_'.$nomor),
+                        'MAX_ATTEMPT'   => $req->input('max_attempt_'.$nomor)
                     ];
                     $idQuiz[] = DB::table('item_course')->insertGetId($data_item);
                 }

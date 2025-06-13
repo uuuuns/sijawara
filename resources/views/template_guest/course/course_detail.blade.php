@@ -22,7 +22,7 @@
 
                     <div class="tab-content tutori-course-content" id="nav-tabContent">
                         <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-                            <div class="single-course-details">
+                            <div class="single-course-details pe-lg-3 pe-0">
                                 <h4 class="course-title">Deskripsi</h4>
                                 <p>
                                     <?= (!empty($course->DESKRIPSI_COURSE)) ? $course->DESKRIPSI_COURSE : "Tidak ada deskripsi" ?>
@@ -38,7 +38,7 @@
 
                                         <div class="col-lg-8 col-md-8">
                                             <div class="instructor-content">
-                                                <h4><?= $course->NAME ?></h4>
+                                                <h4><?= $course->NAMA_INSTRUKTUR ?? $course->NAME ?></h4>
                                             </div>
                                         </div>
                                     </div>
@@ -71,14 +71,6 @@
                         <div class="course-widget course-details-info">
                             <div class="course-thumbnail">
                                 <img src="<?= $course->IMAGE_ACTIVITY ?>" alt="" class="img-fluid w-100" />
-                                <!-- <div class="my-3 fw-bold d-flex align-self-end justify-content-end pe-0 align-items-center text-black">
-                                    Bagikan :
-                                    <span class="fs-5">
-                                        <a href="{{ url('auth/facebook') }}"><i class="fab fa-facebook mx-2" style="cursor: pointer"></i></a>
-                                        <a href="{{ url('auth/twitter') }}"><i class="fab fa-twitter me-2" style="cursor: pointer"></i></a>
-                                        <a href="{{ url('auth/instagram') }}"><i class="fab fa-instagram" style="cursor: pointer"></i></a>
-                                    </span>
-                                </div> -->
                             </div>
 
                             <ul class="course-sidebar-list">
@@ -110,7 +102,7 @@
                     <nav class="course-single-tabs learn-press-nav-tabs">
                         <div class="nav nav-tabs course-nav" id="nav-tab" role="tablist">
                             <a class="nav-item nav-link active" id="nav-course-tab" data-bs-toggle="tab" href="#nav-course" role="tab" aria-controls="nav-course-tab" aria-selected="true">Kursus</a>
-                            <a class="nav-item nav-link" id="nav-announcement-tab" data-bs-toggle="tab" href="#nav-announcement" role="tab" aria-controls="nav-announcement-tab" aria-selected="false">Pengumuman</a>
+                            <!-- <a class="nav-item nav-link" id="nav-announcement-tab" data-bs-toggle="tab" href="#nav-announcement" role="tab" aria-controls="nav-announcement-tab" aria-selected="false">Pengumuman</a> -->
                             <?php if ($tot_proggress == 100) { ?>
                                 <a class="nav-item nav-link" id="nav-sertif-tab" data-bs-toggle="tab" href="#nav-sertif" role="tab" aria-controls="nav-sertif-tab" aria-selected="false">Sertifikat</a>
                                 <a class="nav-item nav-link" id="nav-komen-tab" data-bs-toggle="tab" href="#nav-komen" role="tab" aria-controls="nav-komen-tab" aria-selected="false">Komentar</a>
@@ -143,7 +135,7 @@
                                     <?php
                                     $grade = !empty($nilai->NILAI) ? $nilai->NILAI : 0;
                                     if ($tot_proggress == 100) { ?>
-                                        <button class="button btn-main-outline px-4 py-3 mb-3 rounded-3 shadow fw-semibold w-100 btn-code" onclick="ShowCertificateCode(this)" data-type="5">
+                                        <button class="button btn-main-outline px-4 py-3 mb-3 rounded-3 shadow fw-semibold w-100 btn-code" id="certif-buttn" onclick="ShowCertificateCode(this)" data-type="5">
                                             Tampilkan Kode Sertifikat
                                         </button>
                                     <?php } ?>
@@ -160,11 +152,11 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="nav-announcement" role="tabpanel" aria-labelledby="nav-announcement-tab" tabindex="0">
+                        <!-- <div class="tab-pane fade" id="nav-announcement" role="tabpanel" aria-labelledby="nav-announcement-tab" tabindex="0">
                             <div class="mx-3 mx-lg-7 my-4 text-muted">
                                 <?= (!empty($course->PENGUMUMAN)) ? $course->PENGUMUMAN : "Tidak ada pengumuman" ?>
                             </div>
-                        </div>
+                        </div> -->
                         <?php
                         if ($tot_proggress == 100) { ?>
                             <div class="tab-pane fade" id="nav-sertif" role="tabpanel" aria-labelledby="nav-sertif-tab" tabindex="0">
@@ -172,12 +164,16 @@
                                     <div class="blurred-image d-none d-lg-block" style="pointer-events: none">
                                         <embed class="overlay" style="width:600px; height:500px; pointer-events: none;" src="<?= $sertif->FILE_SERTIFIKAT ?>#toolbar=0&navpanes=0&scrollbar=0&statusbar=0&messages=0&scrollbar=0" type="text/plain"></emb>
                                     </div>
-                                    <div class="shadow mx-5 mt-3 rounded-4 box-input d-flex align-items-center">
+                                    <div class="shadow mx-5 mt-3 rounded-4 box-input d-flex align-items-center" id="certif-box">
                                         <div class="mx-4 py-3 bg-white">
                                             <label>Kode Sertifikat</label>
                                             <form action="javascript:void(0)">
                                                 <input type="text" class="form-control mb-4" name="" id="input-code" style="text-transform:uppercase">
-                                                <button type="button" class="btn btn-primary rounded col-md-12 my-3" onclick="DownloadPdf(this)">Unduh PDF</button>
+                                                <button type="button" id="downloadSertif" class="btn btn-primary rounded col-md-12 my-3" onclick="DownloadPdf(this)">
+                                                    <span class="loading">
+                                                        <i class="bx bx-loader bx-spin font-size-16 align-middle me-2"></i>
+                                                    </span> Unduh PDF
+                                                </button>
                                             </form>
                                         </div>
                                     </div>
@@ -185,10 +181,10 @@
                             </div>
                             <div class="tab-pane fade" id="nav-komen" role="tabpanel" aria-labelledby="nav-komen-tab" tabindex="0">
                                 <div style="display: flex; justify-content: center; width: 100%;">
-                                    <form action="addkomen" method="POST" style="width: 100%; max-width: 800px;">
+                                    <form action="{{ ('kursus/detail/addkomen') }}" method="POST" style="width: 100%; max-width: 800px;">
                                         @csrf
-                                        <input type="hidden" name="id_activity" value="<?=$id_activity?>">
-                                        <input type="hidden" name="id_user" value="<?= session('user')[0]['ID_USER']?>">
+                                        <input type="hidden" name="id_activity" value="<?= $id_activity ?>">
+                                        <input type="hidden" name="id_user" value="<?= session('user')[0]['ID_USER'] ?>">
                                         <div style="box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); margin: 1rem auto; border-radius: 0.5rem; padding: 1rem; display: flex; flex-direction: column; align-items: center;">
                                             <div style="width: 100%; padding: 1rem;">
                                                 <label for="komentar">Komentar</label>
@@ -209,17 +205,17 @@
                                                 <div class="card-body p-4">
                                                     <div class="d-flex flex-start">
                                                         <img class="rounded-circle shadow-1-strong me-3"
-                                                        src="<?= $item->FOTO_PROFILE == null ? 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973461_1280.png' : $item->FOTO_PROFILE ?>"
-                                                        alt="avatar" width="60" height="60" />
+                                                            src="<?= $item->FOTO_PROFILE == null ? 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973461_1280.png' : $item->FOTO_PROFILE ?>"
+                                                            alt="avatar" width="60" height="60" />
                                                         <div>
-                                                            <h6 class="fw-bold mb-1"><?=$item->NAME?></h6>
+                                                            <h6 class="fw-bold mb-1"><?= $item->NAME ?></h6>
                                                             <div class="d-flex align-items-center mb-3">
                                                                 <p class="mb-0">
-                                                                    <?=date('F d, Y', strtotime($item->LOG_TIME))?>
+                                                                    <?= date('F d, Y', strtotime($item->LOG_TIME)) ?>
                                                                 </p>
                                                             </div>
                                                             <p class="mb-0">
-                                                            <?= $item->komentar?>
+                                                                <?= $item->komentar ?>
                                                             </p>
                                                         </div>
                                                     </div>
@@ -262,7 +258,8 @@
         // Reload the page
         location.reload();
     });
-    
+    $('.loading').hide();
+
     const Toast = Swal.mixin({
         toast: true,
         position: 'top-end',
@@ -280,6 +277,8 @@
     <?php if ($tot_proggress == 100) { ?>
 
         function DownloadPdf(e) {
+            $('#downloadSertif').prop('disabled', true);
+            $('.loading').show();
             if ($('#input-code').val() == '<?= $course->SERTIF_CODE ?>') {
                 var csrfToken = $('meta[name="csrf-token"]').attr('content');
                 $.ajaxSetup({
@@ -304,16 +303,22 @@
                                 cancelButtonText: 'Nanti'
                             }).then((result) => {
                                 if (result.isConfirmed) {
-                                    window.location.href = '<?= Request::segment(0) ?>/profile';
+                                    window.location.href = '<?= Request::segment(0) ?>/profil';
                                 }
                             });
+                            $('#downloadSertif').prop('disabled', false);
+                            $('.loading').hide();
                         } else {
                             window.open('<?= $sertif->FILE_SERTIFIKAT ?>', '_blank');
+                            $('#downloadSertif').prop('disabled', false);
+                            $('.loading').hide();
                         }
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
                         console.error("AJAX Error: ", textStatus, errorThrown);
                         console.error("Response Text: ", jqXHR.responseText);
+                        $('#downloadSertif').prop('disabled', false);
+                        $('.loading').hide();
                     }
                 });
             } else {
@@ -321,6 +326,8 @@
                     icon: 'error',
                     title: 'Wrong Code!'
                 })
+                $('#downloadSertif').prop('disabled', false);
+                $('.loading').hide();
             }
         }
 
@@ -339,7 +346,7 @@
         $(e).addClass('btn-main-2')
         $("#detail-item").html('<div class="d-flex justify-content-center align-items-center h-100 py-4"><img src="https://icons8.com/preloaders/preloaders/1476/Rocket.gif" alt="Loader.gif" /></div>');
         $("#detail-item").html(`<div class="d-flex justify-content-center align-items-center h-100 py-4">
-                <div class="bg-white px-3 py-2 rounded-3 shadow fw-semibold text-center">
+                <div class="bg-white px-3 py-2 rounded-3 shadow fw-semibold text-center" id="code-sertif">
                     <i class="bi bi-file-text me-2" style="font-size: 1.1rem; -webkit-text-stroke: 0.2px;"></i>
                     Your Certificate Code :
                     <h6><?= $course->SERTIF_CODE ?></h6>
@@ -386,8 +393,8 @@
                     $('#show-detail-' + <?= $item->ID_ITEM ?>).addClass('btn-main-outline')
                 <?php endforeach; ?>
             }
-            
-            if ($(e).data("nilai") >= 75 && ($(e).data("iditem") == $(e).data("iditemmax"))) {   
+
+            if ($(e).data("nilai") >= 75 && ($(e).data("iditem") == $(e).data("iditemmax"))) {
                 location.reload()
             }
             GetItemCourse(e)
@@ -410,7 +417,7 @@
             }
         });
         $.ajax({
-            url: "<?= Request::segment(0) ?>/course/item/mapping",
+            url: "<?= Request::segment(0) ?>/kursus/item/mapping",
             type: "POST",
             data: {
                 id_activity: "<?= $id_activity; ?>"
@@ -442,7 +449,7 @@
         });
 
         $.ajax({
-            url: '<?= Request::segment(0) ?>/course/item',
+            url: '<?= Request::segment(0) ?>/kursus/item',
             type: "POST",
             data: {
                 id_item: $(e).data("iditem"),
@@ -486,4 +493,249 @@
 
     readmoreText.style.height = defaultHeight;
     readmoreBtn.addEventListener('click', toggleExpandedState);
+</script>
+
+
+<script>
+    <?php if ($tot_proggress == 100) { ?>
+        document.addEventListener('DOMContentLoaded', function() {
+            window.scrollTo(0, 0);
+            $("#certif-buttn").click()
+
+            const intro = introJs();
+
+            intro.setOptions({
+                steps: [{
+                        title: "Congratulations",
+                        intro: "Selamat telah menyelesaikan kursus, berikut panduan untuk mendapat sertifikat anda"
+                    },
+                    {
+                        element: document.getElementById('certif-buttn'),
+                        intro: "Anda bisa menuju ke tampilkan sertifikat",
+                        tooltipPosition: "bottom-center"
+                    }, {
+                        element: document.getElementById('code-sertif'),
+                        intro: "Copy kode sertifikat anda"
+                    }, {
+                        element: document.getElementById('nav-sertif-tab'),
+                        intro: "Kemudian masuk ke bagian sertifikat"
+                    }, {
+                        element: document.getElementById('certif-box'),
+                        intro: "Masukkan kode sebelumnya dan unduh pdf"
+                    }
+                ]
+            }).setOptions({
+                showBullets: false,
+                scrollToElement: false,
+                exitOnOverlayClick: false,
+            })
+
+            intro.onbeforechange(function(targetElement) {
+                let width = $(window).width();
+
+                if (width > 991) {
+                    if (this._currentStep == 1) {
+                        $(".introjs-helperLayer").css('top', '').attr('style', function(i, style) {
+                            return (style || '') + 'top: ' + ($(targetElement).offset().top - (97)) + 'px !important;';
+                        });
+                        $(".introjs-tooltipReferenceLayer").css('top', '').attr('style', function(i, style) {
+                            return (style || '') + 'top:  ' + ($(targetElement).offset().top - (97)) + 'px !important;';
+                        });
+                        intro.refresh()
+                        $("#certif-buttn").click()
+                    } else if (this._currentStep == 2) {
+                        $("#certif-buttn").click()
+
+                        $(".introjs-helperLayer").css('height', '').attr('style', function(i, style) {
+                            return (style || '') + 'height: ' + ($("#code-sertif").outerHeight(true)) + 'px !important;';
+                        });
+                        $(".introjs-helperLayer").css('width', '').attr('style', function(i, style) {
+                            return (style || '') + 'width: ' + ($("#code-sertif").outerWidth(true)) + 'px !important;';
+                        });
+                        $(".introjs-helperLayer").css('left', '').attr('style', function(i, style) {
+                            return (style || '') + 'left: ' + ($("#code-sertif").offset().left) + 'px !important;';
+                        });
+                        $(".introjs-helperLayer").css('top', '').attr('style', function(i, style) {
+                            return (style || '') + 'top: ' + ($("#code-sertif").offset().top) + 'px !important;';
+                        });
+                        $(".introjs-tooltipReferenceLayer").css('left', '').attr('style', function(i, style) {
+                            return (style || '') + 'left: ' + ($("#code-sertif").offset().left) + 'px !important;';
+                        });
+                        $(".introjs-tooltipReferenceLayer").css('top', '').attr('style', function(i, style) {
+                            return (style || '') + 'top:  ' + ($("#code-sertif").offset().top + $("#code-sertif").outerHeight(true)) + 'px !important;';
+                        });
+                        intro.refresh()
+                    } else if (this._currentStep == 3) {
+                        intro.refresh()
+                        window.scrollTo(0, $(targetElement).offset().top - 250);
+
+                        $(".introjs-helperLayer").css('height', '').attr('style', function(i, style) {
+                            return (style || '') + 'height: ' + ($(targetElement).outerHeight(true)) + 'px !important;';
+                        });
+                        $(".introjs-helperLayer").css('width', '').attr('style', function(i, style) {
+                            return (style || '') + 'width: ' + ($(targetElement).outerWidth(true)) + 'px !important;';
+                        });
+                        $(".introjs-helperLayer").css('left', '').attr('style', function(i, style) {
+                            return (style || '') + 'left: ' + ($(targetElement).offset().left) + 'px !important;';
+                        });
+                        $(".introjs-helperLayer").css('top', '').attr('style', function(i, style) {
+                            return (style || '') + 'top: ' + ($(targetElement).offset().top) + 'px !important;';
+                        });
+                        $(".introjs-tooltipReferenceLayer").css('left', '').attr('style', function(i, style) {
+                            return (style || '') + 'left: ' + ($(targetElement).offset().left) + 'px !important;';
+                        });
+                        $(".introjs-tooltipReferenceLayer").css('top', '').attr('style', function(i, style) {
+                            return (style || '') + 'top:  ' + ($(targetElement).offset().top) + 'px !important;';
+                        });
+                        intro.refresh()
+
+                        $('#nav-sertif-tab').tab('show')
+
+                    } else if (this._currentStep == 4) {
+                        intro.refresh()
+                        $(".introjs-helperLayer").css('height', '').attr('style', function(i, style) {
+                            return (style || '') + 'height: ' + ($(targetElement).outerHeight(true)) + 'px !important;';
+                        });
+                        $(".introjs-helperLayer").css('width', '').attr('style', function(i, style) {
+                            return (style || '') + 'width: ' + ($(targetElement).innerWidth(true)) + 'px !important;';
+                        });
+                        $(".introjs-helperLayer").css('left', '').attr('style', function(i, style) {
+                            return (style || '') + 'left: ' + ($(targetElement).offset().left - 10) + 'px !important;';
+                        });
+                        $(".introjs-helperLayer").css('top', '').attr('style', function(i, style) {
+                            return (style || '') + 'top: ' + ($(targetElement).offset().top) + 'px !important;';
+                        });
+                        $(".introjs-tooltipReferenceLayer").css('left', '').attr('style', function(i, style) {
+                            return (style || '') + 'left: ' + ($(targetElement).offset().left) + 'px !important;';
+                        });
+                        $(".introjs-tooltipReferenceLayer").css('top', '').attr('style', function(i, style) {
+                            return (style || '') + 'top:  ' + ($(targetElement).offset().top + 20) + 'px !important;';
+                        });
+                        intro.refresh()
+                    }
+                } else {
+                    if (this._currentStep == 1) {
+                        $(".introjs-helperLayer").css('top', '').attr('style', function(i, style) {
+                            return (style || '') + 'top: ' + ($(targetElement).offset().top - (87)) + 'px !important;';
+                        });
+                        $(".introjs-tooltipReferenceLayer").css('top', '').attr('style', function(i, style) {
+                            return (style || '') + 'top:  ' + ($(targetElement).offset().top - (87)) + 'px !important;';
+                        });
+                        intro.refresh()
+                        $("#certif-buttn").click()
+                    } else if (this._currentStep == 2) {
+                        $("#certif-buttn").click()
+
+                        $(".introjs-helperLayer").css('height', '').attr('style', function(i, style) {
+                            return (style || '') + 'height: ' + ($("#code-sertif").outerHeight(true)) + 'px !important;';
+                        });
+                        $(".introjs-helperLayer").css('width', '').attr('style', function(i, style) {
+                            return (style || '') + 'width: ' + ($("#code-sertif").outerWidth(true)) + 'px !important;';
+                        });
+                        $(".introjs-helperLayer").css('left', '').attr('style', function(i, style) {
+                            return (style || '') + 'left: ' + ($("#code-sertif").offset().left) + 'px !important;';
+                        });
+                        $(".introjs-helperLayer").css('top', '').attr('style', function(i, style) {
+                            return (style || '') + 'top: ' + ($("#code-sertif").offset().top) + 'px !important;';
+                        });
+                        $(".introjs-tooltipReferenceLayer").css('left', '').attr('style', function(i, style) {
+                            return (style || '') + 'left: ' + ($("#code-sertif").offset().left) + 'px !important;';
+                        });
+                        $(".introjs-tooltipReferenceLayer").css('top', '').attr('style', function(i, style) {
+                            return (style || '') + 'top:  ' + ($("#code-sertif").offset().top + $("#code-sertif").outerHeight(true)) + 'px !important;';
+                        });
+                        intro.refresh()
+                    } else if (this._currentStep == 3) {
+
+                        $(".introjs-helperLayer").css('height', '').attr('style', function(i, style) {
+                            return (style || '') + 'height: ' + ($(targetElement).outerHeight(true)) + 'px !important;';
+                        });
+                        $(".introjs-helperLayer").css('width', '').attr('style', function(i, style) {
+                            return (style || '') + 'width: ' + ($(targetElement).outerWidth(true)) + 'px !important;';
+                        });
+                        $(".introjs-helperLayer").css('left', '').attr('style', function(i, style) {
+                            return (style || '') + 'left: ' + ($(targetElement).offset().left) + 'px !important;';
+                        });
+                        $(".introjs-helperLayer").css('top', '').attr('style', function(i, style) {
+                            return (style || '') + 'top: ' + ($(targetElement).offset().top) + 'px !important;';
+                        });
+                        $(".introjs-tooltipReferenceLayer").css('left', '').attr('style', function(i, style) {
+                            return (style || '') + 'left: ' + ($(targetElement).offset().left) + 'px !important;';
+                        });
+                        $(".introjs-tooltipReferenceLayer").css('top', '').attr('style', function(i, style) {
+                            return (style || '') + 'top:  ' + ($(targetElement).offset().top) + 'px !important;';
+                        });
+                        intro.refresh()
+
+                        $('#nav-sertif-tab').tab('show')
+                        window.scrollTo(0, $(targetElement).offset().top - 300);
+
+
+                    } else if (this._currentStep == 4) {
+                        intro.refresh()
+                        window.scrollTo(0, $(targetElement).offset().top - 250);
+
+                        $(".introjs-helperLayer").css('height', '').attr('style', function(i, style) {
+                            return (style || '') + 'height: ' + ($(targetElement).outerHeight(true)) + 'px !important;';
+                        });
+                        $(".introjs-helperLayer").css('width', '').attr('style', function(i, style) {
+                            return (style || '') + 'width: ' + ($(targetElement).innerWidth(true)) + 'px !important;';
+                        });
+                        $(".introjs-helperLayer").css('left', '').attr('style', function(i, style) {
+                            return (style || '') + 'left: ' + ($(targetElement).offset().left - 10) + 'px !important;';
+                        });
+                        $(".introjs-helperLayer").css('top', '').attr('style', function(i, style) {
+                            return (style || '') + 'top: ' + ($(targetElement).offset().top) + 'px !important;';
+                        });
+                        $(".introjs-tooltipReferenceLayer").css('left', '').attr('style', function(i, style) {
+                            return (style || '') + 'left: ' + ($(targetElement).offset().left) + 'px !important;';
+                        });
+                        $(".introjs-tooltipReferenceLayer").css('top', '').attr('style', function(i, style) {
+                            return (style || '') + 'top:  ' + ($(targetElement).offset().top) + 'px !important;';
+                        });
+                        intro.refresh()
+                    }
+                }
+            });
+            window.scrollTo(0, 0);
+
+            function showIntroIfNeeded(userId) {
+                if (!localStorage.getItem(`intro_course_${userId}`)) {
+                    if ($(window).scrollTop() === 0) {
+
+                        intro.start()
+                        intro.oncomplete(() => {
+                            localStorage.setItem(`intro_course_${userId}`, "true")
+                        })
+                        intro.onexit(() => {
+                            localStorage.setItem(`intro_course_${userId}`, "true")
+                        })
+                    } else {
+                        $(window).on('scroll', function checkScroll() {
+                            if ($(window).scrollTop() === 0) {
+                                intro.start()
+                                intro.oncomplete(() => {
+                                    localStorage.setItem(`intro_course_${userId}`, "true")
+                                })
+                                intro.onexit(() => {
+                                    localStorage.setItem(`intro_course_${userId}`, "true")
+                                })
+
+                                $(window).off('scroll', checkScroll)
+                            }
+                        });
+                    }
+
+                    localStorage.setItem(`intro_course_${userId}`, 'true')
+                }
+            }
+
+            function onLogin(userId) {
+                showIntroIfNeeded(userId)
+            }
+
+            onLogin('<?= session('user')[0]['ID_USER'] ?>')
+        });
+
+    <?php } ?>
 </script>

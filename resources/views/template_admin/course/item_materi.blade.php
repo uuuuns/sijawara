@@ -22,7 +22,7 @@
                 <label class="col-sm-2 col-form-label control-label">File Materi<span class="text-danger">*</span></label>
                 <div class="col-md-10">
                     <div class="custom-file">
-                        <input type="file" name="materi_file[]" accept=".pdf, .ppt, .pptx" class="custom-file-input file_materi" required>
+                        <input type="file" name="materi_file[]" accept=".pdf, .ppt, .pptx" class="custom-file-input file_materi" data-max-file-size="20M" required>
                     </div>
                 </div>
             </div>
@@ -33,12 +33,13 @@
                 </div>
             </div>
             <div class="form-group row">
-                <label class="col-sm-2 col-form-label control-label">Link Youtube<span class="text-danger">*</span></label>
+                <label class="col-sm-2 col-form-label control-label">Link File Atau Video Youtube<span class="text-danger">*</span></label>
                 <div class="col-md-10">
                     <input type="text" class="form-control" name="materi_link[]" required>
-                    <span class="text-danger">* Unggah video tautan di Google Drive dan kirimkan tautan di kolom ini.
-                        Contoh link harus berisi d/id_video_anda seperti ini
-                        https://drive.google.com/file/d/1fTx7Ij-ora0xIFAWU0Gz4Ej8kJZh1tgs/view?usp=sharing</span>
+                    <span class="text-danger">* link Drive harus berisi d/id_file_anda seperti ini
+                        https://drive.google.com/file/d/1fTx7Ij-ora0xIFAWU0Gz4Ej8kJZh1tgs/view?usp=sharing.
+                        Link Youtube harus berisi v=id_video_anda seperti ini https://www.youtube.com/watch?v=UA0ACGed2m8
+                    </span>
                 </div>
             </div>
             <div class="form-group row">
@@ -79,11 +80,7 @@
         $editor.summernote({
             height: 200,
             callbacks: {
-                onPaste: function(e) {
-                    console.log('Called event paste', e);
-                },
                 onImageUpload: function(files) {
-                    console.log(files);
                     $summernote.summernote('insertNode', imgNode);
                 }
             },

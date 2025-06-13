@@ -29,7 +29,7 @@
     <div class="tab-content mt-3" id="formTabsContent">
       <!-- Data Pemilik Form -->
       <div class="tab-pane fade show {{$check->COUNT_DATA_KOPERASI < 16 ? 'active' : ''}}" id="process1" role="tabpanel" aria-labelledby="dataPemilik-tab">
-        <form id="data_pemilik" method="post" action="data_koperasi/store_data_koperasi">
+        <form id="data_pemilik" method="post" action="{{ url('data_koperasi/store_data_koperasi') }}">
             @csrf
           <div class="mb-3">
             <label for="namaKoperasi" class="form-label">Nama Koperasi</label>
@@ -152,11 +152,11 @@
 
       <!-- Data UKM Form -->
       <div class="tab-pane fade {{$check->COUNT_DATA_KOPERASI >= 16 && $check->COUNT_DATA_HUKUM < 7 ? 'show active' : ''}}" id="process2" role="tabpanel" aria-labelledby="dataUKM-tab">
-        <form id="data_koperasi" action="data_koperasi/store_hukum_koperasi" method="post">
+        <form id="data_koperasi" action="{{ url('data_koperasi/store_hukum_koperasi') }}" method="post">
             @csrf
           <div class="mb-3">
             <label for="noBadanHukum" class="form-label">No Badan Hukum UKM</label>
-            <input type="text" value="{{$data_koperasi->no_badan_hukum}}" class="form-control number" id="noBadanHukum" name="noBadanHukum" placeholder="XX/BH/X.XX/XX/XXX" required>
+            <input type="text" value="{{$data_koperasi->no_badan_hukum}}" class="form-control" id="noBadanHukum" name="noBadanHukum" placeholder="XX/BH/X.XX/XX/XXX" required>
           </div>
           <div class="mb-3">
             <label for="tglBadanHukum" class="form-label">Tanggal Badan Hukum</label>
@@ -197,7 +197,7 @@
 
       <!-- Data Lain-lain Form -->
       <div class="tab-pane fade {{$check->COUNT_DATA_KOPERASI >= 16 && $check->COUNT_DATA_HUKUM >= 7 && $check->COUNT_DATA_PENGURUS < 12 ? 'show active' : ''}}" id="process3" role="tabpanel" aria-labelledby="dataLain-tab">
-        <form action="data_koperasi/store_anggota_koperasi" method="POST" id="data_lain">
+        <form action="{{ url('data_koperasi/store_anggota_koperasi') }}" method="POST" id="data_lain">
           @csrf
           <div class="mb-3">
             <label for="namaKetua" class="form-label">Nama Ketua Koperasi</label>
@@ -256,7 +256,7 @@
     </div>
       <!-- Data Lain-lain Permasalahan Form -->
       <div class="tab-pane fade {{$check->COUNT_DATA_KOPERASI >= 16 && $check->COUNT_DATA_HUKUM >= 7 && $check->COUNT_DATA_PENGURUS >= 12 ? 'show active' : ''}}" id="process4" role="tabpane4" aria-labelledby="dataMasalah-tab">
-        <form action="data_koperasi/store_masalah_koperasi" method="POST" id="data_lain">
+        <form action="{{ url('data_koperasi/store_masalah_koperasi') }}" method="POST" id="data_lain">
           @csrf
           <div class="mb-3">
               <label for="permasalahan" class="form-label">Permasalahan</label>
@@ -309,6 +309,13 @@
             $('#process2-tab').addClass('active');
         @endif
     });
+
+    document.getElementById('noBadanHukum').addEventListener('input', function(e) {
+      const allowedCharacters = /^[A-Z0-9.\-/ ]*$/;
+      e.target.value = e.target.value.toUpperCase();
+      e.target.value = e.target.value.replace(/[^A-Z0-9.\-/ ]/g, '');
+    });
+
 
     function formatCurrency(num) {
         return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");

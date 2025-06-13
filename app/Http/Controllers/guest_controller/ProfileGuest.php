@@ -163,7 +163,7 @@ class ProfileGuest extends Controller
     }
     public function myevents()
     {
-        $data['title'] = "Webinar Ku";
+        $data['title'] = "Webinar & PelatihanKu";
         $data['data_personal'] = DB::selectOne("
         SELECT
             u.*
@@ -288,17 +288,58 @@ class ProfileGuest extends Controller
         }
         $updateStatus = User::update_profile($data);
         if ($updateStatus) {
+            $mappingInstansi = [
+                'KOPERASI' => 'koperasi',
+                'UKM' => 'ukm',
+                'INSTANSI' => 'instansi',
+                'KOPERASI;UKM' => 'koperasi_ukm',
+                'UKM;KOPERASI' => 'koperasi_ukm',
+                'UMUM' => 'umum'
+            ];
+    
+            $joinCond = '';
+            if ($mappingInstansi[$request->input('jenis_instansi')] == 'ukm') {
+                $joinCond = 'LEFT JOIN tb_ukm tu ON tu.ID_USER = u.ID_USER';
+            } else if ($mappingInstansi[$request->input('jenis_instansi')] == 'koperasi') {
+                $joinCond = 'LEFT JOIN tb_koperasi tk ON tk.ID_USER = u.ID_USER';
+            } else if ($mappingInstansi[$request->input('jenis_instansi')] == 'instansi_ukm') {
+                $joinCond = 'LEFT JOIN tb_koperasi tk ON tk.ID_USER = u.ID_USER
+                            LEFT JOIN tb_ukm tk ON tu.ID_USER = u.ID_USER';
+            }
+        
+            // Query the database
+            $data2 = DB::selectOne('
+                SELECT 
+                    *
+                FROM 
+                    `user` u
+                ' . $joinCond . '
+                WHERE 
+                    u.ID_USER = ?
+            ', [session('user')[0]['ID_USER']]);
+            
+            $is_data_complete = true;
+            if ($data2) {
+                foreach ($data2 as $key => $value) {
+                    if (is_null($value) || $value === '') {
+                        $is_data_complete = false;
+                    }
+                }
+            }
+
             $user_data = collect([
                 'EMAIL' => $request->input('email'),
                 'NAME' => $request->input('name_user'),
                 'ID_USER' => session('user')[0]['ID_USER'],
+                'FOTO_PROFILE' => $data[0]['FOTO_PROFILE'],
                 'ID_ROLE' => session('user')[0]['ID_ROLE'],
+                'IS_DATA_COMPLETE' => $is_data_complete,
                 'LOGGED_IN' => TRUE
             ]);
             Session::flush();
             Session::push('user', $user_data);
         }
-        return redirect('/profile');
+        return redirect('/profil');
     }
     public function academic_change(request $request)
     {
@@ -357,10 +398,14 @@ class ProfileGuest extends Controller
                 ID_USER = "' . session('user')[0]['ID_USER'] . '"
         ');
 
-        $cekData = $this->cekDataProfil(session('user')[0]['ID_USER'], $data['user']->JENIS_INSTANSI);
-        if ($cekData != null) {
-            return response()->json(['status' => 'error', 'message' => $cekData, 'code' => 1]);
+        if (session('user')[0]['IS_DATA_COMPLETE'] == false) {
+            return response()->json(['status' => 'error', 'message' => 'Lengkapi data profil dan UKM/Koperasi anda terlebih dahulu', 'code' => 1]);
         }
+
+        // $cekData = $this->cekDataProfil(session('user')[0]['IS_DATA_COMPLETE'], $data['user']->JENIS_INSTANSI);
+        // if ($cekData != null) {
+        //     return response()->json(['status' => 'error', 'message' => $cekData, 'code' => 1]);
+        // }
         
         DB::table('sertifikat_activity')->where('ID_ACTIVITY', $request->id_activity)->where('ID_USER', session('user')[0]['ID_USER'])->update($data_update);
 
@@ -392,6 +437,8 @@ class ProfileGuest extends Controller
             'KOPERASI' => 'koperasi',
             'UKM' => 'ukm',
             'INSTANSI' => 'instansi',
+            'INSTANSI; UKM' => 'instansi_ukm',
+            'UKM; INSTANSI' => 'instansi_ukm',
             'UMUM' => 'umum'
         ];
 
@@ -400,6 +447,9 @@ class ProfileGuest extends Controller
             $joinCond = 'LEFT JOIN tb_ukm tu ON tu.ID_USER = u.ID_USER';
         } else if ($mappingInstansi[$instansi] === 'koperasi') {
             $joinCond = 'LEFT JOIN tb_koperasi tk ON tk.ID_USER = u.ID_USER';
+        } else if ($mappingInstansi[$instansi] === 'instansi_ukm') {
+            $joinCond = 'LEFT JOIN tb_koperasi tk ON tk.ID_USER = u.ID_USER
+                        LEFT JOIN tb_ukm tk ON tu.ID_USER = u.ID_USER';
         }
     
         // Query the database
@@ -420,6 +470,8 @@ class ProfileGuest extends Controller
                         return "Lengkapi data profil dan data " . $data->JENIS_INSTANSI . " anda terlebih dahulu";
                     } else if ($data->JENIS_INSTANSI === 'KOPERASI') {
                         return "Lengkapi data profil dan data " . $data->JENIS_INSTANSI . " anda terlebih dahulu";
+                    } else if ($data->JENIS_INSTANSI === 'INSTANSI; UKM' || $data->JENIS_INSTANSI === 'UKM; INSTANSI') {
+                        return "Lengkapi data profil dan data ukm serta koperasi anda terlebih dahulu";
                     } else {
                         return "Lengkapi data profil anda terlebih dahulu";
                     }
@@ -570,7 +622,10 @@ class ProfileGuest extends Controller
             DB::table('tb_ukm')->updateOrInsert(['ID_USER' => session('user')[0]['ID_USER']], $data);
             return redirect('data_ukm')->with('success', 'Data Pemilik UKM berhasil disimpan');
         } catch (\Throwable $e) {
-            dd($e->getMessage());
+            return response()->json([
+                'status' => 'failure',
+                'errors' => $e
+            ], 422);
         }
     }
     public function store_data_pemilik (Request $request) {
@@ -591,7 +646,10 @@ class ProfileGuest extends Controller
             DB::table('tb_ukm')->updateOrInsert(['ID_USER' => session('user')[0]['ID_USER']], $data);
             return redirect('data_ukm')->with('success', 'Data Pemilik UKM berhasil disimpan');
         } catch (\Throwable $e) {
-            dd($e->getMessage());
+            return response()->json([
+                'status' => 'failure',
+                'errors' => $e
+            ], 422);
         }
     }
     public function store_data_lain (Request $request) {
@@ -634,7 +692,10 @@ class ProfileGuest extends Controller
 
             return redirect('data_ukm')->with('success', 'Data berhasil disimpan');
         } catch (\Throwable $e) {
-            dd($e->getMessage());
+            return response()->json([
+                'status' => 'failure',
+                'errors' => $e
+            ], 422);
         }
     }
     public function get_kota (Request $request) {
@@ -802,7 +863,10 @@ class ProfileGuest extends Controller
             DB::table('tb_koperasi')->updateOrInsert(['ID_USER' => session('user')[0]['ID_USER']], $data);
             return redirect('data_koperasi')->with('success', 'Data Koperasi berhasil disimpan');
         } catch (\Throwable $e) {
-            dd($e->getMessage());
+            return response()->json([
+                'status' => 'failure',
+                'errors' => $e
+            ], 422);
         }
     }
     public function store_hukum_koperasi (Request $request) {
@@ -820,7 +884,10 @@ class ProfileGuest extends Controller
             DB::table('tb_koperasi')->updateOrInsert(['ID_USER' => session('user')[0]['ID_USER']], $data);
             return redirect('data_koperasi')->with('success', 'Data Koperasi berhasil disimpan');
         } catch (\Throwable $e) {
-            dd($e->getMessage());
+            return response()->json([
+                'status' => 'failure',
+                'errors' => $e
+            ], 422);
         }
     }
     public function store_anggota_koperasi (Request $request) {
@@ -843,7 +910,10 @@ class ProfileGuest extends Controller
             DB::table('tb_koperasi')->updateOrInsert(['ID_USER' => session('user')[0]['ID_USER']], $data);
             return redirect('data_koperasi')->with('success', 'Data Koperasi berhasil disimpan');
         } catch (\Throwable $e) {
-            dd($e->getMessage());
+            return response()->json([
+                'status' => 'failure',
+                'errors' => $e
+            ], 422);
         }
     }
 
@@ -873,7 +943,10 @@ class ProfileGuest extends Controller
 
             return redirect('data_koperasi')->with('success', 'Data berhasil disimpan');
         } catch (\Throwable $e) {
-            dd($e->getMessage());
+            return response()->json([
+                'status' => 'failure',
+                'errors' => $e
+            ], 422);
         }
     }
     public function cek_email(Request $request) {

@@ -23,18 +23,19 @@
                             <div class="d-flex flex-column align-items-center align-items-sm-start text-white">
                                 <ul class="sidebar-profile nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start w-100" id="menu">
                                     <li class="nav-item w-100 pt-2">
-                                        <a href="/dashboard" class=" {{ request()->is('dashboard') ? 'active' : '' }}    nav-link d-flex align-middle px-4 py-3 rounded-0">
+                                        <a href="{{ url('dashboard') }}" class=" {{ request()->is('dashboard') ? 'active' : '' }}    nav-link d-flex align-middle px-4 py-3 rounded-0">
                                             <i class="fs-6 d-flex align-items-center far fa-tachometer"></i> <span class="ms-1 ps-2 fs-6 align-self-center ">
                                                 Dashboard
                                             </span>
                                         </a>
                                     </li>
+
                                     <li class="w-100">
                                         <hr class="my-0 border border-1 mx-3">
                                     </li>
 
                                     <li class="nav-item w-100">
-                                        <a data-bs-toggle="collapse" data-bs-target="#submenu" aria-expanded="true" aria-controls="submenu" class="nav-link d-flex align-middle px-4 py-3 rounded-0 {{ (request()->is('events*') || request()->is('courses*')) ? 'active' :  '' }}" style="cursor: pointer;">
+                                        <a data-bs-toggle="collapse" data-bs-target="#submenu" aria-expanded="true" aria-controls="submenu" class="nav-link d-flex align-middle px-4 py-3 rounded-0 {{ (request()->is('webinar-admin*') || request()->is('kursus-admin*')) ? 'active' :  '' }}" style="cursor: pointer;">
                                             <i class="fs-6 d-flex align-items-center far fa-book-open"></i>
                                             <span class="ms-1 ps-2 fs-6 align-self-center ">Aktifitas</span>
                                             <svg class="svg-inline--fa fa-chevron-down ms-auto" style="width: 18px" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-down" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="">
@@ -44,7 +45,7 @@
                                         </a>
                                         <ul class="nav nav-list collapse" id="submenu">
                                             <li class="nav-item w-100">
-                                                <a href="/courses" class="nav-link d-flex align-middle px-4 py-3 rounded-0">
+                                                <a href="{{ url('kursus-admin') }}" class="nav-link d-flex align-middle px-4 py-3 rounded-0">
                                                     <span class="ms-3 ps-3 fs-6 align-self-center ">Kursus</span>
                                                 </a>
                                             </li>
@@ -52,7 +53,7 @@
                                                 <hr class="my-0 border border-1 mx-3">
                                             </li>
                                             <li class="nav-item w-100">
-                                                <a href="/events" class="nav-link d-flex align-middle px-4 py-3 rounded-0">
+                                                <a href="{{ url('webinar-admin') }}" class="nav-link d-flex align-middle px-4 py-3 rounded-0">
                                                     <span class="ms-3 ps-3 fs-6 align-self-center ">Webinar</span>
                                                 </a>
                                             </li>
@@ -62,23 +63,24 @@
                                         <li class="w-100">
                                             <hr class="my-0 border border-1 mx-3">
                                         </li>
-                                        <!-- <li class="nav-item w-100">
-                                            <a target="_blank" href="https://perpustakaan.uptkukm.id/" class="nav-link {{ request()->is('ebook') ? 'active' : '' }}   d-flex align-middle px-4 py-3 rounded-0">
-                                                <i class="fs-6 d-flex align-items-center far fa-book"></i> <span class="ms-1 ps-2 fs-6 align-self-center ">My
-                                                    E-book</span>
-                                            </a>
-                                        </li> -->
                                         <li class="nav-item w-100">
-                                                <a href="/category" class="nav-link  {{ request()->is('category') ? 'active' : '' }}  d-flex align-middle px-4 py-3 rounded-0">
-                                                    <i class="fs-6 d-flex align-items-center far fa-th-large"></i> <span class="ms-1 ps-2 fs-6 align-self-center ">
-                                                        Kategori
-                                                    </span>
-                                                </a>
-                                            </li>
-                                            <li class="w-100">
-                                                <hr class="my-0 border border-1 mx-3">
-                                            </li>
-                                            <li class="nav-item w-100">
+                                            <a href="{{ url('aspirasi') }}" class=" {{ request()->is('aspirasi') ? 'active' : '' }}    nav-link d-flex align-middle px-4 py-3 rounded-0">
+                                                <i class="fs-6 d-flex align-items-center far fa-lightbulb"></i> <span class="ms-1 ps-2 fs-6 align-self-center ">
+                                                    Aspirasi
+                                                </span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item w-100">
+                                            <a href="{{ url('kategori') }}" class="nav-link  {{ request()->is('kategori') ? 'active' : '' }}  d-flex align-middle px-4 py-3 rounded-0">
+                                                <i class="fs-6 d-flex align-items-center far fa-th-large"></i> <span class="ms-1 ps-2 fs-6 align-self-center ">
+                                                    Kategori
+                                                </span>
+                                            </a>
+                                        </li>
+                                        <li class="w-100">
+                                            <hr class="my-0 border border-1 mx-3">
+                                        </li>
+                                        <li class="nav-item w-100">
                                             <a data-bs-toggle="collapse" data-bs-target="#statistik_menu" aria-expanded="true" aria-controls="submenu" class="nav-link d-flex align-middle px-4 py-3 rounded-0 {{ (request()->is('statistik-kategori*') || request()->is('statistik-peserta*')) ? 'active' :  '' }}" style="cursor: pointer;">
                                                 <i class="fs-6 d-flex align-items-center far fa-file-chart-pie"></i>
                                                 <span class="ms-1 ps-2 fs-6 align-self-center ">Statistik</span>
@@ -89,7 +91,7 @@
                                             </a>
                                             <ul class="nav nav-list collapse" id="statistik_menu">
                                                 <li class="nav-item w-100">
-                                                    <a href="/statistik-peserta" class="nav-link  {{ request()->is('statistik-peserta') ? 'active' : '' }}  d-flex align-middle px-4 py-3 rounded-0">
+                                                    <a href="{{ url('statistik-peserta') }}" class="nav-link  {{ request()->is('statistik-peserta') ? 'active' : '' }}  d-flex align-middle px-4 py-3 rounded-0">
                                                         <i class="fs-6 d-flex align-items-center far fa-file-chart-pie"></i> <span class="ms-1 ps-2 fs-6 align-self-center ">
                                                             Statistik Peserta
                                                         </span>
@@ -99,9 +101,16 @@
                                                     <hr class="my-0 border border-1 mx-3">
                                                 </li>
                                                 <li class="nav-item w-100">
-                                                    <a href="/statistik-kategori" class="nav-link  {{ request()->is('statistik-kategori') ? 'active' : '' }}  d-flex align-middle px-4 py-3 rounded-0">
+                                                    <a href="{{ url('statistik-kategori') }}" class="nav-link  {{ request()->is('statistik-kategori') ? 'active' : '' }}  d-flex align-middle px-4 py-3 rounded-0">
                                                         <i class="fs-6 d-flex align-items-center far fa-file-chart-pie"></i> <span class="ms-1 ps-2 fs-6 align-self-center ">
                                                             Statistik Kategori Kursus
+                                                        </span>
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item w-100">
+                                                    <a href="/ranking" class="nav-link  {{ request()->is('ranking') ? 'active' : '' }}  d-flex align-middle px-4 py-3 rounded-0">
+                                                        <i class="fs-6 d-flex align-items-center bx bx-trophy"></i> <span class="ms-1 ps-2 fs-6 align-self-center ">
+                                                            Top 10 User Teraktif
                                                         </span>
                                                     </a>
                                                 </li>
@@ -112,7 +121,7 @@
                                             <hr class="my-0 border border-1 mx-3">
                                         </li>
                                         <li class="nav-item w-100">
-                                            <a href="/user" class="nav-link  {{ request()->is('user') ? 'active' : '' }}  d-flex align-middle px-4 py-3 rounded-0">
+                                            <a href="{{ url('pengguna') }}" class="nav-link  {{ request()->is('user') ? 'active' : '' }}  d-flex align-middle px-4 py-3 rounded-0">
                                                 <i class="fs-6 d-flex align-items-center far fa-user"></i> <span class="ms-1 ps-2 fs-6 align-self-center ">
                                                     Peserta
                                                 </span>
@@ -122,14 +131,14 @@
                                             <hr class="my-0 border border-1 mx-3">
                                         </li>
                                         <li class="nav-item w-100">
-                                            <a href="/instructor" class="nav-link  {{ request()->is('instructor') ? 'active' : '' }}  d-flex align-middle px-4 py-3 rounded-0">
+                                            <a href="{{ url('instruktur') }}" class="nav-link  {{ request()->is('instruktur') ? 'active' : '' }}  d-flex align-middle px-4 py-3 rounded-0">
                                                 <i class="fs-6 d-flex align-items-center far fa-user-md"></i> <span class="ms-1 ps-2 fs-6 align-self-center ">
                                                     Instruktur
                                                 </span>
                                             </a>
                                         </li>
                                         <li class="nav-item w-100">
-                                            <a data-bs-toggle="collapse" data-bs-target="#submenu_master_data" aria-expanded="true" aria-controls="submenu" class="nav-link d-flex align-middle px-4 py-3 rounded-0 {{ (request()->is('testimoni*') || request()->is('setting*')) ? 'active' :  '' }}" style="cursor: pointer;">
+                                            <a data-bs-toggle="collapse" data-bs-target="#submenu_master_data" aria-expanded="true" aria-controls="submenu" class="nav-link d-flex align-middle px-4 py-3 rounded-0 {{ (request()->is('widyaiswara*') || request()->is('ukm*') || request()->is('koperasi*')) ? 'active' :  '' }}" style="cursor: pointer;">
                                                 <i class="fs-6 d-flex align-items-center far fa-tools"></i>
                                                 <span class="ms-1 ps-2 fs-6 align-self-center ">Master Data</span>
                                                 <svg class="svg-inline--fa fa-chevron-down ms-auto" style="width: 18px" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-down" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="">
@@ -139,7 +148,7 @@
                                             </a>
                                             <ul class="nav nav-list collapse" id="submenu_master_data">
                                                 <li class="nav-item w-100">
-                                                    <a data-bs-toggle="collapse" data-bs-target="#submenu_master_data_1" aria-expanded="true" aria-controls="submenu" class="nav-link d-flex align-middle px-4 py-3 rounded-0 {{ (request()->is('testimoni*') || request()->is('setting*')) ? 'active' :  '' }}" style="cursor: pointer;">
+                                                    <a data-bs-toggle="collapse" data-bs-target="#submenu_master_data_1" aria-expanded="true" aria-controls="submenu" class="nav-link d-flex align-middle px-4 py-3 rounded-0 {{ (request()->is('testimoni*') || request()->is('pengaturan*')) ? 'active' :  '' }}" style="cursor: pointer;">
                                                         <span class="ms-3 ps-3 fs-6 align-self-center ">UKM</span>
                                                         <svg class="svg-inline--fa fa-chevron-down ms-auto" style="width: 18px" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-down" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="">
                                                             <path fill="currentColor" d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
@@ -182,7 +191,7 @@
                                                     <hr class="my-0 border border-1 mx-3">
                                                 </li>
                                                 <li class="nav-item w-100">
-                                                    <a data-bs-toggle="collapse" data-bs-target="#submenu_master_data_2" aria-expanded="true" aria-controls="submenu" class="nav-link d-flex align-middle px-4 py-3 rounded-0 {{ (request()->is('testimoni*') || request()->is('setting*')) ? 'active' :  '' }}" style="cursor: pointer;">
+                                                    <a data-bs-toggle="collapse" data-bs-target="#submenu_master_data_2" aria-expanded="true" aria-controls="submenu" class="nav-link d-flex align-middle px-4 py-3 rounded-0 {{ (request()->is('testimoni*') || request()->is('pengaturan*')) ? 'active' :  '' }}" style="cursor: pointer;">
                                                         <span class="ms-3 ps-3 fs-6 align-self-center ">Koperasi</span>
                                                         <svg class="svg-inline--fa fa-chevron-down ms-auto" style="width: 18px" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-down" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="">
                                                             <path fill="currentColor" d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z">
@@ -209,13 +218,18 @@
                                                         </li>
                                                     </ul>
                                                 </li>
-                                                <a href="/widyaiswara" class="nav-link  {{ request()->is('instructor') ? 'active' : '' }}  d-flex align-middle px-4 py-3 rounded-0">
-                                                    <span class="ms-3 ps-3 fs-6 align-self-center ">Widyaiswara</span>
-                                                </a>
+                                                <li class="w-100">
+                                                    <hr class="my-0 border border-1 mx-3">
+                                                </li>
+                                                <li class="nav-item w-100">
+                                                    <a href="{{ url('widyaiswara') }}" class="nav-link  {{ request()->is('instruktur') ? 'active' : '' }}  d-flex align-middle px-4 py-3 rounded-0">
+                                                        <span class="ms-3 ps-3 fs-6 align-self-center ">Widyaiswara</span>
+                                                    </a>
+                                                </li>
                                             </ul>
                                         </li>
                                         <li class="nav-item w-100">
-                                            <a data-bs-toggle="collapse" data-bs-target="#submenu_setting" aria-expanded="true" aria-controls="submenu" class="nav-link d-flex align-middle px-4 py-3 rounded-0 {{ (request()->is('testimoni*') || request()->is('setting*')) ? 'active' :  '' }}" style="cursor: pointer;">
+                                            <a data-bs-toggle="collapse" data-bs-target="#submenu_setting" aria-expanded="true" aria-controls="submenu" class="nav-link d-flex align-middle px-4 py-3 rounded-0 {{ (request()->is('testimoni*') || request()->is('pengaturan*')) ? 'active' :  '' }}" style="cursor: pointer;">
                                                 <i class="fs-6 d-flex align-items-center far fa-tools"></i>
                                                 <span class="ms-1 ps-2 fs-6 align-self-center ">Pengaturan</span>
                                                 <svg class="svg-inline--fa fa-chevron-down ms-auto" style="width: 18px" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-down" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="">
@@ -225,7 +239,7 @@
                                             </a>
                                             <ul class="nav nav-list collapse" id="submenu_setting">
                                                 <li class="nav-item w-100">
-                                                    <a href="/setting" class="nav-link d-flex align-middle px-4 py-3 rounded-0">
+                                                    <a href="{{ url('pengaturan') }}" class="nav-link d-flex align-middle px-4 py-3 rounded-0">
                                                         <span class="ms-3 ps-3 fs-6 align-self-center ">Carousel</span>
                                                     </a>
                                                 </li>
@@ -233,7 +247,7 @@
                                                     <hr class="my-0 border border-1 mx-3">
                                                 </li>
                                                 <li class="nav-item w-100">
-                                                    <a href="/testimoni" class="nav-link d-flex align-middle px-4 py-3 rounded-0">
+                                                    <a href="{{ url('testimoni') }}" class="nav-link d-flex align-middle px-4 py-3 rounded-0">
                                                         <span class="ms-3 ps-3 fs-6 align-self-center ">Testimoni</span>
                                                     </a>
                                                 </li>
@@ -243,7 +257,7 @@
                                             <hr class="my-0 border border-1 mx-3">
                                         </li>
                                         <li class="nav-item w-100 pb-3">
-                                            <a href="<?= url('logout') ?>" class="nav-link d-flex align-middle px-4 py-3 rounded-0">
+                                            <a href="{{ url('keluar') }}" class="nav-link d-flex align-middle px-4 py-3 rounded-0">
                                                 <i class="fs-6 d-flex align-items-center far fa-arrow-alt-to-left"></i> <span class="ms-1 ps-2 fs-6 align-self-center ">Keluar
                                                 </span>
                                             </a>
@@ -281,10 +295,10 @@
         });
     });
 
-    var sidebar = new StickySidebar('.sidebar', {
-        topSpacing: 20,
-        bottomSpacing: 20,
-        containerSelector: '.main-content',
-        innerWrapperSelector: '.sidebar__inner'
-    });
+    // var sidebar = new StickySidebar('.sidebar', {
+    //     topSpacing: 20,
+    //     bottomSpacing: 20,
+    //     containerSelector: '.main-content',
+    //     innerWrapperSelector: '.sidebar__inner'
+    // });
 </script>

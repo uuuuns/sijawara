@@ -20,7 +20,7 @@ class AuthController extends Controller
             'transport' => 'smtp',
             'host' => 'smtp-relay.brevo.com',
             'port' => 587,
-            'from' => ['address' => 'sijawara@gmail.com', 'name' => 'SIJAWARA'],
+            'from' => ['address' => 'sijawara.uptkukm@gmail.com', 'name' => 'SIJAWARA'],
             'encryption' => 'tls',
             'username' => 'dbi.malang.o@gmail.com',
             'password' => '7YPLNq6KfpydDGBT',
@@ -62,7 +62,7 @@ class AuthController extends Controller
         ");
 
         if ($auth_migration != null) {
-            return redirect('forgot-password')->with('succ', "Karena migrasi dari sistem lama, silahkan reset password anda");
+            return redirect('lupa-katasandi')->with('succ', "Karena migrasi dari sistem lama, silahkan reset password anda");
         }
 
         $auth = DB::selectOne("
@@ -87,6 +87,45 @@ class AuthController extends Controller
             return redirect()->back()->with('error_msg', "Tidak bisa masuk, akun anda telah di ban. Hubungi admin untuk informasi lebih lanjut");
         }
 
+        $mappingInstansi = [
+            'KOPERASI' => 'koperasi',
+            'UKM' => 'ukm',
+            'INSTANSI' => 'instansi',
+            'KOPERASI;UKM' => 'koperasi_ukm',
+            'UKM;KOPERASI' => 'koperasi_ukm',
+            'UMUM' => 'umum'
+        ];
+
+        $joinCond = '';
+        if ($mappingInstansi[$auth->JENIS_INSTANSI] == 'ukm') {
+            $joinCond = 'LEFT JOIN tb_ukm tu ON tu.ID_USER = u.ID_USER';
+        } else if ($mappingInstansi[$auth->JENIS_INSTANSI] == 'koperasi') {
+            $joinCond = 'LEFT JOIN tb_koperasi tk ON tk.ID_USER = u.ID_USER';
+        } else if ($mappingInstansi[$auth->JENIS_INSTANSI] == 'koperasi_ukm') {
+            $joinCond = 'LEFT JOIN tb_koperasi tk ON tk.ID_USER = u.ID_USER
+                        LEFT JOIN tb_ukm tu ON tu.ID_USER = u.ID_USER';
+        }
+        
+        // Query the database
+        $data = DB::selectOne('
+            SELECT 
+                *
+            FROM 
+                `user` u
+            ' . $joinCond . '
+            WHERE 
+                u.ID_USER = ?
+        ', [$auth->ID_USER]);
+
+        $is_data_complete = true;
+        if ($data) {
+            foreach ($data as $key => $value) {
+                if (is_null($value) || $value === '') {
+                    $is_data_complete = false;
+                }
+            }
+        }
+
         if (!empty($auth)) {
             $data = [
                 'LOG_TIME' => date('Y-m-d H:i:s')
@@ -99,6 +138,7 @@ class AuthController extends Controller
                     'ID_ROLE' => $auth->ID_ROLE,
                     'FOTO_PROFILE' => $auth->FOTO_PROFILE,
                     'EMAIL' => $auth->EMAIL,
+                    'IS_DATA_COMPLETE' => true,
                     'LOGGED_IN' => TRUE
                 ]);
 
@@ -113,6 +153,7 @@ class AuthController extends Controller
                     'ID_ROLE' => $auth->ID_ROLE,
                     'FOTO_PROFILE' => $auth->FOTO_PROFILE,
                     'EMAIL' => $auth->EMAIL,
+                    'IS_DATA_COMPLETE' => $is_data_complete,
                     'LOGGED_IN' => TRUE
                 ]);
 
@@ -126,6 +167,7 @@ class AuthController extends Controller
                     'ID_ROLE' => $auth->ID_ROLE,
                     'FOTO_PROFILE' => $auth->FOTO_PROFILE,
                     'EMAIL' => $auth->EMAIL,
+                    'IS_DATA_COMPLETE' => $is_data_complete,
                     'LOGGED_IN' => TRUE
                 ]);
 
@@ -139,6 +181,7 @@ class AuthController extends Controller
                     'ID_ROLE' => $auth->ID_ROLE,
                     'FOTO_PROFILE' => $auth->FOTO_PROFILE,
                     'EMAIL' => $auth->EMAIL,
+                    'IS_DATA_COMPLETE' => true,
                     'LOGGED_IN' => TRUE
                 ]);
 
@@ -146,13 +189,13 @@ class AuthController extends Controller
                 return redirect('/');
             }
         } else {
-            return redirect('login')->with('resp_msg', "Your Session Expired");
+            return redirect('masuk')->with('resp_msg', "Your Session Expired");
         }
     }
 
     public function register()
     {
-        $data['title'] = "Regiter TBH";
+        $data['title'] = "Daftar SIJAWARA+";
 
         return
             view('template.header', $data) .
@@ -177,11 +220,14 @@ class AuthController extends Controller
                 $User->STATUS                = 0;
                 $User->IS_DELETE             = 0;
                 $User->REG_TIME              = date('Y-m-d H:i:s');
-                $User->JENIS_INSTANSI        = $req->input('jenis_instansi');
+                $User->JENIS_INSTANSI        = implode(';', $req->input('jenis_instansi'));
     
                 $User->save();
             } catch (\Throwable $e) {
-                dd($e->getMessage());
+                return response()->json([
+                    'status' => 'failure',
+                    'errors' => $e
+                ], 422);
             }
 
             // SEND EMAIL VERIFICATION
@@ -189,7 +235,7 @@ class AuthController extends Controller
             $details = [
                 'name' => $req->input('name'),
                 'body' => 'Tekan Tombol dibawah ini untuk mengaktifkan akun.',
-                'link' => url('verification/confirm?token=' . $token_key),
+                'link' => url('verifikasi/confirm?token=' . $token_key),
                 'button' => "Aktifkan",
             ];
             $mail = new MailSender($details);
@@ -207,14 +253,14 @@ class AuthController extends Controller
             ];
             DB::table('token')->insert($formDataToken);
 
-            return redirect('login')->with('succ_msg', 'Anda Berhasil Mendaftar, Periksa Email Anda Untuk Mengaktifkan Akun!');
+            return redirect('masuk')->with('succ_msg', 'Anda Berhasil Mendaftar, Periksa Email Anda Untuk Mengaktifkan Akun!');
         } else if($check_user->STATUS == 0){
 
             $data_user = [
                 'NAME' => $req->input('name'),
                 'PASS' => hash('sha256', md5($req->input('password'))),
-                'REG_TIME' => now(),
-                'JENIS_INSTANSI' => $req->input('jenis_instansi'),
+                'REG_TIME' => date('Y-m-d H:i:s'),
+                'JENIS_INSTANSI' => implode(';', $req->input('jenis_instansi')),
             ];
 
             DB::table('user')->where('ID_USER', $check_user->ID_USER)->update($data_user);
@@ -224,7 +270,7 @@ class AuthController extends Controller
             $details = [
                 'name' => $req->input('name'),
                 'body' => 'Tekan Tombol dibawah ini untuk mengaktifkan akun.',
-                'link' => url('verification/confirm?token=' . $token_key),
+                'link' => url('verifikasi/confirm?token=' . $token_key),
                 'button' => "Aktifkan",
             ];
             $mail = new MailSender($details);
@@ -241,9 +287,9 @@ class AuthController extends Controller
                 'LOG_TIME' => date('Y-m-d H:i:s'),
             ];
             DB::table('token')->where('ID_USER', $check_user->ID_USER)->updateOrInsert($formDataToken);
-            return redirect('login')->with('succ_msg', 'Anda Berhasil Mendaftar, Periksa Email Anda Untuk Mengaktifkan Akun!');
+            return redirect('masuk')->with('succ_msg', 'Anda Berhasil Mendaftar, Periksa Email Anda Untuk Mengaktifkan Akun!');
         } else {
-            return redirect('register')->with('error_msg', 'Email Telah Digunakan!');
+            return redirect('daftar')->with('error_msg', 'Email Telah Digunakan!');
         }
     }
     public function verifAccount(Request $req)
@@ -257,10 +303,9 @@ class AuthController extends Controller
                 `KEY` = "' . $req->input('token') . '"
         ');
         if (empty($getToken)) {
-            return redirect('login')->with('error_msg', 'Akun anda tidak terdaftar, Silahkan mendaftar terlebih dahulu!');
+            return redirect('masuk')->with('error_msg', 'Akun anda tidak terdaftar, Silahkan mendaftar terlebih dahulu!');
         }
 
-        // $is_active = Login::where('id_login', '=', $getToken->id_login)->get();
         $status = DB::selectOne('
             SELECT
                 STATUS,
@@ -276,13 +321,13 @@ class AuthController extends Controller
             DB::table('user')->where('ID_USER', '=', $getToken->ID_USER)->update(['STATUS' => 1]);
         }
 
-        return redirect('login')->with('succ_msg', 'Akun anda telah aktif, silahkan masuk!');
+        return redirect('masuk')->with('succ_msg', 'Akun anda telah aktif, silahkan masuk!');
     }
 
     public function logout()
     {
         Session::flush();
-        return redirect('login');
+        return redirect('masuk');
     }
 
     public function forgot_password(Request $req)
@@ -312,7 +357,7 @@ class AuthController extends Controller
         ');
 
         if (empty($user_data)) {
-            return redirect('forgot-password')->with('resp_msg', 'Email tidak ditemukan di sistem kami. Harap daftar terlebih dahulu');
+            return redirect('lupa-katasandi')->with('resp_msg', 'Email tidak ditemukan di sistem kami. Harap daftar terlebih dahulu');
         }
 
         $checking_token = DB::selectOne('
@@ -347,7 +392,7 @@ class AuthController extends Controller
         $details = [
             'title' => 'Oh snap you forgot your password',
             'body' => "Jangan khawatir, tekan link dibawah untuk menyetel ulang password.",
-            'link' => url('reset-password?token=' . $token_key),
+            'link' => url('reset-katasandi?token=' . $token_key),
             'button' => 'Setel Ulang Password'
         ];
 
@@ -374,10 +419,10 @@ class AuthController extends Controller
         if (!empty($data['token'])) {
             $dbtimestamp = strtotime($data['token']->LOG_TIME);
             if (time() - $dbtimestamp > 1 * 300) {
-                return redirect('forgot-password')->with('resp_msg', "Token anda sudah kadaluarsa.");
+                return redirect('lupa-katasandi')->with('resp_msg', "Token anda sudah kadaluarsa.");
             }
         } else {
-            return redirect('forgot-password')->with('resp_msg', "Token tidak ditemukan di sistem.");
+            return redirect('lupa-katasandi')->with('resp_msg', "Token tidak ditemukan di sistem.");
         }
         return view('template.header', $data) .
             view('auth.reset_password', $data) .
@@ -392,7 +437,7 @@ class AuthController extends Controller
 
         DB::table('user')->where('ID_USER', '=', $req->input('id_user'))->update($formDataReset);
 
-        return redirect('login')->with('resp_sts', 'success')->with('succ_msg', 'Akun password anda berhasil di setel ulang.');
+        return redirect('masuk')->with('resp_sts', 'success')->with('succ_msg', 'Akun password anda berhasil di setel ulang.');
     }
 
     public function GenerateUniqID($var)

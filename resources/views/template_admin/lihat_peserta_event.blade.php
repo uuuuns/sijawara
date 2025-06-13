@@ -26,7 +26,7 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6 align-self-center">
-                        <h3 class="fw-bold" style="color:#45b104">List Peserta Webinar</h3>
+                        <h3 class="fw-bold" style="color:#45b104">List Peserta Webinar/Pelatihan</h3>
                     </div>
                     <div class="mb-3 mt-3 row headerz" style="">
                         <div class="col-md-6 col-sm-12">
@@ -89,10 +89,10 @@
                             </div>
                         </div>
                         <div class="col-md-12 mt-2">
-                            <a href="/events" class="btn btn-sm btn-danger">
+                            <a href="{{ url()->previous() }}" class="btn btn-sm btn-danger">
                                 <i class="fas fa-chevron-left"></i> KEMBALI</a>
                             <button id="exportButton"
-                                onclick="location.href='/events/laporan_event?ID_ACTIVITY=<?= $event->ID_ACTIVITY ?>'"
+                                onclick="location.href='/webinar-admin/laporan_event?ID_ACTIVITY=<?= $event->ID_ACTIVITY ?>'"
                                 class="btn btn-sm btn-success"><i class="fas fa-file-excel"></i> LAPORAN</button>
                         </div>
                     </div>
@@ -171,11 +171,7 @@
             $editor.summernote({
                 height: 200,
                 callbacks: {
-                    onPaste: function(e) {
-                        console.log('Called event paste', e);
-                    },
                     onImageUpload: function(files) {
-                        console.log(files);
                         $summernote.summernote('insertNode', imgNode);
                     }
                 },
@@ -204,11 +200,7 @@
             $editor.summernote({
                 height: 200,
                 callbacks: {
-                    onPaste: function(e) {
-                        console.log('Called event paste', e);
-                    },
                     onImageUpload: function(files) {
-                        console.log(files);
                         $summernote.summernote('insertNode', imgNode);
                     }
                 },
@@ -241,24 +233,18 @@
 
         function openlinkModal(viewData) {
             var data = JSON.parse(viewData)
-
             var fileContainer = document.getElementById('file-container');
-
             var file = data.FILE.split(';');
 
-            // Clear any previous content inside the container
             fileContainer.innerHTML = '';
 
-            // Loop through each item and append it to the modal body
             file.forEach(function(file, index) {
-                // Create a new paragraph element for each file
                 var a = document.createElement('a');
-                a.href = file; // Set the file URL
-                a.textContent = (index + 1) + ". file berkas "; // Set the text for the link
-                a.target = "_blank"; // Open the link in a new tab
-                a.classList.add('d-block'); // Optional: Add a class for styling (e.g., block display)
+                a.href = file;
+                a.textContent = (index + 1) + ". Buka berkas ";
+                a.target = "_blank";
+                a.classList.add('d-block');
 
-                // Append the <a> element to the file container
                 fileContainer.appendChild(a);
             });
 
@@ -319,10 +305,10 @@
 
         function laporan(id) {
             $.ajax({
-                url: '/events/laporan_event?ID_ACTIVITY=' + id,
+                url: '/webinar-admin/laporan_event?ID_ACTIVITY=' + id,
                 method: 'GET',
                 success: function(response) {
-                    window.location.href = '/events/laporan/' + id;
+                    window.location.href = '/webinar-admin/laporan/' + id;
                 },
                 error: function(xhr, status, error) {
                     console.log(xhr.responseText);

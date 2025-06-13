@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class DashboardController extends Controller
 {
@@ -81,24 +82,6 @@ class DashboardController extends Controller
             view('template.header', $data) .
             view('template_admin/dashboard', $data) .
             view('template.footer', $data);
-    }
-    public function jadikanAdmin(Request $request) {
-        $id_user = $request->input('id_user');
-
-        DB::table('user')
-            ->where('ID_USER', $id_user)
-            ->update(['ID_ROLE' => 4]);
-
-        return redirect()->back();
-    }
-    public function jadikanInstruktur(Request $request) {
-        $id_user = $request->input('id_user');
-
-        DB::table('user')
-            ->where('ID_USER', $id_user)
-            ->update(['ID_ROLE' => 2]);
-
-        return redirect()->back();
     }
     public function get_data_chart() {
         $data['register_per_month'] = DB::select("
@@ -225,13 +208,15 @@ class DashboardController extends Controller
     }
     public function statistik_per_kota(Request $req) {
         $kota = $req->id_kota;
-        
+    
+        // Disable ONLY_FULL_GROUP_BY for the session
         DB::statement("SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));");
+    
+        // Fetch raw data from the database
         $data['kota'] = DB::select("
             SELECT
                 k.nama_kota AS KOTA,
-                u.JENIS_INSTANSI ,
-                COUNT(u.JENIS_INSTANSI) AS TOTAL
+                u.JENIS_INSTANSI
             FROM
                 user u
             JOIN md_provinsi p ON
@@ -243,24 +228,38 @@ class DashboardController extends Controller
                 AND u.JENIS_INSTANSI IS NOT NULL
                 AND u.STATUS = 1
                 AND u.ID_KOTA = $kota
-            GROUP BY 
-                u.JENIS_INSTANSI 
-            ORDER by
-                TOTAL DESC
         ");
-        
-        $chartData = [
-            'labels' => [],
-            'data' => [],
-            'kota' => $data['kota'][0]->KOTA,
-        ];
-        
+    
+        // Initialize arrays to process data
+        $jenisInstansiTotals = [];
+        $kotaName = isset($data['kota'][0]) ? $data['kota'][0]->KOTA : '';
+    
         foreach ($data['kota'] as $kota) {
-            $chartData['labels'][] = $kota->JENIS_INSTANSI;   // Adding city names to labels
-            $chartData['data'][] = $kota->TOTAL;    // Adding user totals to data array
+            // Split JENIS_INSTANSI by ";" and process each value
+            $jenisInstansiList = explode(';', $kota->JENIS_INSTANSI);
+    
+            foreach ($jenisInstansiList as $jenisInstansi) {
+                $jenisInstansi = trim($jenisInstansi); // Remove extra spaces
+                if (!empty($jenisInstansi)) {
+                    // Aggregate the total count for each JENIS_INSTANSI
+                    if (!isset($jenisInstansiTotals[$jenisInstansi])) {
+                        $jenisInstansiTotals[$jenisInstansi] = 0;
+                    }
+                    $jenisInstansiTotals[$jenisInstansi]++;
+                }
+            }
         }
+    
+        // Prepare chart data
+        $chartData = [
+            'labels' => array_keys($jenisInstansiTotals),
+            'data' => array_values($jenisInstansiTotals),
+            'kota' => $kotaName,
+        ];
+    
         return response()->json($chartData);
     }
+    
     public function statistik_kategori_index() {
         $data['title'] = 'Statistik Per Kategori';
     
@@ -281,7 +280,7 @@ class DashboardController extends Controller
             HAVING 
                 Total_user != 0
             ORDER BY
-                a.LOG_TIME DESC
+                Total_user DESC
             LIMIT 10
         ");
     
@@ -315,7 +314,7 @@ class DashboardController extends Controller
     
         // Populate labels and datasets
         foreach ($dataKursus as $row) {
-            $chartData['labels'][] = $row->TITLE_ACTIVITY;
+            $chartData['labels'][] = Str::limit($row->TITLE_ACTIVITY, 20);
             $chartData['datasets'][0]['data'][] = $row->Total_user;
             $chartData['datasets'][1]['data'][] = $row->Total_not_complete;
             $chartData['datasets'][2]['data'][] = $row->Total_complete;
@@ -327,7 +326,6 @@ class DashboardController extends Controller
                view('template_admin/statistik_kategori', $data) .
                view('template.footer', $data);
     }
-    
     public function get_data_chart_kategori() {
         DB::statement("SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));");
         $data['per_kategori'] = DB::select("
@@ -355,8 +353,8 @@ class DashboardController extends Controller
         $chartData['Total'] = array_sum(array_column($data['per_kategori'], 'COUNT(o.ID_USER)'));
 
         foreach ($data['per_kategori'] as $kategori) {
-            $chartData['labels'][] = $kategori->KATEGORI;   // Adding city names to labels
-            $chartData['data'][] = $kategori->TOTAL;    // Adding user totals to data array
+            $chartData['labels'][] = $kategori->KATEGORI;
+            $chartData['data'][] = $kategori->TOTAL;
         }
 
         return response()->json($chartData);

@@ -15,18 +15,28 @@ class EventController extends Controller
 {
     public function index()
     {
-        $data['title'] = "Webinar";
+        $data['title'] = "Webinar & Pelatihan";
         $role = session('user')[0]['ID_ROLE'];
         if ($role == 1 || $role == 4) {
             $data['event'] = DB::select("
             Select
                 a.* ,
                 e.CATEGORY_EVENT,
+                e.TEMA,
+                e.JAM_PELATIHAN,
                 e.LOCATION,
                 e.ORGANIZER,
                 e.CONTACT_CUSTOMER,
                 e.LINK_ZOOM,
-                e.KUOTA_PESERTA
+                e.KUOTA_PESERTA,
+                (
+                    SELECT
+                        count(*)
+                    FROM
+                        `order` o
+                    WHERE
+                        o.ID_PRODUCT = a.ID_ACTIVITY
+                ) AS CHECK_PARTICIPANT
             FROM
                 activity a
             LEFT JOIN event e ON
@@ -35,6 +45,22 @@ class EventController extends Controller
                 a.TYPE_ACTIVITY = 2
         ");
 
+        foreach ($data['event'] as $key => $value) {
+            $temaList = explode(';', $value->TEMA);
+            $jpList = explode(';', $value->JAM_PELATIHAN);
+
+            $combined = [];
+
+            foreach ($temaList as $i => $tema) {
+                $combined[] = [
+                    'TEMA' => $tema,
+                    'JAM_PELATIHAN' => isset($jpList[$i]) ? (int)$jpList[$i] : 1
+                ];
+            }
+
+            $data['event'][$key]->TEMA = $combined;
+        }
+        
             $data['instruktur'] = DB::select("
             SELECT
                 u.ID_USER ,
@@ -50,10 +76,20 @@ class EventController extends Controller
                     a.* ,
                     e.CATEGORY_EVENT,
                     e.LOCATION,
+                    e.TEMA,
+                    e.JAM_PELATIHAN,
                     e.ORGANIZER,
                     e.CONTACT_CUSTOMER,
                     e.LINK_ZOOM,
-                    e.KUOTA_PESERTA
+                    e.KUOTA_PESERTA,
+                    (
+                        SELECT
+                            count(*)
+                        FROM
+                            `order` o
+                        WHERE
+                            o.ID_PRODUCT = a.ID_ACTIVITY
+                    ) AS CHECK_PARTICIPANT
                 FROM
                     activity a
                 LEFT JOIN event e ON
@@ -64,6 +100,7 @@ class EventController extends Controller
                 ");
         }
         $data['admin'] = true;
+
         return
             view('template.header', $data) .
             view('template_admin/event', $data) .
@@ -95,6 +132,8 @@ class EventController extends Controller
                 a.* ,
                 e.CATEGORY_EVENT,
                 e.LOCATION,
+                e.TEMA,
+                e.JAM_PELATIHAN,
                 e.ORGANIZER,
                 e.CONTACT_CUSTOMER,
                 e.LINK_ZOOM,
@@ -153,7 +192,9 @@ class EventController extends Controller
             'DATE_START' => $req->input('date_start'),
             'DATE_END' => $req->input('date_end'),
             'LOG_TIME' => date('Y-m-d H:i:s'),
-            'SERTIF_IMAGE' => $req->hasFile('sertif_image') ? FileUpload::S3($req->file('sertif_image'), 'SERTIF_IMAGE', 'Template-Certifiace-' . strtotime(now())) : null
+            'IS_PUBLIC' => $req->input('status_public'),
+            'SERTIF_IMAGE' => $req->hasFile('sertif_image') ? FileUpload::S3($req->file('sertif_image'), 'SERTIF_IMAGE', 'Template-Certifiace-' . strtotime(now())) : null,
+            'SERTIF_IMAGE_BELAKANG' => $req->hasFile('sertif_image_belakang') ? FileUpload::S3($req->file('sertif_image_belakang'), 'SERTIF_IMAGE', 'Template-Certifiace-' . strtotime(now())) : null
         ];
 
         $event = [
@@ -162,7 +203,9 @@ class EventController extends Controller
             'LOCATION'          => $req->input('location'),
             'ORGANIZER'         => $req->input('penyelenggara'),
             'CONTACT_CUSTOMER'  => $req->input('contact'),
-            'DESKRIPSI_EVENT'   => $req->input('desc_event')
+            'DESKRIPSI_EVENT'   => $req->input('desc_event'),
+            'TEMA'              => $req->input('tema') != null ? (implode(';', $req->input('tema'))) : null,
+            'JAM_PELATIHAN'     => $req->input('jp') != null ? (implode(';', $req->input('jp'))) : null,
         ];
 
         if (!empty($req->input('link_zoom'))) {
@@ -171,11 +214,10 @@ class EventController extends Controller
         if (!empty($req->input('kuota_peserta'))) {
             $event['KUOTA_PESERTA'] = $req->input('kuota_peserta');
         }
-
         DB::table('activity')->insert($activity);
         DB::table('event')->insert($event);
 
-        return redirect('events')->with(['succ_msg' => 'Berhasil Menambahkan Webinar', 'location' => 'events']);
+        return redirect('webinar-admin')->with(['succ_msg' => 'Berhasil Menambahkan Webinar/Pelatihan', 'location' => 'webinar-admin']);
     }
 
     public function update(Request $req)
@@ -186,8 +228,8 @@ class EventController extends Controller
             'SERTIF_CODE' => $req->input('up_sertif_code'),
             'DATE_START' => $req->input('up_date_start'),
             'DATE_END' => $req->input('up_date_end'),
+            'IS_PUBLIC' => $req->input('up_status_public'),
             'STATUS' => $req->has('up_status') ? 1 : 0,
-            'LOG_TIME' => date('Y-m-d H:i:s')
         ];
 
         if (!empty($req->file('up_image_activity'))) {
@@ -198,12 +240,18 @@ class EventController extends Controller
             $activity['SERTIF_IMAGE'] = FileUpload::S3($req->file('up_sertif_image'), 'SERTIF_IMAGE', 'Template-Certifiace-' . strtotime(now()));
         }
 
+        if ($req->hasFile('up_sertif_image_belakang')) {
+            $activity['SERTIF_IMAGE_BELAKANG'] = FileUpload::S3($req->file('up_sertif_image_belakang'), 'SERTIF_IMAGE', 'Template-Certifiace-' . strtotime(now()));
+        }
+
         $event = [
             'CATEGORY_EVENT'    => $req->input('up_category'),
             'LOCATION'          => $req->input('up_location'),
             'ORGANIZER'         => $req->input('up_penyelenggara'),
             'CONTACT_CUSTOMER'  => $req->input('up_contact'),
-            'DESKRIPSI_EVENT'   => $req->input('up_desc_event')
+            'DESKRIPSI_EVENT'   => $req->input('up_desc_event'),
+            'TEMA'              => $req->input('up_tema') != null ? (implode(';', $req->input('up_tema'))) : null,
+            'JAM_PELATIHAN'     => $req->input('up_jp') != null ? (implode(';', $req->input('up_jp'))) : null,
         ];
 
         if (!empty($req->input('up_link_zoom'))) {
@@ -216,7 +264,7 @@ class EventController extends Controller
         DB::table('activity')->WHERE(['ID_ACTIVITY' => $req->input('up_id_activity')])->update($activity);
         DB::table('event')->WHERE(['ID_ACTIVITY' => $req->input('up_id_activity')])->update($event);
 
-        return redirect('events')->with(['succ_msg' => 'Berhasil Memperbarui Webinar', 'location' => 'events']);
+        return redirect('webinar-admin')->with(['succ_msg' => 'Berhasil Memperbarui Webinar/Pelatihan', 'location' => 'webinar-admin']);
     }
 
     public function delete(Request $req)
@@ -224,7 +272,7 @@ class EventController extends Controller
         DB::table('event')->WHERE(['ID_ACTIVITY' => $req->input('id_activity')])->delete();
         DB::table('activity')->WHERE(['ID_ACTIVITY' => $req->input('id_activity')])->delete();
 
-        return redirect('events')->with('succ_msg', 'Webinar Berhasil Dihapus');
+        return redirect('webinar-admin')->with('succ_msg', 'Webinar/Pelatihan Berhasil Dihapus');
     }
 
     public function deskripsi_get($id)

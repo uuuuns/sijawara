@@ -1,49 +1,51 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
-<section class="page-wrapper">
+<section class="page-wrapper" style="padding-top: 40px !important;">
     <div class="tutori-course-content">
         <div class="container">
             <?php if ($event->EXPIRED == 1) { ?>
-            <div class="alert alert-danger text-center" role="alert">
-                <h5 class="py-2">Webinar telah dilaksanakan</h5>
-            </div>
+                <div class="alert alert-danger text-center" role="alert">
+                    <h5 class="py-2">Webinar/Pelatihan telah dilaksanakan</h5>
+                </div>
             <?php } ?>
             <div class="row pt-3">
                 <div class="col-lg-5">
                     <!-- event Sidebar start -->
-                    <div class="course-sidebar course-sidebar-2 mt-5 mt-lg-0">
+                    <div class="course-sidebar course-sidebar-2 mt-lg-0">
                         <div class="">
                             <div class="course-thumbnail d-flex justify-content-center">
-                                <div class="pe-0 pe-sm-5 rounded-1">
+                                <div class="pe-0 pe-sm-0 rounded-1">
                                     <img src="<?= $event->IMAGE_ACTIVITY ?>" class="d-block img-fluid h-auto ">
                                 </div>
                             </div>
 
                             <div class="container">
                                 <?php if ($event->DATA_CHECKING == 0 && $event->EXPIRED != 1) : ?>
-                                @if ($is_full == false)
+                                    @if ($is_full == false)
                                     <div class="">
                                         <form class="" id="FormBuyNow-info" method="POST"
-                                            action="<?= url('event/add') ?>">
+                                            action="{{ url('webinar/add') }}">
                                             @csrf
                                             <div id="data-input-info"></div>
                                             <input type="hidden" name="id_event" value="<?= $event->ID_ACTIVITY ?>">
-                                            <button type="submit">Ambil Sekarang</button>
+                                            <button 
+                                                id="colorButton"
+                                                style="border: 1px solid black; width: 100%; background-color: red; color: white; padding: 10px; font-size: 16px; cursor: pointer; transition: background-color 0.4s ease-in-out;">
+                                                Ambil Sekarang
+                                            </button>
                                         </form>
                                     </div>
-                                @endif
-                                @if ($is_full == true && is_null($event->DATA_CHECKING))
+                                    @endif
+                                    @if ($is_full == true && is_null($event->DATA_CHECKING))
                                     <span class="bg-warning text-dark" disable> Mohon Maaf Kuota Penuh </span>
-                                @endif
+                                    @endif
                                 <?php endif ?>
                             </div>
-
                         </div>
                     </div>
                 </div>
 
-                <div class="col-lg-7 ps-3">
+                <div class="col-lg-7 ps-3 ps-sm-5 mt-5 mt-sm-0">
                     <div class="course-header-wrapper">
-
                         <div>
                             <h2 class="course-title bg-white">
                                 <?= $event->TITLE_ACTIVITY ?>
@@ -58,13 +60,13 @@
                                 href="#nav-instructor" role="tab" aria-controls="nav-instructor-tab"
                                 aria-selected="false">Deskripsi</a>
                             <?php if (!empty(session('user')) && $event->DATA_CHECKING <> 0) : ?>
-                            <a class="nav-item nav-link" id="nav-link-tab" data-bs-toggle="tab" href="#nav-link"
-                                role="tab" aria-controls="nav-link-tab" aria-selected="false">Link Konferensi</a>
-                            @if (!is_null($event->SERTIF_CODE))
+                                <a class="nav-item nav-link" id="nav-link-tab" data-bs-toggle="tab" href="#nav-link"
+                                    role="tab" aria-controls="nav-link-tab" aria-selected="false">Link Zoom</a>
+                                @if (!is_null($event->SERTIF_CODE))
                                 <a class="nav-item nav-link" id="nav-certificate-tab" data-bs-toggle="tab"
                                     href="#nav-certificate" role="tab" aria-controls="nav-certificate-tab"
                                     aria-selected="false">Sertifikat</a>
-                            @endif
+                                @endif
                             <?php endif ?>
 
                         </div>
@@ -113,95 +115,95 @@
                             </div>
                         </div>
                         <?php if (!empty(session('user')) && $event->DATA_CHECKING <> 0) : ?>
-                        <div class="tab-pane fade" id="nav-link" role="tabpanel" aria-labelledby="nav-link-tab">
-                            <div class="courses-instructor">
-                                <div class="single-instructor-box">
-                                    <div class="row align-items-center">
+                            <div class="tab-pane fade" id="nav-link" role="tabpanel" aria-labelledby="nav-link-tab">
+                                <div class="courses-instructor">
+                                    <div class="single-instructor-box">
+                                        <div class="row align-items-center">
 
-                                        <div class="col-12">
-                                            <div class="instructor-content">
-                                                <a class="pe-4"
-                                                    href="<?= $event->LINK_ZOOM != null || $event->LINK_ZOOM != '' ? $event->LINK_ZOOM : '#' ?>"
-                                                    style="color: #000EFF; word-wrap: break-word;">
-                                                    <?= $event->LINK_ZOOM != null || $event->LINK_ZOOM != '' ? $event->LINK_ZOOM : 'Tidak Ada Link' ?>
-                                                </a>
+                                            <div class="col-12">
+                                                <div class="instructor-content">
+                                                    <a class="pe-4"
+                                                        href="<?= $event->LINK_ZOOM != null || $event->LINK_ZOOM != '' ? $event->LINK_ZOOM : '#' ?>"
+                                                        style="color: #000EFF; word-wrap: break-word;">
+                                                        <?= $event->LINK_ZOOM != null || $event->LINK_ZOOM != '' ? $event->LINK_ZOOM : 'Tidak Ada Link' ?>
+                                                    </a>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="upload-file">
-                                                <h4 class="event-title mmb-0 mt-5">Upload File</h4>
-                                                <small class="text-danger">* Hanya bisa mengumpulkan sekali, konfirmasi
-                                                    sebelum mengumpulkan</small>
-                                                <?php if (empty($materi_file)) { ?>
-                                                <form action="{{ url('event/upload_file') }}" method="POST"
-                                                    enctype="multipart/form-data">
-                                                    @csrf
-                                                    <div id="file-upload-container">
-                                                        <!-- Input file pertama -->
-                                                        <div
-                                                            class="file-input-wrapper mb-2 d-flex justify-content-between align-items-center">
-                                                            <input type="hidden" name="id_activity"
-                                                                value="{{ $event->ID_ACTIVITY }}">
-                                                            <input type="hidden" name="id_user"
-                                                                value="{{ session('user')[0]['ID_USER'] }}">
-                                                            <input type="file" name="file_materi[]" accept=".pdf"
-                                                                data-allowed-file-extensions="pdf"
-                                                                class="form-control d-inline-block">
-                                                            <button class="btn btn-danger btn-sm remove-file-btn"
-                                                                type="button">X</button>
-                                                        </div>
-                                                    </div>
-                                                    <!-- Tombol untuk menambah input file -->
-                                                    <button type="button" id="add-file-btn"
-                                                        class="btn btn-primary mt-2">Tambah File</button>
-                                                    <button type="submit"
-                                                        class="btn btn-success mt-2">Submit</button>
-                                                </form>
-                                                <?php } else { ?>
-                                                <label class="alert alert-success">Sudah Mengupload</label>
-                                                <?php } ?>
+                                            <div class="col-12">
+                                                <div class="upload-file">
+                                                    <h4 class="event-title mmb-0 mt-5">Upload File</h4>
+                                                    <small class="text-danger">* Hanya bisa mengumpulkan sekali, konfirmasi
+                                                        sebelum mengumpulkan</small>
+                                                    <?php if (empty($materi_file)) { ?>
+                                                        <form action="{{ url('webinar/upload_file') }}" method="POST"
+                                                            enctype="multipart/form-data">
+                                                            @csrf
+                                                            <div id="file-upload-container">
+                                                                <!-- Input file pertama -->
+                                                                <div
+                                                                    class="file-input-wrapper mb-2 d-flex justify-content-between align-items-center">
+                                                                    <input type="hidden" name="id_activity"
+                                                                        value="{{ $event->ID_ACTIVITY }}">
+                                                                    <input type="hidden" name="id_user"
+                                                                        value="{{ session('user')[0]['ID_USER'] }}">
+                                                                    <input type="file" name="file_materi[]" accept=".pdf"
+                                                                        data-allowed-file-extensions="pdf"
+                                                                        class="form-control d-inline-block">
+                                                                    <button class="btn btn-danger btn-sm remove-file-btn"
+                                                                        type="button">X</button>
+                                                                </div>
+                                                            </div>
+                                                            <!-- Tombol untuk menambah input file -->
+                                                            <button type="button" id="add-file-btn"
+                                                                class="btn btn-primary mt-2">Tambah File</button>
+                                                            <button type="submit"
+                                                                class="btn btn-success mt-2">Submit</button>
+                                                        </form>
+                                                    <?php } else { ?>
+                                                        <label class="alert alert-success">Sudah Mengupload</label>
+                                                    <?php } ?>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="tab-pane fade" id="nav-certificate" role="tabpanel"
-                            aria-labelledby="nav-certificate-tab">
-                            <div class="courses-instructor">
-                                <div class="single-instructor-box">
-                                    <div class="row align-items-center">
-                                        <div class="col-12">
-                                            <div class="instructor-content">
-                                                {{-- <?php if (date('Y-m-d h:i:s') > $event->DATE_END) { ?> --}}
-                                                <div class="blurred-image d-none d-lg-block"
-                                                    style="pointer-events: none">
-                                                    <embed class="overlay"
-                                                        style="width:200px; height:352px; pointer-events: none;"
-                                                        src="<?= $sertif->FILE_SERTIFIKAT ?>#toolbar=0&navpanes=0&scrollbar=0&statusbar=0&messages=0&scrollbar=0"
-                                                        type="text/plain"></embed>
-                                                </div>
-                                                <div class="mt-3 rounded-4 d-flex align-items-center">
-                                                    <div class="mx-4 py-3 bg-white">
-                                                        <label>Kode Sertifikat</label>
-                                                        <input type="text" class="form-control mb-4"
-                                                            name="" id="input-code">
-                                                        <button type="button" class="btn btn-primary col-md-12 my-3"
-                                                            onclick="DownloadPdf(this)">Unduh PDF</button>
+                            <div class="tab-pane fade" id="nav-certificate" role="tabpanel"
+                                aria-labelledby="nav-certificate-tab">
+                                <div class="courses-instructor">
+                                    <div class="single-instructor-box">
+                                        <div class="row align-items-center">
+                                            <div class="col-12">
+                                                <div class="instructor-content">
+                                                    {{-- <?php if (date('Y-m-d h:i:s') > $event->DATE_END) { ?> --}}
+                                                    <div class="blurred-image d-none d-lg-block"
+                                                        style="pointer-events: none">
+                                                        <embed class="overlay"
+                                                            style="width:200px; height:352px; pointer-events: none;"
+                                                            src="<?= $sertif->FILE_SERTIFIKAT ?>#toolbar=0&navpanes=0&scrollbar=0&statusbar=0&messages=0&scrollbar=0"
+                                                            type="text/plain"></embed>
                                                     </div>
-                                                </div>
-                                                {{-- <?php } else if (date('Y-m-d h:i:s') < $event->DATE_START) { ?>
+                                                    <div class="mt-3 rounded-4 d-flex align-items-center">
+                                                        <div class="mx-4 py-3 bg-white" id="certif-box">
+                                                            <label>Kode Sertifikat</label>
+                                                            <input type="text" class="form-control mb-4"
+                                                                name="" id="input-code">
+                                                            <button type="button" class="btn btn-primary col-md-12 my-3"
+                                                                onclick="DownloadPdf(this)">Unduh PDF</button>
+                                                        </div>
+                                                    </div>
+                                                    {{-- <?php } else if (date('Y-m-d h:i:s') < $event->DATE_START) { ?>
                                                 <h4 class="event-title mb-0">Event belum dimulai</h4>
                                                 <?php } else { ?>
                                                 <h4 class="event-title mb-0">Event sedang berlangsung</h4>
                                                 <?php } ?> --}}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
                         <?php endif ?>
                     </div>
                 </div>
@@ -216,7 +218,7 @@
                 <div class="row course-gallery ">
                     <?php foreach ($other_event as $item) : ?>
                         <div class="course-item cat1 cat5 col-lg-6 col-md-6">
-                            <a href="<?= url('event/detail/' . preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $item->TITLE_ACTIVITY)) . '?id_activity=' . $item->ID_ACTIVITY) ?>">
+                            <a href="<?= url('webinar/detail/' . preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $item->TITLE_ACTIVITY)) . '?id_activity=' . $item->ID_ACTIVITY) ?>">
                                 <div class="px-0 px-sm-3">
                                     <div class="single-course style-2 bg-shade border-0">
                                         <div class="row g-0 align-items-center">
@@ -261,6 +263,16 @@
 </style>
 
 <script>
+    const button = document.getElementById("colorButton");
+
+    const colors = ["red", "orange", "yellow", "#80FF00", "#40FF00", "green"];
+    let index = 0;
+
+    setInterval(() => {
+      button.style.backgroundColor = colors[index]; 
+      index = (index + 1) % colors.length;
+    }, 200);
+
     const Toast = Swal.mixin({
         toast: true,
         position: 'top-end',
@@ -296,12 +308,12 @@
     });
 
     $('#FormBuyNow-info').submit(function(e) {
-        @if (empty(session('user')))
-            e.preventDefault();
-            Toast.fire({
-                icon: 'error',
-                title: 'Harap Masuk Terlebih dulu!'
-            });
+        @if(empty(session('user')))
+        e.preventDefault();
+        Toast.fire({
+            icon: 'error',
+            title: 'Harap Masuk Terlebih dulu!'
+        });
         @endif
     });
 
@@ -331,7 +343,7 @@
                             cancelButtonText: 'Nanti'
                         }).then((result) => {
                             if (result.isConfirmed) {
-                                window.location.href = '<?= Request::segment(0) ?>/profile';
+                                window.location.href = '<?= Request::segment(0) ?>/profil';
                             }
                         });
                     } else {
@@ -367,26 +379,26 @@
             }
         })
         <?php if (!empty(session('user'))) { ?>
-        $.ajax({
-            url: '<?= Request::segment(0) ?>/add/order',
-            type: "GET",
-            data: {
-                id_activity: $(e).data("id-activity"),
-                type: 2
-            },
-            dataType: 'json',
-            success: function(data) {
-                Toast.fire({
-                    icon: (data.Status) ? 'success' : 'error',
-                    title: data.Message
-                })
-            }
-        });
+            $.ajax({
+                url: '<?= Request::segment(0) ?>/add/order',
+                type: "GET",
+                data: {
+                    id_activity: $(e).data("id-activity"),
+                    type: 2
+                },
+                dataType: 'json',
+                success: function(data) {
+                    Toast.fire({
+                        icon: (data.Status) ? 'success' : 'error',
+                        title: data.Message
+                    })
+                }
+            });
         <?php } else { ?>
-        Toast.fire({
-            icon: 'error',
-            title: 'Harap Masuk Terlebih dulu!'
-        })
+            Toast.fire({
+                icon: 'error',
+                title: 'Harap Masuk Terlebih dulu!'
+            })
         <?php } ?>
     }
 
@@ -403,62 +415,197 @@
             }
         })
         <?php if (!empty(session('user'))) { ?>
-        <?php if (!empty($checking_trans)) { ?>
-        Toast.fire({
-            icon: 'error',
-            title: 'Anda mempunyai transaksi yang belum selesai!'
-        })
-        <?php } else { ?>
-        var csrfToken = $('meta[name="csrf-token"]').attr('content');
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': csrfToken
-            }
-        });
-        $.ajax({
-            url: '<?= Request::segment(0) ?>/add/order',
-            type: "GET",
-            data: {
-                id_activity: '<?= $event->ID_ACTIVITY ?>',
-                type: 2
-            },
-            dataType: 'json',
-            success: function(data) {
-                let timerInterval
-                $('#data-input-info').append('<input type="hidden" name="id_order_purchase[0]" value="' +
-                    data.IdOrder + '" />')
-                Swal.fire({
-                    title: 'Create Order!',
-                    html: 'Please Wait ...',
-                    timer: 2000,
-                    timerProgressBar: false,
-                    didOpen: () => {
-                        Swal.showLoading()
-                    },
-                    willClose: () => {
-                        clearInterval(timerInterval)
-                    }
-                }).then((result) => {
-                    if (result.dismiss === Swal.DismissReason.timer) {
-                        $("#FormBuyNow-info").submit();
-                    }
+            <?php if (!empty($checking_trans)) { ?>
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Anda mempunyai transaksi yang belum selesai!'
                 })
-            }
-        });
-        <?php } ?>
+            <?php } else { ?>
+                var csrfToken = $('meta[name="csrf-token"]').attr('content');
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken
+                    }
+                });
+                $.ajax({
+                    url: '<?= Request::segment(0) ?>/add/order',
+                    type: "GET",
+                    data: {
+                        id_activity: '<?= $event->ID_ACTIVITY ?>',
+                        type: 2
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        let timerInterval
+                        $('#data-input-info').append('<input type="hidden" name="id_order_purchase[0]" value="' +
+                            data.IdOrder + '" />')
+                        Swal.fire({
+                            title: 'Create Order!',
+                            html: 'Please Wait ...',
+                            timer: 2000,
+                            timerProgressBar: false,
+                            didOpen: () => {
+                                Swal.showLoading()
+                            },
+                            willClose: () => {
+                                clearInterval(timerInterval)
+                            }
+                        }).then((result) => {
+                            if (result.dismiss === Swal.DismissReason.timer) {
+                                $("#FormBuyNow-info").submit();
+                            }
+                        })
+                    }
+                });
+            <?php } ?>
         <?php } else { ?>
-        Toast.fire({
-            icon: 'error',
-            title: 'Harap Masuk Terlebih dulu!'
-        })
+            Toast.fire({
+                icon: 'error',
+                title: 'Harap Masuk Terlebih dulu!'
+            })
         <?php } ?>
     }
     <?php if (!empty(session('user')) && $event->DATA_CHECKING <> 0) { ?>
 
 
-    function filename(path) {
-        path = path.substring(path.lastIndexOf("/") + 1);
-        return (path.match(/[^.]+(\.[^?#]+)?/) || [])[0];
-    }
+        function filename(path) {
+            path = path.substring(path.lastIndexOf("/") + 1);
+            return (path.match(/[^.]+(\.[^?#]+)?/) || [])[0];
+        }
     <?php } ?>
+</script>
+
+<script>
+    <?php if (!empty(session('user')) && $event->DATA_CHECKING <> 0) : ?>
+        <?php if (!is_null($event->SERTIF_CODE)) : ?>
+            document.addEventListener('DOMContentLoaded', function() {
+                window.scrollTo(0, 0);
+                $("#certif-buttn").click()
+
+                const intro = introJs();
+
+                intro.setOptions({
+                    steps: [{
+                            title: "Congratulations",
+                            intro: "Selamat telah mengikuti webinar, berikut panduan untuk mendapat sertifikat anda"
+                        },
+                        {
+                            intro: "Setelah anda mengikuti zoom yang dilakukan, anda akan mendapatkan kode"
+                        }, {
+                            element: document.getElementById('nav-certificate-tab'),
+                            intro: "Masuk ke bagian sertifikat"
+                        }, {
+                            element: document.getElementById('certif-box'),
+                            intro: "Masukkan kode yang anda dapatkan dan unduh pdf"
+                        }
+                    ]
+                }).setOptions({
+                    showBullets: false,
+                    scrollToElement: false,
+                    exitOnOverlayClick: false,
+                })
+
+                intro.onbeforechange(function(targetElement) {
+                    let width = $(window).width();
+
+                    if (width > 991) {
+                        if (this._currentStep == 2) {
+                            $('#nav-certificate-tab').tab('show')
+
+                        } else if (this._currentStep == 3) {
+                            window.scrollTo(0, $(targetElement).offset().top - 800);
+
+                            intro.refresh()
+                            $(".introjs-helperLayer").css('height', '').attr('style', function(i, style) {
+                                return (style || '') + 'height: ' + ($(targetElement).outerHeight(true) + 10) + 'px !important;';
+                            });
+                            $(".introjs-helperLayer").css('width', '').attr('style', function(i, style) {
+                                return (style || '') + 'width: ' + ($(targetElement).innerWidth(true) + 10) + 'px !important;';
+                            });
+
+                            $(".introjs-helperLayer").css('top', '').attr('style', function(i, style) {
+                                return (style || '') + 'top: ' + ($(targetElement).offset().top - 100) + 'px !important;';
+                            });
+                            $(".introjs-tooltipReferenceLayer").css('top', '').attr('style', function(i, style) {
+                                return (style || '') + 'top:  ' + ($(targetElement).offset().top - 120) + 'px !important;';
+                            });
+                            intro.refresh()
+                        }
+
+                    } else {
+                        if (this._currentStep == 2) {
+                            $('#nav-certificate-tab').tab('show')
+
+                            $(".introjs-helperLayer").css('top', '').attr('style', function(i, style) {
+                                return (style || '') + 'top: ' + ($(targetElement).offset().top - 88) + 'px !important;';
+                            });
+                            $(".introjs-tooltipReferenceLayer").css('top', '').attr('style', function(i, style) {
+                                return (style || '') + 'top:  ' + ($(targetElement).offset().top - 98) + 'px !important;';
+                            });
+                        } else if (this._currentStep == 3) {
+                            console.log($(targetElement).offset().top)
+                            window.scrollTo(0, $(targetElement).offset().top - 400);
+
+                            intro.refresh()
+                            $(".introjs-helperLayer").css('height', '').attr('style', function(i, style) {
+                                return (style || '') + 'height: ' + ($(targetElement).outerHeight(true) + 10) + 'px !important;';
+                            });
+                            $(".introjs-helperLayer").css('width', '').attr('style', function(i, style) {
+                                return (style || '') + 'width: ' + ($(targetElement).innerWidth(true) + 10) + 'px !important;';
+                            });
+
+                            $(".introjs-helperLayer").css('top', '').attr('style', function(i, style) {
+                                return (style || '') + 'top: ' + ($(targetElement).offset().top) + 'px !important;';
+                            });
+                            $(".introjs-tooltipReferenceLayer").css('top', '').attr('style', function(i, style) {
+                                return (style || '') + 'top:  ' + ($(targetElement).offset().top) + 'px !important;';
+                            });
+                            intro.refresh()
+                        }
+
+                    }
+                });
+                window.scrollTo(0, 0);
+
+                function showIntroIfNeeded(userId) {
+                    if (!localStorage.getItem(`intro_event_${userId}`)) {
+                        if ($(window).scrollTop() === 0) {
+
+                            intro.start()
+                            intro.oncomplete(() => {
+                                localStorage.setItem(`intro_event_${userId}`, "true")
+                            })
+                            intro.onexit(() => {
+                                localStorage.setItem(`intro_event_${userId}`, "true")
+                            })
+                        } else {
+                            $(window).on('scroll', function checkScroll() {
+                                if ($(window).scrollTop() === 0) {
+                                    intro.start()
+                                    intro.oncomplete(() => {
+                                        localStorage.setItem(`intro_event_${userId}`, "true")
+                                    })
+                                    intro.onexit(() => {
+                                        localStorage.setItem(`intro_event_${userId}`, "true")
+                                    })
+
+                                    $(window).off('scroll', checkScroll)
+                                }
+                            });
+                        }
+
+                        localStorage.setItem(`intro_event_${userId}`, 'true')
+                    }
+                }
+
+                function onLogin(userId) {
+                    showIntroIfNeeded(userId)
+                }
+
+                onLogin('<?= session('user')[0]['ID_USER'] ?>')
+
+            });
+
+        <?php endif; ?>
+    <?php endif; ?>
 </script>

@@ -9,7 +9,7 @@
                     </div>
                 </div>
                 <div class="mt-5">
-                    <form id="form-user" action="update" method="POST" enctype="multipart/form-data">
+                    <form id="form-user" action="{{ url('kursus-admin/update') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <input type="hidden" name="ID_ACTIVITY">
                         <input type="hidden" name="ID_COURSE">
@@ -20,7 +20,7 @@
                             <div class="col-md-10">
                                 <div class="custom-file">
                                     <input type="file" name="image_activity" class="custom-file-input dropify"
-                                        accept=".jpg, .png" data-allowed-file-extensions="jpg png">
+                                        accept=".jpg, .png" data-allowed-file-extensions="jpg png" data-max-file-size="5M">
                                 </div>
                             </div>
                         </div>
@@ -76,7 +76,7 @@
                             <div class="col-md-10">
                                 <div class="custom-file">
                                     <input type="file" name="sertif_image" class="custom-file-input dropify"
-                                        accept=".jpg" data-allowed-file-extensions="jpg">
+                                        accept=".jpg" data-allowed-file-extensions="jpg" data-max-file-size="5M">
                                     <small class="text-danger">* Hanya Masukkan file JPG dan Ukuran Template adalah Horizontal A4</small>
                                 </div>
                             </div>
@@ -128,6 +128,13 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label control-label">Nama Instruktur</label>
+                            <div class="col-md-10">
+                                <input type="text" placeholder="kosongi bila nama instruktur sama dengan nama akun" class="form-control" name="instruktur_name">
+                                <small class="text-danger">kosongi bila nama instruktur sama dengan nama akun yang membuat kursus</small>
+                            </div>
+                        </div>
                         <div class="accordion materi_form" id="accordion-default">
 
                         </div>
@@ -154,7 +161,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="exampleModalCenterTitle">Tambahkan Bab atau Kuis?</h4>
+                    <h4 class="modal-title" id="exampleModalCenterTitle">Tambahkan Materi atau Kuis?</h4>
                     <button type="button" class="btn px-2 py-0" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true" class="fs-3">&times;</span>
                     </button>
@@ -163,7 +170,7 @@
                     <div class="col-md-12 text-center d-flex justify-content-around py-4">
                         <a href="javascript.void(0)" id="add_materi" data-dismiss="modal"
                             class="rounded btn btn-success col-md-5 py-5 h-100 text-white">
-                            <h1><i class="far fa-book text-white"></i></h1> BAB
+                            <h1><i class="far fa-book text-white"></i></h1> MATERI
                         </a>
                         <a href="javascript.void(0)" id="add_quiz" data-dismiss="modal"
                             class="rounded btn btn-danger col-md-5 py-5 h-100">
@@ -181,7 +188,6 @@
     var limit = 0;
 
     var data = {!! $jsonData !!};
-    console.log(data);
     
     var id_course = data.ID_COURSE;
     var id_act = data.ID_ACTIVITY;
@@ -209,6 +215,7 @@
     $('input[name="ID_ACTIVITY"]').val(id_act);
     $('input[name="ID_COURSE"]').val(id_course);
     $('input[name="title_activity"]').val(data.TITLE_ACTIVITY);
+    $('input[name="instruktur_name"]').val(data.NAMA_INSTRUKTUR);
     $('input[name="date_start"]').val(data.DATE_START);
     $('input[name="date_end"]').val(data.DATE_END);
     $('input[name="certif_code"]').val(data.SERTIF_CODE);
@@ -299,7 +306,7 @@
             success: function(html) {
                 $(".materi_form").append(html);
                 $("#add_item").removeClass("disabled");
-                $("#add_item").html("Tambahkan Bab atau Kuis");
+                $("#add_item").html("Tambahkan Materi atau Kuis");
                 item++;
                 limit++;
             }
@@ -315,7 +322,7 @@
             success: function(html) {
                 $(".materi_form").append(html);
                 $("#add_item").removeClass("disabled");
-                $("#add_item").html("Tambahkan Bab atau Kuis");
+                $("#add_item").html("Tambahkan Materi atau Kuis");
                 item++;
                 limit++;
                 id_quiz++;

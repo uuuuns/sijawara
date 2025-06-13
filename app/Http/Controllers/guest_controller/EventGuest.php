@@ -29,78 +29,93 @@ class EventGuest extends Controller
         $this->certificateModel = new Certificate();
     }
 
-	// EVENT CONTROLLER
 	public function index()
 	{
-
 		$data['title'] = 'Event';
 		$data_user =  (session('user') == null) ? null : Session::get('user')[0]->get('ID_USER');
 		$data['checkout'] = $this->checkoutModel->get_all_order($data_user);
 		
-		// Pagination settings
 		$perPage = 9; // Jumlah item per halaman
 		$currentPage = request()->query('page', 1);
-		// Query untuk menghitung total baris
 		$totalRows = DB::table('activity')->where('TYPE_ACTIVITY', 2)->count();
 
-		// Data event untuk halaman saat ini
 		if (empty(session('user'))) {
 			$events = DB::table('activity')
-					->selectRaw('activity.*, 
-								event.KUOTA_PESERTA,
-								(
-									SELECT 
-										COUNT(*) 
-									FROM 
-										`order` o
-									WHERE 
-										o.ID_PRODUCT = activity.ID_ACTIVITY 
-								) as participant, 
-								(DATEDIFF(CURDATE(), activity.DATE_END) >= 1) as EXPIRED')
-					->leftJoin('event', 'event.ID_ACTIVITY', '=', 'activity.ID_ACTIVITY')
-					->where('TYPE_ACTIVITY', 2)
-					->Paginate($perPage, ['*'], 'page', $currentPage);
-			}else {
-				$events = DB::table('activity')
-					->selectRaw('activity.*, 
-								event.ID_EVENT, 
-								event.CATEGORY_EVENT, 
-								event.LOCATION, 
-								event.ORGANIZER, 
-								event.CONTACT_CUSTOMER, 
-								event.DESKRIPSI_EVENT, 
-								event.LINK_ZOOM, 
-								event.KUOTA_PESERTA, 
-								(
-									SELECT 
-										COUNT(*) 
-									FROM 
-										`order` o
-									WHERE 
-										o.ID_USER = ? 
-										AND o.ID_PRODUCT = activity.ID_ACTIVITY 
-								) as DATA_CHECKING, 
-								(
-									SELECT 
-										COUNT(*) 
-									FROM 
-										`order` o
-									WHERE 
-										o.ID_PRODUCT = activity.ID_ACTIVITY 
-								) as participant, 
-								(DATEDIFF(CURDATE(), activity.DATE_END) >= 1) as EXPIRED', [session('user')[0]->get('ID_USER')])
-					->leftJoin('event', 'event.ID_ACTIVITY', '=', 'activity.ID_ACTIVITY')
-					->where('activity.TYPE_ACTIVITY', 2)
-					->paginate($perPage, ['*'], 'page', $currentPage);
+				->selectRaw('
+					activity.*, 
+					event.KUOTA_PESERTA,
+					(
+						SELECT 
+							COUNT(*) 
+						FROM 
+							`order` o
+						WHERE 
+							o.ID_PRODUCT = activity.ID_ACTIVITY 
+					) as participant, 
+					(
+						SELECT
+							COUNT(ti.ID_INVITED)
+						FROM
+							tb_invited ti 
+						WHERE
+							ti.ID_USER = "'.$data_user.'"
+							AND ti.ID_ACTIVITY = activity.ID_ACTIVITY
+					) AS is_invited,
+					(DATEDIFF(CURDATE(), activity.DATE_END) >= 1) as EXPIRED')
+				->leftJoin('event', 'event.ID_ACTIVITY', '=', 'activity.ID_ACTIVITY')
+				->where('TYPE_ACTIVITY', 2)
+				->orderBy('activity.DATE_START', 'DESC')
+				->Paginate($perPage, ['*'], 'page', $currentPage);
+		}else {
+			$events = DB::table('activity')
+				->selectRaw('
+					activity.*, 
+					event.ID_EVENT, 
+					event.CATEGORY_EVENT, 
+					event.LOCATION, 
+					event.ORGANIZER, 
+					event.CONTACT_CUSTOMER, 
+					event.DESKRIPSI_EVENT, 
+					event.LINK_ZOOM, 
+					event.KUOTA_PESERTA, 
+					(
+						SELECT 
+							COUNT(*) 
+						FROM 
+							`order` o
+						WHERE 
+							o.ID_USER = ? 
+							AND o.ID_PRODUCT = activity.ID_ACTIVITY 
+					) as DATA_CHECKING, 
+					(
+						SELECT 
+							COUNT(*) 
+						FROM 
+							`order` o
+						WHERE 
+							o.ID_PRODUCT = activity.ID_ACTIVITY 
+					) as participant,
+					(
+						SELECT
+							COUNT(ti.ID_INVITED)
+						FROM
+							tb_invited ti 
+						WHERE
+							ti.ID_USER = "'.$data_user.'"
+							AND ti.ID_ACTIVITY = activity.ID_ACTIVITY
+					) AS is_invited,
+					(DATEDIFF(CURDATE(), activity.DATE_END) >= 1) as EXPIRED', [session('user')[0]->get('ID_USER')])
+				->leftJoin('event', 'event.ID_ACTIVITY', '=', 'activity.ID_ACTIVITY')
+				->where('activity.TYPE_ACTIVITY', 2)
+				->orderBy('activity.LOG_TIME', 'DESC')
+				->paginate($perPage, ['*'], 'page', $currentPage);
 			}
 
-		// Load views
 		return 
 			view('template.header', $data) .
 			view('template_guest.event.event', compact('events', 'totalRows')) .
 			view('template.footer', $data);
 	}
-
 	public function add_event(Request $req)
 	{
 		$check_data = DB::select("
@@ -123,18 +138,41 @@ class EventGuest extends Controller
 			];
 	
 			DB::table('order')->insert($order);
-			return redirect()->back()->with(['succ_msg' => 'Berhasil join webinar', 'location' => 'event']);
+			return redirect()->back()->with(['succ_msg' => 'Berhasil join', 'location' => 'event']);
 		} else {
-			return redirect()->back()->with(['err_msg' => 'Sudah mengambil join webinar ini', 'location' => 'event']);
+			return redirect()->back()->with(['err_msg' => 'Anda Sudah mengambil join', 'location' => 'event']);
 		}
 	}
 	public function detailEvent()
 	{
 		$data['title'] = 'Event';
 		$data_user =  (session('user') == null) ? null : Session::get('user')[0]->get('ID_USER');
+
+		if(empty($_GET['id_activity'])) {
+			return redirect('404');
+		}
+
 		$id_activity = $_GET['id_activity'];
 		$data['event'] = $this->eventModel->get_event($id_activity);
 		$data['other_event'] = $this->eventModel->get_other_event($id_activity);
+		$HAL_2_SERTIF = $data['event']->SERTIF_IMAGE_BELAKANG;
+		
+		if($data['event'] == NULL ) {
+			return redirect('404');
+		}
+
+		if (!empty($data['event']->TEMA)) {
+			$tema = explode(';', $data['event']->TEMA);
+			$jp = explode(';', $data['event']->JAM_PELATIHAN);
+			$LIST_TEMA = [];
+			foreach ($tema as $key => $value) {
+				$LIST_TEMA[] = [
+					'TEMA' => $value,
+					'JP' => $jp[$key]
+				];
+			}
+		}
+
 		if (empty($data['event']->DATA_CHECKING)){
 			$data['event']->DATA_CHECKING = null;
 		}
@@ -154,7 +192,7 @@ class EventGuest extends Controller
 	
 		if (!empty($data['event']->DATA_CHECKING) && empty($sertifCheck)) {
 			$bln = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'];
-			$sertif_number = $data['event']->ID_EVENT . '/' . (($data['event']->TYPE_ACTIVITY == 1) ? 'CRS' : 'EVT') . '/TBH/' . $bln[(date('m', strtotime($data['event']->DATE_START)) - 1)] . '/' . date('Y');
+			$sertif_number = $data['event']->ID_EVENT . '/' . (($data['event']->TYPE_ACTIVITY == 1) ? 'CRS' : 'EVT') . '/SIJAWARA/' . $bln[(date('m', strtotime($data['event']->DATE_START)) - 1)] . '/' . date('Y');
 			
 			$data_sertif = array(
 				"ID_USER" => session('user')[0]->get('ID_USER'),
@@ -166,7 +204,7 @@ class EventGuest extends Controller
 			);
 			$id_sertif = DB::table('sertifikat_activity')->insertGetId($data_sertif);
 
-			$sertif_path = $this->certificateModel->generate(session('user')[0]->get('NAME'), $data['event']->TITLE_ACTIVITY, $sertif_number, $data['event']->SERTIF_IMAGE, "PESERTA", date('d F Y', strtotime($data['event']->DATE_START)), $id_sertif);
+			$sertif_path = $this->certificateModel->generate(session('user')[0]->get('NAME'), $data['event']->TITLE_ACTIVITY, $sertif_number, $data['event']->SERTIF_IMAGE, "PESERTA", date('d F Y', strtotime($data['event']->DATE_START)), $id_sertif, 2, $LIST_TEMA, $HAL_2_SERTIF);
 			$data_sertif = array(
 				"ID_USER" => session('user')[0]->get('ID_USER'),
 				"ID_ACTIVITY" => $id_activity,
@@ -201,7 +239,6 @@ class EventGuest extends Controller
 		 view('template_guest.event.event_detail', $data) .
 		 view('template.footer', $data);
 	}
-
 	public function upload_file(Request $req)
 	{
 		$file = [];
@@ -229,7 +266,6 @@ class EventGuest extends Controller
 		return
 			view('template_guest.event.ajax.item_search', $data);
 	}
-
 	public function GenerateUniqID_Order($var)
 	{
 		$string = preg_replace('/[^a-z]/i', '', $var);

@@ -9,6 +9,7 @@ use App\Models\Event;
 use App\Models\Category;
 use App\Models\Certificate;
 use Exception;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -16,7 +17,6 @@ use Illuminate\Http\Request;
 
 class CourseGuest extends Controller
 {
-	public $session_data;
 	protected $eventModel;
 	protected $courseModel;
 	protected $checkoutModel;
@@ -53,18 +53,24 @@ class CourseGuest extends Controller
 			view('template_guest.course.course', $data) .
 			view('template.footer', $data);
 	}
+	
 	public function detailCourse()
 	{
 		if (session('user') == null) {
-			return redirect('login');
+			return redirect('masuk');
 		}
 		$data['title'] = 'Course';
 
 		$data['id_activity'] = $_GET['id_activity'];
 		$data['course'] = $this->courseModel->get_course($data['id_activity']);
+
+		if($data['course'] == NULL ) {
+			return redirect('404');
+		}
+
 		$condition = "item_course.ID_COURSE = '" . $data['course']->ID_COURSE . "'" .
-					 " AND mapping_course.ID_ACTIVITY = '" . $_GET['id_activity'] . "'".
-					 " AND mapping_course.ID_USER = '" . session('user')[0]->get('ID_USER') . "'";
+			" AND mapping_course.ID_ACTIVITY = '" . $_GET['id_activity'] . "'" .
+			" AND mapping_course.ID_USER = '" . session('user')[0]->get('ID_USER') . "'";
 
 		$this->courseModel->updateMappingIndex($data['course']->ID_COURSE, $data['id_activity']);
 
@@ -143,8 +149,8 @@ class CourseGuest extends Controller
 		");
 		if ($data['tot_proggress'] == 100 && empty($sertifCheck)) {
 			$bln = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'];
-			$sertif_number = $data['course']->ID_COURSE . '/' . (($data['course']->TYPE_ACTIVITY == 1) ? 'CRS' : 'EVT') . '/TBH/' . $bln[(date('m', strtotime($data['course']->DATE_START)) - 1)] . '/' . date('Y');
-			
+			$sertif_number = $data['course']->ID_COURSE . '/' . (($data['course']->TYPE_ACTIVITY == 1) ? 'CRS' : 'EVT') . '/SIJAWARA/' . $bln[(date('m', strtotime($data['course']->DATE_START)) - 1)] . '/' . date('Y');
+
 			$data_sertif = array(
 				"ID_USER" => session('user')[0]->get('ID_USER'),
 				"ID_ACTIVITY" => $data['id_activity'],
@@ -154,8 +160,8 @@ class CourseGuest extends Controller
 				"LOG_TIME" => date('Y-m-d H:i:s')
 			);
 			$id_sertif = DB::table('sertifikat_activity')->insertGetId($data_sertif);
-			
-			$sertif_path = $this->certificateModel->generate(session('user')[0]->get('NAME'), $data['course']->TITLE_ACTIVITY, $sertif_number, $data['course']->SERTIF_IMAGE, "PESERTA", date('d F Y', strtotime($data['course']->DATE_START)), $id_sertif);
+
+			$sertif_path = $this->certificateModel->generate(session('user')[0]->get('NAME'), $data['course']->TITLE_ACTIVITY, $sertif_number, $data['course']->SERTIF_IMAGE, "PESERTA", date('d F Y', strtotime($data['course']->DATE_START)), $id_sertif, 1, null, null);
 			$data_sertif = array(
 				"ID_USER" => session('user')[0]->get('ID_USER'),
 				"ID_ACTIVITY" => $data['id_activity'],
@@ -165,12 +171,12 @@ class CourseGuest extends Controller
 				"LOG_TIME" => date('Y-m-d H:i:s')
 			);
 			DB::table('sertifikat_activity')->where('ID_SERTIFIKAT', $id_sertif)->update($data_sertif);
-			
+
 			$data['sertif'] = (object) $data_sertif;
 		} else {
 			$data['sertif'] = $sertifCheck;
 		}
-		//get nilai
+
 		$data['nilai'] = DB::selectOne("
 			SELECT
 				NILAI
@@ -179,10 +185,9 @@ class CourseGuest extends Controller
 			WHERE
 				ID_USER = '" . session('user')[0]->get('ID_USER') . "'
 		");
-		
+
 		$data['checkout'] = $this->checkoutModel->get_all_order(session('user')[0]->get('ID_USER'));
 
-		// KOMENTAR
 		$data['komentar'] = DB::select("
 			SELECT
 				tk.komentar,
@@ -200,6 +205,7 @@ class CourseGuest extends Controller
 			view('template_guest.course.course_detail', $data) .
 			view('template.footer', $data);
 	}
+
 	public function getDetailItemCourse()
 	{
 		$data['id_item'] = $_POST['id_item'];
@@ -208,8 +214,6 @@ class CourseGuest extends Controller
 		$data['id_activity'] = $_POST['type'] . '/' . $_POST['id_activity'];
 		if ($data['type'] == 3) {
 			$data['type'] = 2;
-
-			// update NILAI
 
 			$old_nilai = DB::SelectOne("
 				SELECT
@@ -231,12 +235,7 @@ class CourseGuest extends Controller
 				'ATTEMPT_GRADE'	=> $count_condition
 			];
 
-			// dd($new_nilai);
-
 			DB::table('nilai_quiz')->where('ID_QUIZ', $data['id_item'])->where('ID_USER', session('user')[0]->get('ID_USER'))->update($new_nilai);
-
-			//DELETE NILAI YANG ADA
-			// DB::table('nilai_quiz')->where('ID_QUIZ', $data['id_item'])->where('ID_USER', session('user')[0]->get('ID_USER'))->delete();
 		} else {
 			$data['type'] = $_POST['type'];
 		}
@@ -255,7 +254,6 @@ class CourseGuest extends Controller
 				" . implode('AND ', $condition_all_mapping) . "
 		");
 
-		// GET NILAI QUIZ
 		$data['quiz_grade'] = DB::selectOne('
 			SELECT
 				nq.NILAI,
@@ -265,14 +263,15 @@ class CourseGuest extends Controller
 			LEFT JOIN detail_quiz dq ON
 				dq.ID_QUIZ = nq.ID_QUIZ
 			LEFT JOIN item_course ic ON
-				ic.ID_COURSE = dq.ID_COURSE
+				ic.ID_ITEM = dq.ID_QUIZ
 			WHERE
 				nq.ID_USER = "' . session('user')[0]->get('ID_USER') . '"
 			AND 
 				nq.ID_QUIZ = ' . $data['id_item'] . '
 		');
 
-		$max_id_item = DB::selectOne("
+		$max_id_item = DB::selectOne(
+			"
 			SELECT
 				MAX(ID_ITEM) AS MAX_ID
 			FROM
@@ -282,7 +281,7 @@ class CourseGuest extends Controller
 				AND ID_ACTIVITY = '" . $_POST['id_activity'] . "'"
 		);
 		$data['max_id_item'] = $max_id_item->MAX_ID;
-		
+
 		$data_all_mapping = $this->courseModel->get_counttask($_POST['id_activity']);
 		$count = ['MAPPING_COUNT' => ((int) $data_all_mapping[0]->MAPPING_COUNT) + 1];
 		if ($data['status'] == 2) {
@@ -313,7 +312,6 @@ class CourseGuest extends Controller
 			}
 		}
 
-		// GET ID_ITEM DARI LAST ITEM YANG DI TELAH DIBUKA
 		$data['last_item'] = DB::select('
 			SELECT
 				*
@@ -327,7 +325,7 @@ class CourseGuest extends Controller
 		');
 
 		$condition = ['tc.ID_ITEM = ' . $data['id_item']];
-		// GET DATA UNTUK MATERI, ELSE QUIZ
+
 		$sql = "
 			SELECT
 				*
@@ -339,7 +337,7 @@ class CourseGuest extends Controller
 		$data['detail_item_course'] = DB::select($sql)[0];
 
 		$limit = !empty($data['detail_item_course']->LIMIT_QUIZ) ? 'LIMIT ' . $data['detail_item_course']->LIMIT_QUIZ : '';
-		
+
 		if ($data['type'] != 1) {
 			$sql = "
 			SELECT
@@ -370,10 +368,9 @@ class CourseGuest extends Controller
 
 		return view('template_guest.course.ajax.detail_item', $data);
 	}
+
 	public function getMappingCourse()
 	{
-		// $data_all_mapping = $this->courseModel->get_all_mapping($condition_all_mapping);
-		
 		$newDataItem = DB::select("
 			SELECT
 				*
@@ -386,19 +383,21 @@ class CourseGuest extends Controller
 		");
 		echo json_encode($newDataItem);
 	}
+
 	public function infoCourse()
 	{
 		$data['title'] = 'Course';
 		$data_user = (session('user') == null) ? null : Session::get('user')[0]->get('ID_USER');
-		
-		if (empty(session('user'))) {
-			return redirect('login');
-		}
 
 		DB::statement("SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));");
 		$id_activity = $_GET['id_activity'];
 		$data['checking_trans'] = $this->checkoutModel->get_trans($data_user);
 		$data['course'] = $this->courseModel->get_course($id_activity);
+
+		if($data['course'] == NULL ) {
+			return redirect('404');
+		}
+		
 		$condition = "item_course.ID_COURSE = '" . $data['course']->ID_COURSE . "'";
 		$data_itemCourse = $this->courseModel->get_item_course($condition);
 		$data['item_course'] = array();
@@ -407,7 +406,7 @@ class CourseGuest extends Controller
 			'quiz' => 0
 		);
 
-		if ($data['course']->IS_PUBLIC === 0){
+		if ($data['course']->IS_PUBLIC === 0) {
 			$CHECKING_USER = DB::SelectOne("
 				SELECT
 					ti.*
@@ -420,7 +419,7 @@ class CourseGuest extends Controller
 				AND
 					ti.ID_USER = '" . session('user')[0]->get('ID_USER') . "'
 			");
-			
+
 			if (empty($CHECKING_USER)) {
 				return redirect()->back()->with(['err_msg' => 'Metode ini tidak diperbolehkan']);;
 			}
@@ -458,6 +457,7 @@ class CourseGuest extends Controller
 			view('template_guest.course.course_info', $data) .
 			view('template.footer', $data);
 	}
+
 	public function add_event(Request $req)
 	{
 		$check_data = DB::select("
@@ -473,7 +473,8 @@ class CourseGuest extends Controller
 
 		$activity = DB::selectone("
 			SELECT
-				TYPE_ACTIVITY
+				TYPE_ACTIVITY,
+				TITLE_ACTIVITY
 			FROM
 				activity
 			WHERE
@@ -493,11 +494,12 @@ class CourseGuest extends Controller
 			}
 
 			DB::table('order')->insert($order);
-			return redirect('profile/mycourses')->with(['succ_msg' => 'Berhasil join kursus', 'location' => 'profile/mycourses']);
+			return redirect('kursus/detail/' . preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $activity->TITLE_ACTIVITY)) . '?id_activity=' . $req->input('id_activity'))->with(['succ_msg' => 'Berhasil join kursus', 'location' => 'profil/kursusku']);
 		} else {
-			return redirect('profile/mycourses')->with(['err_msg' => 'Sudah mengambil join Kursus ini', 'location' => 'profile/mycourses']);
+			return redirect('profil/kursusku')->with(['err_msg' => 'Sudah mengambil join Kursus ini', 'location' => 'profil/kursusku']);
 		}
 	}
+
 	public function InsertDataMapping($item)
 	{
 		$data_course = $this->courseModel->get_course($item);
@@ -522,6 +524,7 @@ class CourseGuest extends Controller
 			DB::table('mapping_course')->insert($data_mapping);
 		}
 	}
+
 	public function QuizEvaluation()
 	{
 		$id_quiz = $_POST['id_quiz'];
@@ -580,7 +583,8 @@ class CourseGuest extends Controller
 				ic.ID_ITEM = $id_quiz
 		");
 
-		$max_id_item = DB::selectOne("
+		$max_id_item = DB::selectOne(
+			"
 			SELECT
 				MAX(ID_ITEM) AS MAX_ID
 			FROM
@@ -592,10 +596,10 @@ class CourseGuest extends Controller
 
 		$data_all_mapping = $this->courseModel->get_counttask($dataActivity->ID_ACTIVITY);
 		$count = [
-					'MAPPING_COUNT' => ((int) $data_all_mapping[0]->MAPPING_COUNT) + 1,
-					'COURSE_COMPLETED' => 1,
-					'DATE_COMPLETED' => date('Y-m-d H:i:s')
-				];
+			'MAPPING_COUNT' => ((int) $data_all_mapping[0]->MAPPING_COUNT) + 1,
+			'COURSE_COMPLETED' => 1,
+			'DATE_COMPLETED' => date('Y-m-d H:i:s')
+		];
 		if ($nilai >= $dataActivity->MIN_NILAI && $max_id_item->MAX_ID == $id_quiz) {
 			DB::table("order")
 				->where('ID_USER', session('user')[0]->get('ID_USER'))
@@ -605,6 +609,7 @@ class CourseGuest extends Controller
 
 		echo $nilai;
 	}
+
 	public function searchCourse()
 	{
 		$keyword = $_GET['keyword'];
@@ -612,14 +617,19 @@ class CourseGuest extends Controller
 		return
 			view('template_guest.course.ajax.item_search', $data);
 	}
+
 	public function getFilterByKat(Request $req)
 	{
-		$condition = (!empty($_POST['category'])) ? "WHERE activity.TYPE_ACTIVITY = 1 AND course.KATEGORI = '" . $_POST['category'] . "'" : "WHERE activity.TYPE_ACTIVITY = 1";
 		$id_user = (session('user') == null) ? null : Session::get('user')[0]->get('ID_USER');
+		$kategori = !empty($_GET['category']) && $_GET['category'] != 0 ? $_GET['category'] : 0;
+		$cat_value = $kategori;
+
+		$perPage = 9;
+		$currentPage = request()->query('page', 1);
 
 		if ($id_user != null) {
-			$data['course'] = DB::select('
-				SELECT 
+			$data['course'] = DB::table('activity')
+				->selectRaw('
 					activity.*, 
 					course.DESKRIPSI_COURSE,
 					(
@@ -628,7 +638,7 @@ class CourseGuest extends Controller
 						FROM
 							`order` o
 						WHERE
-							o.ID_USER = "' . $id_user . '"
+							o.ID_USER = ?
 							AND o.ID_PRODUCT = activity.ID_ACTIVITY	
 					) AS DATA_CHECKING,
 					(
@@ -645,7 +655,7 @@ class CourseGuest extends Controller
 						FROM
 							tb_invited ti 
 						WHERE
-							ti.ID_USER = "' . $id_user . '"
+							ti.ID_USER = ?
 							AND ti.ID_ACTIVITY = activity.ID_ACTIVITY
 					) AS is_invited,
 					(
@@ -656,7 +666,7 @@ class CourseGuest extends Controller
 								FROM
 									`order` o
 								WHERE
-									o.ID_USER = "' . $id_user . '"
+									o.ID_USER = ?
 									AND o.ID_PRODUCT = activity.ID_ACTIVITY
 							) / 
 							(
@@ -665,22 +675,25 @@ class CourseGuest extends Controller
 								FROM
 									mapping_course
 								WHERE
-									mapping_course.ID_USER = "' . $id_user . '"
+									mapping_course.ID_USER = ?
 									AND mapping_course.ID_ACTIVITY = activity.ID_ACTIVITY
 							) * 100
 						)
-					) AS PROGRESS
-				FROM 
-					activity
-				LEFT JOIN course ON
-					course.ID_ACTIVITY = activity.ID_ACTIVITY
-				' . $condition . '
-				');
+					) AS PROGRESS', [$id_user, $id_user, $id_user, $id_user])
+				->leftJoin('course', 'course.ID_ACTIVITY', '=', 'activity.ID_ACTIVITY')
+				->orderBy('activity.DATE_START', 'DESC')
+				->where('TYPE_ACTIVITY', 1);
+
+			if ($cat_value != 0) {
+				$data['course']->where('KATEGORI', $cat_value);
+			}
+
+			$data['course'] = $data['course']->paginate($perPage, ['*'], 'page', $currentPage)->appends(['category' => $cat_value]);
 		} else {
-			$data['course'] = DB::select('
-				SELECT 
-					activity.*, 
-					course.DESKRIPSI_COURSE,
+			$data['course'] = DB::table('activity')
+				->selectRaw('
+						activity.*, 
+						course.DESKRIPSI_COURSE,
 					(
 						SELECT
 							COUNT(o.ID_ORDER)
@@ -696,18 +709,22 @@ class CourseGuest extends Controller
 							tb_invited ti 
 						WHERE 
 							ti.ID_ACTIVITY = activity.ID_ACTIVITY
-					) AS is_invited
-				FROM 
-					activity
-				LEFT JOIN 
-					course ON course.ID_ACTIVITY = activity.ID_ACTIVITY
-					' . $condition . '
-				');
-				
+					) AS is_invited')
+				->leftJoin('course', 'course.ID_ACTIVITY', '=', 'activity.ID_ACTIVITY')
+				->orderBy('activity.DATE_START', 'DESC')
+				->where('TYPE_ACTIVITY', 1);
+
+			if ($cat_value != 0) {
+				$data['course']->where('KATEGORI', $cat_value);
+			}
+
+			$data['course'] = $data['course']->paginate($perPage, ['*'], 'page', $currentPage)->appends(['category' => $cat_value]);
 		}
+		
 		return
-			view('template_guest.course.ajax.course_by_category', $data);
+			view('template_guest.course.ajax.course_by_category', $data)->render();
 	}
+
 	public function GenerateUniqID_Order($var)
 	{
 		$string = preg_replace('/[^a-z]/i', '', $var);
@@ -717,5 +734,29 @@ class CourseGuest extends Controller
 		$uniqid = strtoupper($begin);
 		return "ORD_" . $uniqid . substr(md5(time()), 0, 6);
 	}
-	// END COURSE CONTROLLER
+
+	public function AspirasiKursus()
+	{
+		$data = [
+			'title' => 'Aspirasi',
+		];
+
+		return
+			view('template.header', $data) .
+			view('template_guest.course.aspirasi', $data) .
+			view('template.footer', $data);
+	}
+
+	public function storeAspirasi(Request $req)
+	{
+		$data = [
+			'ID_USER' => session('user')[0]->get('ID_USER'),
+			'KETERANGAN' => $req->input('keterangan'),
+			'TYPE_ACTIVITY' => $req->input('type_activity'),
+			'created_at' => date('Y-m-d H:i:s')
+		];
+
+		DB::table('tb_aspirasi')->insert($data);
+		return redirect('kursus')->with(['succ_msg' => 'Berhasil mengirimkan aspirasi']);
+	}
 }

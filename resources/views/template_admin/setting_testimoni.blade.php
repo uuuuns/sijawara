@@ -15,10 +15,10 @@
     <div class="">
         <div class="card-body">
             <div class="row">
-                <div class="col-md-6 align-self-center">
+                <div class="col-md-6 text-center text-md-start">
                     <h3 class="fw-bold" style="color:#45b104">Setting Testimoni</h3>
                 </div>
-                <div class="col-md-6 d-flex justify-content-md-end justify-content-end align-items-center">
+                <div class="col-md-6 d-flex justify-content-md-end justify-content-center align-items-center">
                     <div class="mt-3 mt-md-0">
                         <button type="button" class="btn btn-primary btn-sm-2 rounded" onclick="openaddModal()">
                             <i class="mdi mdi-plus me-1"></i>
@@ -27,38 +27,40 @@
                 </div>
             </div>
             <div class="mt-5">
-                <table class="table mb-0" id="dtTable">
-                    <thead>
-                        <tr>
-                            <th width="5%">No</th>
-                            <th width="10%">Nama</th>
-                            <th>Testimoni</th>
-                            <th width="10%">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php $number = 0; ?>
+                <div class="table-responsive">
+                    <table class="table mb-0" id="dtTable">
+                        <thead>
+                            <tr>
+                                <th width="5%">No</th>
+                                <th width="10%">Nama</th>
+                                <th>Testimoni</th>
+                                <th width="10%">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php $number = 0; ?>
 
-                        @foreach ($testimoni as $item)
-                        <?php $number++; ?>
-                        <tr>
-                            <td><?= $number ?></td>
-                            <td><?= $item->nama ?></td>
-                            <td style="max-width: 3rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-                                <?= $item->testimoni ?>
-                            </td>
-                            <td>
-                                <button type="button" onclick="openviewModal(`<?= htmlentities(json_encode($item)) ?>`)" class="btn btn-warning px-4 py-2 rounded">
-                                    <i class="bx bx-edit-alt font-size-16 align-middle"></i>
-                                </button>
-                                <button type="button" onclick="deleteModal(<?= $item->id_testimoni ?>)" class="btn btn-danger px-4 py-2 rounded">
-                                    <i class="bx bx-trash-alt font-size-16 align-middle"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                            @foreach ($testimoni as $item)
+                            <?php $number++; ?>
+                            <tr>
+                                <td><?= $number ?></td>
+                                <td><?= $item->nama ?></td>
+                                <td style="max-width: 3rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                    <?= $item->testimoni ?>
+                                </td>
+                                <td>
+                                    <button type="button" onclick="openviewModal(`<?= htmlentities(json_encode($item)) ?>`)" class="btn btn-warning px-4 py-2 rounded">
+                                        <i class="bx bx-edit-alt font-size-16 align-middle"></i>
+                                    </button>
+                                    <button type="button" onclick="deleteModal(<?= $item->id_testimoni ?>)" class="btn btn-danger px-4 py-2 rounded">
+                                        <i class="bx bx-trash-alt font-size-16 align-middle"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -75,7 +77,7 @@
                     <span aria-hidden="true" class="fs-3">&times;</span>
                 </button>
             </div>
-            <form id="form-add" action="testimoni/edit" method="POST" enctype="multipart/form-data">
+            <form id="form-add" action="{{ url('testimoni/edit') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" id="up_id_testimoni" name="up_id_testimoni" class="form-control" required>
                 <div class="modal-body">
@@ -90,16 +92,16 @@
                     <div class="form-group mb-3">
                         <label> Gambar Testimoni <span class="text-danger">*</span></label>
                         <input type="file" name="up_gambar_testimoni" class="custom-file-input dropify"
-                            accept=".jpg, .png, .jpeg" data-allowed-file-extensions="jpg png jpeg">
+                            accept=".jpg, .png, .jpeg" data-allowed-file-extensions="jpg png jpeg" data-max-file-size="5M">
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="Submit" class="btn btn-primary rounded">Edit Testimoni</button>
                 </div>
             </form>
-            </div>
         </div>
     </div>
+</div>
 </div>
 {{-- End Update Modal View --}}
 
@@ -113,7 +115,7 @@
                     <span aria-hidden="true" class="fs-3">&times;</span>
                 </button>
             </div>
-            <form id="form-add" action="testimoni/store" method="POST" enctype="multipart/form-data">
+            <form id="form-add" action="{{ url('testimoni/store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
                     <div class="form-group">
@@ -127,7 +129,7 @@
                     <div class="form-group mb-3">
                         <label> Gambar Testimoni <span class="text-danger">*</span></label>
                         <input type="file" name="gambar_testimoni" class="custom-file-input dropify"
-                            accept=".jpg, .png, .jpeg" data-allowed-file-extensions="jpg png jpeg" required>
+                            accept=".jpg, .png, .jpeg" data-allowed-file-extensions="jpg png jpeg" data-max-file-size="5M" required>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -142,7 +144,7 @@
 <!-- Confirmation Delete Modal -->
 <div class="modal" id="deleteModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-        <form action="testimoni/delete" method="post">
+        <form action="{{ url('testimoni/delete') }}" method="post">
             @csrf
             <input type="hidden" id="id_testimoni" name="id_testimoni">
             <div class="modal-content">
@@ -190,7 +192,7 @@
         $('#up_id_testimoni').val(data.id_testimoni)
         $('#up_testimoni').val(data.testimoni)
         $('#up_nama').val(data.nama)
-        console.log(data)
+
         var gambar_testimoni = $('input[name="up_gambar_testimoni"]').dropify();
         gambar_testimoni = gambar_testimoni.data('dropify');
         gambar_testimoni.resetPreview();

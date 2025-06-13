@@ -26,7 +26,7 @@
     <div class="tab-content mt-3" id="formTabsContent">
       <!-- Data Pemilik Form -->
       <div class="tab-pane fade show {{$check->COUNT_DATA_PEMILIK < 8 ? 'active' : ''}}" id="process1" role="tabpanel" aria-labelledby="dataPemilik-tab">
-        <form id="data_pemilik" method="post" action="data_ukm/store_pemilik">
+        <form id="data_pemilik" method="post" action="{{ url('data_ukm/store_pemilik') }}">
             @csrf
           <div class="mb-3">
             <label for="namaPemilik" class="form-label">Nama Pemilik</label>
@@ -86,7 +86,7 @@
 
       <!-- Data UKM Form -->
       <div class="tab-pane fade {{$check->COUNT_DATA_PEMILIK >= 8 && $check->COUNT_DATA_UKM < 17 ? 'show active' : ''}}" id="process2" role="tabpanel" aria-labelledby="dataUKM-tab">
-        <form id="data_ukm" action="data_ukm/store_ukm" method="post">
+        <form id="data_ukm" action="{{ url('data_ukm/store_ukm') }}" method="post">
             @csrf
           <div class="mb-3">
             <label for="namaUKM" class="form-label">Nama UKM</label>
@@ -196,7 +196,7 @@
 
       <!-- Data Lain-lain Form -->
       <div class="tab-pane fade {{$check->COUNT_DATA_PEMILIK >= 8 && $check->COUNT_DATA_UKM >= 17 ? 'show active' : ''}}" id="process3" role="tabpanel" aria-labelledby="dataLain-tab">
-        <form action="data_ukm/store_lain" method="POST" id="data_lain">
+        <form action="{{ url('data_ukm/store_lain') }}" method="POST" id="data_lain">
           @csrf
           <div class="mb-3">
               <label for="sumberBahanBaku" class="form-label">Sumber Bahan Baku</label>
@@ -269,7 +269,6 @@
     });
 
     $('#process3-tab').click(function() {
-      console.log({{$check->COUNT_DATA_UKM}});
         @if ($check->COUNT_DATA_PEMILIK < 8)
             Swal.fire({
                 icon: 'error',

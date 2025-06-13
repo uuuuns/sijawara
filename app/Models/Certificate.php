@@ -26,7 +26,7 @@ class Certificate extends Model
         return $this->db->affected_rows();
     }
 
-    public function generate($namaUser, $activity_name, $sertificate_no, $template_link, $role, $date, $id_sertif)
+    public function generate($namaUser, $activity_name, $sertificate_no, $template_link, $role, $date, $id_sertif, $type_activity, $list_tema, $hal_2)
     {
         $encryptedId = Crypt::encryptString($id_sertif);
         $file_pdf = strtoupper($namaUser . "_CERTIFICATE_" . $activity_name) . ".pdf";
@@ -41,15 +41,38 @@ class Certificate extends Model
         $type = pathinfo($path, PATHINFO_EXTENSION);
         $getImage = file_get_contents($path);
         $data['IMAGE'] = 'data:image/' . $type . ';base64,' . base64_encode($getImage);
+
+        $path_hal2 = 'assets/images/template_sertifikat_hal2.jpg';
+        if ($hal_2 != null) {
+            $path_hal2 = $hal_2;
+        }
+
+        $type_hal2 = pathinfo($path_hal2, PATHINFO_EXTENSION);
+        $getImage_hal2 = file_get_contents($path_hal2);
+        $data['IMAGE_HAL_2'] = 'data:image/' . $type_hal2 . ';base64,' . base64_encode($getImage_hal2);
+
         
         $data['NAME'] = ucwords(strtolower(trim($namaUser)));
         $data['JUDUL'] = ucwords(strtolower(trim($activity_name)));
-        $data['ROLES'] = strtoupper($role); //PESERTA
-        $data['TGL_ACARA'] = $date; //25 Oktober 2024
-        $data['TGL_TTD'] = strtoupper($date); //MALANG, 25 OKTOBER 2024
-        $data['QR'] = base64_encode(QrCode::format("svg")->size(516)->generate(URL::to('/').'/verification/sertifikat?ID_SERTIFIKAT='.$encryptedId));
-        
-        $html = view('pdf_template.sertifikat', $data)->render();
+        $data['ROLES'] = strtoupper($role);
+        $data['TGL_ACARA'] = $date;
+        $data['TGL_TTD'] = strtoupper($date);
+        $data['QR'] = base64_encode(QrCode::format("svg")->size(516)->generate(URL::to('/').'/verifikasi/sertifikat?ID_SERTIFIKAT='.$encryptedId));
+        $data['LIST_TEMA'] = $list_tema;
+        $totalJP = 0;
+        foreach ($list_tema as $item) {
+            $totalJP += (int) $item['JP'];
+        }
+        $data['TOTAL_JP'] = $totalJP." JAM";
+        $html1 = view('pdf_template.sertifikat', $data)->render();
+
+        if ($type_activity == 2) {
+            $html2 = view('pdf_template.sertifikat_webinar', $data)->render();
+            $html = $html1 . $html2;
+        } else {
+            $html = $html1;
+        }
+
         $resPdf = PDFGenerator::generate($html, $file_pdf, $paper, $orientation);
         $new_path = FileUpload::UploadFileBlob($file_pdf, $resPdf, 'certificate');
 
