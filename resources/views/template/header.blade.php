@@ -567,7 +567,11 @@
                                 <a href="{{ url('webinar') }}">Webinar</a>
                             </li>
                             <li class="ms-lg-5 me-0">
-                                <a href="https://docs.google.com/document/d/1fo_SotSR-3lgkLbw1yJ7pGetlldvuW84oq2sJhXBoVI/edit?tab=t.0" target="_blank">Panduan</a>
+                                @if (!empty(session('user')[0]) && session('user')[0]['ID_ROLE'] == 1)
+                                    <a href="https://docs.google.com/document/d/1nnLO-CDrHDWEnnEiNoqKR4z5ZmjH-Uk0QWI80NRXLFM/edit?tab=t.0" target="_blank">Panduan</a>
+                                @else
+                                    <a href="https://docs.google.com/document/d/1fo_SotSR-3lgkLbw1yJ7pGetlldvuW84oq2sJhXBoVI/edit?tab=t.0" target="_blank">Panduan</a>
+                                @endif
                             </li>
                             <?php if (!empty(session('user')[0])) { ?>
                                 @if (session('user')[0]['ID_ROLE'] != 1)
