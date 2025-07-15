@@ -220,8 +220,7 @@ class AuthController extends Controller
                 $User->STATUS                = 0;
                 $User->IS_DELETE             = 0;
                 $User->REG_TIME              = date('Y-m-d H:i:s');
-                $User->JENIS_INSTANSI        = implode(';', $req->input('jenis_instansi'));
-    
+                $User->JENIS_INSTANSI        = $req->input('jenis_instansi');
                 $User->save();
             } catch (\Throwable $e) {
                 return response()->json([

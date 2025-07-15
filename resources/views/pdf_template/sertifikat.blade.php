@@ -51,10 +51,6 @@
             </div>
         </div>
 
-        <div class="box" style="position: absolute; margin-left: 875px; font-size: 13px; font-weight: bold; margin-top: 375;">
-            MALANG, <?= $TGL_TTD?>
-        </div>
-
         <div class="box" style="position: absolute; margin-left: 150px; font-size: 13px; font-weight: bold; margin-top: 405;">
             <img src="data:image/svg+xml;base64,<?= $QR?>" alt="" style="max-width: 100px;">
         </div>

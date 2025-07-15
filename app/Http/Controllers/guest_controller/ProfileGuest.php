@@ -391,20 +391,43 @@ class ProfileGuest extends Controller
         ];
         $data['user'] = DB::selectOne('
             SELECT
-                *
+                NAME,
+                EMAIL,
+                TELP,
+                JK,
+                FOTO_PROFILE,
+                NIK,
+                ALAMAT,
+                TGL_LAHIR,
+                TEMPAT_LAHIR,
+                NAMA_INSTANSI,
+                JABATAN,
+                JENIS_INSTANSI,
+                STATUS,
+                ID_KOTA,
+                ID_PROVINSI
             FROM
                 user
             WHERE
                 ID_USER = "' . session('user')[0]['ID_USER'] . '"
         ');
 
-        if (session('user')[0]['IS_DATA_COMPLETE'] == false) {
-            return response()->json(['status' => 'error', 'message' => 'Lengkapi data profil dan UKM/Koperasi anda terlebih dahulu', 'code' => 1]);
+        $emptyFields = [];
+
+        if ($data['user']) {
+            foreach ((array) $data['user'] as $field => $value) {
+                if (is_null($value) || $value === '') {
+                    $emptyFields[] = $field;
+                }
+            }
         }
 
-        // $cekData = $this->cekDataProfil(session('user')[0]['IS_DATA_COMPLETE'], $data['user']->JENIS_INSTANSI);
-        // if ($cekData != null) {
-        //     return response()->json(['status' => 'error', 'message' => $cekData, 'code' => 1]);
+        if (count($emptyFields) > 0) {
+            return response()->json(['status' => 'error', 'message' => 'Lengkapi data profil anda terlebih dahulu', 'code' => 1, 'emptyFields' => $emptyFields]);
+        }
+
+        // if (session('user')[0]['IS_DATA_COMPLETE'] == false) {
+        //     return response()->json(['status' => 'error', 'message' => 'Lengkapi data profil dan Nama Instansi Anda!!', 'code' => 1]);
         // }
         
         DB::table('sertifikat_activity')->where('ID_ACTIVITY', $request->id_activity)->where('ID_USER', session('user')[0]['ID_USER'])->update($data_update);
