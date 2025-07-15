@@ -25,7 +25,7 @@
                                     aria-describedby="emailHelp" required>
                             </div>
                             <div class="my-4 float-label-control">
-                                <select id="jenis_instansi" name="jenis_instansi[]" multiple="multiple" placeholder="Pilih Jenis Instansi">
+                                <select id="jenis_instansi" name="jenis_instansi" placeholder="Pilih Jenis Instansi">
                                     <option></option>
                                     <option value="UKM">UKM</option>
                                     <option value="KOPERASI">KOPERASI</option>
@@ -86,27 +86,27 @@
         });
     });
 
-    $("#jenis_instansi").on("change", function () {
-        let selectedValues = $(this).val();
+    // $("#jenis_instansi").on("change", function () {
+    //     let selectedValues = $(this).val();
 
-        if (selectedValues.length > 1) {
-            // Filter out invalid values
-            const validValues = selectedValues.filter(value => value === "UKM" || value === "KOPERASI");
+    //     if (selectedValues.length > 1) {
+    //         // Filter out invalid values
+    //         const validValues = selectedValues.filter(value => value === "UKM" || value === "KOPERASI");
 
-            if (selectedValues.length !== validValues.length) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Jenis Instansi Ganda hanya untuk koperasi dan UKM',
-                    confirmButtonColor: '#3085d6',
-                    confirmButtonText: 'OK'
-                });
+    //         if (selectedValues.length !== validValues.length) {
+    //             Swal.fire({
+    //                 icon: 'error',
+    //                 title: 'Jenis Instansi Ganda hanya untuk koperasi dan UKM',
+    //                 confirmButtonColor: '#3085d6',
+    //                 confirmButtonText: 'OK'
+    //             });
 
-                // Update the selection and refresh the UI
-                $(this).val(validValues);
-                $(this).select2().trigger("change");
-            }
-        }
-    });
+    //             // Update the selection and refresh the UI
+    //             $(this).val(validValues);
+    //             $(this).select2().trigger("change");
+    //         }
+    //     }
+    // });
 
     var x = document.getElementById("form-1");
     var y = document.getElementById("form-2");
