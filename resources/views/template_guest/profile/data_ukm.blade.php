@@ -126,7 +126,7 @@
             <label for="volumePerbulan" class="form-label">Volume Perbulan (Omzet)</label>
             <div class="mb-3 input-group">
                 <div class="input-group-text">Rp.</div>
-                <input type="text" class="form-control rupiah" value="{{$data_ukm->volume_usaha}}" id="volumePerbulan" name="volumePerbulan" placeholder="Volume Perbulan (Omzet)" required>
+                <input type="number" class="form-control rupiah" value="{{$data_ukm->volume_usaha}}" id="volumePerbulan" name="volumePerbulan" placeholder="Volume Perbulan (Omzet)" required>
             </div>
           </div>
           <div class="mb-3">
@@ -163,7 +163,7 @@
             <label for="nilaiRealisasi" class="form-label">Nilai Realisasi (Kredit/Pinjaman)</label>
             <div class="mb-3 input-group">
                 <div class="input-group-text">Rp.</div>
-                <input type="text" class="form-control rupiah" value="{{$data_ukm->nilai_realisasi}}"id="nilaiRealisasi" name="nilaiRealisasi" placeholder="Nilai Realisasi" required>
+                <input type="number" class="form-control rupiah" value="{{$data_ukm->nilai_realisasi}}"id="nilaiRealisasi" name="nilaiRealisasi" placeholder="Nilai Realisasi" required>
             </div>
           </div>
           <div class="mb-3">

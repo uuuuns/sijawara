@@ -101,14 +101,14 @@
             <label for="volumePerbulan" class="form-label">Volume Perbulan (Omzet)</label>
             <div class="mb-3 input-group">
                 <div class="input-group-text">Rp.</div>
-                <input type="text" class="form-control rupiah" value="{{$data_koperasi->volume_usaha}}" id="volumePerbulan" name="volumePerbulan" placeholder="Volume Perbulan (Omzet)" required>
+                <input type="number" class="form-control rupiah" value="{{$data_koperasi->volume_usaha}}" id="volumePerbulan" name="volumePerbulan" placeholder="Volume Perbulan (Omzet)" required>
             </div>
           </div>
           <div class="mb-3">
             <label for="asset" class="form-label">Asset</label>
             <div class="mb-3 input-group">
                 <div class="input-group-text">Rp.</div>
-                <input type="text" class="form-control rupiah" value="{{$data_koperasi->asset}}" id="asset" name="asset" placeholder="Asset" required>
+                <input type="number" class="form-control rupiah" value="{{$data_koperasi->asset}}" id="asset" name="asset" placeholder="Asset" required>
             </div>
           </div>
           <div class="mb-3">
@@ -125,21 +125,21 @@
             <label for="modalSendiri" class="form-label">Modal Sendiri</label>
             <div class="mb-3 input-group">
                 <div class="input-group-text">Rp.</div>
-                <input type="text" class="form-control rupiah" value="{{$data_koperasi->modal_sendiri}}" id="modalSendiri" name="modalSendiri" placeholder="Modal Sendiri" required>
+                <input type="number" class="form-control rupiah" value="{{$data_koperasi->modal_sendiri}}" id="modalSendiri" name="modalSendiri" placeholder="Modal Sendiri" required>
             </div>
           </div>
           <div class="mb-3">
             <label for="modalLuar" class="form-label">Modal Luar</label>
             <div class="mb-3 input-group">
                 <div class="input-group-text">Rp.</div>
-                <input type="text" class="form-control rupiah" value="{{$data_koperasi->modal_luar}}" id="modalLuar" name="modalLuar" placeholder="Modal Luar" required>
+                <input type="number" class="form-control rupiah" value="{{$data_koperasi->modal_luar}}" id="modalLuar" name="modalLuar" placeholder="Modal Luar" required>
             </div>
           </div>
           <div class="mb-3">
             <label for="sisaHasilUsaha" class="form-label">Sisa Hasil Usaha</label>
             <div class="mb-3 input-group">
                 <div class="input-group-text">Rp.</div>
-                <input type="text" class="form-control rupiah" value="{{$data_koperasi->sisa_hasil_usaha}}" id="sisaHasilUsaha" name="sisaHasilUsaha" placeholder="Sisa Hasil Usaha" required>
+                <input type="number" class="form-control rupiah" value="{{$data_koperasi->sisa_hasil_usaha}}" id="sisaHasilUsaha" name="sisaHasilUsaha" placeholder="Sisa Hasil Usaha" required>
             </div>
           </div>
           <div class="d-flex justify-content-end">
