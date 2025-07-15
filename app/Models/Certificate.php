@@ -60,13 +60,14 @@ class Certificate extends Model
         $data['QR'] = base64_encode(QrCode::format("svg")->size(516)->generate(URL::to('/').'/verifikasi/sertifikat?ID_SERTIFIKAT='.$encryptedId));
         $data['LIST_TEMA'] = $list_tema;
         $totalJP = 0;
-        foreach ($list_tema as $item) {
-            $totalJP += (int) $item['JP'];
-        }
-        $data['TOTAL_JP'] = $totalJP." JAM";
-        $html1 = view('pdf_template.sertifikat', $data)->render();
 
-        if ($type_activity == 2) {
+        $html1 = view('pdf_template.sertifikat', $data)->render();
+        
+        if ($type_activity == 2 && count($list_tema) > 0) {
+            foreach ($list_tema as $item) {
+                $totalJP += (int) $item['JP'];
+            }
+            $data['TOTAL_JP'] = $totalJP." JAM";
             $html2 = view('pdf_template.sertifikat_webinar', $data)->render();
             $html = $html1 . $html2;
         } else {
