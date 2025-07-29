@@ -217,7 +217,7 @@ class AuthController extends Controller
                 $User->EMAIL                 = $req->input('email');
                 $User->PASS                  = hash('sha256', md5($req->input('password')));
                 $User->ID_ROLE               = 3;
-                $User->STATUS                = 1;
+                $User->STATUS                = 0;
                 $User->IS_DELETE             = 0;
                 $User->REG_TIME              = date('Y-m-d H:i:s');
                 $User->JENIS_INSTANSI        = $req->input('jenis_instansi');
@@ -231,15 +231,15 @@ class AuthController extends Controller
 
             // SEND EMAIL VERIFICATION
             $token_key = bin2hex(random_bytes(32));
-            // $details = [
-            //     'name' => $req->input('name'),
-            //     'body' => 'Tekan Tombol dibawah ini untuk mengaktifkan akun.',
-            //     'link' => url('verifikasi/confirm?token=' . $token_key),
-            //     'button' => "Aktifkan",
-            // ];
-            // $mail = new MailSender($details);
-            // $mail->subject("Email Verification");
-            // Mail::to($req->input('email'))->send($mail);
+            $details = [
+                'name' => $req->input('name'),
+                'body' => 'Tekan Tombol dibawah ini untuk mengaktifkan akun.',
+                'link' => url('verifikasi/confirm?token=' . $token_key),
+                'button' => "Aktifkan",
+            ];
+            $mail = new MailSender($details);
+            $mail->subject("Email Verification");
+            Mail::to($req->input('email'))->send($mail);
             // END SEND EMAIL VERIFICATION
 
             // SAVE TOKEN
@@ -260,22 +260,22 @@ class AuthController extends Controller
                 'PASS' => hash('sha256', md5($req->input('password'))),
                 'REG_TIME' => date('Y-m-d H:i:s'),
                 'JENIS_INSTANSI' => $req->input('jenis_instansi'),
-                'STATUS' => 1,
+                'STATUS' => 0,
             ];
 
             DB::table('user')->where('ID_USER', $check_user->ID_USER)->update($data_user);
 
             // SEND EMAIL VERIFICATION
             $token_key = bin2hex(random_bytes(32));
-            // $details = [
-            //     'name' => $req->input('name'),
-            //     'body' => 'Tekan Tombol dibawah ini untuk mengaktifkan akun.',
-            //     'link' => url('verifikasi/confirm?token=' . $token_key),
-            //     'button' => "Aktifkan",
-            // ];
-            // $mail = new MailSender($details);
-            // $mail->subject("Email Verification");
-            // Mail::to($req->input('email'))->send($mail);
+            $details = [
+                'name' => $req->input('name'),
+                'body' => 'Tekan Tombol dibawah ini untuk mengaktifkan akun.',
+                'link' => url('verifikasi/confirm?token=' . $token_key),
+                'button' => "Aktifkan",
+            ];
+            $mail = new MailSender($details);
+            $mail->subject("Email Verification");
+            Mail::to($req->input('email'))->send($mail);
             // END SEND EMAIL VERIFICATION
 
             // SAVE TOKEN
