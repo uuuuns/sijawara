@@ -171,6 +171,8 @@ class EventGuest extends Controller
 					'JP' => $jp[$key]
 				];
 			}
+		}else {
+			$LIST_TEMA = [];
 		}
 
 		if (empty($data['event']->DATA_CHECKING)){

@@ -708,7 +708,7 @@
             </div>
         </div>
 
-        @if (!empty(session('user')[0]))
+        <!-- @if (!empty(session('user')[0]))
             @if (session('user')[0]['IS_DATA_COMPLETE'] == false)
                 <div class="header-topbar topbar-style-1 bg-warning">
                     <div class="container">
@@ -725,5 +725,5 @@
                     </div>
                 </div>
             @endif
-        @endif
+        @endif -->
     </header>
