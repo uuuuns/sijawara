@@ -58,12 +58,14 @@ class Certificate extends Model
         $data['TGL_ACARA'] = $date;
         $data['TGL_TTD'] = strtoupper($date);
         $data['QR'] = base64_encode(QrCode::format("svg")->size(516)->generate(URL::to('/').'/verifikasi/sertifikat?ID_SERTIFIKAT='.$encryptedId));
-        $data['LIST_TEMA'] = $list_tema;
         $totalJP = 0;
 
         $html1 = view('pdf_template.sertifikat', $data)->render();
         
-        if ($type_activity == 2 && count($list_tema) > 0) {
+        if ($type_activity == 2 && count($list_tema) > 0) 
+            {
+            $data['LIST_TEMA'] = $list_tema;
+
             foreach ($list_tema as $item) {
                 $totalJP += (int) $item['JP'];
             }
