@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Session;
 use App\Models\FileUpload;
 use App\Models\Event;
 use App\Models\Activity;
+use Exception;
 
 class EventController extends Controller
 {
@@ -45,22 +46,22 @@ class EventController extends Controller
                 a.TYPE_ACTIVITY = 2
         ");
 
-        foreach ($data['event'] as $key => $value) {
-            $temaList = explode(';', $value->TEMA);
-            $jpList = explode(';', $value->JAM_PELATIHAN);
+            foreach ($data['event'] as $key => $value) {
+                $temaList = explode(';', $value->TEMA);
+                $jpList = explode(';', $value->JAM_PELATIHAN);
 
-            $combined = [];
+                $combined = [];
 
-            foreach ($temaList as $i => $tema) {
-                $combined[] = [
-                    'TEMA' => $tema,
-                    'JAM_PELATIHAN' => isset($jpList[$i]) ? (int)$jpList[$i] : 1
-                ];
+                foreach ($temaList as $i => $tema) {
+                    $combined[] = [
+                        'TEMA' => $tema,
+                        'JAM_PELATIHAN' => isset($jpList[$i]) ? (int)$jpList[$i] : 1
+                    ];
+                }
+
+                $data['event'][$key]->TEMA = $combined;
             }
 
-            $data['event'][$key]->TEMA = $combined;
-        }
-        
             $data['instruktur'] = DB::select("
             SELECT
                 u.ID_USER ,
@@ -107,7 +108,8 @@ class EventController extends Controller
             view('template.footer', $data);
     }
 
-    public function index_lihat_peserta(Request $req) {
+    public function index_lihat_peserta(Request $req)
+    {
         $data['title'] = "Peserta Event - SIJAWARA+";
 
         $data['list_peserta'] = DB::select("
@@ -181,90 +183,110 @@ class EventController extends Controller
 
     public function store(Request $req)
     {
-        $activity = [
-            'ID_ACTIVITY' => $this->GenerateUniqID('ACT', $req->input('title_activity')),
-            'TITLE_ACTIVITY' => $req->input('title_activity'),
-            'ID_USER' => session('user')[0]['ID_USER'],
-            'SERTIF_CODE' => !empty($req->input('sertif_code')) ? $req->input('sertif_code') : null,
-            'TYPE_ACTIVITY' => 2,
-            'STATUS' => $req->has('status') ? 1 : 0,
-            'IMAGE_ACTIVITY' => FileUpload::S3($req->file('image_activity'), 'IMAGE_ACTIVITY', 'Image-Activity-' . strtotime(now())),
-            'DATE_START' => $req->input('date_start'),
-            'DATE_END' => $req->input('date_end'),
-            'LOG_TIME' => date('Y-m-d H:i:s'),
-            'IS_PUBLIC' => $req->input('status_public'),
-            'SERTIF_IMAGE' => $req->hasFile('sertif_image') ? FileUpload::S3($req->file('sertif_image'), 'SERTIF_IMAGE', 'Template-Certifiace-' . strtotime(now())) : null,
-            'SERTIF_IMAGE_BELAKANG' => $req->hasFile('sertif_image_belakang') ? FileUpload::S3($req->file('sertif_image_belakang'), 'SERTIF_IMAGE', 'Template-Certifiace-' . strtotime(now())) : null
-        ];
+        try {
+            $activity = [
+                'ID_ACTIVITY' => $this->GenerateUniqID('ACT', $req->input('title_activity')),
+                'TITLE_ACTIVITY' => $req->input('title_activity'),
+                'ID_USER' => session('user')[0]['ID_USER'],
+                'SERTIF_CODE' => !empty($req->input('sertif_code')) ? $req->input('sertif_code') : null,
+                'TYPE_ACTIVITY' => 2,
+                'STATUS' => $req->has('status') ? 1 : 0,
+                'IMAGE_ACTIVITY' => FileUpload::S3($req->file('image_activity'), 'IMAGE_ACTIVITY', 'Image-Activity-' . strtotime(now())),
+                'DATE_START' => $req->input('date_start'),
+                'DATE_END' => $req->input('date_end'),
+                'LOG_TIME' => date('Y-m-d H:i:s'),
+                'IS_PUBLIC' => $req->input('status_public'),
+                'SERTIF_IMAGE' => $req->hasFile('sertif_image') ? FileUpload::S3($req->file('sertif_image'), 'SERTIF_IMAGE', 'Template-Certifiace-' . strtotime(now())) : null,
+                'SERTIF_IMAGE_BELAKANG' => $req->hasFile('sertif_image_belakang') ? FileUpload::S3($req->file('sertif_image_belakang'), 'SERTIF_IMAGE', 'Template-Certifiace-' . strtotime(now())) : null
+            ];
 
-        $event = [
-            'ID_ACTIVITY'       => $activity['ID_ACTIVITY'],
-            'CATEGORY_EVENT'    => $req->input('category'),
-            'LOCATION'          => $req->input('location'),
-            'ORGANIZER'         => $req->input('penyelenggara'),
-            'CONTACT_CUSTOMER'  => $req->input('contact'),
-            'DESKRIPSI_EVENT'   => $req->input('desc_event'),
-            'TEMA'              => $req->input('tema') != null ? (implode(';', $req->input('tema'))) : null,
-            'JAM_PELATIHAN'     => $req->input('jp') != null ? (implode(';', $req->input('jp'))) : null,
-        ];
+            $event = [
+                'ID_ACTIVITY'       => $activity['ID_ACTIVITY'],
+                'CATEGORY_EVENT'    => $req->input('category'),
+                'LOCATION'          => $req->input('location'),
+                'ORGANIZER'         => $req->input('penyelenggara'),
+                'CONTACT_CUSTOMER'  => $req->input('contact'),
+                'DESKRIPSI_EVENT'   => $req->input('desc_event'),
+                'TEMA'              => $req->input('tema') != null ? (implode(';', $req->input('tema'))) : null,
+                'JAM_PELATIHAN'     => $req->input('jp') != null ? (implode(';', $req->input('jp'))) : null,
+            ];
 
-        if (!empty($req->input('link_zoom'))) {
-            $event['LINK_ZOOM'] = $req->input('link_zoom');
+            if (!empty($req->input('link_zoom'))) {
+                $event['LINK_ZOOM'] = $req->input('link_zoom');
+            }
+            if (!empty($req->input('kuota_peserta'))) {
+                $event['KUOTA_PESERTA'] = $req->input('kuota_peserta');
+            }
+
+            DB::beginTransaction();
+            DB::table('activity')->insert($activity);
+            DB::table('event')->insert($event);
+            DB::commit();
+
+            return redirect('webinar-admin')->with(['succ_msg' => 'Berhasil Menambahkan Webinar/Pelatihan', 'location' => 'webinar-admin']);
+        } catch (Exception $e) {
+            DB::rollBack();
+            return redirect('webinar-admin')->with(['err_msg' => 'Gagal Menambahkan Webinar/Pelatihan' + $e, 'location' => 'webinar-admin']);
         }
-        if (!empty($req->input('kuota_peserta'))) {
-            $event['KUOTA_PESERTA'] = $req->input('kuota_peserta');
-        }
-        DB::table('activity')->insert($activity);
-        DB::table('event')->insert($event);
-
-        return redirect('webinar-admin')->with(['succ_msg' => 'Berhasil Menambahkan Webinar/Pelatihan', 'location' => 'webinar-admin']);
     }
 
     public function update(Request $req)
     {
-        $activity = [
-            'TITLE_ACTIVITY' => $req->input('up_title_activity'),
-            'ID_USER' => session('user')[0]['ID_USER'],
-            'SERTIF_CODE' => $req->input('up_sertif_code'),
-            'DATE_START' => $req->input('up_date_start'),
-            'DATE_END' => $req->input('up_date_end'),
-            'IS_PUBLIC' => $req->input('up_status_public'),
-            'STATUS' => $req->has('up_status') ? 1 : 0,
-        ];
+        try {
+            $activity = [
+                'TITLE_ACTIVITY' => $req->input('up_title_activity'),
+                'ID_USER' => session('user')[0]['ID_USER'],
+                'SERTIF_CODE' => $req->input('up_sertif_code'),
+                'DATE_START' => $req->input('up_date_start'),
+                'DATE_END' => $req->input('up_date_end'),
+                'IS_PUBLIC' => $req->input('up_status_public'),
+                'STATUS' => $req->has('up_status') ? 1 : 0,
+            ];
 
-        if (!empty($req->file('up_image_activity'))) {
-            $activity['IMAGE_ACTIVITY'] = FileUpload::S3($req->file('up_image_activity'), 'IMAGE_ACTIVITY', 'Image-Activity-' . strtotime(now()));
+            if (!empty($req->file('up_image_activity'))) {
+                $activity['IMAGE_ACTIVITY'] = FileUpload::S3($req->file('up_image_activity'), 'IMAGE_ACTIVITY', 'Image-Activity-' . strtotime(now()));
+            }
+
+            if ($req->hasFile('up_sertif_image')) {
+                $activity['SERTIF_IMAGE'] = FileUpload::S3($req->file('up_sertif_image'), 'SERTIF_IMAGE', 'Template-Certifiace-' . strtotime(now()));
+            }
+
+            if ($req->hasFile('up_sertif_image_belakang')) {
+                $activity['SERTIF_IMAGE_BELAKANG'] = FileUpload::S3($req->file('up_sertif_image_belakang'), 'SERTIF_IMAGE', 'Template-Certifiace-' . strtotime(now()));
+            }
+
+            $event = [
+                'CATEGORY_EVENT'    => $req->input('up_category'),
+                'LOCATION'          => $req->input('up_location'),
+                'ORGANIZER'         => $req->input('up_penyelenggara'),
+                'CONTACT_CUSTOMER'  => $req->input('up_contact'),
+                'DESKRIPSI_EVENT'   => $req->input('up_desc_event'),
+                'TEMA'              => $req->input('up_tema') != null ? (implode(';', $req->input('up_tema'))) : null,
+                'JAM_PELATIHAN'     => $req->input('up_jp') != null ? (implode(';', $req->input('up_jp'))) : null,
+            ];
+
+            if (!empty($req->input('up_link_zoom'))) {
+                $event['LINK_ZOOM'] = $req->input('up_link_zoom');
+            }
+            if (!empty($req->input('up_kuota_peserta'))) {
+                $event['KUOTA_PESERTA'] = $req->input('up_kuota_peserta');
+            }
+
+            DB::beginTransaction();
+
+            DB::table('activity')->WHERE(['ID_ACTIVITY' => $req->input('up_id_activity')])->update($activity);
+            DB::table('event')->updateOrInsert(
+                ['ID_ACTIVITY' => $req->input('up_id_activity')],
+                $event
+            );
+
+            DB::commit();
+
+            return redirect('webinar-admin')->with(['succ_msg' => 'Berhasil Memperbarui Webinar/Pelatihan', 'location' => 'webinar-admin']);
+        } catch (Exception $e) {
+            DB::rollBack();
+            return redirect('webinar-admin')->with(['err_msg' => 'Gagal Memperbarui Webinar/Pelatihan' + $e, 'location' => 'webinar-admin']);
         }
-
-        if ($req->hasFile('up_sertif_image')) {
-            $activity['SERTIF_IMAGE'] = FileUpload::S3($req->file('up_sertif_image'), 'SERTIF_IMAGE', 'Template-Certifiace-' . strtotime(now()));
-        }
-
-        if ($req->hasFile('up_sertif_image_belakang')) {
-            $activity['SERTIF_IMAGE_BELAKANG'] = FileUpload::S3($req->file('up_sertif_image_belakang'), 'SERTIF_IMAGE', 'Template-Certifiace-' . strtotime(now()));
-        }
-
-        $event = [
-            'CATEGORY_EVENT'    => $req->input('up_category'),
-            'LOCATION'          => $req->input('up_location'),
-            'ORGANIZER'         => $req->input('up_penyelenggara'),
-            'CONTACT_CUSTOMER'  => $req->input('up_contact'),
-            'DESKRIPSI_EVENT'   => $req->input('up_desc_event'),
-            'TEMA'              => $req->input('up_tema') != null ? (implode(';', $req->input('up_tema'))) : null,
-            'JAM_PELATIHAN'     => $req->input('up_jp') != null ? (implode(';', $req->input('up_jp'))) : null,
-        ];
-
-        if (!empty($req->input('up_link_zoom'))) {
-            $event['LINK_ZOOM'] = $req->input('up_link_zoom');
-        }
-        if (!empty($req->input('up_kuota_peserta'))) {
-            $event['KUOTA_PESERTA'] = $req->input('up_kuota_peserta');
-        }
-
-        DB::table('activity')->WHERE(['ID_ACTIVITY' => $req->input('up_id_activity')])->update($activity);
-        DB::table('event')->WHERE(['ID_ACTIVITY' => $req->input('up_id_activity')])->update($event);
-
-        return redirect('webinar-admin')->with(['succ_msg' => 'Berhasil Memperbarui Webinar/Pelatihan', 'location' => 'webinar-admin']);
     }
 
     public function delete(Request $req)
