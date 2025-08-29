@@ -194,13 +194,13 @@
                             required>
                     </div>
                     <div class="form-group mb-3">
-                        <label for="kuota_peserta" >Kuota Peserta <span class="text-danger"></span></label>
+                        <label for="kuota_peserta" >Kuota Peserta</label>
                         <input placeholder="Kosongi apabila tidak ada batasan" id="kuota_peserta" type="number" name="kuota_peserta"
                             class="form-control">
                     </div>
                     <div class="form-group mb-3">
                         <label for="location" >Lokasi <span class="text-danger">*</span></label>
-                        <input placeholder="Location" type="text" id="location" name="location" class="form-control">
+                        <input placeholder="Location" type="text" id="location" name="location" class="form-control" required>
                     </div>
                     <div class="form-group mb-3">
                         <label for="link_zoom" >Link Zoom </label>
@@ -334,13 +334,13 @@
                             class="form-control" required>
                     </div>
                     <div class="form-group mb-3">
-                        <label>Kuota Peserta <span class="text-danger">*</span></label>
+                        <label>Kuota Peserta</label>
                         <input placeholder="Kosongi Apabila Tidak ada batasan peserta" type="number"
                             name="up_kuota_peserta" class="form-control">
                     </div>
                     <div class="form-group mb-3">
                         <label>Lokasi <span class="text-danger">*</span></label>
-                        <input placeholder="Location" type="text" name="up_location" class="form-control">
+                        <input placeholder="Location" type="text" name="up_location" class="form-control" required>
                     </div>
                     <div class="form-group mb-3">
                         <label>Link Zoom </label>
@@ -416,53 +416,21 @@
     $('#dtTable').DataTable();
 
     $(document).ready(function() {
-        var $editor = $('#desc_event');
-        $editor.summernote({
-            height: 200,
-            callbacks: {
-                onImageUpload: function(files) {
-                    $summernote.summernote('insertNode', imgNode);
-                }
-            },
-            toolbar: [
-                ['style', ['bold', 'italic', 'underline']],
-                ['fontsize', ['fontsize']],
-                ['color', ['color']],
-                ['height', ['height']],
-                ['operation', ['undo', 'redo']],
-                ['para', ['paragraph']],
-                ['object', ['link']]
-            ]
-        });
+        function initSummernote(selector) {
+            $(selector).summernote({
+                height: 200,
+                toolbar: [
+                    ['style', ['bold', 'italic', 'underline']],
+                    ['fontsize', ['fontsize']],
+                    ['color', ['color']],
+                    ['para', ['paragraph']],
+                    ['insert', ['link']]
+                ]
+            });
+        }
 
-        $('#insert-btn').click(() => {
-            $editor.summernote('insertParagraph');
-        });
-
-        $('#bold-btn').click(() => {
-            $editor.summernote('bold');
-        });
-    });
-
-    $(document).ready(function() {
-        var $editor = $('#up_desc_event');
-        $editor.summernote({
-            height: 200,
-            callbacks: {
-                onImageUpload: function(files) {
-                    $summernote.summernote('insertNode', imgNode);
-                }
-            },
-            toolbar: [
-                ['style', ['bold', 'italic', 'underline']],
-                ['fontsize', ['fontsize']],
-                ['color', ['color']],
-                ['height', ['height']],
-                ['operation', ['undo', 'redo']],
-                ['para', ['paragraph']],
-                ['object', ['link']]
-            ]
-        });
+        initSummernote('#desc_event');
+        initSummernote('#up_desc_event');
 
         $('#insert-btn').click(() => {
             $editor.summernote('insertParagraph');
