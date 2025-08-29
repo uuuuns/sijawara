@@ -40,7 +40,7 @@ class GuestController extends Controller
 		$data['checkout'] = $checkoutModel->get_all_order($data_user);
 		$eventModel = new Event();
 		$data['event'] = $eventModel->get_home_event();
-		// dd($data);
+		
 		return
 			view('template.header', $data) .
 			view('template_guest.home', $data) .
@@ -56,7 +56,7 @@ class GuestController extends Controller
 	}
 
 	public function notfound(){
-		$data['title'] = '404';
+		$data['title'] = 'Halaman Tidak Ditemukan - SIJAWARA+';
 
 		return
 			view('template.header', $data) .

@@ -13,7 +13,7 @@ class KategoriUkmController extends Controller
         $kategori = new KategoriUkm();
         $data['title'] = "Kategori UKM";
         $data['kategori'] = $kategori->get_all_data();
-        // dd($data['usaha']);
+        
         return
             view('template.header', $data) .
             view('template_admin/master_data/ukm/kategori_ukm', $data) .
@@ -26,7 +26,7 @@ class KategoriUkmController extends Controller
         $data = [
             'NAMA_KATEGORI_UKM'  => strip_tags($req->input('add_nama_kategori_ukm'))
         ];
-        // dd($data);
+        
         $kategori->insertKU($data);
         return redirect('ukm/kategori_ukm')->with(['succ_msg' => 'Successfully Add Kategori UKM']);
     }
@@ -37,7 +37,7 @@ class KategoriUkmController extends Controller
             'ID' => $req->input('id'),
             'NAMA_KATEGORI_UKM'  => strip_tags($req->input('nama_kategori_ukm'))
         ];
-        // dd($data);
+        
         $kategori->updateKU($data, $data['ID']);
         return redirect('ukm/kategori_ukm')->with(['succ_msg' => 'Successfully edit Kategori UKM']);
     }
@@ -45,7 +45,7 @@ class KategoriUkmController extends Controller
     public function delete(Request $req){
         $kategori = new KategoriUkm();
         $data = $req->input('id');
-        // dd($data);
+        
         $kategori->deleteKU($data);
         return redirect('ukm/kategori_ukm')->with(['succ_msg' => 'Successfully delete Kategori UKM']);
     }

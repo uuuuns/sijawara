@@ -10,7 +10,7 @@ class AspirasiController extends Controller
 {
     public function index()
     {
-        $data['title'] = 'Aspirasi';
+        $data['title'] = 'Aspirasi - SIJAWARA+';
         $data['aspirasi'] = DB::select('
             SELECT
                 a.*,

@@ -11,7 +11,7 @@ class InstructorController extends Controller
 {
     public function index()
     {
-        $data['title'] = "Instruktur";
+        $data['title'] = "Instruktur - SIJAWARA+";
 
         $data["instructor"] = DB::select("
         SELECT 

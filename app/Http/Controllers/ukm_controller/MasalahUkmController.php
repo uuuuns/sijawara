@@ -8,12 +8,11 @@ use Illuminate\Http\Request;
 
 class MasalahUkmController extends Controller
 {
-    //
     public function index(){
         $masalah = new MasalahUkm();
         $data['title'] = "Fasilitas Kegiatan";
         $data['masalah'] = $masalah->get_all_data();
-        // dd($data['usaha']);
+        
         return
             view('template.header', $data) .
             view('template_admin/master_data/ukm/masalah_ukm', $data) .
@@ -26,7 +25,7 @@ class MasalahUkmController extends Controller
         $data = [
             'NAMA_MASALAH_UKM'  => strip_tags($req->input('add_nama_masalah_ukm'))
         ];
-        // dd($data);
+        
         $masalah->insertMU($data);
         return redirect('ukm/masalah_ukm')->with(['succ_msg' => 'Successfully Add Masalah Ukm']);
     }
@@ -37,7 +36,7 @@ class MasalahUkmController extends Controller
             'ID' => $req->input('id'),
             'NAMA_MASALAH_UKM'  => strip_tags($req->input('nama_masalah_ukm'))
         ];
-        // dd($data);
+
         $masalah->updateMU($data, $data['ID']);
         return redirect('ukm/masalah_ukm')->with(['succ_msg' => 'Successfully edit Masalah Ukm']);
     }
@@ -45,7 +44,7 @@ class MasalahUkmController extends Controller
     public function delete(Request $req){
         $masalah = new MasalahUkm();
         $data = $req->input('id');
-        // dd($data);
+        
         $masalah->deleteMU($data);
         return redirect('ukm/masalah_ukm')->with(['succ_msg' => 'Successfully delete Masalah Ukm']);
     }

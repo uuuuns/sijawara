@@ -45,6 +45,14 @@
                                         </a>
                                         <ul class="nav nav-list collapse" id="submenu">
                                             <li class="nav-item w-100">
+                                                <a href="{{ url('kdmp-admin') }}" class="nav-link d-flex align-middle px-4 py-3 rounded-0">
+                                                    <span class="ms-3 ps-3 fs-6 align-self-center ">KDMP</span>
+                                                </a>
+                                            </li>
+                                            <li class="w-100">
+                                                <hr class="my-0 border border-1 mx-3">
+                                            </li>
+                                            <li class="nav-item w-100">
                                                 <a href="{{ url('kursus-admin') }}" class="nav-link d-flex align-middle px-4 py-3 rounded-0">
                                                     <span class="ms-3 ps-3 fs-6 align-self-center ">Kursus</span>
                                                 </a>

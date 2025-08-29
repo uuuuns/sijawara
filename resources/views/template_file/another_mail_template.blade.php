@@ -352,7 +352,7 @@
                                                         </table>
                                                     </td>
                                                 </tr>
-                                            </tbody>
+                                            </tbody>    
                                         </table>
                                     <?php } ?>
                                     <p>Jika anda tidak meminta email ini tolong abaikan.

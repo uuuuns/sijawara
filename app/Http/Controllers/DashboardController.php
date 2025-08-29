@@ -11,7 +11,7 @@ class DashboardController extends Controller
 {
     public function admin_index()
     {
-        $data['title'] = 'Dashboard';
+        $data['title'] = 'Dashboard - SIJAWARA+';
         if (session('user')[0]->get('ID_ROLE') == 1 || session('user')[0]->get('ID_ROLE') == 4){
             $data['total_revenue'] = DB::select("
                 SELECT
@@ -112,7 +112,7 @@ class DashboardController extends Controller
         ]);
     }
     public function statistik_index() {
-        $data['title'] = 'Statistik';
+        $data['title'] = 'Statistik - SIJAWARA+';
 
             $data['total_user'] = DB::select("
                 SELECT
@@ -261,7 +261,7 @@ class DashboardController extends Controller
     }
     
     public function statistik_kategori_index() {
-        $data['title'] = 'Statistik Per Kategori';
+        $data['title'] = 'Statistik Per Kategori - SIJAWARA+';
     
         $dataKursus = DB::select("
             SELECT

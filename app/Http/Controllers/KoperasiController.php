@@ -14,10 +14,9 @@ use App\Http\Controllers\Controller;
 
 class KoperasiController extends Controller
 {
-    // Bentuk Controller
     public function index_bentuk()
     {
-        $data['title'] = "Bentuk Koperasi";
+        $data['title'] = "Bentuk Koperasi - SIJAWARA+";
 
         $data["bentuk_koperasi"] = DB::select("
             SELECT
@@ -26,7 +25,7 @@ class KoperasiController extends Controller
                 md_bentuk_koperasi bk
         ");   
         $data['admin'] = true;
-        // Kirim data ke view
+
         return
             view('template.header', $data) .
             view('template_admin/master_data/bentuk_koperasi', $data) .
@@ -61,7 +60,7 @@ class KoperasiController extends Controller
     
     public function index_jenis()
     {
-        $data['title'] = "Jenis Koperasi";
+        $data['title'] = "Jenis Koperasi - SIJAWARA+";
 
         $data["jenis_koperasi"] = DB::select("
             SELECT
@@ -70,7 +69,7 @@ class KoperasiController extends Controller
                 md_jenis_koperasi jk
         ");   
         $data['admin'] = true;
-        // Kirim data ke view
+
         return
             view('template.header', $data) .
             view('template_admin/master_data/jenis_koperasi', $data) .
@@ -105,7 +104,7 @@ class KoperasiController extends Controller
 
     public function index_kelompok()
     {
-        $data['title'] = "Kelompok Koperasi";
+        $data['title'] = "Kelompok Koperasi - SIJAWARA+";
 
         $data["kelompok_koperasi"] = DB::select("
             SELECT
@@ -149,7 +148,7 @@ class KoperasiController extends Controller
 
     public function index_masalah()
     {
-        $data['title'] = "Masalah Koperasi";
+        $data['title'] = "Masalah Koperasi - SIJAWARA+";
 
         $data["masalah_koperasi"] = DB::select("
             SELECT
@@ -193,7 +192,7 @@ class KoperasiController extends Controller
 
     public function index_sektor()
     {
-        $data['title'] = "Sektor Usaha";
+        $data['title'] = "Sektor Usaha - SIJAWARA+";
 
         $data["sektor_usaha"] = DB::select("
             SELECT
@@ -202,7 +201,7 @@ class KoperasiController extends Controller
                 md_sektor_usaha su
         ");   
         $data['admin'] = true;
-        // Kirim data ke view
+        
         return
             view('template.header', $data) .
             view('template_admin/master_data/sektor_usaha', $data) .

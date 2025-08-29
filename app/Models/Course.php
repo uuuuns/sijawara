@@ -109,6 +109,7 @@ class Course extends Model
             return $data;
         }
     }
+
     public function get_course($id_activity)
     {
         if (!empty(session('user'))) {
@@ -220,7 +221,125 @@ class Course extends Model
                 course.ID_ACTIVITY = "' . $id_activity . '"
                 AND activity.TYPE_ACTIVITY = 1;
             ');
+            
+            $sql->DATA_CHECKING = 0;
+            $sql->REQ = 0;
+        }
+        return $sql;
+    }
 
+    public function get_kdmp($id_activity)
+    {
+        if (!empty(session('user'))) {
+            $sql = DB::selectOne('
+            SELECT 
+                activity.*,
+                course.ID_COURSE,
+                course.REQUIREMENT,
+                (
+                    SELECT 
+                        a.TITLE_ACTIVITY
+                    FROM
+                        course c
+                    LEFT JOIN activity a ON
+                        c.ID_ACTIVITY = a.ID_ACTIVITY
+                    WHERE
+                        c.ID_ACTIVITY = course.REQUIREMENT
+                ) AS REQ_NAME,
+                (
+                    SELECT
+                        count(a.TITLE_ACTIVITY)
+                    FROM
+                        `order` o
+                    LEFT JOIN activity a ON
+                        a.ID_ACTIVITY = o.ID_PRODUCT
+                    WHERE
+                        o.ID_USER = "' . session('user')[0]['ID_USER'] . '"
+                    AND
+                        o.ID_PRODUCT = course.REQUIREMENT
+                    AND
+                        o.COURSE_COMPLETED = 1
+                ) AS REQ,
+                course.DESKRIPSI_COURSE,
+                course.BENEFIT,
+                course.KUOTA_PESERTA,
+                (
+                    SELECT 
+                        COUNT(o.ID_USER)
+                    FROM
+                        `order` o
+                    WHERE 
+                        o.ID_PRODUCT = "' . $id_activity . '"
+                ) AS CURRENT_PARTISIPAN,
+                user.NAME,
+                user.FOTO_PROFILE,
+                kategori.KATEGORI,
+                (
+                    SELECT COUNT(p.ID_PAY)
+                    FROM payment p
+                    LEFT JOIN `order` o ON o.ID_PAY = p.ID_PAY
+                    WHERE 
+                    o.ID_USER = "' . session()->get('ID_USER') . '"
+                    AND 
+                    o.ID_PRODUCT = `activity`.ID_ACTIVITY
+                    AND 
+                    p.DATE_PAY IS NOT NULL 
+                ) as DATA_CHECKING
+            FROM 
+                activity
+            LEFT JOIN 
+                course ON course.ID_ACTIVITY = activity.ID_ACTIVITY
+            LEFT JOIN 
+                kategori ON kategori.ID_KATEGORI = course.KATEGORI
+            LEFT JOIN 
+                user ON user.ID_USER = activity.ID_USER
+            WHERE 
+                course.ID_ACTIVITY = "' . $id_activity . '"
+                AND activity.TYPE_ACTIVITY = 3;
+            ');
+        } else {
+            $sql = DB::selectOne('
+            SELECT 
+                activity.*,
+                course.ID_COURSE,
+                course.REQUIREMENT,
+                (
+                    SELECT 
+                        a.TITLE_ACTIVITY
+                    FROM
+                        course c
+                    LEFT JOIN activity a ON
+                        c.ID_ACTIVITY = a.ID_ACTIVITY
+                    WHERE
+                        c.ID_ACTIVITY = course.REQUIREMENT
+                ) AS REQ_NAME,
+                course.DESKRIPSI_COURSE,
+                course.BENEFIT,
+                course.KUOTA_PESERTA,
+                (
+                    SELECT 
+                        COUNT(o.ID_USER)
+                    FROM
+                        `order` o
+                    WHERE 
+                        o.ID_PRODUCT = "' . $id_activity . '"
+                ) AS CURRENT_PARTISIPAN,
+                user.NAME,
+                user.FOTO_PROFILE,
+                kategori.KATEGORI
+            FROM 
+                activity
+            LEFT JOIN 
+                course ON course.ID_ACTIVITY = activity.ID_ACTIVITY
+            LEFT JOIN 
+                kategori ON kategori.ID_KATEGORI = course.KATEGORI
+            LEFT JOIN 
+                user ON user.ID_USER = activity.ID_USER
+            WHERE 
+                course.ID_ACTIVITY = "' . $id_activity . '"
+                AND activity.TYPE_ACTIVITY = 3;
+            ');
+            
             $sql->DATA_CHECKING = 0;
             $sql->REQ = 0;
         }
@@ -396,7 +515,7 @@ class Course extends Model
 				mapping_course
 			WHERE
 				ID_USER = '" . session('user')[0]->get('ID_USER') . "' 
-				AND 
+			AND 
 				ID_ACTIVITY = '" . $id_activity . "'
 		");
 

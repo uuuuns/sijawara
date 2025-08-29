@@ -33,6 +33,13 @@ Route::get('webinar/detail', 'guest_controller\EventGuest@detailEvent');
 Route::get('webinar/detail/{any}', 'guest_controller\EventGuest@detailEvent');
 //END EVENT GUEST
 
+//KDMP GUEST`
+Route::get('kdmp', 'guest_controller\KdmpGuest@index');
+Route::get('kdmp/search', 'guest_controller\KdmpGuest@SearchCourse');
+Route::get('kdmp/info/{any}', 'guest_controller\KdmpGuest@infoCourse');
+
+//END KDMP GUEST
+
 Route::get('masuk', 'AuthController@login');
 Route::post('masuk/authentication', 'AuthController@login_authentication');
 
@@ -223,6 +230,14 @@ Route::middleware(['usersession:2'])->group(function () {
 
 // 3 USER
 Route::middleware(['usersession:4,3,2,1'])->group(function () {
+    //KDMP
+    Route::get('kdmp/detail/{any}', 'guest_controller\KdmpGuest@detailCourse');
+    Route::post('kdmp/item/mapping', 'guest_controller\KdmpGuest@getMappingCourse');
+    Route::post('kdmp/item', 'guest_controller\KdmpGuest@getDetailItemCourse');
+    Route::post('kdmp/quiz/evaluation', 'guest_controller\KdmpGuest@QuizEvaluation');
+    Route::post('kdmp/add', 'guest_controller\KdmpGuest@add_event');
+    Route::post('kdmp/detail/addkomen', 'SocialController@addkomen');
+
     //COURSE
     Route::get('kursus/detail/{any}', 'guest_controller\CourseGuest@detailCourse');
     Route::post('kursus/item/mapping', 'guest_controller\CourseGuest@getMappingCourse');
@@ -274,14 +289,12 @@ Route::middleware(['usersession:4,3,2,1'])->group(function () {
 Route::middleware(['usersession:4,1,2'])->group(function () {
     Route::get('dashboard', 'DashboardController@admin_index');
 
+    // kursus
     Route::get('kursus-admin', 'CourseController@index');
     Route::get('kursus-admin/add', 'CourseController@add_course');
     Route::get('kursus-admin/add_materi/{id}', 'CourseController@add_materi');
     Route::get('kursus-admin/add_quiz/{id}/{no_quiz}', 'CourseController@add_quiz')->name('add_quiz');
     Route::get('kursus-admin/add_question/{id}/{index}', 'CourseController@add_question')->name('add_question');
-    // Route::get('courses/delete_materi/{id}', 'CourseController@delete_materi');
-    // Route::get('courses/delete_quiz/{id}', 'CourseController@delete_quiz');
-    // Route::get('courses/delete_question/{id}', 'CourseController@delete_question');
     Route::post('kursus-admin/edit', 'CourseController@update_course'); // open page update
     Route::get('kursus-admin/get/{id}', 'CourseController@deskripsi_get'); // get desc
     Route::get('kursus-admin/get_course_item/{id}', 'CourseController@get_course_item'); // get materi / quiz
@@ -292,7 +305,6 @@ Route::middleware(['usersession:4,1,2'])->group(function () {
     Route::post('kursus-admin/delete', 'CourseController@delete'); // delete kursus
 
     Route::get('kursus-admin/lihat_peserta', 'CourseController@index_lihat_peserta');
-
     Route::get('kursus-admin/laporan_course', 'CourseController@laporan_course');
 
     Route::get('kursus-admin/invite', 'CourseController@invite');
@@ -300,6 +312,30 @@ Route::middleware(['usersession:4,1,2'])->group(function () {
     Route::post('kursus-admin/invite_batch', 'CourseController@invite_batch');
     Route::post('kursus-admin/batalkan_undangan', 'CourseController@batalkan_undangan');
 
+    // kdmp
+    Route::get('kdmp-admin', 'KdmpController@index');
+    Route::get('kdmp-admin/add', 'KdmpController@add_course');
+    Route::get('kdmp-admin/add_materi/{id}', 'KdmpController@add_materi');
+    Route::get('kdmp-admin/add_quiz/{id}/{no_quiz}', 'KdmpController@add_quiz')->name('add_quiz');
+    Route::get('kdmp-admin/add_question/{id}/{index}', 'KdmpController@add_question')->name('add_question');
+    Route::post('kdmp-admin/edit', 'KdmpController@update_course'); // open page update
+    Route::get('kdmp-admin/get/{id}', 'KdmpController@deskripsi_get'); // get desc
+    Route::get('kdmp-admin/get_course_item/{id}', 'KdmpController@get_course_item'); // get materi / quiz
+    Route::post('kdmp-admin/get_quiz', 'KdmpController@send_question'); //send to another page
+
+    Route::post('kdmp-admin/store', 'KdmpController@store'); // store kursus
+    Route::post('kdmp-admin/update', 'KdmpController@update'); // update kursus
+    Route::post('kdmp-admin/delete', 'KdmpController@delete'); // delete kursus
+
+    Route::get('kdmp-admin/lihat_peserta', 'KdmpController@index_lihat_peserta');
+    Route::get('kdmp-admin/laporan_course', 'KdmpController@laporan_course');
+
+    Route::get('kdmp-admin/invite', 'KdmpController@invite');
+    Route::post('kdmp-admin/invite_individu', 'KdmpController@invite_individu');
+    Route::post('kdmp-admin/invite_batch', 'KdmpController@invite_batch');
+    Route::post('kdmp-admin/batalkan_undangan', 'KdmpController@batalkan_undangan');
+
+    // webinar
     Route::get('webinar-admin', 'EventController@index');
     Route::get('webinar-admin/get/{id}', 'EventController@deskripsi_get');
     Route::post('webinar-admin/add', 'EventController@store');

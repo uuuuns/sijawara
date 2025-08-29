@@ -26,7 +26,6 @@ class MasalahUkm extends Model
     }
     public function insertMU($data)
     {
-        // dd($data);
         $sql = DB::insert(
             "
             INSERT INTO  md_masalah_ukm

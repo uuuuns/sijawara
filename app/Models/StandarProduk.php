@@ -26,7 +26,6 @@ class StandarProduk extends Model
     }
     public function insertSP($data)
     {
-        // dd($data);
         $sql = DB::insert(
             "
             INSERT INTO  md_standar_produk

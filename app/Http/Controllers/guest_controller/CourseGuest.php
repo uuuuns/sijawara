@@ -35,7 +35,7 @@ class CourseGuest extends Controller
 
 	public function index()
 	{
-		$data['title'] = 'Course';
+		$data['title'] = 'Course - SIJAWARA+';
 		$data['kategori'] = $this->categoryModel->get_all_category();
 		$data_user = (session('user') == null) ? null : Session::get('user')[0]->get('ID_USER');
 		$data['checkout'] = $this->checkoutModel->get_all_order($data_user);

@@ -26,7 +26,6 @@ class WilayahPemasaran extends Model
     }
     public function insertWP($data)
     {
-        // dd($data);
         $sql = DB::insert(
             "
             INSERT INTO  md_wilayah_pemasaran

@@ -92,7 +92,7 @@
                             <th style="width: 500px;">Nama Peserta</th>
                             <th>Email</th>
                             <th>Lokasi</th>
-                            <th>Progress</th>
+                            <th>Progress (%)</th>
                             <th>Nilai</th>
                             <th>Tanggal Selesai</th>
                         </tr>
@@ -107,7 +107,7 @@
                                 <td><?= $item->NAME ?></td>
                                 <td><?= $item->EMAIL?></td>
                                 <td><?= $item->ALAMAT?></td>
-                                <td><?= $item->PROGRESS?></td>
+                                <td><?= $item->PROGRESS?> %</td>
                                 <td><?= $item->NILAI?></td>
                                 <td><?= empty($item->DATE_COMPLETED) ? "Belum Selesai" : $item->DATE_COMPLETED?></td>
                             </tr>

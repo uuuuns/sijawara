@@ -26,7 +26,6 @@ class KategoriUkm extends Model
     }
     public function insertKU($data)
     {
-        // dd($data);
         $sql = DB::insert(
             "
             INSERT INTO  md_kategori_ukm

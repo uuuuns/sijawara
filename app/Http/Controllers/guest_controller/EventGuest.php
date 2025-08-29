@@ -31,7 +31,7 @@ class EventGuest extends Controller
 
 	public function index()
 	{
-		$data['title'] = 'Event';
+		$data['title'] = 'Event - SIJAWARA+';
 		$data_user =  (session('user') == null) ? null : Session::get('user')[0]->get('ID_USER');
 		$data['checkout'] = $this->checkoutModel->get_all_order($data_user);
 		

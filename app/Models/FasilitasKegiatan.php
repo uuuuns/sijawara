@@ -26,7 +26,6 @@ class FasilitasKegiatan extends Model
     }
     public function insertFK($data)
     {
-        // dd($data);
         $sql = DB::insert(
             "
             INSERT INTO  md_fasilitas_kegiatan
