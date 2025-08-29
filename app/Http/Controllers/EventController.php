@@ -15,7 +15,7 @@ class EventController extends Controller
 {
     public function index()
     {
-        $data['title'] = "Webinar & Pelatihan";
+        $data['title'] = "Webinar & Pelatihan - SIJAWARA+";
         $role = session('user')[0]['ID_ROLE'];
         if ($role == 1 || $role == 4) {
             $data['event'] = DB::select("
@@ -108,7 +108,7 @@ class EventController extends Controller
     }
 
     public function index_lihat_peserta(Request $req) {
-        $data['title'] = "Peserta Event";
+        $data['title'] = "Peserta Event - SIJAWARA+";
 
         $data['list_peserta'] = DB::select("
             SELECT

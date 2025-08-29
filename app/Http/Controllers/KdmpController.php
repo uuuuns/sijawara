@@ -1,0 +1,1124 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Controllers\Controller;
+use App\Models\Laporan;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
+use App\Models\FileUpload;
+use Illuminate\Validation\ValidationException;
+use App\Mail\MailSender;
+use Illuminate\Support\Facades\Mail;
+
+class KdmpController extends Controller
+{
+    private $id_detailCourse = 0;
+    public function __construct()
+    {
+        $smtpConfig = [
+            'transport' => env('MAIL_MAILER'),
+            'host' => env('MAIL_HOST'),
+            'port' => env('MAIL_PORT'),
+            'from' => ['address' => 'sijawara.uptkukm@gmail.com', 'name' => 'SIJAWARA+'],
+            'encryption' => env('MAIL_ENCRYPTION'),
+            'username' => env('MAIL_USERNAME'),
+            'password' => env('MAIL_PASSWORD'),
+        ];
+        config(['mail.mailers.smtp' => $smtpConfig]);
+    }
+    
+    public function index()
+    {
+        $data['title'] = "Kursus KDMP - SIJAWARA+";
+
+        if (session('user')[0]->get('ID_ROLE') == 1 || session('user')[0]->get('ID_ROLE') == 4) {
+            $data["activity"] = DB::select("
+            SELECT
+                c.*,
+                (
+                    SELECT
+                        count(*)
+                    FROM 
+                        `order` o
+                    WHERE
+                        ID_PRODUCT = c.ID_ACTIVITY
+                ) AS CHECK_PARTICIPANT
+            FROM
+                activity c
+            LEFT JOIN activity a ON
+                a.ID_ACTIVITY = c.ID_ACTIVITY
+            WHERE
+                a.TYPE_ACTIVITY = 3
+            ");
+        } else {
+            $data['course'] = DB::select("
+                SELECT
+                    c.*
+                FROM    
+                    course c
+                LEFT JOIN activity a ON
+                    a.ID_ACTIVITY = c.ID_ACTIVITY
+                WHERE
+                    a.ID_USER = '" . session('user')[0]->get('ID_USER') . "'
+                    AND a.TYPE_ACTIVITY = 3
+            ");
+
+            $data["activity"] = DB::select("
+            SELECT
+                c.*,
+                (
+                    SELECT
+                        count(*)
+                    FROM 
+                        `order` o
+                    WHERE
+                        ID_PRODUCT = c.ID_ACTIVITY
+                ) AS CHECK_PARTICIPANT
+            FROM
+                activity c
+            WHERE
+                c.ID_USER = '" . session('user')[0]->get('ID_USER') . "'
+            ");
+        }
+
+        $data["kategori"] = DB::select("
+            SELECT
+                k.*
+            FROM
+                kategori k
+        ");
+
+        $data['admin'] = true;
+
+        return
+            view('template.header', $data) .
+            view('template_admin/kdmp/course', $data) .
+            view('template.footer', $data);
+    }
+
+    public function add_course()
+    {
+        $data['title'] = "Kursus KDMP Baru - SIJAWARA+";
+
+        $data["kategori"] = DB::select("
+            SELECT
+                k.*
+            FROM
+                kategori k
+        ");
+
+        $data['requirement'] = DB::Select("
+            SELECT
+                a.ID_ACTIVITY,
+                a.TITLE_ACTIVITY
+            FROM
+                activity a
+            WHERE
+                a.TYPE_ACTIVITY = 3
+        ");
+
+        return
+            view('template.header', $data) .
+            view('template_admin/kdmp/add_course', $data) .
+            view('template.footer', $data);
+    }
+
+    public function store(Request $req)
+    {
+        try {
+            $activity = [
+                'ID_ACTIVITY'           => $this->GenerateUniqID('ACT', $req->input('title_activity')),
+                'TITLE_ACTIVITY'        => $req->input('title_activity'),
+                'ID_USER'               => session('user')[0]['ID_USER'],
+                'IMAGE_ACTIVITY'        => FileUpload::S3($req->file('image_activity'), 'IMAGE_ACTIVITY', 'Image-Activity-' . strtotime(now())),
+                'TYPE_ACTIVITY'         => 3,
+                'SERTIF_CODE'           => $req->input('certif_code'),
+                'DATE_START'            => $req->input('date_start'),
+                'DATE_END'              => $req->input('date_end'),
+                'IS_PUBLIC'             => $req->input('is_public'),
+                'NAMA_INSTRUKTUR'       => $req->input('instruktur_name'),
+                'LOG_TIME'              => date('Y-m-d H:i:s'),
+                'SERTIF_IMAGE'          => $req->hasFile('sertif_image') ? FileUpload::S3($req->file('sertif_image'), 'SERTIF_IMAGE', 'Template-Certifiace-' . strtotime(now())) : null
+            ];
+            
+            if ($req->input('status') == 'on') {
+                $activity['STATUS'] = 1;
+            } else {
+                $activity['STATUS'] = 0;
+            }
+    
+            $course = [
+                'ID_COURSE'             => $this->GenerateUniqID('ACT', $req->input('announcement')),
+                'ID_ACTIVITY'           => $activity['ID_ACTIVITY'],
+                'DESKRIPSI_COURSE'      => $req->input('desc_course'),
+                'BENEFIT'               => $req->input('benefit'),
+                'KATEGORI'              => $req->input('category')
+            ];
+    
+            if (!empty($req->input('kuota_peserta')) || $req->input('kuota_peserta') != 0) {
+                $course['KUOTA_PESERTA'] = $req->input('kuota_peserta');
+            }
+    
+            if ($req->input('req')) {
+                $course['REQUIREMENT']  = $req->input('req');
+            }
+            DB::beginTransaction();
+    
+            DB::table('activity')->insert($activity);
+            DB::table('course')->insert($course);
+    
+            $data['ID_COURSE'] = $course['ID_COURSE'];
+            $this->item_materi($data, $req);
+            DB::commit();
+            return redirect('kursus-admin')->with(['succ_msg' => 'Berhasil Menambahkan Kursus', 'location' => 'kursus-admin']);
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            
+            return response()->json([
+                'status' => 'failure',
+                'errors' => $e
+            ], 422);
+        }
+    }
+
+    public function deskripsi_get($id)
+    {
+        $desc = DB::selectOne("
+            SELECT
+                c.DESKRIPSI_COURSE ,
+                c.BENEFIT
+            FROM
+                activity a
+            LEFT JOIN course c ON
+                c.ID_ACTIVITY = a.ID_ACTIVITY
+            WHERE
+                a.ID_ACTIVITY = '$id'
+        ");
+
+        return response([
+            'status_code'       => 200,
+            'status_message'    => 'Data diterima',
+            $desc
+        ], 200);
+    }
+
+    public function add_materi($i)
+    {
+        $id_detailCourse = $i + 1;
+        $data['no'] = $id_detailCourse;
+
+        return
+            view('template_admin.kdmp.item_materi', $data);
+    }
+
+    public function add_quiz($j, $id_quiz)
+    {
+        $id_detailCourse = $j + 1;
+        $data['no'] = $id_detailCourse;
+        $data['id_quiz'] = $id_quiz;
+
+        return
+            view('template_admin.kdmp.item_quiz', $data);
+    }
+
+    public function add_question($id, $index)
+    {
+        $id_detailQuiz_Question = $id;
+        $data['no'] = $id_detailQuiz_Question;
+        $data['index'] = $index;
+
+        return
+            view('template_admin.kdmp.item_question', $data);
+    }
+
+    public function update_course(Request $req)
+    {
+        $data['title'] = "Edit Kursus KDMP - SIJAWARA+";
+
+        $data['kategori'] = DB::select("
+            SELECT
+                k.*
+            FROM
+                kategori k
+        ");
+
+        $data_course = DB::Select("
+            SELECT
+                a.ID_ACTIVITY ,
+                a.IMAGE_ACTIVITY ,
+                a.TITLE_ACTIVITY ,
+                a.PRICE_ACTIVITY ,
+                a.DATE_START ,
+                a.DATE_END ,
+                a.STATUS ,
+                a.IS_PUBLIC ,
+                a.SERTIF_IMAGE ,
+                a.NAMA_INSTRUKTUR ,
+                c.ID_COURSE ,
+                c.DESKRIPSI_COURSE ,
+                c.KUOTA_PESERTA ,
+                a.SERTIF_CODE ,
+                k.ID_KATEGORI 
+            FROM
+                activity a
+            LEFT JOIN course c ON
+                c.ID_ACTIVITY = a.ID_ACTIVITY
+            LEFT JOIN kategori k ON
+                k.ID_KATEGORI = c.KATEGORI
+            WHERE 
+                a.ID_ACTIVITY = '" . $req->input('id_activity') . "'
+        ")[0];
+
+        $data['requirement'] = DB::Select("
+            SELECT
+                a.ID_ACTIVITY,
+                a.TITLE_ACTIVITY
+            FROM
+                activity a
+            WHERE
+                a.TYPE_ACTIVITY = 3
+        ");
+
+        $data['items'] = DB::Selectone("
+            SELECT
+                COUNT(ic.ID_COURSE) AS tot_item,
+                max(ic.ID_ITEM) AS last_id
+            FROM
+                item_course ic
+            LEFT JOIN course c ON
+                c.ID_COURSE = ic.ID_COURSE
+            WHERE
+                c.ID_ACTIVITY = '" . $data_course->ID_ACTIVITY . "'
+        ");
+
+        $jsonData = json_encode($data_course);
+        $data['item'] = json_encode($data['items']->tot_item);
+
+        return
+            view('template.header', $data) .
+            view('template_admin/kdmp/update_course', compact('data', 'jsonData')) .
+            view('template.footer', $data);
+    }
+
+    public function get_course_item($id_course)
+    {
+        $data['data_materi'] = DB::select("
+            SELECT
+                *
+            FROM
+                item_course
+            WHERE
+                ID_COURSE = '" . $id_course . "'
+            ORDER BY
+                ORDER_LIST ASC
+        ");
+
+        $data['items'] = [];
+        $data['quiz'] = [];
+        $allView = "";
+
+        foreach ($data['data_materi'] as $key => $item_data) {
+            $data['no'] = $key + 1;
+            if ($item_data->TYPE == 1) {
+                $data['item'] = [
+                    'ID_ITEM'   => $item_data->ID_ITEM,
+                    'FILE'      => $item_data->FILE,
+                    'TITLE'     => $item_data->TITLE,
+                    'LINK_YT'   => $item_data->LINK_YT,
+                    'DESKRIPSI' => $item_data->DESKRIPSI,
+                    'ORDER_LIST' => $item_data->ORDER_LIST
+                ];
+                $allView .= view('template_admin.kdmp.update_materi', $data)->render();
+            } else {
+                $data['id_quiz'] = $item_data->ID_ITEM;
+                $dataquiz = DB::select("
+                    SELECT
+                        dq.*,
+                        ic.LIMIT_QUIZ,
+                        ic.MIN_NILAI,
+                        ic.MAX_ATTEMPT
+                    FROM
+                        detail_quiz dq
+                    LEFT JOIN item_course ic ON
+                        ic.ID_ITEM = dq.ID_QUIZ
+                    WHERE
+                        ID_QUIZ = '" . $item_data->ID_ITEM . "'
+                ");
+
+                $data['quiz'] = [];
+                $data['no_index'] = 0;
+                foreach ($dataquiz as $quiz) {
+                    list($quiz->PIL_A, $quiz->PIL_B, $quiz->PIL_C, $quiz->PIL_D) = explode(";", $quiz->PIL_JWB);
+                    $data['quiz'][$quiz->ID_QUIZ][] = [
+                        'ID_DETAIL'   => $quiz->ID_DETAIL,
+                        'ID_QUIZ'     => $quiz->ID_QUIZ,
+                        'ID_COURSE'   => $quiz->ID_COURSE,
+                        'SOAL'        => $quiz->SOAL,
+                        'PIL_A'       => $quiz->PIL_A,
+                        'PIL_B'       => $quiz->PIL_B,
+                        'PIL_C'       => $quiz->PIL_C,
+                        'PIL_D'       => $quiz->PIL_D,
+                        'KUNCI'       => $quiz->KUNCI,
+                        'LIMIT_QUIZ'  => $quiz->LIMIT_QUIZ,
+                        'MIN_NILAI'   => $quiz->MIN_NILAI,
+                        'MAX_ATTEMPT' => $quiz->MAX_ATTEMPT,
+                        'NO'          => $data['no_index']
+                    ];
+
+                    foreach ($data['quiz'][$quiz->ID_QUIZ] as $ID_ITEM) {
+                        $data['ID_ITEM'] = $ID_ITEM['ID_QUIZ'];
+                        $data['LIMIT_QUIZ'] = $quiz->LIMIT_QUIZ;
+                        $data['MIN_NILAI'] = $quiz->MIN_NILAI;
+                        $data['MAX_ATTEMPT'] = $quiz->MAX_ATTEMPT;
+                    }
+                    $data['no_index']++;
+                }
+                $allView .= view('template_admin.kdmp.update_quiz', $data)->render();
+            }
+        }
+        return $allView;
+    }
+
+    public function send_question(Request $request)
+    {
+        $quizData = $request->input('quizData');
+        $no_index = 1;
+        $no = $request->input('no');
+        $html = '';
+        foreach ($quizData as $question) {
+            $html .= view('template_admin.kdmp.update_question', ['item' => $question, 'no' => $no, 'index' => $no_index])->render();
+            $no_index++;
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Data received successfully!',
+            'html' => $html
+        ]);
+    }
+
+    public function update(Request $req)
+    {
+        try {
+            $activity = [
+                'TITLE_ACTIVITY'        => $req->input('title_activity'),
+                'ID_USER'               => session('user')[0]['ID_USER'],
+                'SERTIF_CODE'           => $req->input('certif_code'),
+                'DATE_START'            => $req->input('date_start'),
+                'DATE_END'              => $req->input('date_end'),
+                'IS_PUBLIC'             => $req->input('is_public'),
+                'NAMA_INSTRUKTUR'       => $req->input('instruktur_name'),
+                'LOG_TIME'              => date('Y-m-d H:i:s')
+            ];
+
+            if (!empty($req->file('image_activity'))) {
+                $activity['IMAGE_ACTIVITY'] = FileUpload::S3($req->file('image_activity'), 'IMAGE_ACTIVITY', 'Image-Activity-' . strtotime(now()));
+            }
+
+            if (!empty($req->file('sertif_image'))) {
+                $activity['SERTIF_IMAGE'] = FileUpload::S3($req->file('sertif_image'), 'SERTIF_IMAGE', 'Sertificate-Template-' . strtotime(now()));
+            }
+
+            if ($req->input('status') == 'on') {
+                $activity['STATUS'] = 1;
+            } else {
+                $activity['STATUS'] = 0;
+            }
+
+            $course = [
+                'ID_ACTIVITY'           => $req->input('ID_ACTIVITY'),
+                'DESKRIPSI_COURSE'      => $req->input('desc_course'),
+                'BENEFIT'               => $req->input('benefit'),
+                'KATEGORI'              => $req->input('category')
+            ];
+
+            if (!empty($req->input('kuota_peserta')) || $req->input('kuota_peserta') != 0) {
+                $course['KUOTA_PESERTA'] = $req->input('kuota_peserta');
+            }
+
+            if ($req->input('req')) {
+                $course['REQUIREMENT']  = $req->input('req');
+            }
+
+            DB::table('activity')->WHERE(['ID_ACTIVITY' => $req->input('ID_ACTIVITY')])->update($activity);
+            DB::table('course')->WHERE(['ID_ACTIVITY' => $req->input('ID_ACTIVITY')])->update($course);
+
+            DB::table('item_course')->WHERE(['ID_COURSE' => $req->input('ID_COURSE')])->delete();
+            DB::table('detail_quiz')->WHERE(['ID_COURSE' => $req->input('ID_COURSE')])->delete();
+
+            $data['ID_COURSE'] = $req->input('ID_COURSE');
+            $this->update_item_materi($data, $req);
+
+            return redirect('kursus-admin')->with(['succ_msg' => 'Berhasi Memperbarui Kursus', 'location' => 'courses']);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'status' => 'failure',
+                'errors' => $e->errors()
+            ], 422);
+        }
+    }
+
+    public function update_materi($req)
+    {
+        $id_item            = $req->input('ID_ITEM');
+        $orderList          = $req->input('order_list');
+        $categoryList       = $req->input('type');
+        $materiTitleList    = $req->input('materi_title');
+        $descMateriList     = $req->input('desc_materi');
+        $linkYT             = $req->input('materi_link');
+
+        if (!empty($req->file('materi_file'))) {
+            $file           = $req->file('materi_file');
+        }
+
+        if (!empty($orderList)) {
+            for ($i = 0; $i < count($orderList); $i++) {
+                if ($categoryList[$i] == 1) {
+
+                    if (empty($id_item[$i])) {
+                        $where = '0';
+                    } else {
+                        $where = $id_item[$i];
+                    }
+
+                    $data_item = [
+                        'TITLE'         => $materiTitleList[$i],
+                        'ID_COURSE'     => $req->input('ID_COURSE'),
+                        'LINK_YT'       => $linkYT[$i],
+                        'DESKRIPSI'     => $descMateriList[$i],
+                        'ORDER_LIST'    => $orderList[$i],
+                        'TYPE'          => $categoryList[$i]
+                    ];
+
+                    if (!empty($file[$i])) {
+                        $data_item['FILE'] = FileUpload::S3($file[$i], 'MATERI_FILE', 'Materi-' . strtotime(now()));
+                    }
+
+                    DB::table('item_course')->updateOrInsert(['ID_ITEM' => $where], $data_item);
+                } else {
+                    $data_item = [
+                        'TITLE'         => null,
+                        'FILE'          => null,
+                        'LINK_YT'       => null,
+                        'DESKRIPSI'     => null,
+                        'ORDER_LIST'    => $orderList[$i],
+                        'TYPE'          => $categoryList[$i]
+                    ];
+                    DB::table('item_course')->updateOrInsert(['ID_ITEM' => $id_item[$i]], $data_item);
+                }
+            }
+        }
+        if (!empty($req->input('question'))) {
+            $this->update_quiz($req);
+        }
+    }
+
+    public function update_quiz($req)
+    {
+        $jawaban_a          = $req->input('jawaban_a');
+        $jawaban_b          = $req->input('jawaban_b');
+        $jawaban_c          = $req->input('jawaban_c');
+        $jawaban_d          = $req->input('jawaban_d');
+        $question           = $req->input('question');
+        $kunci_soal         = $req->input('kunci_soal_');
+        $id_detail          = $req->input('ID_DETAIL');
+
+        foreach ($kunci_soal as $index => $value) {
+            $id         = $id_detail[$index];
+            $questions  = $question[$index];
+            $pil_a      = $jawaban_a[$index];
+            $pil_b      = $jawaban_b[$index];
+            $pil_c      = $jawaban_c[$index];
+            $pil_d      = $jawaban_d[$index];
+            $kunci      = $kunci_soal[$index];
+            foreach ($value as $index_detail => $value_detail) {
+                $quiz = [
+                    'ID_DETAIL'     => $id[$index_detail],
+                    'SOAL'          => $questions[$index_detail],
+                    'PIL_JWB'       => implode(';', [$pil_a[$index_detail], $pil_b[$index_detail], $pil_c[$index_detail], $pil_d[$index_detail]]),
+                    'KUNCI'         => $kunci[$index_detail]
+                ];
+                DB::table('detail_quiz')->WHERE(['ID_DETAIL' => $id[$index_detail]])->update($quiz);
+            }
+        }
+    }
+
+    public function delete(Request $req)
+    {
+        $find_id_course = DB::selectOne("
+            SELECT
+                *
+            FROM
+                course
+            WHERE
+                ID_ACTIVITY = '" . $req->id_activity . "'
+        ");
+        DB::statement('SET FOREIGN_KEY_CHECKS=0');
+        DB::table('tb_invited')->where('ID_ACTIVITY', $find_id_course->ID_ACTIVITY)->delete();
+        DB::table('detail_quiz')->where('ID_COURSE', $find_id_course->ID_COURSE)->whereNotNull('ID_COURSE')->delete();
+        DB::table('tb_komentar')->WHERE(['ID_ACTIVITY' => $find_id_course->ID_ACTIVITY])->delete();
+        DB::table('mapping_course')->WHERE(['ID_ACTIVITY' => $find_id_course->ID_ACTIVITY])->delete();
+        DB::table('item_course')->WHERE(['ID_COURSE' => $find_id_course->ID_COURSE])->delete();
+        DB::table('course')->WHERE(['ID_COURSE' => $find_id_course->ID_COURSE])->delete();
+        DB::table('activity')->WHERE(['ID_ACTIVITY' => $find_id_course->ID_ACTIVITY])->delete();
+        DB::statement('SET FOREIGN_KEY_CHECKS=1');
+
+        return redirect('kursus-admin')->with(['succ_msg' => 'Berhasil Menghapus Kursus', 'location' => 'courses']);
+    }
+
+    public function item_materi($data, $req)
+    {
+        $orderList          = $req->input('order_list');
+        $categoryList       = $req->input('type');
+        $materiTitleList    = $req->input('materi_title');
+        $descMateriList     = $req->input('desc_materi');
+        $file               = $req->file('materi_file');
+        $linkYT             = $req->input('materi_link');
+        $idQuiz             = [];
+        $nomor         = 0;
+
+        if (!empty($orderList)) {
+            for ($i = 0; $i < count($orderList); $i++) {
+                $nomor++;
+                if ($categoryList[$i] == 1) {
+                    $data_item = [
+                        'ID_COURSE'     => $data['ID_COURSE'],
+                        'TITLE'         => $materiTitleList[$i],
+                        'FILE'          => !empty($file[$i]) ? FileUpload::S3($file[$i], 'MATERI_FILE', 'Materi-' . str_replace(' ', '', $file[$i]->getClientOriginalName()) . '-' . strtotime(now())) : null,
+                        'LINK_YT'       => $linkYT[$i],
+                        'DESKRIPSI'     => $descMateriList[$i],
+                        'ORDER_LIST'    => $orderList[$i],
+                        'TYPE'          => $categoryList[$i]
+                    ];
+                    DB::table('item_course')->insert($data_item);
+                } else {
+                    $data_item = [
+                        'ID_COURSE'     => $data['ID_COURSE'],
+                        'TITLE'         => null,
+                        'FILE'          => null,
+                        'LINK_YT'       => null,
+                        'DESKRIPSI'     => null,
+                        'ORDER_LIST'    => $orderList[$i],
+                        'TYPE'          => $categoryList[$i],
+                        'LIMIT_QUIZ'    => $req->input('limit_soal_'.$nomor),
+                        'MIN_NILAI'     => $req->input('min_nilai_'.$nomor),
+                        'MAX_ATTEMPT'   => $req->input('max_attempt_'.$nomor)
+                    ];
+                    $idQuiz[] = DB::table('item_course')->insertGetId($data_item);
+                }
+            }
+        }
+        if (!empty($req->input('question'))) {
+            $data['data_item'] = $data_item;
+            $this->item_quiz($data, $req, $idQuiz);
+        }
+    }
+
+    public function item_quiz($data, $req, $lastIdQuiz)
+    {
+        $jawaban_a          = $req->input('jawaban_a');
+        $jawaban_b          = $req->input('jawaban_b');
+        $jawaban_c          = $req->input('jawaban_c');
+        $jawaban_d          = $req->input('jawaban_d');
+        $order_list_quiz    = $req->input('order_list_question');
+        $question           = $req->input('question');
+        $kunci_soal         = $req->input('kunci_soal');
+
+        $tmpNo = 0;
+        $tmpNoQuiz = 0;
+        foreach ($question as $i => $questions) {
+            $id_quiz = $lastIdQuiz[$tmpNoQuiz];
+            for ($j = 1; $j <= count($questions); $j++) {
+                $quiz = [
+                    'ID_QUIZ'       => $id_quiz,
+                    'ID_COURSE'     => $data['ID_COURSE'],
+                    'SOAL'          => $questions[$j],
+                    'PIL_JWB'       => implode(';', [$jawaban_a[$tmpNo], $jawaban_b[$tmpNo], $jawaban_c[$tmpNo], $jawaban_d[$tmpNo]]),
+                    'KUNCI'         => $kunci_soal[$i][$j],
+                    'ORDER_LIST'    => $order_list_quiz[$tmpNo]
+                ];
+                DB::table('detail_quiz')->insert($quiz);
+                $tmpNo++;
+            }
+            $tmpNoQuiz++;
+        }
+    }
+
+    public function invite(Request $req)
+    {
+        $data['title']  = "Undang User";
+
+        $data['users']   = DB::select("
+            SELECT
+                u.*,
+                (SELECT
+                    COUNT(*)
+                FROM
+                    tb_invited i
+                WHERE
+                    i.ID_USER = u.ID_USER
+                AND
+                    i.ID_ACTIVITY = '" . $req->input('id_activity') . "') AS is_invited
+            FROM
+                user u
+            WHERE
+                u.IS_DELETE = 0
+            AND
+                ID_ROLE <> 1
+        ");
+
+        $data['activity'] = DB::Select("
+            SELECT
+                a.*
+            FROM
+                activity a
+            WHERE
+                a.ID_ACTIVITY = '" . $req->input('id_activity') . "'
+        ")[0];
+
+        return
+            view('template.header', $data) .
+            view('template_admin/kdmp/invite_user', $data) .
+            view('template.footer', $data);
+    }
+
+    public function batalkan_undangan(Request $req)
+    {
+        $id_user = $req->input('id_user');
+        $id_activity = $req->input('id_activity');
+
+        $cek_data = DB::SelectOne("
+            SELECT
+                *
+            FROM
+                tb_invited
+            WHERE
+                ID_USER = '" . $id_user . "'
+            AND
+                ID_ACTIVITY = '" . $id_activity . "'
+        ");
+
+        if (!empty($cek_data)) {
+            DB::table('tb_invited')->WHERE(['ID_USER' => $id_user, 'ID_ACTIVITY' => $id_activity])->delete();
+            return redirect('kursus-admin/invite?id_activity=' . $id_activity)->with(['succ_msg' => 'Undangan telah dibatalkan', 'location' => 'kursus-admin/invite?id_activity=' . $id_activity]);
+        } else {
+            return redirect('kursus-admin/invite?id_activity=' . $id_activity)->with(['succ_msg' => 'User belum diundang', 'kursus-admin/invite?id_activity=' . $id_activity]);
+        }
+    }
+    public function invite_individu(Request $req)
+    {
+        $id_user = $req->input('id_user');
+        $id_activity = $req->input('id_activity');
+
+        $cek_data = DB::SelectOne("
+            SELECT
+                *
+            FROM
+                tb_invited
+            WHERE
+                ID_USER = '" . $id_user . "'
+            AND
+                ID_ACTIVITY = '" . $id_activity . "'
+        ");
+
+        if (!empty($cek_data)) {
+            return redirect('kursus-admin/invite?id_activity=' . $id_activity)->with(['err_msg' => 'User telah diundang', 'location' => 'kursus-admin/invite?id_activity=' . $id_activity]);
+        } else {
+            $invited = [
+                'ID_USER'       => $id_user,
+                'ID_ACTIVITY'   => $id_activity
+            ];
+            DB::table('tb_invited')->insert($invited);
+
+            $data['user'] = DB::SelectOne("
+                    SELECT
+                        u.EMAIL,
+                        u.NAME,
+                        a.TITLE_ACTIVITY
+                    FROM
+                        tb_invited ti
+                    LEFT JOIN user u ON
+                        ti.ID_USER = u.ID_USER
+                    LEFT JOIN activity a ON
+                        ti.ID_ACTIVITY = a.ID_ACTIVITY
+                    WHERE
+                        ti.ID_USER = '" . $id_user . "'
+                        AND ti.ID_ACTIVITY = '" . $id_activity . "'
+                ");
+
+                $this->send_email_invited($data);
+            return redirect('kursus-admin/invite?id_activity=' . $id_activity)->with(['succ_msg' => 'User berhasil diundang', 'kursus-admin/invite?id_activity=' . $id_activity]);
+        }
+    }
+
+    public function invite_batch(Request $req)
+    {
+        $id_users = $req->input('id_user');
+        $id_activity = $req->input('id_act');
+
+        if (!is_array($id_users)) {
+            if (is_string($id_users)) {
+                $id_users = explode(',', $id_users);
+            } else {
+                $id_users = [];
+            }
+        }
+
+        if (empty($id_users)) {
+            return redirect('kursus-admin/invite?id_activity=' . $id_activity)->with(['err_msg' => 'Pilih setidaknya satu pengguna', 'location' => 'kursus-admin/invite?id_activity=' . $id_activity]);
+        }
+
+        foreach ($id_users as $id_user) {
+            $cek_data = DB::SelectOne("
+                SELECT
+                    *
+                FROM
+                    tb_invited
+                WHERE
+                    ID_USER = '" . $id_user . "'
+                AND
+                    ID_ACTIVITY = '" . $id_activity . "'
+            ");
+
+            if (!empty($cek_data)) {
+                return redirect('kursus-admin/invite?id_activity=' . $id_activity)->with(['err_msg' => 'Pilih setidaknya satu pengguna', 'location' => 'kursus-admin/invite?id_activity=' . $id_activity]);
+            } else {
+                $invited = [
+                    'ID_USER'       => $id_user,
+                    'ID_ACTIVITY'   => $id_activity
+                ];
+
+                DB::table('tb_invited')->insert($invited);
+
+                $data['user'] = DB::SelectOne("
+                    SELECT
+                        u.EMAIL,
+                        u.NAME,
+                        a.TITLE_ACTIVITY
+                    FROM
+                        tb_invited ti
+                    LEFT JOIN user u ON
+                        ti.ID_USER = u.ID_USER
+                    LEFT JOIN activity a ON
+                        ti.ID_ACTIVITY = a.ID_ACTIVITY
+                    WHERE
+                        ti.ID_USER = '" . $id_user . "'
+                    AND
+                        ti.ID_ACTIVITY = '" . $id_activity . "'
+                ");
+
+                $this->send_email_invited($data);
+            }
+        }
+        return redirect('kursus-admin/invite?id_activity=' . $id_activity)->with(['succ_msg' => 'Berhasil mengundang user', 'kursus-admin/invite?id_activity=' . $id_activity]);
+    }
+
+    public function send_email_invited($data) {
+        $details = [
+            'name' => $data['user']->NAME,
+            'body' => 'Selamat Anda telah diundang dalam kursus khusus yaitu ' . $data['user']->TITLE_ACTIVITY . '. Silahkan login ke aplikasi SIJAWARA untuk melihat detail lebih lanjut.',
+        ];
+        $mail = new MailSender($details);
+        $mail->subject("Email Verification");
+        Mail::to($data['user']->EMAIL)->send($mail);
+    }
+
+    public function GenerateUniqID($prefix, $var)
+    {
+        $string = preg_replace('/[^a-z]/i', '', $var);
+        $vocal  = array("a", "e", "i", "o", "u", "A", "E", "I", "O", "U", " ");
+        $scrap  = str_replace($vocal, "", $string);
+        $begin  = substr($scrap, 0, 4);
+        $uniqid = strtoupper($begin);
+        return $prefix . "_" . $uniqid . substr(md5(time()), 0, 3);
+    }
+
+    public function index_lihat_peserta(Request $req)
+    {
+        $data['title'] = "Peserta Kursus KDMP - SIJAWARA+";
+
+        $data['list_peserta'] = DB::select("
+            SELECT
+                u.EMAIL,
+                u.ID_USER ,
+                u.NAME,
+                u.TELP,
+                u.JK ,
+                u.ALAMAT,
+                o.LOG_TIME,
+                a.TITLE_ACTIVITY,
+                o.DATE_COMPLETED,
+                (
+                    CEIL(
+                        (
+                            SELECT
+                                MAX(o.MAPPING_COUNT)
+                            FROM
+                                `order` o
+                            WHERE
+                                o.ID_USER  = u.ID_USER 
+                                AND o.ID_PRODUCT = a.ID_ACTIVITY
+                        ) / 
+                        (
+                            SELECT
+                                COUNT(*)
+                            FROM
+                                mapping_course
+                            WHERE
+                                mapping_course.ID_USER = u.ID_USER
+                                AND mapping_course.ID_ACTIVITY = a.ID_ACTIVITY
+                        ) * 100
+                    )
+                ) AS PROGRESS,
+                (
+                    CEIL 
+                    (
+                    (
+                        SELECT
+                            SUM(nq.NILAI)
+                        FROM 
+                            nilai_quiz nq
+                        LEFT JOIN detail_quiz dq ON
+                            dq.ID_QUIZ = nq.ID_QUIZ
+                        LEFT JOIN course c ON
+                            c.ID_COURSE = dq.ID_COURSE
+                        WHERE
+                            nq.ID_USER = u.ID_USER
+                            AND c.ID_ACTIVITY = o.ID_PRODUCT
+                    ) / (
+                        SELECT
+                            COUNT(nq2.NILAI)
+                        FROM
+                            nilai_quiz nq2
+                        LEFT JOIN detail_quiz dq ON
+                            dq.ID_QUIZ = nq2.ID_QUIZ
+                        LEFT JOIN course c ON
+                            c.ID_COURSE = dq.ID_COURSE
+                        WHERE
+                            nq2.ID_USER = u.ID_USER
+                            AND c.ID_ACTIVITY = o.ID_PRODUCT 
+                    )
+                    )
+                ) AS NILAI  
+            FROM
+                user u
+            LEFT JOIN user_data ud ON   
+                ud.ID_USER = u.ID_USER
+            LEFT JOIN `order` o ON
+                o.ID_USER = u.ID_USER 
+            LEFT JOIN activity a  ON
+                o.ID_PRODUCT  = a.ID_ACTIVITY
+            WHERE
+                o.ID_PRODUCT  = '" . $req->input('ID_ACTIVITY') . "'
+        ");
+
+        $data['komentar'] = DB::select("
+            SELECT
+                u.NAME,
+                u.EMAIL,
+                k.komentar,
+                k.LOG_TIME
+            FROM
+                tb_komentar k
+            LEFT JOIN user u ON
+                u.ID_USER = k.ID_USER
+            WHERE
+                k.ID_ACTIVITY = '" . $req->input('ID_ACTIVITY') . "'
+        ");
+
+        $data['kursus'] = DB::selectOne("
+            SELECT
+                a.* ,
+                c.*
+            FROM
+                activity a
+            LEFT JOIN course c ON
+                c.ID_ACTIVITY = a.ID_ACTIVITY
+            WHERE
+                a.TYPE_ACTIVITY = 3
+            AND 
+                a.ID_ACTIVITY = '" . $req->input('ID_ACTIVITY') . "'
+        ");
+        return
+            view('template.header', $data) .
+            view('template_admin.kdmp.lihat_peserta_course', $data) .
+            view('template.footer', $data);
+    }
+
+    public function laporan_course(Request $req)
+    {
+        $event = DB::select("
+            SELECT
+                u.EMAIL,
+                u.ID_USER ,
+                u.NAME,
+                u.TELP,
+                u.JK ,
+                u.ALAMAT,
+                o.LOG_TIME,
+                o.DATE_COMPLETED,
+                a.TITLE_ACTIVITY,
+                (
+                    CEIL(
+                        (
+                            SELECT
+                                MAX(o.MAPPING_COUNT)
+                            FROM
+                                `order` o
+                            WHERE
+                                o.ID_USER  = u.ID_USER 
+                                AND o.ID_PRODUCT = a.ID_ACTIVITY
+                        ) / 
+                        (
+                            SELECT
+                                COUNT(*)
+                            FROM
+                                mapping_course
+                            WHERE
+                                mapping_course.ID_USER = u.ID_USER
+                                AND mapping_course.ID_ACTIVITY = a.ID_ACTIVITY
+                        ) * 100
+                    )
+                ) AS PROGRESS,
+                (
+                    CEIL 
+                    (
+                    (
+                        SELECT
+                            SUM(nq.NILAI)
+                        FROM 
+                            nilai_quiz nq
+                        LEFT JOIN detail_quiz dq ON
+                            dq.ID_QUIZ = nq.ID_QUIZ
+                        LEFT JOIN course c ON
+                            c.ID_COURSE = dq.ID_COURSE
+                        WHERE
+                            nq.ID_USER = u.ID_USER
+                            AND c.ID_ACTIVITY = o.ID_PRODUCT
+                    ) / (
+                        SELECT
+                            COUNT(nq2.NILAI)
+                        FROM
+                            nilai_quiz nq2
+                        LEFT JOIN detail_quiz dq ON
+                            dq.ID_QUIZ = nq2.ID_QUIZ
+                        LEFT JOIN course c ON
+                            c.ID_COURSE = dq.ID_COURSE
+                        WHERE
+                            nq2.ID_USER = u.ID_USER
+                            AND c.ID_ACTIVITY = o.ID_PRODUCT 
+                    )
+                    )
+                ) AS Rata_Nilai
+            FROM
+                user u
+            LEFT JOIN user_data ud ON   
+                ud.ID_USER = u.ID_USER
+            LEFT JOIN `order` o ON
+                o.ID_USER = u.ID_USER 
+            LEFT JOIN activity a  ON
+                o.ID_PRODUCT  = a.ID_ACTIVITY
+            WHERE
+                o.ID_PRODUCT  = '" . $req->input('ID_ACTIVITY') . "'
+        ");
+        app(Laporan::class)->laporan_course($event);
+    }
+    public function update_item_quiz($data, $req, $lastIdQuiz)
+    {
+        if (!is_null($req->input('ID_QUIZ'))) {
+            $id_quiz_in = implode(',', $req->input('ID_QUIZ'));
+            $id_quiz_old = DB::select("
+                SELECT
+                    ID_QUIZ
+                FROM 
+                    nilai_quiz
+                WHERE
+                    ID_QUIZ IN (".$id_quiz_in.")
+            ");
+        }
+
+        $jawaban_a          = $req->input('jawaban_a');
+        $jawaban_b          = $req->input('jawaban_b');
+        $jawaban_c          = $req->input('jawaban_c');
+        $jawaban_d          = $req->input('jawaban_d');
+        $order_list_quiz    = $req->input('order_list_question');
+        $question           = $req->input('question');
+        $kunci_soal         = $req->input('kunci_soal');
+
+        $tmpNo = 0;
+        $tmpNoQuiz = 0; 
+        foreach ($question as $i => $questions) {
+            $id_quiz = $lastIdQuiz[$tmpNoQuiz];
+            $maxIndex = max(array_keys($questions));
+            for ($j = 1; $j <= $maxIndex; $j++) {
+                if(array_key_exists($j, $questions)) {
+                    $quiz = [
+                        'ID_QUIZ'       => $id_quiz,
+                        'ID_COURSE'     => $data['ID_COURSE'],
+                        'SOAL'          => $questions[$j],
+                        'PIL_JWB'       => implode(';', [$jawaban_a[$tmpNo], $jawaban_b[$tmpNo], $jawaban_c[$tmpNo], $jawaban_d[$tmpNo]]),
+                        'KUNCI'         => $kunci_soal[$i][$j],
+                        'ORDER_LIST'    => $order_list_quiz[$tmpNo]
+                    ];
+                    DB::table('detail_quiz')->insert($quiz);
+                    $tmpNo++;
+                }
+            }
+            if(!empty($id_quiz_old)) {
+                DB::table('nilai_quiz')->WHERE(['ID_QUIZ' => $id_quiz_old[$tmpNoQuiz]->ID_QUIZ])->update(['ID_QUIZ' => $id_quiz]);
+            }
+            $tmpNoQuiz++;
+        }
+    }
+    public function update_item_materi($data, $req)
+    {
+        $orderList          = $req->input('order_list');
+        $categoryList       = $req->input('type');
+        $materiTitleList    = $req->input('materi_title');
+        $descMateriList     = $req->input('desc_materi');
+        $linkYT             = $req->input('materi_link');
+        $file               = $req->file('materi_file');
+        $file_default       = $req->input('default_file');
+        $nomor = 0;
+
+        $idQuiz = [];
+        if (!empty($orderList)) {
+            for ($i = 0; $i < count($orderList); $i++) {
+                $nomor++;
+                if ($categoryList[$i] == 1) {
+                    $data_item = [
+                        'ID_COURSE'     => $data['ID_COURSE'],
+                        'TITLE'         => $materiTitleList[$i],
+                        'FILE'          => !empty($file[$i]) ? FileUpload::S3($file[$i], 'MATERI_FILE', 'Materi-' . str_replace(' ', '', $file[$i]->getClientOriginalName()) . '-' . strtotime(now())) : (!empty($file_default[$i]) ? $file_default[$i] : null),
+                        'LINK_YT'       => $linkYT[$i],
+                        'DESKRIPSI'     => $descMateriList[$i],
+                        'ORDER_LIST'    => $orderList[$i],
+                        'TYPE'          => $categoryList[$i]
+                    ];
+                    DB::table('item_course')->insert($data_item);
+                } else {
+                    $data_item = [
+                        'ID_COURSE'     => $data['ID_COURSE'],
+                        'TITLE'         => null,
+                        'FILE'          => null,
+                        'LINK_YT'       => null,
+                        'DESKRIPSI'     => null,
+                        'ORDER_LIST'    => $orderList[$i],
+                        'TYPE'          => $categoryList[$i],
+                        'LIMIT_QUIZ'    => $req->input('limit_soal_'.$nomor),
+                        'MIN_NILAI'     => $req->input('min_nilai_'.$nomor),
+                        'MAX_ATTEMPT'   => $req->input('max_attempt_'.$nomor)
+                    ];
+                    $idQuiz[] = DB::table('item_course')->insertGetId($data_item);
+                }
+            }
+        }
+        if (!empty($req->input('question'))) {
+            $data['data_item'] = $data_item;
+            $this->update_item_quiz($data, $req, $idQuiz);
+        }
+    }
+}

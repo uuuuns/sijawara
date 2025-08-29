@@ -26,7 +26,6 @@ class JabatanUkm extends Model
     }
     public function insertJU($data)
     {
-        // dd($data);
         $sql = DB::insert(
             "
             INSERT INTO  md_jabatan_ukm

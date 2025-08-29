@@ -11,7 +11,7 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        $data['title'] = "Category";
+        $data['title'] = "Category - SIJAWARA+";
 
         $data["category"] = DB::select("
             SELECT

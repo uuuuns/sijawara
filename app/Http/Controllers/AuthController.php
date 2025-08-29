@@ -17,20 +17,20 @@ class AuthController extends Controller
     public function __construct()
     {
         $smtpConfig = [
-            'transport' => 'smtp',
-            'host' => 'smtp-relay.brevo.com',
-            'port' => 587,
-            'from' => ['address' => 'sijawara.uptkukm@gmail.com', 'name' => 'SIJAWARA'],
-            'encryption' => 'tls',
-            'username' => 'dbi.malang.o@gmail.com',
-            'password' => '7YPLNq6KfpydDGBT',
+            'transport' => env('MAIL_MAILER'),
+            'host' => env('MAIL_HOST'),
+            'port' => env('MAIL_PORT'),
+            'from' => ['address' => 'sijawara.uptkukm@gmail.com', 'name' => 'SIJAWARA+'],
+            'encryption' => env('MAIL_ENCRYPTION'),
+            'username' => env('MAIL_USERNAME'),
+            'password' => env('MAIL_PASSWORD'),
         ];
         config(['mail.mailers.smtp' => $smtpConfig]);
     }
 
     public function login()
     {
-        $data['title'] = "Masuk SIJAWARA+";
+        $data['title'] = "Masuk - SIJAWARA+";
 
         if (!empty(session('user')[0]['ID_ROLE']) && session('user')[0]['ID_ROLE'] == 1) {
             return redirect('dashboard');
@@ -93,7 +93,8 @@ class AuthController extends Controller
             'INSTANSI' => 'instansi',
             'KOPERASI;UKM' => 'koperasi_ukm',
             'UKM;KOPERASI' => 'koperasi_ukm',
-            'UMUM' => 'umum'
+            'UMUM' => 'umum',
+            'KDMP' => 'kdmp'
         ];
 
         $joinCond = '';
@@ -195,7 +196,7 @@ class AuthController extends Controller
 
     public function register()
     {
-        $data['title'] = "Daftar SIJAWARA+";
+        $data['title'] = "Daftar - SIJAWARA+";
 
         return
             view('template.header', $data) .
@@ -332,7 +333,7 @@ class AuthController extends Controller
 
     public function forgot_password(Request $req)
     {
-        $data['title'] = 'Forgot Password';
+        $data['title'] = 'Lupa Kata Sandi - SIJAWARA+';
 
         return view('template.header', $data) .
             view('auth.forgot_password', $data) .
@@ -411,7 +412,7 @@ class AuthController extends Controller
     }
     public function forgot_password_reset(Request $req)
     {
-        $data['title'] = 'Reset Password';
+        $data['title'] = 'Reset Password - SIJAWARA+';
         $data['token'] = DB::table('token')
             ->where('token.KEY', '=', $req->input('token'))
             ->first();

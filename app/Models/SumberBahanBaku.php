@@ -26,7 +26,6 @@ class SumberBahanBaku extends Model
     }
     public function insertSB($data)
     {
-        // dd($data);
         $sql = DB::insert(
             "
             INSERT INTO  md_sumber_bahanbaku

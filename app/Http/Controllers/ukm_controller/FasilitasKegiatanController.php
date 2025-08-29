@@ -13,7 +13,7 @@ class FasilitasKegiatanController extends Controller
         $fasilitas = new FasilitasKegiatan();
         $data['title'] = "Fasilitas Kegiatan";
         $data['fasilitas'] = $fasilitas->get_all_data();
-        // dd($data['usaha']);
+
         return
             view('template.header', $data) .
             view('template_admin/master_data/ukm/fasilitas_kegiatan', $data) .
@@ -26,7 +26,7 @@ class FasilitasKegiatanController extends Controller
         $data = [
             'NAMA_FASILITAS_KEGIATAN'  => strip_tags($req->input('add_nama_fasilitas_kegiatan'))
         ];
-        // dd($data);
+        
         $fasilitas->insertFK($data);
         return redirect('ukm/fasilitas_kegiatan')->with(['succ_msg' => 'Successfully Add Fasilitas Kegiatan']);
     }
@@ -37,7 +37,7 @@ class FasilitasKegiatanController extends Controller
             'ID' => $req->input('id'),
             'NAMA_FASILITAS_KEGIATAN'  => strip_tags($req->input('nama_fasilitas_kegiatan'))
         ];
-        // dd($data);
+        
         $fasilitas->updateFK($data, $data['ID']);
         return redirect('ukm/fasilitas_kegiatan')->with(['succ_msg' => 'Successfully edit Fasilitas Kegiatan']);
     }
@@ -45,7 +45,7 @@ class FasilitasKegiatanController extends Controller
     public function delete(Request $req){
         $fasilitas = new FasilitasKegiatan();
         $data = $req->input('id');
-        // dd($data);
+        
         $fasilitas->deleteFK($data);
         return redirect('ukm/fasilitas_kegiatan')->with(['succ_msg' => 'Successfully delete Fasilitas Kegiatan']);
     }

@@ -219,9 +219,9 @@
         }
 
         .select2-container-active.select2-container {
-            border: 1px solid #45b104;
+            border: 1px solid var(--theme-primary-color);
             border-radius: .25rem;
-            box-shadow: 0 0 0 2px rgba(63, 135, 245, 0.2)
+            box-shadow: 0 0 0 2px rgba(var(--theme-primary-rgb), 0.2);
         }
 
         .select2-container-active.select2-container .select2-choice,
@@ -243,8 +243,8 @@
         }
 
         .select2-results .select2-highlighted {
-            color: #45b104;
-            background-color: rgba(69, 177, 4, 0.1);
+            color: var(--theme-primary-color);
+            background-color: rgba(var(--theme-primary-rgb), 0.1);
         }
 
         .select2-results .select2-result-label {
@@ -365,8 +365,8 @@
         }
 
         .switch input[type=checkbox]:checked+label {
-            background: #45b104;
-            border-color: #45b104
+            background: var(--theme-primary-color);
+            border-color: var(--theme-primary-color);
         }
 
         .switch input[type=checkbox]:checked+label:before {
@@ -453,12 +453,12 @@
         }
 
         .radio input[type=radio]:checked+label:before {
-            color: #45b104;
-            border-color: #45b104
+            color: var(--theme-primary-color);
+            border-color: var(--theme-primary-color);
         }
 
         .radio input[type=radio]:checked+label:after {
-            background-color: #45b104
+            background-color: var(--theme-primary-color);
         }
 
         .radio input[type=radio]:disabled+label,
@@ -510,6 +510,31 @@
             color: #fff !important;
         }
     </style>
+    <script>
+        if (window.location.href.includes("kdmp")) {
+            const style = document.createElement("style");
+            style.textContent = `
+                .page-header:after {
+                  background: rgb(140 0 0 / 90%) !important;
+                }
+                
+                .bg-primary {
+                  --bs-bg-opacity: 1;
+                  background-color: rgba(225, 0, 0, var(--bs-bg-opacity)) !important;
+                }
+
+                .nav-tabs .nav-item.show .nav-link,
+                .nav-tabs .nav-link.active {
+                  border-color: #D60000 !important;
+                }
+              `;
+            document.head.appendChild(style);
+
+            document.documentElement.style.setProperty("--theme-primary-color", "#D60000"); // merah tua
+            document.documentElement.style.setProperty("--theme-secondary-color", "#FF4D4D"); // merah muda
+            document.documentElement.style.setProperty("--theme-primary-rgb", "214, 0, 0"); // rgb merah tua
+        }
+    </script>
     <header class="header-style-1">
         <div class="header-topbar topbar-style-1">
             <div class="container">
@@ -571,13 +596,16 @@
 
                     <nav class="site-navbar ms-auto">
                         <ul class="primary-menu">
-                            <li class="current d-block">
+                            <li class="me-0 d-lg-block">
+                                <a href="{{ url('kdmp') }}">KDMP</a>
+                            </li>
+                            <li class="me-0 d-block ms-lg-5">
                                 <a href="{{ url('kursus') }}">Kursus</a>
                             </li>
-                            <li class="me-0 d-block">
+                            <li class="me-0 d-block ms-lg-5">
                                 <a href="{{ url('webinar') }}">Webinar</a>
                             </li>
-                            <li class="d-lg-block ms-lg-5">
+                            <li class="me-0 d-none d-xl-block ms-xl-5">
                                 @if (!empty(session('user')[0]) && session('user')[0]['ID_ROLE'] == 1)
                                     <a href="https://docs.google.com/document/d/1nnLO-CDrHDWEnnEiNoqKR4z5ZmjH-Uk0QWI80NRXLFM/edit?tab=t.0"
                                         target="_blank">Panduan</a>
@@ -653,6 +681,19 @@
                         }
                     </style>
 
+                    <script>
+                        if (window.location.href.includes("kdmp")) {
+                            const style = document.createElement("style");
+                            style.textContent = `
+                                .site-navbar .primary-menu li a:hover {
+                                  background-color: rgba(225, 0, 0, 0.9) !important;
+                                }
+                              `;
+                            document.head.appendChild(style);
+
+                        }
+                    </script>
+
                     <div class="d-none">
                         <form id="form_checkout" action="{{ url('checkout') }}" method="post">
                             @csrf
@@ -709,8 +750,8 @@
         </div>
 
         <!-- @if (!empty(session('user')[0]))
-            @if (session('user')[0]['IS_DATA_COMPLETE'] == false)
-                <div class="header-topbar topbar-style-1 bg-warning">
+@if (session('user')[0]['IS_DATA_COMPLETE'] == false)
+<div class="header-topbar topbar-style-1 bg-warning">
                     <div class="container">
                         <div class="row justify-content-between align-items-center">
                             <div class="text-center" style="line-height: 1.5;">
@@ -724,6 +765,6 @@
                         </div>
                     </div>
                 </div>
-            @endif
-        @endif -->
+@endif
+@endif -->
     </header>

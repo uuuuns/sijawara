@@ -25,12 +25,13 @@
                                     aria-describedby="emailHelp" required>
                             </div>
                             <div class="my-4 float-label-control">
-                                <select id="jenis_instansi" name="jenis_instansi" placeholder="Pilih Jenis Instansi">
+                                <select id="jenis_instansi" name="jenis_instansi" placeholder="&nbsp;&nbsp; Pilih Jenis Instansi" required>
                                     <option></option>
-                                    <option value="UKM">UKM</option>
-                                    <option value="KOPERASI">KOPERASI</option>
-                                    <option value="INSTANSI">INSTANSI</option>
-                                    <option value="UMUM">UMUM</option>
+                                    <option value="KDMP">&nbsp;&nbsp;KDMP</option>
+                                    <option value="UKM">&nbsp;&nbsp;UKM</option>
+                                    <option value="KOPERASI">&nbsp;&nbsp;KOPERASI</option>
+                                    <option value="INSTANSI">&nbsp;&nbsp;INSTANSI</option>
+                                    <option value="UMUM">&nbsp;&nbsp;UMUM</option>
                                 </select>
                             </div>
                             <div class="input-group my-4">

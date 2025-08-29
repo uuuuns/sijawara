@@ -1,0 +1,134 @@
+<div class="card" id="materi_item_{{ $no }}">
+    <div class="card-header">
+        <h5 class="card-title d-flex row">
+            <a data-toggle="collapse" href="#collapse{{ $no }}" class="col-md-12">
+                <div class="float-start" style="width: 65px; margin-right: 10px;">
+                    <input type="number" class="form-control" name="order_list[]" value="{{ $no }}" required>
+                </div>
+                <div class="row align-items-center" style="height: 16px;">
+                    &nbsp;
+                </div>
+                <span class="col-md-11">Detail - Materi <?= $item['TITLE'] ?></span>
+                <input type="hidden" class="form-control" name="type[]" value="1" required>
+                <input type="hidden" name="default_file[]" value="<?= $item['FILE'] ?>">
+                <input type="hidden" name="ID_ITEM[]" value="<?= $item['ID_ITEM'] ?>">
+                <div id="delete_materi_{{ $no }}" class="btn btn-danger px-1 py-0 float-end"
+                    style="cursor: pointer;">
+                    <span><i class="far fa-times"></i> </span>
+                </div>
+            </a>
+        </h5>
+    </div>
+    <div id="collapse{{ $no }}" class="collapse show" data-parent="#accordion-default">
+        <div class="card-body">
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label control-label">File Materi<span class="text-danger">*</span></label>
+                <div class="col-md-5">
+                    <div class="custom-file">
+                        <input type="file" name="materi_file[]" accept=".pdf, .ppt, .pptx" id="material_file<?=$no?>"
+                            class="custom-file-input file_materi" data-max-file-size="20M">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label control-label" required>Nama Materi<span class="text-danger">*</span></label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" name="materi_title[]" value="<?= $item['TITLE'] ?>"
+                        required>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label control-label">Link File Atau Video Youtube<span class="text-danger">*</span></label>
+                <div class="col-md-5">
+                    <input type="text" class="form-control" name="materi_link[]" value="<?= $item['LINK_YT'] ?>"
+                        required>
+                    <span class="text-danger">* link Drive harus berisi d/id_file_anda seperti ini
+                        https://drive.google.com/file/d/1fTx7Ij-ora0xIFAWU0Gz4Ej8kJZh1tgs/view?usp=sharing.
+                        Link Youtube harus berisi v=id_video_anda seperti ini https://www.youtube.com/watch?v=UA0ACGed2m8
+                    </span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label control-label">Deskripsi Materi<span class="text-danger">*</span></label>
+                <div class="col-md-12">
+                    <textarea name="desc_materi[]" id="mytextarea_<?= $no ?>" required>
+                    {{ $item['DESKRIPSI'] }}</textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('input[name="materi_file[]"]').each(function() {
+        var dropifyInstance = $(this).data('dropify');
+        
+        if ($(this).attr('type') === 'hidden') {
+            if (dropifyInstance) {
+                dropifyInstance.destroy();
+            }
+        } else if ($(this).attr('id') === 'file-upload') {
+            if (dropifyInstance) {
+                dropifyInstance.destroy();
+            }
+        } else {
+            var dropifyElement = $("#material_file<?=$no?>").dropify();
+                dropifyInstance = dropifyElement.data('dropify');
+            dropifyInstance.resetPreview();
+            dropifyInstance.clearElement();
+            dropifyInstance.settings.defaultFile = "{{ $item['FILE'] }}";
+            dropifyInstance.destroy();
+            dropifyInstance.init();
+        }
+    });
+
+
+    $(document).ready(function() {
+        var $editor = $('#mytextarea_{{ $no }}');
+        $editor.summernote({
+            height: 200,
+            callbacks: {
+                onImageUpload: function(files) {
+                    $summernote.summernote('insertNode', imgNode);
+                }
+            },
+            toolbar: [
+                ['style', ['bold', 'italic', 'underline']],
+                ['fontsize', ['fontsize']],
+                ['color', ['color']],
+                ['height', ['height']],
+                ['operation', ['undo', 'redo']],
+                ['para', ['paragraph']],
+                ['object', ['link']]
+            ]
+        });
+
+        $('#insert-btn').click(() => {
+            $editor.summernote('insertParagraph');
+        });
+
+        $('#bold-btn').click(() => {
+            $editor.summernote('bold');
+        });
+    });
+
+    $(document).ready(function() {
+        $('.file_materi').dropify({
+            messages: {
+                default: 'Drag or Drop to Change Image',
+                replace: 'Change',
+                remove: 'Delete',
+                error: 'Error'
+            }
+        });
+    });
+
+    $('#collapse<?= $no ?>').collapse('hide')
+
+    $('#delete_materi_{{ $no }}').click(function(e) {
+        $(this).toggleClass("is-loading");
+        $("#delete_materi_{{ $no }}").removeClass("is-loading")
+        $("#materi_item_{{ $no }}").remove();
+        i--;
+        e.preventDefault();
+    });
+</script>

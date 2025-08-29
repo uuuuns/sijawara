@@ -21,15 +21,15 @@ class ProfileGuest extends Controller
     public function __construct(User $genericModel)
     {
         $this->genericModel = $genericModel;
-    
+
         $smtpConfig = [
-            'transport' => 'smtp',
-            'host' => 'smtp-relay.brevo.com',
-            'port' => 587,
-            'from' => ['address' => 'sijawara@gmail.com', 'name' => 'SIJAWARA'],
-            'encryption' => 'tls',
-            'username' => 'dbi.malang.o@gmail.com',
-            'password' => '7YPLNq6KfpydDGBT',
+            'transport' => env('MAIL_MAILER'),
+            'host' => env('MAIL_HOST'),
+            'port' => env('MAIL_PORT'),
+            'from' => ['address' => 'sijawara.uptkukm@gmail.com', 'name' => 'SIJAWARA+'],
+            'encryption' => env('MAIL_ENCRYPTION'),
+            'username' => env('MAIL_USERNAME'),
+            'password' => env('MAIL_PASSWORD'),
         ];
         config(['mail.mailers.smtp' => $smtpConfig]);
     }
@@ -76,13 +76,13 @@ class ProfileGuest extends Controller
 
         ");
         $data['data_personal'] = DB::selectOne("
-        SELECT
-            u.*
-        FROM
-            user u
-        WHERE 
-        u.ID_USER = '" . session('user')[0]['ID_USER'] . "'
-    ");
+            SELECT
+                u.*
+            FROM
+                user u
+            WHERE 
+                u.ID_USER = '" . session('user')[0]['ID_USER'] . "'
+        ");
         $data['title'] = "My Ebook";
         return
             view('template.header', $data) .
@@ -101,13 +101,13 @@ class ProfileGuest extends Controller
             u.ID_USER = '" . session('user')[0]['ID_USER'] . "'
         ");
         $data['data_personal'] = DB::selectOne("
-        SELECT
-            u.*
-        FROM
-            user u
-        WHERE 
-        u.ID_USER = '" . session('user')[0]['ID_USER'] . "'
-    ");
+            SELECT
+                u.*
+            FROM
+                user u
+            WHERE 
+                u.ID_USER = '" . session('user')[0]['ID_USER'] . "'
+        ");
         $data['document'] = DB::selectOne("
             SELECT user_data.*, instructor_req.STATUS
             FROM user_data
@@ -115,7 +115,7 @@ class ProfileGuest extends Controller
             WHERE user_data.ID_USER = '" . session('user')[0]['ID_USER'] . "';
 
         ");
-        // dd($data);
+        
         return
             view('template.header', $data) .
             view('template_guest/profile/academic', $data) .
@@ -125,13 +125,18 @@ class ProfileGuest extends Controller
     {
         $data['title'] = "Supporting Documents";
         $data['document'] = DB::selectOne("
-            SELECT user_data.*, instructor_req.STATUS
-            FROM user_data
-            LEFT JOIN instructor_req ON instructor_req.ID_USER = user_data.ID_USER
-            WHERE user_data.ID_USER = '" . session('user')[0]['ID_USER'] . "';
+            SELECT
+                user_data.*, 
+                instructor_req.STATUS
+            FROM
+                user_data
+            LEFT JOIN instructor_req ON
+                instructor_req.ID_USER = user_data.ID_USER
+            WHERE
+                user_data.ID_USER = '" . session('user')[0]['ID_USER'] . "';
 
         ");
-        // dd($data['document']);
+
         return
             view('template.header', $data) .
             view('template_guest/profile/document', $data) .
@@ -148,14 +153,13 @@ class ProfileGuest extends Controller
 
         ");
         $data['data_personal'] = DB::selectOne("
-        SELECT
-            u.*
-        FROM
-            user u
-        WHERE 
-        u.ID_USER = '" . session('user')[0]['ID_USER'] . "'
-    ");
-        // dd($data['document']);
+            SELECT
+                u.*
+            FROM
+                user u
+            WHERE 
+                u.ID_USER = '" . session('user')[0]['ID_USER'] . "'
+        ");
         return
             view('template.header', $data) .
             view('template_guest/profile/overview', $data) .
@@ -191,7 +195,7 @@ class ProfileGuest extends Controller
                 user_data.ID_USER = '" . session('user')[0]['ID_USER'] . "';
 
         ");
-        
+
         return
             view('template.header', $data) .
             view('template_guest/profile/myevents', $data) .
@@ -243,7 +247,7 @@ class ProfileGuest extends Controller
                 AND s.IS_DOWNLOADED = 1   
             ");
 
-            $data['data_personal'] = DB::selectOne("
+        $data['data_personal'] = DB::selectOne("
             SELECT
                 u.*
             FROM
@@ -251,8 +255,8 @@ class ProfileGuest extends Controller
             WHERE 
             u.ID_USER = '" . session('user')[0]['ID_USER'] . "'
         ");
-            
-            $data['document'] = DB::selectOne("
+
+        $data['document'] = DB::selectOne("
             SELECT user_data.*, instructor_req.STATUS
             FROM user_data
             LEFT JOIN instructor_req ON instructor_req.ID_USER = user_data.ID_USER
@@ -296,7 +300,7 @@ class ProfileGuest extends Controller
                 'UKM;KOPERASI' => 'koperasi_ukm',
                 'UMUM' => 'umum'
             ];
-    
+
             $joinCond = '';
             if ($mappingInstansi[$request->input('jenis_instansi')] == 'ukm') {
                 $joinCond = 'LEFT JOIN tb_ukm tu ON tu.ID_USER = u.ID_USER';
@@ -306,7 +310,7 @@ class ProfileGuest extends Controller
                 $joinCond = 'LEFT JOIN tb_koperasi tk ON tk.ID_USER = u.ID_USER
                             LEFT JOIN tb_ukm tk ON tu.ID_USER = u.ID_USER';
             }
-        
+
             // Query the database
             $data2 = DB::selectOne('
                 SELECT 
@@ -317,7 +321,7 @@ class ProfileGuest extends Controller
                 WHERE 
                     u.ID_USER = ?
             ', [session('user')[0]['ID_USER']]);
-            
+
             $is_data_complete = true;
             if ($data2) {
                 foreach ($data2 as $key => $value) {
@@ -429,7 +433,7 @@ class ProfileGuest extends Controller
         // if (session('user')[0]['IS_DATA_COMPLETE'] == false) {
         //     return response()->json(['status' => 'error', 'message' => 'Lengkapi data profil dan Nama Instansi Anda!!', 'code' => 1]);
         // }
-        
+
         DB::table('sertifikat_activity')->where('ID_ACTIVITY', $request->id_activity)->where('ID_USER', session('user')[0]['ID_USER'])->update($data_update);
 
         // SEND EMAIL SUCCESS DOWNLOAD SERTIFIKAT
@@ -444,15 +448,15 @@ class ProfileGuest extends Controller
 
         $details = [
             'name'  => $data['user']->NAME,
-            'title' => 'Selamat '.$data['user']->NAME.', Anda telah berhasil mengunduh sertifikat',
-            'body'  => 'Sertifikat dari '.$data['activity']->TYPE_ACTIVITY == 1 ? 'Webinar' : 'Kursus'.' Dengan Judul '.$data['activity']->TITLE_ACTIVITY.', Sertifikat yang telah diunduh dapat dilihat di halaman profil anda dibagian SertifikatKu',
+            'title' => 'Selamat ' . $data['user']->NAME . ', Anda telah berhasil mengunduh sertifikat',
+            'body'  => 'Sertifikat dari ' . $data['activity']->TYPE_ACTIVITY == 1 ? 'Webinar' : 'Kursus' . ' Dengan Judul ' . $data['activity']->TITLE_ACTIVITY . ', Sertifikat yang telah diunduh dapat dilihat di halaman profil anda dibagian SertifikatKu',
         ];
         $mail = new MailSender($details);
         $mail->subject("Sukses Download Sertifikat");
         Mail::to($data['user']->EMAIL)->send($mail);
         // END  SUCCESS DOWNLOAD SERTIFIKAT
 
-        return response()->json(['status' => 'success']);   
+        return response()->json(['status' => 'success']);
     }
     public function cekDataProfil($id_user, $instansi)
     {
@@ -474,7 +478,7 @@ class ProfileGuest extends Controller
             $joinCond = 'LEFT JOIN tb_koperasi tk ON tk.ID_USER = u.ID_USER
                         LEFT JOIN tb_ukm tk ON tu.ID_USER = u.ID_USER';
         }
-    
+
         // Query the database
         $data = DB::selectOne('
             SELECT 
@@ -485,7 +489,7 @@ class ProfileGuest extends Controller
             WHERE 
                 u.ID_USER = ?
         ', [$id_user]);
-    
+
         if ($data) {
             foreach ($data as $key => $value) {
                 if (is_null($value) || $value === '') {
@@ -501,10 +505,11 @@ class ProfileGuest extends Controller
                 }
             }
         }
-    
+
         return null;
     }
-    public function data_ukm_index(){
+    public function data_ukm_index()
+    {
         $data['title'] = "Data UKM";
 
         $data['data_personal'] = DB::selectOne("
@@ -528,7 +533,7 @@ class ProfileGuest extends Controller
                 *
             FROM
                 tb_ukm
-            WHERE ID_USER = "'.session('user')[0]['ID_USER'].'"
+            WHERE ID_USER = "' . session('user')[0]['ID_USER'] . '"
         ');
 
         if ($data['data_ukm'] == null) {
@@ -545,7 +550,7 @@ class ProfileGuest extends Controller
                     *
                 FROM
                     tb_ukm
-                WHERE ID_USER = "'.session('user')[0]['ID_USER'].'"
+                WHERE ID_USER = "' . session('user')[0]['ID_USER'] . '"
             ');
         }
 
@@ -583,7 +588,7 @@ class ProfileGuest extends Controller
             FROM 
                 tb_ukm tu
             WHERE 
-                ID_USER = '".session('user')[0]['ID_USER']."'
+                ID_USER = '" . session('user')[0]['ID_USER'] . "'
         ");
 
         $masterDataTables = [
@@ -597,7 +602,7 @@ class ProfileGuest extends Controller
             'pemasaran' => 'md_wilayah_pemasaran',
             'badan_usaha' => 'md_badan_usaha'
         ];
-    
+
         foreach ($masterDataTables as $key => $table) {
             $data[$key] = DB::table($table)->get()->toArray();
         }
@@ -620,7 +625,8 @@ class ProfileGuest extends Controller
             view('template_guest.profile.data_ukm', $data) .
             view('template.footer', $data);
     }
-    public function store_data_ukm (Request $request) {
+    public function store_data_ukm(Request $request)
+    {
         try {
             $data = [
                 'nama_ukm' => $request->input('namaUKM'),
@@ -628,14 +634,14 @@ class ProfileGuest extends Controller
                 'produk_dihasilkan' => $request->input('produkUKM'),
                 'id_kategori_ukm' => $request->input('kategoriProduk'),
                 'tahun_mulai' => $request->input('tahunMemulai'),
-                'kapasitas_produksi' => str_replace('.', '',$request->input('kapasitasProduksi')),
-                'volume_usaha' => str_replace('.', '',$request->input('volumePerbulan')),
+                'kapasitas_produksi' => str_replace('.', '', $request->input('kapasitasProduksi')),
+                'volume_usaha' => str_replace('.', '', $request->input('volumePerbulan')),
                 'tenaga_pria' => $request->input('tenagaLaki'),
                 'tenaga_wanita' => $request->input('tenagaPerempuan'),
                 'id_badan_usaha' => $request->input('bentukUsaha'),
                 'npwp' => $request->input('npwp'),
                 'lokasi_pemasaran' => $request->input('lokasiPemasaran'),
-                'nilai_realisasi' => str_replace('.', '',$request->input('nilaiRealisasi')),
+                'nilai_realisasi' => str_replace('.', '', $request->input('nilaiRealisasi')),
                 'tahun_realisasi' => $request->input('tahunRealisasi'),
                 'alamat_ukm' => $request->input('alamatUsaha'),
                 'id_provinsi' => $request->input('provinsi'),
@@ -651,7 +657,8 @@ class ProfileGuest extends Controller
             ], 422);
         }
     }
-    public function store_data_pemilik (Request $request) {
+    public function store_data_pemilik(Request $request)
+    {
         try {
             $data = [
                 'ID_USER'                       => session('user')[0]['ID_USER'],
@@ -665,7 +672,7 @@ class ProfileGuest extends Controller
                 'alamat_pemilik'                => $request->input('alamatPemilik'),
                 'updated_at'                    => date('Y-m-d H:i:s'),
             ];
-            
+
             DB::table('tb_ukm')->updateOrInsert(['ID_USER' => session('user')[0]['ID_USER']], $data);
             return redirect('data_ukm')->with('success', 'Data Pemilik UKM berhasil disimpan');
         } catch (\Throwable $e) {
@@ -675,7 +682,8 @@ class ProfileGuest extends Controller
             ], 422);
         }
     }
-    public function store_data_lain (Request $request) {
+    public function store_data_lain(Request $request)
+    {
         try {
             $get_id_ukm = DB::selectOne('
                 SELECT
@@ -708,7 +716,7 @@ class ProfileGuest extends Controller
                             'created_at' => now(),
                             'updated_at' => now(),
                         ];
-                        DB::table($mapping['table'])->Insert( $data);
+                        DB::table($mapping['table'])->Insert($data);
                     }
                 }
             }
@@ -721,7 +729,8 @@ class ProfileGuest extends Controller
             ], 422);
         }
     }
-    public function get_kota (Request $request) {
+    public function get_kota(Request $request)
+    {
         $id_kota = $request->id_kota;
         $data = DB::select('
             SELECT
@@ -729,7 +738,7 @@ class ProfileGuest extends Controller
             FROM
                 md_kota
             WHERE
-                id_provinsi = "'.$request->id.'"
+                id_provinsi = "' . $request->id . '"
         ');
         $html = '<label for="kota" class="form-label">Kota</label>
                 <select class="form-select" name="kota" id="kota" required>
@@ -741,7 +750,8 @@ class ProfileGuest extends Controller
         $html .= '</select>';
         return response()->json($html);
     }
-    public function data_koperasi_index(){
+    public function data_koperasi_index()
+    {
         $data['title'] = "Data Koperasi";
 
         $data['data_personal'] = DB::selectOne("
@@ -765,7 +775,7 @@ class ProfileGuest extends Controller
                 *
             FROM
                 tb_koperasi
-            WHERE ID_USER = "'.session('user')[0]['ID_USER'].'"
+            WHERE ID_USER = "' . session('user')[0]['ID_USER'] . '"
         ');
 
         if ($data['data_koperasi'] == null) {
@@ -782,7 +792,7 @@ class ProfileGuest extends Controller
                     *
                 FROM
                     tb_koperasi
-                WHERE ID_USER = "'.session('user')[0]['ID_USER'].'"
+                WHERE ID_USER = "' . session('user')[0]['ID_USER'] . '"
             ');
         }
 
@@ -832,7 +842,7 @@ class ProfileGuest extends Controller
             FROM 
                 tb_koperasi tk 
             WHERE 
-                ID_USER = '".session('user')[0]['ID_USER']."'
+                ID_USER = '" . session('user')[0]['ID_USER'] . "'
         ");
 
         $masterDataTables = [
@@ -845,7 +855,7 @@ class ProfileGuest extends Controller
             'kategori_ukm' => 'md_kategori_ukm',
             'permasalahan' => 'md_masalah_koperasi',
         ];
-    
+
         foreach ($masterDataTables as $key => $table) {
             $data[$key] = DB::table($table)->get()->toArray();
         }
@@ -862,7 +872,8 @@ class ProfileGuest extends Controller
             view('template_guest.profile.data_koperasi', $data) .
             view('template.footer', $data);
     }
-    public function store_data_koperasi (Request $request) {
+    public function store_data_koperasi(Request $request)
+    {
         try {
             $data = [
                 'nm_koperasi' => $request->input('namaKoperasi'),
@@ -874,12 +885,12 @@ class ProfileGuest extends Controller
                 'id_jenis_koperasi' => $request->input('jenisKoperasi'),
                 'id_kelompok_koperasi' => $request->input('kelompokKoperasi'),
                 'id_sektor_usaha' => $request->input('sektorUsaha'),
-                'volume_usaha' => str_replace('.', '',$request->input('volumePerbulan')),
-                'asset' =>str_replace('.', '',$request->input('asset')),
+                'volume_usaha' => str_replace('.', '', $request->input('volumePerbulan')),
+                'asset' => str_replace('.', '', $request->input('asset')),
                 'id_unit_usaha' => $request->input('UnitUsaha'),
-                'modal_sendiri' => str_replace('.', '',$request->input('modalSendiri')),
-                'modal_luar' => str_replace('.', '',$request->input('modalLuar')),
-                'sisa_hasil_usaha' => str_replace('.', '',$request->input('sisaHasilUsaha')),
+                'modal_sendiri' => str_replace('.', '', $request->input('modalSendiri')),
+                'modal_luar' => str_replace('.', '', $request->input('modalLuar')),
+                'sisa_hasil_usaha' => str_replace('.', '', $request->input('sisaHasilUsaha')),
                 'id_kota' => $request->input('kota'),
                 'updated_at' => date('Y-m-d H:i:s'),
             ];
@@ -892,7 +903,8 @@ class ProfileGuest extends Controller
             ], 422);
         }
     }
-    public function store_hukum_koperasi (Request $request) {
+    public function store_hukum_koperasi(Request $request)
+    {
         try {
             $data = [
                 'no_badan_hukum' => $request->input('noBadanHukum'),
@@ -913,7 +925,8 @@ class ProfileGuest extends Controller
             ], 422);
         }
     }
-    public function store_anggota_koperasi (Request $request) {
+    public function store_anggota_koperasi(Request $request)
+    {
         try {
             $data = [
                 'nm_ketua' => $request->input('namaKetua'),
@@ -940,7 +953,8 @@ class ProfileGuest extends Controller
         }
     }
 
-    public function store_masalah_koperasi (Request $request) {
+    public function store_masalah_koperasi(Request $request)
+    {
         try {
             $get_id_koperasi = DB::selectOne('
                 SELECT
@@ -960,7 +974,7 @@ class ProfileGuest extends Controller
                         'created_at' => now(),
                         'updated_at' => now(),
                     ];
-                    DB::table('tb_masalah_koperasi')->Insert( $data);
+                    DB::table('tb_masalah_koperasi')->Insert($data);
                 }
             }
 
@@ -972,7 +986,8 @@ class ProfileGuest extends Controller
             ], 422);
         }
     }
-    public function cek_email(Request $request) {
+    public function cek_email(Request $request)
+    {
         $email = $request->email;
         $id_user = session('user')[0]['ID_USER'];
 
@@ -1004,10 +1019,9 @@ class ProfileGuest extends Controller
         } else {
             return response()->json(['status' => 'success']);
         }
-
-        
     }
-    public function get_kota_option (Request $request) {
+    public function get_kota_option(Request $request)
+    {
         $id_kota = $request->id_kota == 'null' || empty($request->id_kota) ? '' : 'AND id_kota = "' . $request->id_kota . '"';
         $data = DB::select('
             SELECT
@@ -1015,8 +1029,8 @@ class ProfileGuest extends Controller
             FROM
                 md_kota
             WHERE
-                id_provinsi = "'.$request->id.'"
-                '.$id_kota.'
+                id_provinsi = "' . $request->id . '"
+                ' . $id_kota . '
         ');
         return response()->json($data);
     }

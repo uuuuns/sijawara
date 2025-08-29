@@ -27,7 +27,6 @@ class BadanUsaha extends Model
     }
     public function insertBU($data)
     {
-        // dd($data);
         $sql = DB::insert(
             "
             INSERT INTO  md_badan_usaha

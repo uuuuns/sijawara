@@ -19,19 +19,20 @@ class CourseController extends Controller
     public function __construct()
     {
         $smtpConfig = [
-            'transport' => 'smtp',
-            'host' => 'smtp-relay.brevo.com',
-            'port' => 587,
-            'from' => ['address' => 'sijawara@gmail.com', 'name' => 'SIJAWARA'],
-            'encryption' => 'tls',
-            'username' => 'dbi.malang.o@gmail.com',
-            'password' => '7YPLNq6KfpydDGBT',
+            'transport' => env('MAIL_MAILER'),
+            'host' => env('MAIL_HOST'),
+            'port' => env('MAIL_PORT'),
+            'from' => ['address' => 'sijawara.uptkukm@gmail.com', 'name' => 'SIJAWARA+'],
+            'encryption' => env('MAIL_ENCRYPTION'),
+            'username' => env('MAIL_USERNAME'),
+            'password' => env('MAIL_PASSWORD'),
         ];
         config(['mail.mailers.smtp' => $smtpConfig]);
     }
+    
     public function index()
     {
-        $data['title'] = "Kursus";
+        $data['title'] = "Kursus - SIJAWARA+";
 
         if (session('user')[0]->get('ID_ROLE') == 1 || session('user')[0]->get('ID_ROLE') == 4) {
             $data["activity"] = DB::select("
@@ -100,7 +101,7 @@ class CourseController extends Controller
 
     public function add_course()
     {
-        $data['title'] = "Kursus Baru";
+        $data['title'] = "Kursus Baru - SIJAWARA+";
 
         $data["kategori"] = DB::select("
             SELECT
@@ -235,7 +236,7 @@ class CourseController extends Controller
 
     public function update_course(Request $req)
     {
-        $data['title'] = "Edit Kursus";
+        $data['title'] = "Edit Kursus - SIJAWARA+";
 
         $data['kategori'] = DB::select("
             SELECT
@@ -839,7 +840,7 @@ class CourseController extends Controller
 
     public function index_lihat_peserta(Request $req)
     {
-        $data['title'] = "Peserta Kursus";
+        $data['title'] = "Peserta Kursus - SIJAWARA+";
 
         $data['list_peserta'] = DB::select("
             SELECT
