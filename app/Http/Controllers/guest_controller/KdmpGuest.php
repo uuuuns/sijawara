@@ -674,4 +674,14 @@ class KdmpGuest extends Controller
 			return redirect('profil/kursusku')->with(['err_msg' => 'Sudah mengambil join Kursus ini', 'location' => 'profil/kursusku']);
 		}
 	}
+
+	public function GenerateUniqID_Order($var)
+	{
+		$string = preg_replace('/[^a-z]/i', '', $var);
+		$vocal = array("a", "e", "i", "o", "u", "A", "E", "I", "O", "U", " ");
+		$scrap = str_replace($vocal, "", $string);
+		$begin = substr($scrap, 0, 6);
+		$uniqid = strtoupper($begin);
+		return "ORD_" . $uniqid . substr(md5(time()), 0, 6);
+	}
 }
