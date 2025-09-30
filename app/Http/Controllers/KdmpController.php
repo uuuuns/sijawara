@@ -139,7 +139,6 @@ class KdmpController extends Controller
                 'DATE_START'            => $req->input('date_start'),
                 'DATE_END'              => $req->input('date_end'),
                 'IS_PUBLIC'             => $req->input('is_public'),
-                'NAMA_INSTRUKTUR'       => $req->input('instruktur_name'),
                 'LOG_TIME'              => date('Y-m-d H:i:s'),
                 'SERTIF_IMAGE'          => $req->hasFile('sertif_image') ? FileUpload::S3($req->file('sertif_image'), 'SERTIF_IMAGE', 'Template-Certifiace-' . strtotime(now())) : null
             ];
@@ -154,8 +153,7 @@ class KdmpController extends Controller
                 'ID_COURSE'             => $this->GenerateUniqID('ACT', $req->input('announcement')),
                 'ID_ACTIVITY'           => $activity['ID_ACTIVITY'],
                 'DESKRIPSI_COURSE'      => $req->input('desc_course'),
-                'BENEFIT'               => $req->input('benefit'),
-                'KATEGORI'              => $req->input('category')
+                'BENEFIT'               => $req->input('benefit')
             ];
     
             if (!empty($req->input('kuota_peserta')) || $req->input('kuota_peserta') != 0) {
@@ -410,7 +408,6 @@ class KdmpController extends Controller
                 'DATE_START'            => $req->input('date_start'),
                 'DATE_END'              => $req->input('date_end'),
                 'IS_PUBLIC'             => $req->input('is_public'),
-                'NAMA_INSTRUKTUR'       => $req->input('instruktur_name'),
                 'LOG_TIME'              => date('Y-m-d H:i:s')
             ];
 
@@ -431,8 +428,7 @@ class KdmpController extends Controller
             $course = [
                 'ID_ACTIVITY'           => $req->input('ID_ACTIVITY'),
                 'DESKRIPSI_COURSE'      => $req->input('desc_course'),
-                'BENEFIT'               => $req->input('benefit'),
-                'KATEGORI'              => $req->input('category')
+                'BENEFIT'               => $req->input('benefit')
             ];
 
             if (!empty($req->input('kuota_peserta')) || $req->input('kuota_peserta') != 0) {

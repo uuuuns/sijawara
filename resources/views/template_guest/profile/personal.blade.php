@@ -113,6 +113,7 @@
                 <option value="KOPERASI">KOPERASI</option>
                 <option value="INSTANSI">INSTANSI</option>
                 <option value="UMUM">UMUM</option>
+                <option value="KDMP">KDMP</option>
             </select>
             <input type="hidden" name="jenis_instansi" multiple="multiple" class="form-control input-text woocommerce-Input woocommerce-Input--text" placeholder="Nama Instansi Anda" value="<?= $data_personal->JENIS_INSTANSI ?>" required disabled>
         </div>
