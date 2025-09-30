@@ -14,6 +14,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::post('auth/login', 'api\Auth@login');
+Route::post('auth/register', 'api\Auth@register');
+Route::get('auth/getUserData', 'api\Auth@getDataUser');
+
+Route::get('masterdata/kota', 'api\MasterData@masterDataKota');
+Route::get('masterdata/provinsi', 'api\MasterData@masterDataProvinsi');
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
