@@ -71,13 +71,15 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-sm-2 col-form-label control-label">Template Sertifikat <span class="text-danger">*</span>
+                            <label class="col-sm-2 col-form-label control-label">Template Sertifikat <span
+                                    class="text-danger">*</span>
                             </label>
                             <div class="col-md-10">
                                 <div class="custom-file">
                                     <input type="file" name="sertif_image" class="custom-file-input dropify"
                                         accept=".jpg" data-allowed-file-extensions="jpg" data-max-file-size="5M">
-                                    <small class="text-danger">* Hanya Masukkan file JPG dan Ukuran Template adalah Horizontal A4</small>
+                                    <small class="text-danger">* Hanya Masukkan file JPG dan Ukuran Template adalah
+                                        Horizontal A4</small>
                                 </div>
                             </div>
                         </div>
@@ -93,30 +95,16 @@
                         <div class="form-group row ">
                             <label class="col-sm-2 col-form-label control-label">Kuota Peserta Kursus</label>
                             <div class="col-md-10">
-                                <input type="number" class="form-control" name="kuota_peserta" placeholder="Kosongi apabila tidak ada batasan"
-                                    required>
+                                <input type="number" class="form-control" name="kuota_peserta"
+                                    placeholder="Kosongi apabila tidak ada batasan" required>
                             </div>
                         </div>
-                        <div class="form-group row">
+                        <div class="form-group d-none">
                             <label class="col-sm-2 col-form-label control-label">Tipe Kursus <span
                                     class="text-danger">*</span></label>
                             <div class="col-md-10">
-                                <select class="select2" name="is_public">
-                                    <option value="1">Umum</option>
-                                    <option value="0">Pribadi</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-sm-2 col-form-label control-label">Kategori <span
-                                    class="text-danger">*</span></label>
-                            <div class="col-md-10">
-                                <select class="select2" name="category">
-                                    @foreach ($data['kategori'] as $item)
-                                        <option value="<?= $item->ID_KATEGORI ?>"><?= $item->KATEGORI ?>
-                                        </option>
-                                    @endforeach
-                                </select>
+                                <input class="select2" name="is_public" value="1">
+                                </input>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -126,13 +114,6 @@
                                     <input type="checkbox" id="switch-1" name="status" checked="">
                                     <label for="switch-1"></label>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-sm-2 col-form-label control-label">Nama Instruktur</label>
-                            <div class="col-md-10">
-                                <input type="text" placeholder="kosongi bila nama instruktur sama dengan nama akun" class="form-control" name="instruktur_name">
-                                <small class="text-danger">kosongi bila nama instruktur sama dengan nama akun yang membuat kursus</small>
                             </div>
                         </div>
                         <div class="accordion materi_form" id="accordion-default">
@@ -146,10 +127,11 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="form-group text-end mt-5">
-                        <button type="button" onclick="cek_soal()" class="btn btn-primary rounded btn-submit-form">Kirim</button>
-                    </div>
+                </div>
+                <div class="form-group text-end mt-5">
+                    <button type="button" onclick="cek_soal()"
+                        class="btn btn-primary rounded btn-submit-form">Kirim</button>
+                </div>
                 </form>
             </div>
         </div>
@@ -183,185 +165,185 @@
     </div>
     {{-- End add Item --}}
 
-<script>
-    var id_quiz = 1;
-    var limit = 0;
+    <script>
+        var id_quiz = 1;
+        var limit = 0;
 
-    var data = {!! $jsonData !!};
-    
-    var id_course = data.ID_COURSE;
-    var id_act = data.ID_ACTIVITY;
+        var data = {!! $jsonData !!};
 
-    var item = <?= $data['item'] ?>;
+        var id_course = data.ID_COURSE;
+        var id_act = data.ID_ACTIVITY;
 
-    // Load Image
-    var cover_book = $('input[name="image_activity"]').dropify();
-    cover_book = cover_book.data('dropify');
-    cover_book.resetPreview();
-    cover_book.clearElement();
-    cover_book.settings['defaultFile'] = data.IMAGE_ACTIVITY;
-    cover_book.destroy();
-    cover_book.init();
+        var item = <?= $data['item'] ?>;
 
-    var sertif_image = $('input[name="sertif_image"]').dropify();
-    sertif_image = sertif_image.data('dropify');
-    sertif_image.resetPreview();
-    sertif_image.clearElement();
-    sertif_image.settings['defaultFile'] = data.SERTIF_IMAGE;
-    sertif_image.destroy();
-    sertif_image.init();
+        // Load Image
+        var cover_book = $('input[name="image_activity"]').dropify();
+        cover_book = cover_book.data('dropify');
+        cover_book.resetPreview();
+        cover_book.clearElement();
+        cover_book.settings['defaultFile'] = data.IMAGE_ACTIVITY;
+        cover_book.destroy();
+        cover_book.init();
+
+        var sertif_image = $('input[name="sertif_image"]').dropify();
+        sertif_image = sertif_image.data('dropify');
+        sertif_image.resetPreview();
+        sertif_image.clearElement();
+        sertif_image.settings['defaultFile'] = data.SERTIF_IMAGE;
+        sertif_image.destroy();
+        sertif_image.init();
 
 
-    $('input[name="ID_ACTIVITY"]').val(id_act);
-    $('input[name="ID_COURSE"]').val(id_course);
-    $('input[name="title_activity"]').val(data.TITLE_ACTIVITY);
-    $('input[name="instruktur_name"]').val(data.NAMA_INSTRUKTUR);
-    $('input[name="date_start"]').val(data.DATE_START);
-    $('input[name="date_end"]').val(data.DATE_END);
-    $('input[name="certif_code"]').val(data.SERTIF_CODE);
-    $('select[name="is_public"]').val(data.IS_PUBLIC);
-    $('select[name="is_public"]').trigger('change');
-    if (data.KUOTA_PESERTA >= 1) {
-        $('select[name="kuota_peserta"]').val(data.KUOTA_PESERTA);
-    }
-    $('select[name="category"]').val(data.ID_KATEGORI);
-    $('input[name="status"]').prop('checked', data.STATUS);
-    
-    $.ajax({
-        url: 'get/' + id_act,
-        method: 'GET',
-        dataType: 'JSON',
-        success: function(response) {
-            $('#desc_course').summernote('code', response[0].DESKRIPSI_COURSE);
-            $('#benefit').summernote('code', response[0].BENEFIT);
-        },
-        error: function(xhr, status, error) {
-            console.error(error);
+        $('input[name="ID_ACTIVITY"]').val(id_act);
+        $('input[name="ID_COURSE"]').val(id_course);
+        $('input[name="title_activity"]').val(data.TITLE_ACTIVITY);
+        $('input[name="instruktur_name"]').val(data.NAMA_INSTRUKTUR);
+        $('input[name="date_start"]').val(data.DATE_START);
+        $('input[name="date_end"]').val(data.DATE_END);
+        $('input[name="certif_code"]').val(data.SERTIF_CODE);
+        $('select[name="is_public"]').val(data.IS_PUBLIC);
+        $('select[name="is_public"]').trigger('change');
+        if (data.KUOTA_PESERTA >= 1) {
+            $('select[name="kuota_peserta"]').val(data.KUOTA_PESERTA);
         }
-    });
+        $('select[name="category"]').val(data.ID_KATEGORI);
+        $('input[name="status"]').prop('checked', data.STATUS);
 
-    $(document).ready(function() {
-        var $editor = $('#desc_course');
-        $editor.summernote({
-            height: 200,
-            callbacks: {
-                onImageUpload: function(files) {
-                    $summernote.summernote('insertNode', imgNode);
-                }
-            },
-            toolbar: [
-                ['style', ['bold', 'italic', 'underline']],
-                ['fontsize', ['fontsize']],
-                ['color', ['color']],
-                ['height', ['height']],
-                ['operation', ['undo', 'redo']],
-                ['para', ['paragraph']],
-                ['object', ['link']]
-            ]
-        });
-
-        $('#insert-btn').click(() => {
-            $editor.summernote('insertParagraph');
-        });
-
-        $('#bold-btn').click(() => {
-            $editor.summernote('bold');
-        });
-    });
-
-    $(document).ready(function() {
-        var $editor = $('#benefit');
-        $editor.summernote({
-            height: 200,
-            callbacks: {
-                onImageUpload: function(files) {
-                    $summernote.summernote('insertNode', imgNode);
-                }
-            },
-            toolbar: [
-                ['style', ['bold', 'italic', 'underline']],
-                ['fontsize', ['fontsize']],
-                ['color', ['color']],
-                ['height', ['height']],
-                ['operation', ['undo', 'redo']],
-                ['para', ['paragraph']],
-                ['object', ['link']]
-            ]
-        });
-
-        $('#insert-btn').click(() => {
-            $editor.summernote('insertParagraph');
-        });
-
-        $('#bold-btn').click(() => {
-            $editor.summernote('bold');
-        });
-    });
-
-    $('#add_materi').click(function(e) {
-        $("#add_item").addClass("disabled");
-        $("#add_item").html("Loading...");
         $.ajax({
-            url: 'add_materi/' + item,
-            success: function(html) {
-                $(".materi_form").append(html);
-                $("#add_item").removeClass("disabled");
-                $("#add_item").html("Tambahkan Materi atau Kuis");
-                item++;
-                limit++;
-            }
-        });
-        e.preventDefault();
-    });
-
-    $('#add_quiz').click(function(e) {
-        $("#add_item").addClass("disabled");
-        $("#add_item").html("Loading...");
-        $.ajax({
-            url: 'add_quiz/' + item + '/' + id_quiz,
-            success: function(html) {
-                $(".materi_form").append(html);
-                $("#add_item").removeClass("disabled");
-                $("#add_item").html("Tambahkan Materi atau Kuis");
-                item++;
-                limit++;
-                id_quiz++;
-            }
-        });
-        e.preventDefault();
-    });
-
-    $.ajax({
-        url: 'get_course_item/' + id_course,
-        type: "GET",
-        beforeSend: function() {
-            $('#add_item').toggleClass("is-loading");
-        },
-        success: function(html) {
-            $("#add_item").removeClass("is-loading");
-            $(".materi_form").append(html);
-            limit = item;
-        }
-    });
-
-    $(document).ready(function() {
-        $('.dropify').dropify({
-            messages: {
-                default: 'Tarik dan lepas gambar disini atau klik',
-                replace: 'Ganti',
-                remove: 'Hapus',
-                error: 'Error'
+            url: 'get/' + id_act,
+            method: 'GET',
+            dataType: 'JSON',
+            success: function(response) {
+                $('#desc_course').summernote('code', response[0].DESKRIPSI_COURSE);
+                $('#benefit').summernote('code', response[0].BENEFIT);
             },
-            error: {
-                'fileSize': 'File terlalu besar (1MB maksimal).'
+            error: function(xhr, status, error) {
+                console.error(error);
             }
         });
-    });
 
-    $(document).ready(function() {
-        $('#req').change(function() {
-            if ($(this).is(':checked')) {
-                $('#requirement-container').html(`
+        $(document).ready(function() {
+            var $editor = $('#desc_course');
+            $editor.summernote({
+                height: 200,
+                callbacks: {
+                    onImageUpload: function(files) {
+                        $summernote.summernote('insertNode', imgNode);
+                    }
+                },
+                toolbar: [
+                    ['style', ['bold', 'italic', 'underline']],
+                    ['fontsize', ['fontsize']],
+                    ['color', ['color']],
+                    ['height', ['height']],
+                    ['operation', ['undo', 'redo']],
+                    ['para', ['paragraph']],
+                    ['object', ['link']]
+                ]
+            });
+
+            $('#insert-btn').click(() => {
+                $editor.summernote('insertParagraph');
+            });
+
+            $('#bold-btn').click(() => {
+                $editor.summernote('bold');
+            });
+        });
+
+        $(document).ready(function() {
+            var $editor = $('#benefit');
+            $editor.summernote({
+                height: 200,
+                callbacks: {
+                    onImageUpload: function(files) {
+                        $summernote.summernote('insertNode', imgNode);
+                    }
+                },
+                toolbar: [
+                    ['style', ['bold', 'italic', 'underline']],
+                    ['fontsize', ['fontsize']],
+                    ['color', ['color']],
+                    ['height', ['height']],
+                    ['operation', ['undo', 'redo']],
+                    ['para', ['paragraph']],
+                    ['object', ['link']]
+                ]
+            });
+
+            $('#insert-btn').click(() => {
+                $editor.summernote('insertParagraph');
+            });
+
+            $('#bold-btn').click(() => {
+                $editor.summernote('bold');
+            });
+        });
+
+        $('#add_materi').click(function(e) {
+            $("#add_item").addClass("disabled");
+            $("#add_item").html("Loading...");
+            $.ajax({
+                url: 'add_materi/' + item,
+                success: function(html) {
+                    $(".materi_form").append(html);
+                    $("#add_item").removeClass("disabled");
+                    $("#add_item").html("Tambahkan Materi atau Kuis");
+                    item++;
+                    limit++;
+                }
+            });
+            e.preventDefault();
+        });
+
+        $('#add_quiz').click(function(e) {
+            $("#add_item").addClass("disabled");
+            $("#add_item").html("Loading...");
+            $.ajax({
+                url: 'add_quiz/' + item + '/' + id_quiz,
+                success: function(html) {
+                    $(".materi_form").append(html);
+                    $("#add_item").removeClass("disabled");
+                    $("#add_item").html("Tambahkan Materi atau Kuis");
+                    item++;
+                    limit++;
+                    id_quiz++;
+                }
+            });
+            e.preventDefault();
+        });
+
+        $.ajax({
+            url: 'get_course_item/' + id_course,
+            type: "GET",
+            beforeSend: function() {
+                $('#add_item').toggleClass("is-loading");
+            },
+            success: function(html) {
+                $("#add_item").removeClass("is-loading");
+                $(".materi_form").append(html);
+                limit = item;
+            }
+        });
+
+        $(document).ready(function() {
+            $('.dropify').dropify({
+                messages: {
+                    default: 'Tarik dan lepas gambar disini atau klik',
+                    replace: 'Ganti',
+                    remove: 'Hapus',
+                    error: 'Error'
+                },
+                error: {
+                    'fileSize': 'File terlalu besar (1MB maksimal).'
+                }
+            });
+        });
+
+        $(document).ready(function() {
+            $('#req').change(function() {
+                if ($(this).is(':checked')) {
+                    $('#requirement-container').html(`
                 <div class="form-group row">
                     <label class="col-sm-2 col-form-label control-label">Persyaratan Kursus</label>
                     <div class="col-md-5">
@@ -374,54 +356,54 @@
                 </div>
             `);
 
-                $('#reqSelect').select2({
-                    placeholder: "Select Requirement ...",
-                    allowClear: true,
-                    width: '100%'
-                });
-            } else {
-                $('#requirement-container').empty();
-            }
+                    $('#reqSelect').select2({
+                        placeholder: "Select Requirement ...",
+                        allowClear: true,
+                        width: '100%'
+                    });
+                } else {
+                    $('#requirement-container').empty();
+                }
+            });
         });
-    });
 
-    $('#form-user').submit(function(e) {
-        Swal.fire({
-            icon: 'warning',
-            title: 'Mohon Tunggu',
-            text: 'jangan tutup halaman ini sampai proses selesai',
-            showConfirmButton: false,
-            allowOutsideClick: false,
-            allowEscapeKey: false,
+        $('#form-user').submit(function(e) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Mohon Tunggu',
+                text: 'jangan tutup halaman ini sampai proses selesai',
+                showConfirmButton: false,
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+            });
         });
-    });
-    
 
-    function cek_soal() {
-        no_accordion = 1;
-        while ($('#quiz_item_' + no_accordion).length) {
-            var limit_soal = $('#limit_soal_' + no_accordion).val();
-            if (limit_soal == '') {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Limit soal tidak boleh kosong di quiz nomor ' + no_accordion,
-                });
-                return false;
-            } else {
-                var questionCount = $('.soal_form_'+no_accordion+' input[name^="question["]').length;
-                if (limit_soal > questionCount) {
+
+        function cek_soal() {
+            no_accordion = 1;
+            while ($('#quiz_item_' + no_accordion).length) {
+                var limit_soal = $('#limit_soal_' + no_accordion).val();
+                if (limit_soal == '') {
                     Swal.fire({
                         icon: 'error',
-                        title: 'Soal Quiz Kurang',
-                        text: 'Jumlah soal kurang dari limit yang ditentukan di quiz nomor ' + no_accordion,
+                        title: 'Oops...',
+                        text: 'Limit soal tidak boleh kosong di quiz nomor ' + no_accordion,
                     });
                     return false;
+                } else {
+                    var questionCount = $('.soal_form_' + no_accordion + ' input[name^="question["]').length;
+                    if (limit_soal > questionCount) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Soal Quiz Kurang',
+                            text: 'Jumlah soal kurang dari limit yang ditentukan di quiz nomor ' + no_accordion,
+                        });
+                        return false;
+                    }
                 }
+                no_accordion++;
             }
-            no_accordion++;
+            $('#form-user').submit();
         }
-        $('#form-user').submit();
-    }
-</script>
+    </script>
 @endsection
