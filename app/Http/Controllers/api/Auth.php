@@ -98,7 +98,7 @@ class Auth extends Controller
 
                 $data_user = [
                     'ID_USER'           => $KODE_USER,
-                    'NAMA'              => $nama,
+                    'NAME'              => $nama,
                     'EMAIL'             => $email,
                     'JENIS_INSTANSI'    => $jenis_instansi,
                     'PASS'              => $pass,
