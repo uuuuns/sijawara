@@ -153,6 +153,7 @@ class Auth extends Controller
                     u.NAMA_INSTANSI,
                     u.JABATAN,
                     u.JENIS_INSTANSI,
+                    COALESCE(year(tk.tgl_badan_hukum), tu.tahun_mulai) AS TAHUN_BERDIRI,
                     u.STATUS,
                     k.nama_kota AS KOTA,
                     p.nama_province AS PROVINSI
@@ -162,6 +163,10 @@ class Auth extends Controller
                     k.ID_KOTA = u.ID_KOTA
                 LEFT JOIN md_provinsi p ON
                     p.ID_PROVINSI = k.ID_PROVINSI
+                LEFT JOIN tb_koperasi tk ON
+                    tk.ID_USER = u.ID_USER
+                LEFT JOIN tb_ukm tu ON
+                    tu.ID_USER = u.ID_USER
                 WHERE
                     u.ID_ROLE = 3
                 ORDER BY
@@ -173,7 +178,7 @@ class Auth extends Controller
             return response([
                 'status_code'       => 200,
                 'status_message'    => 'Syncronize Berhasil!',
-                'data_user'     => $data_user,
+                'data_user'         => $data_user,
                 // 'data'              => [
                 //     'data_user'     => $data_user,
                 //     'data_koperasi' => $data_koperasi,
