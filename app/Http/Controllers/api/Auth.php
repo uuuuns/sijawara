@@ -147,6 +147,7 @@ class Auth extends Controller
                     u.JK AS JENIS_KELAMIN,
                     u.FOTO_PROFILE,
                     u.NIK,
+                    u.ID_ROLE,
                     u.ALAMAT,
                     u.TGL_LAHIR as TANGGAL_LAHIR,
                     u.TEMPAT_LAHIR,
