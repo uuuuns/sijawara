@@ -102,7 +102,7 @@ class Auth extends Controller
                     'EMAIL'             => $email,
                     'JENIS_INSTANSI'    => $jenis_instansi,
                     'PASS'              => $pass,
-                    'ID_ROLE'           => 2,
+                    'ID_ROLE'           => 3,
                     'STATUS'            => 1,
                     'REG_TIME'          => date('Y-m-d H:i:s')
                 ];
