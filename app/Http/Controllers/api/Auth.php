@@ -235,20 +235,13 @@ class Auth extends Controller
                     u.NAME ASC
             ", [$ID_USER]);
 
-            if (!empty($data_user)) {
-                return response([
-                    'status_code'       => 200,
-                    'status_message'    => 'Kode User ditemukan!',
-                    'info_user'         => $data_user,
-                ], 200);
-            } else {
-                return response([
-                'status_code'       => 200,
-                'status_message'    => 'Kode User Tidak ditemukan!'
+            return response()->json([
+                'status_code'    => !empty($data_user) ? 200 : 404,
+                'status_message' => !empty($data_user) ? 'Kode User ditemukan!' : 'Kode User tidak ditemukan!',
+                'info_user'      => $data_user ?? null,
             ], 200);
-            }
         } catch (Exception $exp) {
-            return response([
+            return response()->json([
                 'status_code'       => 500,
                 'status_message'    => $exp->getMessage(),
             ], 200);
