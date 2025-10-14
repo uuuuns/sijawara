@@ -172,18 +172,72 @@ class Auth extends Controller
                 ORDER BY
                     u.NAME ASC
             ");
-            // $data_koperasi = DB::table('tb_koperasi')->get();
-            // $data_ukm = DB::table('tb_ukm')->get();
 
             return response([
                 'status_code'       => 200,
                 'status_message'    => 'Syncronize Berhasil!',
                 'data_user'         => $data_user,
-                // 'data'              => [
-                //     'data_user'     => $data_user,
-                //     'data_koperasi' => $data_koperasi,
-                //     'data_ukm'      => $data_ukm
-                // ]
+            ], 200);
+        } catch (Exception $exp) {
+            return response([
+                'status_code'       => 500,
+                'status_message'    => $exp->getMessage(),
+            ], 200);
+        }
+    }
+
+    public function getUserInfo()
+    {
+        if ($_GET["secret_key"] != $this->secret_key) {
+            return response([
+                "status_code"       => 403,
+                "status_message"    => "Akses ditolak!"
+            ], 200);
+        }
+
+        try {
+            $ID_USER = strip_tags($_GET["ID_USER"]);
+
+            $data_user = DB::Select("
+                SELECT
+                    u.ID_USER,
+                    u.NAME AS NAMA,
+                    u.EMAIL,
+                    u.TELP AS NO_TELP,
+                    u.JK AS JENIS_KELAMIN,
+                    u.FOTO_PROFILE,
+                    u.NIK,
+                    u.ID_ROLE,
+                    u.ALAMAT,
+                    u.TGL_LAHIR as TANGGAL_LAHIR,
+                    u.TEMPAT_LAHIR,
+                    u.NAMA_INSTANSI,
+                    u.JABATAN,
+                    u.JENIS_INSTANSI,
+                    COALESCE(year(tk.tgl_badan_hukum), tu.tahun_mulai) AS TAHUN_BERDIRI,
+                    u.STATUS,
+                    k.nama_kota AS KOTA,
+                    p.nama_province AS PROVINSI
+                FROM
+                    user u
+                LEFT JOIN md_kota k ON
+                    k.ID_KOTA = u.ID_KOTA
+                LEFT JOIN md_provinsi p ON
+                    p.ID_PROVINSI = k.ID_PROVINSI
+                LEFT JOIN tb_koperasi tk ON
+                    tk.ID_USER = u.ID_USER
+                LEFT JOIN tb_ukm tu ON
+                    tu.ID_USER = u.ID_USER
+                WHERE
+                    ID_USER = ?
+                ORDER BY
+                    u.NAME ASC
+            ",[$ID_USER]);
+
+            return response([
+                'status_code'       => 200,
+                'status_message'    => 'Data Valid!',
+                'info_user'         => $data_user,
             ], 200);
         } catch (Exception $exp) {
             return response([

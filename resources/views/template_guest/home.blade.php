@@ -44,9 +44,114 @@
     }
 
     .bg-indonesia {
-        background: linear-gradient(to bottom, red 50%, white 50%);
+        background: url("{{ asset('assets_new/images/bg_carousel_kdmp.png') }}") no-repeat center center;
+        background-size: cover;
+        background-attachment: fixed;
+        position: relative;
+        color: #fff;
+        z-index: 1;
+    }
+
+    .bg-indonesia::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.35);
+        z-index: -1;
+    }
+
+    .carousel-item.bg-indonesia h1 {
+        font-size: 2.4rem;
+        font-weight: 800;
+        color: #ffffff;
+        margin-bottom: 0.75rem;
+        text-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .carousel-item.bg-indonesia p.fw-semibold {
+        font-size: 1.25rem;
+        line-height: 1.7;
+        font-weight: 600;
+        color: #f0f0f0;
+        margin-bottom: 1.25rem;
+    }
+
+    .carousel-item.bg-indonesia p {
+        font-size: 1.05rem;
+        line-height: 1.6;
+        color: #f5f5f5;
+        font-weight: 500;
+    }
+
+    .btn-kdmp {
+        background: linear-gradient(135deg, #ffffff, #f6f6f6);
+        color: #C62828;
+        font-weight: 600;
+        font-size: 16px;
+        padding: 12px 30px;
+        border: none;
+        border-radius: 10px;
+        letter-spacing: 0.3px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(255, 255, 255, 0.4);
+    }
+
+    .btn-kdmp:hover {
+        background: linear-gradient(135deg, #fffafa, #f4f4f4);
+        color: #b71c1c;
+        box-shadow: 0 6px 18px rgba(255, 255, 255, 0.55);
+        transform: translateY(-3px);
+    }
+
+    .btn-kdmp:active {
+        transform: translateY(0);
+        box-shadow: 0 3px 8px rgba(255, 255, 255, 0.3);
+    }
+
+    /* === Responsive Styling === */
+    @media (max-width: 991.98px) {
+        .carousel-item.bg-indonesia h1 {
+            font-size: 2.3rem;
+            text-align: left;
+        }
+
+        .carousel-item.bg-indonesia p,
+        .carousel-item.bg-indonesia p.fw-semibold {
+            text-align: left;
+            font-size: 1.25rem;
+            /* +3px dari sebelumnya */
+        }
+
+        .carousel-item.bg-indonesia .d-flex {
+            justify-content: flex-start;
+        }
+
+        .btn-kdmp {
+            width: 100%;
+            font-size: 18px;
+            padding: 14px 0;
+        }
+    }
+
+    @media (max-width: 575.98px) {
+        .carousel-item.bg-indonesia h1 {
+            font-size: 1.9rem;
+            line-height: 1.3;
+            text-align: left;
+        }
+
+        .carousel-item.bg-indonesia p {
+            font-size: 1.1rem;
+            text-align: left;
+        }
+
+        .carousel-item.bg-indonesia p.fw-semibold {
+            font-size: 1.25rem;
+            text-align: left;
+        }
     }
 </style>
+
 <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
     <div class="carousel-inner">
         <!-- Slide Default -->
@@ -95,37 +200,34 @@
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-12 col-lg-7 py-2 px-4">
-                        <h1 class="fw-bold">Selamat Datang di SIJAWARA+ PMDK</h1>
-                        <p class="fw-semibold text-dark pt-3">
-                            SIJAWARA adalah akronim dari Sistem Informasi Pembelajaran dan Peningkatan Wawasan
-                            Perkoperasian.
-                            Melalui sijawara, sobat bisa mempelajari secara mandiri ilmu perkoperasian. Tak hanya itu,
-                            sobat sijawara bisa juga mempelajari ilmu terkait pengembangan UMKM.
+                        <h1 class="fw-bold">Koperasi Desa Merah Putih</h1>
+                        <p class="fw-semibold pt-3">
+                            Sijawara sekarang hadir untuk memberikan kemudahan pengurus/pengawas/anggota Koperasi
+                            <b>Desa/Kelurahan Merah Putih</b> dalam mempelajari ilmu perkoperasian secara mandiri.
                         </p>
-                        <svg class="w-100" width="375" height="34" viewBox="0 0 487 34" fill="none"
+                        {{-- <svg class="w-100" width="375" height="34" viewBox="0 0 487 34" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
-                            <path d="M4 30C73.6307 10.3798 266.914 -17.0885 483 30" stroke="#45B104" stroke-width="8"
+                            <path d="M4 30C73.6307 10.3798 266.914 -17.0885 483 30" stroke="#000000" stroke-width="8"
                                 stroke-linecap="round" />
-                        </svg>
-                        <p class="py-3" style="font-size:14px;color:#505050;font-weight:500">
-                            Tersedia video pembelajaran, materi tertulis, dan dilengkapi soal-soal. Kamu juga akan
-                            mendapatkan sertifikat.
-                            Sijawara juga hadir untuk pembelajaran daring. Pilih materi yang disukai dan segera
-                            daftarkan dirimu !!!
+                        </svg> --}}
+                        <br>
+                        <p class="py-3" style="font-size:18px;color:#c3c3c3;font-weight:500">
+                            Simak videonya, pelajari materinya, dan selesaikan quiznya.
+                            Bagi yang lulus berhak mendapatkan e-sertifikat.
                         </p>
                         <div class="d-flex gap-2">
-                            <button class="btn btn-main py-2 px-4 rounded"
-                                onclick="window.location.href = '/kursus'">Mulai PMDK</button>
-                            @if (empty(session('user')))
+                            <button class="btn-kdmp py-2 px-4" onclick="window.location.href = '/kdmp'">Mulai
+                                KDMP</button>
+                            {{-- @if (empty(session('user')))
                                 <button class="btn btn-main-outline py-2 px-4 rounded"
                                     onclick="window.location.href = '/daftar'">Daftar</button>
-                            @endif
+                            @endif --}}
                         </div>
                     </div>
-                    <div class="col-0 col-lg-5 text-end d-none d-sm-block ">
+                    {{-- <div class="col-0 col-lg-5 text-end d-none d-sm-block ">
                         <img src="{{ asset('assets_new/images/new/ANIMASI.png') }}"
                             style="max-width: 90%; height: auto;" />
-                    </div>
+                    </div> --}}
                 </div>
             </div>
         </div>
