@@ -196,7 +196,7 @@ class Auth extends Controller
         }
 
         try {
-            $ID_USER = strip_tags($_GET["ID_USER"]);
+            $ID_USER = strip_tags($_GET["id_user"]);
 
             $data_user = DB::Select("
                 SELECT
