@@ -233,13 +233,20 @@ class Auth extends Controller
                     u.ID_USER = ?
                 ORDER BY
                     u.NAME ASC
-            ",[$ID_USER]);
+            ", [$ID_USER]);
 
-            return response([
+            if (!empty($data_user)) {
+                return response([
+                    'status_code'       => 200,
+                    'status_message'    => 'Kode User ditemukan!',
+                    'info_user'         => $data_user,
+                ], 200);
+            } else {
+                return response([
                 'status_code'       => 200,
-                'status_message'    => 'Data Valid!',
-                'info_user'         => $data_user,
+                'status_message'    => 'Kode User Tidak ditemukan!'
             ], 200);
+            }
         } catch (Exception $exp) {
             return response([
                 'status_code'       => 500,
