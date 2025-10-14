@@ -230,7 +230,7 @@ class Auth extends Controller
                 LEFT JOIN tb_ukm tu ON
                     tu.ID_USER = u.ID_USER
                 WHERE
-                    ID_USER = ?
+                    u.ID_USER = ?
                 ORDER BY
                     u.NAME ASC
             ",[$ID_USER]);
