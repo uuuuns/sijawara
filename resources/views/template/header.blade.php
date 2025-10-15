@@ -596,7 +596,7 @@
 
                     <nav class="site-navbar ms-auto">
                         <ul class="primary-menu">
-                            @if (session('user') == null || session('user')[0]['JENIS_INSTANSI'] == 'KDMP')
+                            @if (session('user') == null || session('user')[0]['JENIS_INSTANSI'] == 'KDMP' || session('user')[0]['JENIS_INSTANSI'] == 'ADMIN')
                                 <li class="me-0 d-lg-block">
                                     <a href="{{ url('kdmp') }}">KDMP</a>
                                 </li>
@@ -732,7 +732,7 @@
                                     <li><a href="https://docs.google.com/document/d/1fo_SotSR-3lgkLbw1yJ7pGetlldvuW84oq2sJhXBoVI/edit?tab=t.0"
                                             target="_blank">Panduan</a></li>
                                     <li><a class="" href="<?= url('profil') ?>">Profile</a></li>
-                                    @if (session('user') == null || session('user')[0]['JENIS_INSTANSI'] == 'KDMP')
+                                    @if (session('user') == null || session('user')[0]['JENIS_INSTANSI'] == 'KDMP' || session('user')[0]['JENIS_INSTANSI'] == 'ADMIN') 
                                         <li><a href="<?= url('profil/kdmpku') ?>">Kursus KDMP Ku</a></li>
                                     @endif
                                     @if (session('user') == null || session('user')[0]['JENIS_INSTANSI'] !== 'KDMP')
