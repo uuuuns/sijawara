@@ -171,7 +171,7 @@ class KdmpController extends Controller
             $data['ID_COURSE'] = $course['ID_COURSE'];
             $this->item_materi($data, $req);
             DB::commit();
-            return redirect('kursus-admin')->with(['succ_msg' => 'Berhasil Menambahkan Kursus', 'location' => 'kursus-admin']);
+            return redirect('kdmp-admin')->with(['succ_msg' => 'Berhasil Menambahkan Kursus', 'location' => 'kdmp-admin']);
         } catch (\Throwable $e) {
             DB::rollBack();
             
@@ -448,7 +448,7 @@ class KdmpController extends Controller
             $data['ID_COURSE'] = $req->input('ID_COURSE');
             $this->update_item_materi($data, $req);
 
-            return redirect('kursus-admin')->with(['succ_msg' => 'Berhasi Memperbarui Kursus', 'location' => 'courses']);
+            return redirect('kdmp-admin')->with(['succ_msg' => 'Berhasi Memperbarui Kursus KDMP', 'location' => 'courses']);
         } catch (ValidationException $e) {
             return response()->json([
                 'status' => 'failure',
@@ -562,7 +562,7 @@ class KdmpController extends Controller
         DB::table('activity')->WHERE(['ID_ACTIVITY' => $find_id_course->ID_ACTIVITY])->delete();
         DB::statement('SET FOREIGN_KEY_CHECKS=1');
 
-        return redirect('kursus-admin')->with(['succ_msg' => 'Berhasil Menghapus Kursus', 'location' => 'courses']);
+        return redirect('kdmp-admin')->with(['succ_msg' => 'Berhasil Menghapus Kursus', 'location' => 'courses']);
     }
 
     public function item_materi($data, $req)
@@ -699,9 +699,9 @@ class KdmpController extends Controller
 
         if (!empty($cek_data)) {
             DB::table('tb_invited')->WHERE(['ID_USER' => $id_user, 'ID_ACTIVITY' => $id_activity])->delete();
-            return redirect('kursus-admin/invite?id_activity=' . $id_activity)->with(['succ_msg' => 'Undangan telah dibatalkan', 'location' => 'kursus-admin/invite?id_activity=' . $id_activity]);
+            return redirect('kdmp-admin/invite?id_activity=' . $id_activity)->with(['succ_msg' => 'Undangan telah dibatalkan', 'location' => 'kdmp-admin/invite?id_activity=' . $id_activity]);
         } else {
-            return redirect('kursus-admin/invite?id_activity=' . $id_activity)->with(['succ_msg' => 'User belum diundang', 'kursus-admin/invite?id_activity=' . $id_activity]);
+            return redirect('kdmp-admin/invite?id_activity=' . $id_activity)->with(['succ_msg' => 'User belum diundang', 'kdmp-admin/invite?id_activity=' . $id_activity]);
         }
     }
     public function invite_individu(Request $req)
@@ -721,7 +721,7 @@ class KdmpController extends Controller
         ");
 
         if (!empty($cek_data)) {
-            return redirect('kursus-admin/invite?id_activity=' . $id_activity)->with(['err_msg' => 'User telah diundang', 'location' => 'kursus-admin/invite?id_activity=' . $id_activity]);
+            return redirect('kdmp-admin/invite?id_activity=' . $id_activity)->with(['err_msg' => 'User telah diundang', 'location' => 'kdmp-admin/invite?id_activity=' . $id_activity]);
         } else {
             $invited = [
                 'ID_USER'       => $id_user,
@@ -746,7 +746,7 @@ class KdmpController extends Controller
                 ");
 
                 $this->send_email_invited($data);
-            return redirect('kursus-admin/invite?id_activity=' . $id_activity)->with(['succ_msg' => 'User berhasil diundang', 'kursus-admin/invite?id_activity=' . $id_activity]);
+            return redirect('kdmp-admin/invite?id_activity=' . $id_activity)->with(['succ_msg' => 'User berhasil diundang', 'kdmp-admin/invite?id_activity=' . $id_activity]);
         }
     }
 
@@ -764,7 +764,7 @@ class KdmpController extends Controller
         }
 
         if (empty($id_users)) {
-            return redirect('kursus-admin/invite?id_activity=' . $id_activity)->with(['err_msg' => 'Pilih setidaknya satu pengguna', 'location' => 'kursus-admin/invite?id_activity=' . $id_activity]);
+            return redirect('kdmp-admin/invite?id_activity=' . $id_activity)->with(['err_msg' => 'Pilih setidaknya satu pengguna', 'location' => 'kdmp-admin/invite?id_activity=' . $id_activity]);
         }
 
         foreach ($id_users as $id_user) {
@@ -780,7 +780,7 @@ class KdmpController extends Controller
             ");
 
             if (!empty($cek_data)) {
-                return redirect('kursus-admin/invite?id_activity=' . $id_activity)->with(['err_msg' => 'Pilih setidaknya satu pengguna', 'location' => 'kursus-admin/invite?id_activity=' . $id_activity]);
+                return redirect('kdmp-admin/invite?id_activity=' . $id_activity)->with(['err_msg' => 'Pilih setidaknya satu pengguna', 'location' => 'kdmp-admin/invite?id_activity=' . $id_activity]);
             } else {
                 $invited = [
                     'ID_USER'       => $id_user,
@@ -809,7 +809,7 @@ class KdmpController extends Controller
                 $this->send_email_invited($data);
             }
         }
-        return redirect('kursus-admin/invite?id_activity=' . $id_activity)->with(['succ_msg' => 'Berhasil mengundang user', 'kursus-admin/invite?id_activity=' . $id_activity]);
+        return redirect('kdmp-admin/invite?id_activity=' . $id_activity)->with(['succ_msg' => 'Berhasil mengundang user', 'kdmp-admin/invite?id_activity=' . $id_activity]);
     }
 
     public function send_email_invited($data) {
