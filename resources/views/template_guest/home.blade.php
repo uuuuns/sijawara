@@ -152,8 +152,47 @@
     }
 </style>
 
-<div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
+<div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="3000">
     <div class="carousel-inner">
+        @if (session('user') == null || session('user')[0]['JENIS_INSTANSI'] == 'KDMP')
+            <!-- Slide KDMP -->
+            <div class="carousel-item bg-indonesia">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-12 col-lg-7 py-2 px-4">
+                            <h1 class="fw-bold">Koperasi Desa Merah Putih</h1>
+                            <p class="fw-semibold pt-3">
+                                Sijawara sekarang hadir untuk memberikan kemudahan pengurus/pengawas/anggota Koperasi
+                                <b>Desa/Kelurahan Merah Putih</b> dalam mempelajari ilmu perkoperasian secara mandiri.
+                            </p>
+                            {{-- <svg class="w-100" width="375" height="34" viewBox="0 0 487 34" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path d="M4 30C73.6307 10.3798 266.914 -17.0885 483 30" stroke="#000000" stroke-width="8"
+                                stroke-linecap="round" />
+                        </svg> --}}
+                            <br>
+                            <p class="py-3" style="font-size:18px;color:#c3c3c3;font-weight:500">
+                                Simak videonya, pelajari materinya, dan selesaikan quiznya.
+                                Bagi yang lulus berhak mendapatkan e-sertifikat.
+                            </p>
+                            <div class="d-flex gap-2">
+                                <button class="btn-kdmp py-2 px-4" onclick="window.location.href = '/kdmp'">Mulai
+                                    KDMP</button>
+                                {{-- @if (empty(session('user')))
+                                <button class="btn btn-main-outline py-2 px-4 rounded"
+                                    onclick="window.location.href = '/daftar'">Daftar</button>
+                            @endif --}}
+                            </div>
+                        </div>
+                        {{-- <div class="col-0 col-lg-5 text-end d-none d-sm-block ">
+                        <img src="{{ asset('assets_new/images/new/ANIMASI.png') }}"
+                            style="max-width: 90%; height: auto;" />
+                    </div> --}}
+                    </div>
+                </div>
+            </div>
+        @endif
+
         <!-- Slide Default -->
         <div class="carousel-item active">
             <div class="container pb-5">
@@ -194,45 +233,6 @@
 
             </div>
         </div>
-
-        @if (session('user') == null || session('user')[0]['JENIS_INSTANSI'] == 'KDMP')
-            <!-- Slide KDMP -->
-            <div class="carousel-item bg-indonesia">
-                <div class="container">
-                    <div class="row align-items-center">
-                        <div class="col-12 col-lg-7 py-2 px-4">
-                            <h1 class="fw-bold">Koperasi Desa Merah Putih</h1>
-                            <p class="fw-semibold pt-3">
-                                Sijawara sekarang hadir untuk memberikan kemudahan pengurus/pengawas/anggota Koperasi
-                                <b>Desa/Kelurahan Merah Putih</b> dalam mempelajari ilmu perkoperasian secara mandiri.
-                            </p>
-                            {{-- <svg class="w-100" width="375" height="34" viewBox="0 0 487 34" fill="none"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path d="M4 30C73.6307 10.3798 266.914 -17.0885 483 30" stroke="#000000" stroke-width="8"
-                                stroke-linecap="round" />
-                        </svg> --}}
-                            <br>
-                            <p class="py-3" style="font-size:18px;color:#c3c3c3;font-weight:500">
-                                Simak videonya, pelajari materinya, dan selesaikan quiznya.
-                                Bagi yang lulus berhak mendapatkan e-sertifikat.
-                            </p>
-                            <div class="d-flex gap-2">
-                                <button class="btn-kdmp py-2 px-4" onclick="window.location.href = '/kdmp'">Mulai
-                                    KDMP</button>
-                                {{-- @if (empty(session('user')))
-                                <button class="btn btn-main-outline py-2 px-4 rounded"
-                                    onclick="window.location.href = '/daftar'">Daftar</button>
-                            @endif --}}
-                            </div>
-                        </div>
-                        {{-- <div class="col-0 col-lg-5 text-end d-none d-sm-block ">
-                        <img src="{{ asset('assets_new/images/new/ANIMASI.png') }}"
-                            style="max-width: 90%; height: auto;" />
-                    </div> --}}
-                    </div>
-                </div>
-            </div>
-        @endif
 
         <!-- Slide dinamis -->
         {{-- @foreach ($carousel as $index => $item)

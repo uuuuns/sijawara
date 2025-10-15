@@ -597,9 +597,9 @@
                     <nav class="site-navbar ms-auto">
                         <ul class="primary-menu">
                             @if (session('user') == null || session('user')[0]['JENIS_INSTANSI'] == 'KDMP')
-                            <li class="me-0 d-lg-block">
-                                <a href="{{ url('kdmp') }}">KDMP</a>
-                            </li>
+                                <li class="me-0 d-lg-block">
+                                    <a href="{{ url('kdmp') }}">KDMP</a>
+                                </li>
                             @endif
                             @if (session('user') == null || session('user')[0]['JENIS_INSTANSI'] !== 'KDMP')
                                 <li class="me-0 d-block ms-lg-5">
@@ -624,10 +624,10 @@
                                     <a href="{{ url('profil') }}">Profil</a>
                                 </li>
                             @endif
-                            <li class="d-lg-none">
-                                <a href="{{ url('profil/kursusku') }}">Kursus Ku</a>
-                            </li>
                             @if (session('user') == null || session('user')[0]['JENIS_INSTANSI'] !== 'KDMP')
+                                <li class="d-lg-none">
+                                    <a href="{{ url('profil/kursusku') }}">Kursus Ku</a>
+                                </li>
                                 <li class="d-lg-none">
                                     <a href="{{ url('profil/webinarku') }}">Webinar Ku</a>
                                 </li>
@@ -732,9 +732,12 @@
                                     <li><a href="https://docs.google.com/document/d/1fo_SotSR-3lgkLbw1yJ7pGetlldvuW84oq2sJhXBoVI/edit?tab=t.0"
                                             target="_blank">Panduan</a></li>
                                     <li><a class="" href="<?= url('profil') ?>">Profile</a></li>
-                                    <li><a class=" " href="<?= url('profil/kursusku') ?>">Kursus Ku</a></li>
+                                    @if (session('user') == null || session('user')[0]['JENIS_INSTANSI'] == 'KDMP')
+                                        <li><a href="<?= url('profil/kdmpku') ?>">Kursus KDMP Ku</a></li>
+                                    @endif
                                     @if (session('user') == null || session('user')[0]['JENIS_INSTANSI'] !== 'KDMP')
-                                        <li><a class="" href="<?= url('profil/webinarku') ?>">Webinar Ku</a>
+                                        <li><a href="<?= url('profil/kursusku') ?>">Kursus Ku</a></li>
+                                        <li><a href="<?= url('profil/webinarku') ?>">Webinar Ku</a>
                                         </li>
                                     @endif
                                     <li><a class="" href="<?= url('profil/sertifikatku') ?>">Sertifikat Ku</a>
