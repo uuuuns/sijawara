@@ -15,7 +15,6 @@
                     <nav class="course-single-tabs learn-press-nav-tabs">
                         <div class="nav nav-tabs course-nav" id="nav-tab" role="tablist">
                             <a class="nav-item nav-link active" id="nav-home-tab" data-bs-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home-tab" aria-selected="true">Ringkasan</a>
-                            <a class="nav-item nav-link" id="nav-instructor-tab" data-bs-toggle="tab" href="#nav-instructor" role="tab" aria-controls="nav-instructor-tab" aria-selected="false">Instruktur</a>
                             <a class="nav-item nav-link" id="nav-benefit-tab" data-bs-toggle="tab" href="#nav-benefit" role="tab" aria-controls="nav-benefit-tab" aria-selected="false">Benefit</a>
                         </div>
                     </nav>
@@ -30,22 +29,6 @@
                             </div>
                         </div>
 
-                        <div class="tab-pane fade" id="nav-instructor" role="tabpanel" aria-labelledby="nav-instructor-tab">
-                            <!-- Course instructor start -->
-                            <div class="courses-instructor">
-                                <div class="single-instructor-box">
-                                    <div class="row align-items-center">
-
-                                        <div class="col-lg-8 col-md-8">
-                                            <div class="instructor-content">
-                                                <h4><?= $course->NAMA_INSTRUKTUR ?? $course->NAME ?></h4>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Conurse  instructor end -->
-                        </div>
                         <div class="tab-pane fade" id="nav-benefit" role="tabpanel" aria-labelledby="nav-benefit-tab">
                             <!-- Course benefit start -->
                             <div class="courses-benefit">
