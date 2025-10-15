@@ -669,9 +669,9 @@ class KdmpGuest extends Controller
 			}
 
 			DB::table('order')->insert($order);
-			return redirect('kursus/detail/' . preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $activity->TITLE_ACTIVITY)) . '?id_activity=' . $req->input('id_activity'))->with(['succ_msg' => 'Berhasil join kursus KDMP', 'location' => 'profil/kursusku']);
+			return redirect('kdmp/detail/' . preg_replace('/[^A-Za-z0-9\-]/', '', str_replace(' ', '-', $activity->TITLE_ACTIVITY)) . '?id_activity=' . $req->input('id_activity'))->with(['succ_msg' => 'Berhasil join kursus KDMP', 'location' => 'profil/kdmpku']);
 		} else {
-			return redirect('profil/kursusku')->with(['err_msg' => 'Sudah mengambil join Kursus ini', 'location' => 'profil/kursusku']);
+			return redirect('profil/kdmpku')->with(['err_msg' => 'Sudah mengambil join Kursus ini', 'location' => 'profil/kdmpku']);
 		}
 	}
 
