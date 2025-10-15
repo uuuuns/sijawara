@@ -140,7 +140,7 @@ class AuthController extends Controller
                 $user_data = collect([
                     'ID_USER' => $auth->ID_USER,
                     'NAME' => $auth->NAME,
-                    'JENIS_INSTANSI' => $auth->JENIS_INSTANSI,
+                    'JENIS_INSTANSI' => "ADMIN",
                     'ID_ROLE' => $auth->ID_ROLE,
                     'FOTO_PROFILE' => $auth->FOTO_PROFILE,
                     'EMAIL' => $auth->EMAIL,
