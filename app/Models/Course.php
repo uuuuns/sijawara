@@ -529,7 +529,7 @@ class Course extends Model
 			WHERE
 				c.ID_ACTIVITY = "' . $id_activity . '"
 		');
-
+        
         if ($dataNewMapping[0]->ID_ITEM != $dataOldMapping[0]->ID_ITEM) {
             $oldIDMapping = [];
             foreach ($dataNewMapping as $key => $newItem) {

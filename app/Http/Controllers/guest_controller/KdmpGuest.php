@@ -675,6 +675,31 @@ class KdmpGuest extends Controller
 		}
 	}
 
+	public function InsertDataMapping($item)
+	{
+		$data_course = $this->courseModel->get_kdmp($item);
+		$condition = "item_course.ID_COURSE = '" . $data_course->ID_COURSE . "'";
+		$data_itemCourse = $this->courseModel->get_item_course($condition);
+		for ($i = 0; $i < count($data_itemCourse); $i++) {
+			if ($i == 0) {
+				$data_mapping = array(
+					"ID_USER" => session('user')[0]->get('ID_USER'),
+					"ID_ACTIVITY" => $item,
+					"ID_ITEM" => $data_itemCourse[$i]->ID_ITEM,
+					"STATUS" => 1
+				);
+			} else {
+				$data_mapping = array(
+					"ID_USER" => session('user')[0]->get('ID_USER'),
+					"ID_ACTIVITY" => $item,
+					"ID_ITEM" => $data_itemCourse[$i]->ID_ITEM,
+					"STATUS" => 0
+				);
+			}
+			DB::table('mapping_course')->insert($data_mapping);
+		}
+	}
+
 	public function GenerateUniqID_Order($var)
 	{
 		$string = preg_replace('/[^a-z]/i', '', $var);
