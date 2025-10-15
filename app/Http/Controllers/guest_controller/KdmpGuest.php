@@ -664,7 +664,7 @@ class KdmpGuest extends Controller
 				'LOG_TIME' => date('Y-m-d H:i:s')
 			];
 
-			if ($activity->TYPE_ACTIVITY == 1) {
+			if ($activity->TYPE_ACTIVITY == 3) {
 				$this->InsertDataMapping($req->input('id_activity'));
 			}
 
