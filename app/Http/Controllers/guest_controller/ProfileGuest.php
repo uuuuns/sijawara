@@ -365,6 +365,7 @@ class ProfileGuest extends Controller
             $user_data = collect([
                 'EMAIL' => $request->input('email'),
                 'NAME' => $request->input('name_user'),
+                'JENIS_INSTANSI' => session('user')[0]['JENIS_INSTANSI'],
                 'ID_USER' => session('user')[0]['ID_USER'],
                 'FOTO_PROFILE' => $data[0]['FOTO_PROFILE'],
                 'ID_ROLE' => session('user')[0]['ID_ROLE'],
