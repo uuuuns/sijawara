@@ -140,6 +140,7 @@ class AuthController extends Controller
                 $user_data = collect([
                     'ID_USER' => $auth->ID_USER,
                     'NAME' => $auth->NAME,
+                    'JENIS_INSTANSI' => $auth->JENIS_INSTANSI,
                     'ID_ROLE' => $auth->ID_ROLE,
                     'FOTO_PROFILE' => $auth->FOTO_PROFILE,
                     'EMAIL' => $auth->EMAIL,
@@ -155,6 +156,7 @@ class AuthController extends Controller
                 $user_data = collect([
                     'ID_USER' => $auth->ID_USER,
                     'NAME' => $auth->NAME,
+                    'JENIS_INSTANSI' => $auth->JENIS_INSTANSI,
                     'ID_ROLE' => $auth->ID_ROLE,
                     'FOTO_PROFILE' => $auth->FOTO_PROFILE,
                     'EMAIL' => $auth->EMAIL,
@@ -169,6 +171,7 @@ class AuthController extends Controller
                 $user_data = collect([
                     'ID_USER' => $auth->ID_USER,
                     'NAME' => $auth->NAME,
+                    'JENIS_INSTANSI' => $auth->JENIS_INSTANSI,
                     'ID_ROLE' => $auth->ID_ROLE,
                     'FOTO_PROFILE' => $auth->FOTO_PROFILE,
                     'EMAIL' => $auth->EMAIL,
@@ -188,6 +191,7 @@ class AuthController extends Controller
                 $user_data = collect([
                     'ID_USER' => $auth->ID_USER,
                     'NAME' => $auth->NAME,
+                    'JENIS_INSTANSI' => $auth->JENIS_INSTANSI,
                     'ID_ROLE' => $auth->ID_ROLE,
                     'FOTO_PROFILE' => $auth->FOTO_PROFILE,
                     'EMAIL' => $auth->EMAIL,
@@ -310,7 +314,7 @@ class AuthController extends Controller
             ];
             DB::table('token')->insert($formDataToken);
 
-            return redirect('masuk')->with('succ_msg', 'Anda Berhasil Mendaftar, Periksa Email Anda Untuk Mengaktifkan Akun!');
+            return redirect('masuk')->with('succ_msg', 'Anda Berhasil Mendaftar!');
         } else {
             return redirect('daftar')->with('error_msg', 'Email Telah Digunakan!');
         }
