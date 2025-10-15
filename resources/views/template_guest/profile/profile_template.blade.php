@@ -82,6 +82,15 @@
                                             </svg>
                                         </a>
                                         <ul class="nav nav-list collapse" id="submenu">
+                                            @if (session('user') == null || session('user')[0]['JENIS_INSTANSI'] == 'KDMP')
+                                            <li class="nav-item w-100">
+                                                <a href="{{ url('profil/kursusku') }}"
+                                                    class="nav-link d-flex align-middle px-4 py-3 rounded-0">
+                                                    <span class="ms-3 ps-3 fs-6 align-self-center ">Kursus KDMP Ku</span>
+                                                </a>
+                                            </li>
+                                            @endif
+                                            @if (session('user') == null || session('user')[0]['JENIS_INSTANSI'] !== 'KDMP')
                                             <li class="nav-item w-100">
                                                 <a href="{{ url('profil/kursusku') }}"
                                                     class="nav-link d-flex align-middle px-4 py-3 rounded-0">
@@ -97,7 +106,7 @@
                                                     <span class="ms-3 ps-3 fs-6 align-self-center ">Webinar Ku</span>
                                                 </a>
                                             </li>
-
+                                            @endif
                                         </ul>
                                     <li class="nav-item w-100">
                                         <a href="{{ url('profil/sertifikatku') }}"

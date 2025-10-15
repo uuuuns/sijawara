@@ -279,6 +279,7 @@ Route::middleware(['usersession:4,3,2,1'])->group(function () {
     Route::get('profil/myebook', 'guest_controller\ProfileGuest@ebook'); // [ProfileGuest::class, 'ebook']
     Route::get('profil/academic', 'guest_controller\ProfileGuest@academic'); // [ProfileGuest::class, 'academic']
     Route::get('profil/document', 'guest_controller\ProfileGuest@document'); // [ProfileGuest::class, 'document']
+    Route::get('profil/kdmpku', 'guest_controller\ProfileGuest@mykdmp');
     Route::get('profil/kursusku', 'guest_controller\ProfileGuest@mycourses'); // [ProfileGuest::class, 'mycourses
     Route::get('profil/webinarku', 'guest_controller\ProfileGuest@myevents'); // [ProfileGuest::class, 'myevents']
     Route::get('profil/sertifikatku', 'guest_controller\ProfileGuest@mysertificate'); // [ProfileGuest::class, 'mysertificate']
@@ -321,7 +322,7 @@ Route::middleware(['usersession:4,1,2'])->group(function () {
     Route::get('kdmp-admin', 'KdmpController@index');
     Route::get('kdmp-admin/add', 'KdmpController@add_course');
     Route::get('kdmp-admin/add_materi/{id}', 'KdmpController@add_materi');
-    Route::get('kdmp-admin/add_quiz/{id}/{no_quiz}', 'KdmpController@add_quiz')->name('add_quiz');
+    Route::get('kdmp-admin/add_quiz/{id}/{no_quiz}', 'KdmpController@add_quiz')->name('add_quiz_kdmp');
     Route::get('kdmp-admin/add_question/{id}/{index}', 'KdmpController@add_question')->name('add_question');
     Route::post('kdmp-admin/edit', 'KdmpController@update_course'); // open page update
     Route::get('kdmp-admin/get/{id}', 'KdmpController@deskripsi_get'); // get desc

@@ -115,7 +115,7 @@ class ProfileGuest extends Controller
             WHERE user_data.ID_USER = '" . session('user')[0]['ID_USER'] . "';
 
         ");
-        
+
         return
             view('template.header', $data) .
             view('template_guest/profile/academic', $data) .
@@ -201,6 +201,36 @@ class ProfileGuest extends Controller
             view('template_guest/profile/myevents', $data) .
             view('template.footer', $data);
     }
+
+    public function mykdmp()
+    {
+        $data['title'] = "Kursus KDMP Ku";
+        $data['data_personal'] = DB::selectOne("
+        SELECT
+            u.*
+        FROM
+            user u
+        WHERE 
+        u.ID_USER = '" . session('user')[0]['ID_USER'] . "'
+    ");
+        $user = new User();
+        $data['course'] = [];
+        $mycourse = $user->get_my_product3();
+        foreach ($mycourse as $item) {
+            array_push($data['course'], $item);
+        }
+        $data['document'] = DB::selectOne("
+            SELECT user_data.*, instructor_req.STATUS
+            FROM user_data
+            LEFT JOIN instructor_req ON instructor_req.ID_USER = user_data.ID_USER
+            WHERE user_data.ID_USER = '" . session('user')[0]['ID_USER'] . "';
+        ");
+        return
+            view('template.header', $data) .
+            view('template_guest/profile/mykdmp', $data) .
+            view('template.footer', $data);
+    }
+
     public function mycourses()
     {
         $data['title'] = "Kursus Ku";

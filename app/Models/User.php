@@ -93,6 +93,47 @@ class User extends Model
         ");
         return $sql;
     }
+
+    public function get_my_product3(){
+        $sql = DB::select('
+        SELECT 
+            `activity`.*, 
+            `kategori`.`KATEGORI`, 
+            `course`.`DESKRIPSI_COURSE`, 
+            (
+                CEIL(
+                    (
+                        SELECT
+                            MAX(o.MAPPING_COUNT)
+                        FROM
+                            `order` o
+                        WHERE
+                            o.ID_USER = "' . session('user')[0]['ID_USER'] . '"
+                            AND o.ID_PRODUCT = activity.ID_ACTIVITY
+                    ) / 
+                    (
+                            SELECT
+                            COUNT(*)
+                        FROM
+                            mapping_course
+                        WHERE
+                            mapping_course.ID_USER = "' . session('user')[0]['ID_USER'] . '"
+                            AND mapping_course.ID_ACTIVITY = activity.ID_ACTIVITY
+                    ) * 100
+                )
+            ) AS PROGRESS
+        FROM 
+            `activity` 
+            LEFT JOIN `course` ON `course`.`ID_ACTIVITY` = `activity`.`ID_ACTIVITY` 
+            LEFT JOIN `kategori` ON `kategori`.`ID_KATEGORI` = `course`.`KATEGORI` 
+            LEFT JOIN `order` ON `order`.`ID_PRODUCT` = `activity`.`ID_ACTIVITY` 
+        WHERE 
+            `activity`.`TYPE_ACTIVITY` = 3
+        AND
+            `order`.`ID_USER` = "' . session('user')[0]['ID_USER'] . '"
+        ');
+        return $sql;
+    }
     // public static function update_profile($data1, $data2,$data3,$data4)
     public static function update_profile(array $data)
     {
