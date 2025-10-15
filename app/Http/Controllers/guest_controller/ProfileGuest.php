@@ -329,7 +329,7 @@ class ProfileGuest extends Controller
                 'KOPERASI;UKM' => 'koperasi_ukm',
                 'UKM;KOPERASI' => 'koperasi_ukm',
                 'UMUM' => 'umum',
-                'KMDP' => 'kmdp'
+                'KDMP' => 'kmdp'
             ];
 
             $joinCond = '';
