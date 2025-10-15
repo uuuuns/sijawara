@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Session;
 use App\Mail\MailSender;
+use Exception;
 use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
@@ -67,19 +68,22 @@ class AuthController extends Controller
 
         $auth = DB::selectOne("
             SELECT
-                user.*
+                u.*,
+                t.TYPE
             FROM
-                user
+                user u
+            LEFT JOIN token t ON
+                t.ID_USER = u.ID_USER
             WHERE
-                user.EMAIL = '" . $req->input('email') . "'
+                u.EMAIL = '" . $req->input('email') . "'
             AND
-                user.PASS = '" . hash('sha256', md5($req->input('password'))) . "'
+                u.PASS = '" . hash('sha256', md5($req->input('password'))) . "'
         ");
 
         if ($auth == null) {
             return redirect()->back()->with('msg_auth', "Email atau Password Salah");
         }
-        
+
         if ($auth->STATUS == 0) {
             return redirect()->back()->with('resp_msg', "Tidak bisa masuk, akun anda belum diverifikasi, harap periksa email anda");
         }
@@ -106,7 +110,7 @@ class AuthController extends Controller
             $joinCond = 'LEFT JOIN tb_koperasi tk ON tk.ID_USER = u.ID_USER
                         LEFT JOIN tb_ukm tu ON tu.ID_USER = u.ID_USER';
         }
-        
+
         // Query the database
         $data = DB::selectOne('
             SELECT 
@@ -173,6 +177,11 @@ class AuthController extends Controller
                 ]);
 
                 Session::push('user', $user_data);
+
+                if ($auth->TYPE == 1) {
+                    return redirect('ganti_kata_sandi');
+                }
+
                 return redirect('/');
             } elseif ($auth->ID_ROLE == 4) {
 
@@ -191,6 +200,54 @@ class AuthController extends Controller
             }
         } else {
             return redirect('masuk')->with('resp_msg', "Your Session Expired");
+        }
+    }
+
+    public function gantiSandi()
+    {
+        $data["title"]  = "Ganti Kata sandi";
+
+        $token = DB::table("token")->where("ID_USER", session("user")[0]["ID_USER"])->first();
+
+        if ($token->TYPE !== 1) {
+            return redirect("/");
+        }
+
+        return
+            view('template.header', $data) .
+            view('auth.gantiSandi') .
+            view('template.footer', $data);
+    }
+
+    public function submitSandi(Request $req)
+    {
+        try {
+            DB::beginTransaction();
+
+            $token = DB::table("token")->where("ID_USER", session("user")[0]["ID_USER"])->first();
+
+            if ($token->TYPE == 1) {
+                $hash_password = hash('sha256', md5($req->input("password")));
+
+                DB::table("user")->where("ID_USER", session("user")[0]["ID_USER"])->update(["PASS" => $hash_password]);
+                DB::table("token")->where("ID_USER", session("user")[0]["ID_USER"])->update(["TYPE" => 0]);
+
+                DB::commit();
+
+                return response()->json([
+                    'status_code'   => 200,
+                    'status_message' => "Ganti Kata Sandi Berhasil"
+                ]);
+            } else {
+                return redirect("/");
+            }
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            return response()->json([
+                'status_code'   => 500,
+                'status_message' => $e->getMessage()
+            ]);
         }
     }
 
@@ -218,7 +275,7 @@ class AuthController extends Controller
                 $User->EMAIL                 = $req->input('email');
                 $User->PASS                  = hash('sha256', md5($req->input('password')));
                 $User->ID_ROLE               = 3;
-                $User->STATUS                = 0;
+                $User->STATUS                = 1;
                 $User->IS_DELETE             = 0;
                 $User->REG_TIME              = date('Y-m-d H:i:s');
                 $User->JENIS_INSTANSI        = $req->input('jenis_instansi');
@@ -232,15 +289,15 @@ class AuthController extends Controller
 
             // SEND EMAIL VERIFICATION
             $token_key = bin2hex(random_bytes(32));
-            $details = [
-                'name' => $req->input('name'),
-                'body' => 'Tekan Tombol dibawah ini untuk mengaktifkan akun.',
-                'link' => url('verifikasi/confirm?token=' . $token_key),
-                'button' => "Aktifkan",
-            ];
-            $mail = new MailSender($details);
-            $mail->subject("Email Verification");
-            Mail::to($req->input('email'))->send($mail);
+            // $details = [
+            //     'name' => $req->input('name'),
+            //     'body' => 'Tekan Tombol dibawah ini untuk mengaktifkan akun.',
+            //     'link' => url('verifikasi/confirm?token=' . $token_key),
+            //     'button' => "Aktifkan",
+            // ];
+            // $mail = new MailSender($details);
+            // $mail->subject("Email Verification");
+            // Mail::to($req->input('email'))->send($mail);
             // END SEND EMAIL VERIFICATION
 
             // SAVE TOKEN
@@ -254,76 +311,43 @@ class AuthController extends Controller
             DB::table('token')->insert($formDataToken);
 
             return redirect('masuk')->with('succ_msg', 'Anda Berhasil Mendaftar, Periksa Email Anda Untuk Mengaktifkan Akun!');
-        } else if($check_user->STATUS == 0){
-
-            $data_user = [
-                'NAME' => $req->input('name'),
-                'PASS' => hash('sha256', md5($req->input('password'))),
-                'REG_TIME' => date('Y-m-d H:i:s'),
-                'JENIS_INSTANSI' => $req->input('jenis_instansi'),
-                'STATUS' => 0,
-            ];
-
-            DB::table('user')->where('ID_USER', $check_user->ID_USER)->update($data_user);
-
-            // SEND EMAIL VERIFICATION
-            $token_key = bin2hex(random_bytes(32));
-            $details = [
-                'name' => $req->input('name'),
-                'body' => 'Tekan Tombol dibawah ini untuk mengaktifkan akun.',
-                'link' => url('verifikasi/confirm?token=' . $token_key),
-                'button' => "Aktifkan",
-            ];
-            $mail = new MailSender($details);
-            $mail->subject("Email Verification");
-            Mail::to($req->input('email'))->send($mail);
-            // END SEND EMAIL VERIFICATION
-
-            // SAVE TOKEN
-            $formDataToken = [
-                'ID_USER' => $check_user->ID_USER,
-                'KEY' => $token_key,
-                'TYPE' => 2,
-                'STATUS' => 0,
-                'LOG_TIME' => date('Y-m-d H:i:s'),
-            ];
-            DB::table('token')->where('ID_USER', $check_user->ID_USER)->updateOrInsert($formDataToken);
-            return redirect('masuk')->with('succ_msg', 'Anda Berhasil Mendaftar, Periksa Email Anda Untuk Mengaktifkan Akun!');
         } else {
             return redirect('daftar')->with('error_msg', 'Email Telah Digunakan!');
         }
     }
-    public function verifAccount(Request $req)
-    {
-        $getToken = DB::selectOne('
-            SELECT
-                *
-            FROM
-                token
-            WHERE
-                `KEY` = "' . $req->input('token') . '"
-        ');
-        if (empty($getToken)) {
-            return redirect('masuk')->with('error_msg', 'Akun anda tidak terdaftar, Silahkan mendaftar terlebih dahulu!');
-        }
 
-        $status = DB::selectOne('
-            SELECT
-                STATUS,
-                ID_USER
-            FROM
-                user
-            WHERE
-                ID_USER = "' . $getToken->ID_USER . '"
-        ');
+    // not using brevo
+    // public function verifAccount(Request $req)
+    // {
+    //     $getToken = DB::selectOne('
+    //         SELECT
+    //             *
+    //         FROM
+    //             token
+    //         WHERE
+    //             `KEY` = "' . $req->input('token') . '"
+    //     ');
+    //     if (empty($getToken)) {
+    //         return redirect('masuk')->with('error_msg', 'Akun anda tidak terdaftar, Silahkan mendaftar terlebih dahulu!');
+    //     }
 
-        if ($status->STATUS != 1) {
-            // ACTIVATE USER 
-            DB::table('user')->where('ID_USER', '=', $getToken->ID_USER)->update(['STATUS' => 1]);
-        }
+    //     $status = DB::selectOne('
+    //         SELECT
+    //             STATUS,
+    //             ID_USER
+    //         FROM
+    //             user
+    //         WHERE
+    //             ID_USER = "' . $getToken->ID_USER . '"
+    //     ');
 
-        return redirect('masuk')->with('succ_msg', 'Akun anda telah aktif, silahkan masuk!');
-    }
+    //     if ($status->STATUS != 1) {
+    //         // ACTIVATE USER 
+    //         DB::table('user')->where('ID_USER', '=', $getToken->ID_USER)->update(['STATUS' => 1]);
+    //     }
+
+    //     return redirect('masuk')->with('succ_msg', 'Akun anda telah aktif, silahkan masuk!');
+    // }
 
     public function logout()
     {
@@ -339,108 +363,205 @@ class AuthController extends Controller
             view('auth.forgot_password', $data) .
             view('template.footer', $data);
     }
-    public function forgot_password_send(Request $req)
+
+    public function get_password(Request $req)
     {
-        $data['title'] = 'Forgot Password Check Email';
-        if (!empty(session('user')[0]['EMAIL'])) {
-            $data['email'] = session('user')[0]['EMAIL'];
-        } else {
-            $data['email'] = $req->input('email');
-        }
+        try {
+            $email = $req->input('email');
 
-        $user_data = DB::selectOne('
-            SELECT
-                ID_USER
-            FROM
-                user
-            WHERE
-                EMAIL = "' . $data['email'] . '"
-        ');
+            $user_data = DB::selectOne('
+                SELECT
+                    u.ID_USER
+                FROM
+                    user u
+                WHERE
+                    u.EMAIL = ?
+                AND
+                    u.ID_ROLE = 3
 
-        if (empty($user_data)) {
-            return redirect('lupa-katasandi')->with('resp_msg', 'Email tidak ditemukan di sistem kami. Harap daftar terlebih dahulu');
-        }
+            ', [$email]);
 
-        $checking_token = DB::selectOne('
-            SELECT
-                `KEY`
-            FROM
-                token
-            WHERE
-                ID_USER = "' . $user_data->ID_USER . '"
-                AND TYPE = 2
-        ');
+            $Password = $this->GenerateUniqPassword();
+            $hashPassword = hash('sha256', md5($Password));
 
-        if (empty($checking_token)) {
-            $token_key = bin2hex(random_bytes(32));
-            $formDataToken = [
-                'ID_USER' => $user_data->ID_USER,
-                'KEY' => $token_key,
-                'TYPE' => 2,
-                'STATUS' => 0,
-                'LOG_TIME' => date('Y-m-d H:i:s'),
-            ];
-            DB::table('token')->insert($formDataToken);
-        } else {
-            $token_key = bin2hex(random_bytes(32));
-            $formDataToken = [
-                'KEY' => $token_key,
-                'LOG_TIME' => date('Y-m-d H:i:s'),
-            ];
-            DB::table('token')->where('ID_USER', $user_data->ID_USER)->update($formDataToken);
-        }
+            DB::beginTransaction();
 
-        $details = [
-            'title' => 'Oh snap you forgot your password',
-            'body' => "Jangan khawatir, tekan link dibawah untuk menyetel ulang password.",
-            'link' => url('reset-katasandi?token=' . $token_key),
-            'button' => 'Setel Ulang Password'
-        ];
-
-        $mail = new MailSender($details);
-        $mail->subject("Reset Password");
-        if (!empty(session('user')[0]['EMAIL'])) {
-            Mail::to(session('user')[0]['EMAIL'])->send($mail);
-        } else {
-            Mail::to($req->input('email'))->send($mail);
-        }
-
-
-        return view('template.header', $data) .
-            view('auth.forgot_password_confirm', $data) .
-            view('template.footer', $data);
-    }
-    public function forgot_password_reset(Request $req)
-    {
-        $data['title'] = 'Reset Password - SIJAWARA+';
-        $data['token'] = DB::table('token')
-            ->where('token.KEY', '=', $req->input('token'))
-            ->first();
-
-        if (!empty($data['token'])) {
-            $dbtimestamp = strtotime($data['token']->LOG_TIME);
-            if (time() - $dbtimestamp > 1 * 300) {
-                return redirect('lupa-katasandi')->with('resp_msg', "Token anda sudah kadaluarsa.");
+            if ($user_data) {
+                $token_key = bin2hex(random_bytes(32));
+                $formDataToken = [
+                    'KEY' => $token_key,
+                    'TYPE' => 1,
+                    'STATUS' => 0,
+                    'LOG_TIME' => date('Y-m-d H:i:s'),
+                ];
+                DB::table('token')->updateOrInsert(['ID_USER' => $user_data->ID_USER], $formDataToken);
+                DB::table("user")->where(["EMAIL" => $email])->update(["PASS" => $hashPassword]);
             }
-        } else {
-            return redirect('lupa-katasandi')->with('resp_msg', "Token tidak ditemukan di sistem.");
+
+            DB::commit();
+
+            return response()->json([
+                'status_code'       => 200,
+                'status_message'    => "Berhasil Mereset Password!",
+                'data'              => $Password
+            ]);
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            return response()->json([
+                'status_code'       => 500,
+                'status_message'    => $e->getMessage()
+            ]);
         }
-        return view('template.header', $data) .
-            view('auth.reset_password', $data) .
-            view('template.footer', $data);
     }
-    public function resetPassword(Request $req)
+
+    public function change_password(Request $req)
     {
-        $formDataReset = [
-            'PASS' => hash('sha256', md5($req->input('password'))),
-            'migrations' => 1
-        ];
+        try {
+            DB::beginTransaction();
 
-        DB::table('user')->where('ID_USER', '=', $req->input('id_user'))->update($formDataReset);
+            $iduser = session("user")[0]["ID_USER"];
+            $checkPassword = DB::table("user")->where("ID_USER", $iduser)->first();
+            $oldPassword = hash("sha256", md5($req->input("passwordOld")));
+            $newPassword = hash("sha256", md5($req->input("password")));
 
-        return redirect('masuk')->with('resp_sts', 'success')->with('succ_msg', 'Akun password anda berhasil di setel ulang.');
+            if ($checkPassword->PASS == $oldPassword) {
+                $tes = DB::table("user")->where(["ID_USER" => $iduser])->update(["PASS" => $newPassword]);
+            } else {
+                return response()->json([
+                    'status_code'       => 400,
+                    'status_message'    => "Kata Sandi Lama Tidak Sesuai!"
+                ]);
+            }
+
+            DB::commit();
+
+            return response()->json([
+                'status_code'       => 200,
+                'status_message'    => "Berhasil Mengganti Kata Sandi!"
+            ]);
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            return response()->json([
+                'status_code'       => 500,
+                'status_message'    => $e->getMessage()
+            ]);
+        }
     }
 
+    // public function forgot_password_send(Request $req)
+    // {
+    //     $data['title'] = 'Forgot Password Check Email';
+    //     if (!empty(session('user')[0]['EMAIL'])) {
+    //         $data['email'] = session('user')[0]['EMAIL'];
+    //     } else {
+    //         $data['email'] = $req->input('email');
+    //     }
+
+    //     $user_data = DB::selectOne('
+    //         SELECT
+    //             ID_USER
+    //         FROM
+    //             user
+    //         WHERE
+    //             EMAIL = "' . $data['email'] . '"
+    //     ');
+
+    //     if (empty($user_data)) {
+    //         return redirect('lupa-katasandi')->with('resp_msg', 'Email tidak ditemukan di sistem kami. Harap daftar terlebih dahulu');
+    //     }
+
+    //     $checking_token = DB::selectOne('
+    //         SELECT
+    //             `KEY`
+    //         FROM
+    //             token
+    //         WHERE
+    //             ID_USER = "' . $user_data->ID_USER . '"
+    //             AND TYPE = 2
+    //     ');
+
+    //     if (empty($checking_token)) {
+    //         $token_key = bin2hex(random_bytes(32));
+    //         $formDataToken = [
+    //             'ID_USER' => $user_data->ID_USER,
+    //             'KEY' => $token_key,
+    //             'TYPE' => 2,
+    //             'STATUS' => 0,
+    //             'LOG_TIME' => date('Y-m-d H:i:s'),
+    //         ];
+    //         DB::table('token')->insert($formDataToken);
+    //     } else {
+    //         $token_key = bin2hex(random_bytes(32));
+    //         $formDataToken = [
+    //             'KEY' => $token_key,
+    //             'LOG_TIME' => date('Y-m-d H:i:s'),
+    //         ];
+    //         DB::table('token')->where('ID_USER', $user_data->ID_USER)->update($formDataToken);
+    //     }
+
+    //     $details = [
+    //         'title' => 'Oh snap you forgot your password',
+    //         'body' => "Jangan khawatir, tekan link dibawah untuk menyetel ulang password.",
+    //         'link' => url('reset-katasandi?token=' . $token_key),
+    //         'button' => 'Setel Ulang Password'
+    //     ];
+
+    //     $mail = new MailSender($details);
+    //     $mail->subject("Reset Password");
+    //     Mail::to($req->input('email'))->send($mail);
+
+    //     return view('template.header', $data) .
+    //         view('auth.forgot_password_confirm', $data) .
+    //         view('template.footer', $data);
+    // }
+
+    // public function forgot_password_reset(Request $req)
+    // {
+    //     $data['title'] = 'Reset Password - SIJAWARA+';
+    //     $data['token'] = DB::table('token')
+    //         ->where('token.KEY', '=', $req->input('token'))
+    //         ->first();
+
+    //     if (!empty($data['token'])) {
+    //         $dbtimestamp = strtotime($data['token']->LOG_TIME);
+    //         if (time() - $dbtimestamp > 1 * 300) {
+    //             return redirect('lupa-katasandi')->with('resp_msg', "Token anda sudah kadaluarsa.");
+    //         }
+    //     } else {
+    //         return redirect('lupa-katasandi')->with('resp_msg', "Token tidak ditemukan di sistem.");
+    //     }
+    //     return view('template.header', $data) .
+    //         view('auth.reset_password', $data) .
+    //         view('template.footer', $data);
+    // }
+
+    // public function resetPassword(Request $req)
+    // {
+    //     $formDataReset = [
+    //         'PASS' => hash('sha256', md5($req->input('password'))),
+    //         'migrations' => 1
+    //     ];
+
+    //     DB::table('user')->where('ID_USER', '=', $req->input('id_user'))->update($formDataReset);
+
+    //     return redirect('masuk')->with('resp_sts', 'success')->with('succ_msg', 'Akun password anda berhasil di setel ulang.');
+    // }
+
+
+    public function GenerateUniqPassword()
+    {
+        $pin = '';
+        for ($i = 0; $i < 7; $i++) {
+            do {
+                $digit = random_int(0, 9);
+            } while ($i > 0 && $digit == (int) $pin[$i - 1]);
+            $pin .= $digit;
+        }
+
+        return $pin;
+    }
     public function GenerateUniqID($var)
     {
         $string = preg_replace('/[^a-z]/i', '', $var);

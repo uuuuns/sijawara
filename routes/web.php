@@ -48,11 +48,16 @@ Route::post('register/store', 'AuthController@store');
 
 Route::get('keluar', 'AuthController@logout');
 
+Route::get('ganti_kata_sandi', 'AuthController@gantiSandi');
+Route::post('submit_sandi', 'AuthController@submitSandi');
+
 //FORGOT PASS
-Route::get('lupa-katasandi', 'AuthController@forgot_password'); // pake -
-Route::post('lupakatasandi', 'AuthController@forgot_password_send'); // gk pake -
-Route::get('reset-katasandi', 'AuthController@forgot_password_reset'); // pake -
-Route::post('resetkatasandi', 'AuthController@resetPassword'); // gk pake -
+Route::get('lupa-katasandi', 'AuthController@forgot_password');
+Route::post('lupakatasandi', 'AuthController@get_password');
+Route::post('gantikatasandi', 'AuthController@change_password');
+// Route::post('lupakatasandi', 'AuthController@forgot_password_send');
+// Route::get('reset-katasandi', 'AuthController@forgot_password_reset');
+// Route::post('resetkatasandi', 'AuthController@resetPassword');
 //END FORGOT PASS
 
 //VERIFICATION ACCOUNT

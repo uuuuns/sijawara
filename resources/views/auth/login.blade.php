@@ -35,7 +35,7 @@
                             </svg>
                         </div>
                         <div class="mt-3 my-3">
-                            <a href="<?= url('lupa-katasandi') ?>" class="text-decoration-none fw-bold text-black">Lupa Password?</a>
+                            Lupa Password ? <a href="<?= url('lupa-katasandi') ?>">klik Disini</a>
                         </div>
                         <div class="my-4">
                             <button id="btn-login" type="submit" class="btn  btn-main-2 btn-primary w-100 rounded-3 fw-semibold py-2 text-black border-0" disabled>Masuk</button>
