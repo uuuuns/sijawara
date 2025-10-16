@@ -40,7 +40,8 @@ class Auth extends Controller
             return response([
                 'status_code'       => 200,
                 'status_message'    => 'Selamat anda berhasil login!',
-                'kode_user'         => $user['ID_USER']
+                'kode_user'         => $user['ID_USER'],
+                'id_role'           => $user['ID_ROLE']
             ], 200);
         } catch (Exception $exp) {
             return response([
