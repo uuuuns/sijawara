@@ -19,6 +19,9 @@ Route::post('auth/register', 'api\Auth@register');
 Route::get('auth/getUserData', 'api\Auth@getDataUser');
 Route::get('auth/infoUser', 'api\Auth@getUserInfo');
 
+Route::get('info/UserKoperasi', 'api\UserData@dataKoperasi');
+Route::get('info/UserUkm', 'api\UserData@dataUkm');
+
 Route::get('masterdata/kota', 'api\MasterData@masterDataKota');
 Route::get('masterdata/provinsi', 'api\MasterData@masterDataProvinsi');
 
