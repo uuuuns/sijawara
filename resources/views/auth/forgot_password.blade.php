@@ -64,7 +64,7 @@
         const originalText = btn.html();
 
         $.ajax({
-            url: "{{ url('/lupakatasandi') }}",
+            url: window.location.origin + "/lupakatasandi",
             method: "POST",
             data: {
                 _token: $('input[name="_token"]').val(),

@@ -103,7 +103,7 @@
         btn.innerHTML = `<span class="spinner-border spinner-border-sm"></span> Memproses...`;
 
         $.ajax({
-            url: "{{ url('submit_sandi') }}",
+            url: window.location.origin + "submit_sandi",
             type: "POST",
             data: {
                 _token: $('input[name="_token"]').val(),
