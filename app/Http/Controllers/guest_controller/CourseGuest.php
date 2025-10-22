@@ -59,12 +59,13 @@ class CourseGuest extends Controller
 		if (session('user') == null) {
 			return redirect('masuk');
 		}
+
 		$data['title'] = 'Course';
 
 		$data['id_activity'] = $_GET['id_activity'];
 		$data['course'] = $this->courseModel->get_course($data['id_activity']);
 
-		if($data['course'] == NULL ) {
+		if ($data['course'] == NULL) {
 			return redirect('404');
 		}
 

@@ -234,6 +234,7 @@ class KdmpGuest extends Controller
 			" AND mapping_course.ID_USER = '" . session('user')[0]->get('ID_USER') . "'";
 
 		$this->courseModel->updateMappingIndex($data['course']->ID_COURSE, $data['id_activity']);
+
 		$data['item_course'] = $this->courseModel->get_item_course($condition);
 
 		$data['last_item'] = DB::select('
@@ -483,8 +484,10 @@ class KdmpGuest extends Controller
 				mapping_course
 			WHERE
 				ID_USER = "' . session('user')[0]->get('ID_USER') . '"
-				AND ID_ACTIVITY = "' . $_POST['id_activity'] . '"
-				AND STATUS = 1
+			AND
+				ID_ACTIVITY = "' . $_POST['id_activity'] . '"
+			AND
+				STATUS = 1
 			ORDER BY ID_ITEM DESC
 		');
 
@@ -502,6 +505,22 @@ class KdmpGuest extends Controller
 
 		$limit = !empty($data['detail_item_course']->LIMIT_QUIZ) ? 'LIMIT ' . $data['detail_item_course']->LIMIT_QUIZ : '';
 
+		$data['next_item'] = DB::selectone("
+		    SELECT
+				mc.ID_ITEM,	
+				ic.TYPE
+		    FROM
+				mapping_course mc
+		    JOIN item_course ic ON
+				ic.ID_ITEM = mc.ID_ITEM
+		    WHERE
+				mc.ID_USER = '" . session('user')[0]['ID_USER'] . "'
+		    AND
+				mc.ID_ACTIVITY = '" . $_POST['id_activity'] . "'
+			AND
+				mc.ID_ITEM > '" . $data['id_item'] . "'
+		");
+		
 		if ($data['type'] != 1) {
 			$sql = "
 			SELECT
@@ -542,7 +561,7 @@ class KdmpGuest extends Controller
 				mapping_course
 			WHERE
 				ID_USER = '" . session('user')[0]->get('ID_USER') . "' 
-				AND 
+			AND 
 				ID_ACTIVITY = '" . $_POST['id_activity'] . "'
 		");
 		echo json_encode($newDataItem);

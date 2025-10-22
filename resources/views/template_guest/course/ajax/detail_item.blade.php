@@ -38,7 +38,7 @@
                     $('#document-iframe').on('load', function() {
                         isLoaded = true;
                     });
-                    
+
                     if (attempts < maxRetries && !isLoaded) {
                         setTimeout(() => {
                             loadIframe();
@@ -85,53 +85,39 @@
     </style>
     <section id="video-course">
         <?php
-            $pattern = '/^(https?:\/\/)?(www\.)?(youtube\.com)\/.+$/i';
-            $url = $detail_item_course->LINK_YT;
-            $embed = explode("=", $url);
-            if (preg_match('/\/d|folders\/(.*?)\//', $url, $matches)) { ?>
+        $pattern = '/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/i';
+        $url = trim($detail_item_course->LINK_YT);
+
+        $yt_id = null;
+        if (preg_match('/(?:youtube\.com\/.*[?&]v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/', $url, $yt_match)) {
+            $yt_id = $yt_match[1];
+        }
+
+        if (preg_match('/\/d|folders\/(.*?)\//', $url, $matches)) { ?>
         <h6 class="fw-semibold pb-3">File Kursus :</h6>
         <button type="button" class="btn btn-main-2 rounded w-100" data-toggle="modal" data-target="#YTModal"
             onclick=" window.open('<?= $detail_item_course->LINK_YT ?>')">
-            Buka File </button>
-        <?php } else if (preg_match($pattern, $url, $matches)) { ?>
-        <h6 class="fw-semibold pb-3">Video Kursus : </h6>
+            Buka File
+        </button>
 
-            <iframe id="frame-yt" src="https://www.youtube.com/embed/<?= $embed[1] ?>" frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-            <?php } else {
-                echo '<h6> - </h6>';
-            } ?>
-            <!-- <div class="modal fade" id="YTModal">
-                <div class="modal-dialog modal-lg modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="YTModalTitle"><?= $detail_item_course->TITLE ?></h5>
-                            <button type="button" class="btn btn-main-2" id="btn-modal-close" data-dismiss="modal">
-                                <i class="bi bi-x"></i>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <?php
-                            $pattern = '/(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/';
-                            $url = $detail_item_course->LINK_YT;
-                            if (preg_match('/\/d\/(.*?)\//', $url, $matches)) {
-                                echo '<iframe id="video-frame" src="https://drive.google.com/file/d/' . $matches[1] . '/preview" class="w-100 d-none" style="height: 512px;" frameborder="0" allowfullscreen></iframe>';
-                            } elseif (preg_match($pattern, $url, $matches)) {
-                                echo '<iframe id="video-frame" src="https://www.youtube.com/embed/' . $matches[1] . '" class="w-100" style="height: 512px;" frameborder="0" allowfullscreen></iframe>';
-                            } else {
-                                echo '<h6>Video cannot be opened. Contact instructor for more information.</h6>';
-                            }
-                            ?>
-                            <div id="loading-message" class=" rounded-5 p-3 pb-4 h-auto d-flex flex-column">
-                                <div class="d-flex justify-content-center">
-                                    <img src="https://assets.materialup.com/uploads/b68f4460-aaa9-4e19-99d8-232dfea1c537/preview.gif" alt="Loader.gif" style="max-width: 50%;" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
+        <?php } else if ($yt_id) { ?>
+        <h6 class="fw-semibold pb-3">Video Kursus :</h6>
+
+        <iframe id="frame-yt" src="https://www.youtube.com/embed/<?= $yt_id ?>" frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        <?php } else {
+            echo '<h6> - </h6>';
+        } ?>
+
+        <?php
+        $pattern_drive = '/\/d\/(.*?)\//';
+        $url = trim($detail_item_course->LINK_YT);
+        
+        if (preg_match($pattern_drive, $url, $matches)) {
+            echo '<iframe id="video-frame" src="https://drive.google.com/file/d/' . $matches[1] . '/preview" class="w-100 d-none" style="height: 512px;" frameborder="0" allowfullscreen></iframe>';
+        }
+        ?>
     </section>
     <script>
         const tag = document.createElement('script');
@@ -153,7 +139,7 @@
 <div class="mx-4 my-4">
     <button class="btn btn-main-2 mt-4 px-4 py-2 mb-3 rounded-3 shadow fw-semibold w-100" data-iditem="<?= $id_item ?>"
         data-status="2" data-type="1" onclick="NextItem(this)">
-        Lanjutkan
+        Lanjutkan {{ $next_item->TYPE == 1 ? 'Materi' : 'Kuis' }}
     </button>
 </div>
 <?php } ?>
@@ -181,15 +167,14 @@
         <input type="hidden" name="id_detail[]" value="<?= $item->ID_DETAIL ?>">
         <input type="hidden" name="jwbn[]">
         <script>
-            $("#jwbn_<?= $item->ID_DETAIL . '1' ?>").trigger('click')
-
             function SelectJwbn<?= $item->ID_DETAIL . '' . $item->ORDER_LIST ?>(e) {
-                $("#jwbn_<?= $item->ID_DETAIL . '1' ?>").removeClass("btn-main-2")
-                $("#jwbn_<?= $item->ID_DETAIL . '2' ?>").removeClass("btn-main-2")
-                $("#jwbn_<?= $item->ID_DETAIL . '3' ?>").removeClass("btn-main-2")
-                $("#jwbn_<?= $item->ID_DETAIL . '4' ?>").removeClass("btn-main-2")
-                $('input[name="jwbn[]"]').eq(<?= $no_soal++ ?>).val($(e).data("value"))
-                $(e).addClass("btn-main-2")
+                $("#jwbn_<?= $item->ID_DETAIL . '1' ?>").removeClass("btn-main-2");
+                $("#jwbn_<?= $item->ID_DETAIL . '2' ?>").removeClass("btn-main-2");
+                $("#jwbn_<?= $item->ID_DETAIL . '3' ?>").removeClass("btn-main-2");
+                $("#jwbn_<?= $item->ID_DETAIL . '4' ?>").removeClass("btn-main-2");
+
+                $('input[name="jwbn[]"]').eq(<?= $no_soal++ ?>).val($(e).data("value"));
+                $(e).addClass("btn-main-2");
             }
         </script>
     </div>
@@ -210,7 +195,7 @@
     <?php if (!empty($data_all_mapping) && $last_item[0]->ID_ITEM == $id_item) { ?>
     <button class="btn btn-main-2 mt-4 px-4 py-2 mb-3 rounded-3 shadow fw-semibold w-100" data-iditem="<?= $id_item ?>"
         data-status="2" data-type="2" onclick="NextItem(this)">
-        Lanjutkan
+        Lanjutkan {{ $next_item->TYPE == 1 ? 'Materi' : 'Kuis' }}
     </button>
     <?php } ?>
     <?php } else { ?>
@@ -239,8 +224,7 @@
                 <div class="modal-header border-0">
                     <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
                 </div>
-                <div class="modal-body d-flex flex-column align-items-center" style="margin-top:-3rem"
-                    id="body-detail">
+                <div class="modal-body d-flex flex-column align-items-center" style="margin-top:-3rem" id="body-detail">
                     <img class="nav-link rounded-circle" src="<?= url('assets/images/modal-img.svg') ?>"
                         style="width: 80%;height:80%;background-size:cover">
                     </img>
