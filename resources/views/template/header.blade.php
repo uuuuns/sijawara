@@ -615,7 +615,7 @@
                                 @if (!empty(session('user')[0]) && session('user')[0]['ID_ROLE'] == 1)
                                     <a href="https://docs.google.com/document/d/1nnLO-CDrHDWEnnEiNoqKR4z5ZmjH-Uk0QWI80NRXLFM/edit?tab=t.0"
                                         target="_blank">Panduan</a>
-                                @elseif (session('user')[0]['JENIS_INSTANSI'] == 'KDMP')
+                                @elseif (!empty(session('user')[0]) && session('user')[0]['JENIS_INSTANSI'] == 'KDMP')
                                     <a href="https://docs.google.com/document/d/1MBsuCwbplKcf-GAdr4Mxc-dANMz22sIyzc0YITLMwsI/edit?usp=sharing"
                                         target="_blank">Panduan</a>
                                 @else
@@ -734,7 +734,7 @@
                                     <li><a href="https://docs.google.com/document/d/1nnLO-CDrHDWEnnEiNoqKR4z5ZmjH-Uk0QWI80NRXLFM/edit?tab=t.0"
                                             target="_blank">Panduan</a></li>
                                     <?php } else { ?>
-                                    @if (session('user')[0]['JENIS_INSTANSI'] == 'KDMP')
+                                    @if (!empty(session('user')[0]) &&session('user')[0]['JENIS_INSTANSI'] == 'KDMP')
                                         <li>
                                             <a href="https://docs.google.com/document/d/1MBsuCwbplKcf-GAdr4Mxc-dANMz22sIyzc0YITLMwsI/edit?usp=sharing"
                                                 target="_blank">Panduan</a>
