@@ -454,7 +454,9 @@
                 <img src="{{ asset('assets_new') }}/images/new/sponsor/perpustakaan.png"
                     class="img-fluid px-2 py-2" />
                 <img src="{{ asset('assets_new') }}/images/new/sponsor/bankjatim.png" class="img-fluid px-2 py-2" />
-                <img src="{{ asset('assets_new') }}/images/new/sponsor/stiki.png" class="img-fluid px-2 py-2"
+                {{-- <img src="{{ asset('assets_new') }}/images/new/sponsor/stiki.png" class="img-fluid px-2 py-2"
+                    style="width:140px" /> --}}
+                <img src="{{ asset('assets_new') }}/images/new/sponsor/ubhinus.png" class="img-fluid px-2 py-2"
                     style="width:140px" />
                 <img src="{{ asset('assets_new') }}/images/new/sponsor/machung.png" class="img-fluid px-2 py-2" />
                 <img src="{{ asset('assets_new') }}/images/new/sponsor/its.png" class="img-fluid px-2 py-2" />
