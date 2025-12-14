@@ -164,7 +164,7 @@
                             </div>
                             <div class="tab-pane fade" id="nav-komen" role="tabpanel" aria-labelledby="nav-komen-tab" tabindex="0">
                                 <div style="display: flex; justify-content: center; width: 100%;">
-                                    <form action="{{ ('kdmp/detail/addkomen') }}" method="POST" style="width: 100%; max-width: 800px;">
+                                    <form action="{{ url('kdmp/detail/addkomen') }}" method="POST" style="width: 100%; max-width: 800px;">
                                         @csrf
                                         <input type="hidden" name="id_activity" value="<?= $id_activity ?>">
                                         <input type="hidden" name="id_user" value="<?= session('user')[0]['ID_USER'] ?>">
