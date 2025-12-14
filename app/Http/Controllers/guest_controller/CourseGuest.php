@@ -339,6 +339,22 @@ class CourseGuest extends Controller
 
 		$limit = !empty($data['detail_item_course']->LIMIT_QUIZ) ? 'LIMIT ' . $data['detail_item_course']->LIMIT_QUIZ : '';
 
+		$data['next_item'] = DB::selectone("
+		    SELECT
+				mc.ID_ITEM,	
+				ic.TYPE
+		    FROM
+				mapping_course mc
+		    JOIN item_course ic ON
+				ic.ID_ITEM = mc.ID_ITEM
+		    WHERE
+				mc.ID_USER = '" . session('user')[0]['ID_USER'] . "'
+		    AND
+				mc.ID_ACTIVITY = '" . $_POST['id_activity'] . "'
+			AND
+				mc.ID_ITEM > '" . $data['id_item'] . "'
+		");
+
 		if ($data['type'] != 1) {
 			$sql = "
 			SELECT
@@ -366,7 +382,7 @@ class CourseGuest extends Controller
 			";
 			$data['detail_item_course'] = DB::select($sql);
 		}
-
+		
 		return view('template_guest.course.ajax.detail_item', $data);
 	}
 
