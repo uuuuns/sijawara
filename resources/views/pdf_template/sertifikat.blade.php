@@ -10,10 +10,9 @@
 
 <style>
     @page {
-            margin: 0;
-            size: 1280px 720px;
-        }
-    
+        margin: 0;
+        size: 1280px 720px;
+    }
 </style>
 
 <body style="font-family: Poppins, sans-serif; font-size: 14px; margin: 0;">
@@ -26,10 +25,12 @@
 
         <div class="box" style="position: absolute;">
             <div class="table-responsive">
-                <table class="valign-middle" style="width: 100%; vertical-align: middle; border: none; border-collapse: collapse; color: black; padding: 48% 56%;">
+                <table class="valign-middle"
+                    style="width: 100%; vertical-align: middle; border: none; border-collapse: collapse; color: black; padding: 48% 56%;">
                     <tr>
                         <th class="text-align-center" style="text-align: center; border: none;">
-                            <div class="text name" style="width: 580px; font-size: 29px; font-weight: bold; color: black; line-height: 121%; padding: 1% 0px;">
+                            <div class="text name"
+                                style="width: 580px; font-size: 29px; font-weight: bold; color: black; line-height: 121%; padding: 1% 0px;">
                                 <?= $NAME ?>
                             </div>
                         </th>
@@ -38,21 +39,46 @@
             </div>
         </div>
 
-        <div class="box" style=" font-family: Poppins, sans-serif; position: absolute; margin-left: 140px;">
-            <div style="text-align: left; font-size: 15px; margin-top: 370px; max-width: 650px;">
+        <?php
+        if (class_exists('IntlDateFormatter')) {
+            $formatter = new IntlDateFormatter('id_ID', IntlDateFormatter::LONG, IntlDateFormatter::NONE);
+            $tgl_acara = $formatter->format(strtotime($TGL_ACARA));
+        } else {
+            $bulan = [
+                'January' => 'Januari',
+                'February' => 'Februari',
+                'March' => 'Maret',
+                'April' => 'April',
+                'May' => 'Mei',
+                'June' => 'Juni',
+                'July' => 'Juli',
+                'August' => 'Agustus',
+                'September' => 'September',
+                'October' => 'Oktober',
+                'November' => 'November',
+                'December' => 'Desember',
+            ];
+            $tgl_acara = str_replace(array_keys($bulan), array_values($bulan), $TGL_ACARA);
+        }
+        ?>
+
+        <div class="box" style="font-family: Poppins, sans-serif; position: absolute; left: 50%; transform: translateX(-50%);">
+            <div style="text-align: center; font-size: 19px; margin-top: 370px; max-width: 650px;">
                 <div style="font-size: 25px; font-weight: bold;">
-                    <?= $ROLES?>
+                    <?= $ROLES ?>
                 </div>
-                dalam kegiatan <span style="font-weight: bold"><?= $JUDUL?></span> yang diselenggarakan oleh
+                dalam kegiatan <span style="font-weight: bold"><?= $JUDUL ?></span> yang diselenggarakan oleh
                 <br>
-                UPT Pelatihan Koperasi dan UKM Provinsi Jawa Timur, 
+                UPT Pelatihan Koperasi dan UKM Provinsi Jawa Timur,
                 <br>
-                pada tanggal <?= $TGL_ACARA?>
+                pada tanggal <?= $tgl_acara ?>
             </div>
         </div>
 
-        <div class="box" style="position: absolute; margin-left: 150px; font-size: 13px; font-weight: bold; margin-top: 405;">
-            <img src="data:image/svg+xml;base64,<?= $QR?>" alt="" style="max-width: 100px;">
+
+        <div class="box"
+            style="position: absolute; margin-left: 150px; font-size: 13px; font-weight: bold; margin-top: 405;">
+            <img src="data:image/svg+xml;base64,<?= $QR ?>" alt="" style="max-width: 100px;">
         </div>
     </div>
 </body>
