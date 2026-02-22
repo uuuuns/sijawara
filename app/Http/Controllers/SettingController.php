@@ -39,7 +39,7 @@ class SettingController extends Controller
 
         DB::table('tb_carousel')->insert($data_carousel);
 
-        return redirect()->back();
+        return redirect('pengaturan');
     }
     public function editCarousel(Request $request)
     {
@@ -52,14 +52,14 @@ class SettingController extends Controller
 
         DB::table('tb_carousel')->insert($data_carousel);
 
-        return redirect()->back();
+        return redirect('pengaturan');
     }
 
     public function deleteCarousel(Request $request)
     {
         DB::table('tb_carousel')->where('id_carousel', $request->input('id_carousel'))->delete();
 
-        return redirect()->back();
+        return redirect('pengaturan');
     }
 
     public function testimoni_index()
@@ -86,6 +86,7 @@ class SettingController extends Controller
             'nama' => $request->input('nama'),
             'gambar_testimoni' => FileUpload::S3($request->file('gambar_testimoni'), 'TESTIMONI', 'Image' . strtotime(now()))
         ];
+
         DB::table('tb_testimoni')->insert($data_testimoni);
 
         return redirect()->back();
