@@ -699,7 +699,8 @@ class CourseGuest extends Controller
 					) AS PROGRESS', [$id_user, $id_user, $id_user, $id_user])
 				->leftJoin('course', 'course.ID_ACTIVITY', '=', 'activity.ID_ACTIVITY')
 				->orderBy('activity.DATE_START', 'DESC')
-				->where('TYPE_ACTIVITY', 1);
+				->where('activity.TYPE_ACTIVITY', 1)
+				->where('activity.STATUS', 1);
 
 			if ($cat_value != 0) {
 				$data['course']->where('KATEGORI', $cat_value);
@@ -729,7 +730,8 @@ class CourseGuest extends Controller
 					) AS is_invited')
 				->leftJoin('course', 'course.ID_ACTIVITY', '=', 'activity.ID_ACTIVITY')
 				->orderBy('activity.DATE_START', 'DESC')
-				->where('TYPE_ACTIVITY', 1);
+				->where('activity.TYPE_ACTIVITY', 1)
+				->where('activity.STATUS', 1);
 
 			if ($cat_value != 0) {
 				$data['course']->where('KATEGORI', $cat_value);

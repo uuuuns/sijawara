@@ -27,6 +27,7 @@ class Course extends Model
                 course.ID_ACTIVITY = activity.ID_ACTIVITY
             WHERE
                 activity.IS_PUBLIC = 1
+                AND activity.STATUS = 1
                 AND " . implode(' AND ', $id_category) . "
             ORDER BY activity.LOG_TIME DESC
             LIMIT 4");
@@ -365,6 +366,7 @@ class Course extends Model
                 activity
             WHERE
                 activity.IS_PUBLIC = 1
+                AND activity.STATUS = 1
                 AND activity.TYPE_ACTIVITY = $type
                 AND activity.TITLE_ACTIVITY LIKE '%$keyword%'
         ");

@@ -63,7 +63,8 @@ class EventGuest extends Controller
 					) AS is_invited,
 					(DATEDIFF(CURDATE(), activity.DATE_END) >= 1) as EXPIRED')
 				->leftJoin('event', 'event.ID_ACTIVITY', '=', 'activity.ID_ACTIVITY')
-				->where('TYPE_ACTIVITY', 2)
+				->where('activity.TYPE_ACTIVITY', 2)
+				->where('activity.STATUS', 1)
 				->orderBy('activity.DATE_START', 'DESC')
 				->Paginate($perPage, ['*'], 'page', $currentPage);
 		}else {
@@ -107,6 +108,7 @@ class EventGuest extends Controller
 					(DATEDIFF(CURDATE(), activity.DATE_END) >= 1) as EXPIRED', [session('user')[0]->get('ID_USER')])
 				->leftJoin('event', 'event.ID_ACTIVITY', '=', 'activity.ID_ACTIVITY')
 				->where('activity.TYPE_ACTIVITY', 2)
+				->where('activity.STATUS', 1)
 				->orderBy('activity.LOG_TIME', 'DESC')
 				->paginate($perPage, ['*'], 'page', $currentPage);
 			}
