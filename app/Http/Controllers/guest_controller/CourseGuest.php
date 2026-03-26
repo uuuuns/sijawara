@@ -8,6 +8,7 @@ use App\Models\Checkout;
 use App\Models\Event;
 use App\Models\Category;
 use App\Models\Certificate;
+use App\Models\SurveiMaster;
 use Exception;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Session;
@@ -53,7 +54,7 @@ class CourseGuest extends Controller
 			view('template_guest.course.course', $data) .
 			view('template.footer', $data);
 	}
-	
+
 	public function detailCourse()
 	{
 		if (session('user') == null) {
@@ -202,6 +203,42 @@ class CourseGuest extends Controller
 			WHERE
 				tk.ID_ACTIVITY = '" . $data['id_activity'] . "'
 		");
+
+		$idUser = session('user')[0]->get('ID_USER');
+		$idActivity = $data['id_activity'];
+
+		$ratings = DB::table('tb_survei_rating')
+			->where('ID_USER', $idUser)
+			->where('ID_ACTIVITY', $idActivity)
+			->pluck('RATING', 'ID_SURVEI'); // keyed by ID_SURVEI
+
+		$komentars = DB::table('tb_survei_komentar')
+			->where('ID_USER', $idUser)
+			->where('ID_ACTIVITY', $idActivity)
+			->pluck('TEXT', 'ID_SURVEI'); // keyed by ID_SURVEI
+
+		$checkboxes = DB::table('tb_survei_checkbox')
+			->where('ID_USER', $idUser)
+			->where('ID_ACTIVITY', $idActivity)
+			->get()
+			->groupBy('ID_SURVEI');
+
+		$data['checking_survei'] = [];
+		foreach ($ratings as $id => $rating) {
+			$data['checking_survei'][$id]['rating'] = $rating;
+		}
+		foreach ($komentars as $id => $komentar) {
+			$data['checking_survei'][$id]['komentar'] = $komentar;
+		}
+		foreach ($checkboxes as $id => $cList) {
+			$data['checking_survei'][$id]['checkbox'] = $cList->pluck('ID_CHECKBOX')->toArray();
+		}
+
+		$data['survei'] = SurveiMaster::with('checkbox')
+			->whereNull('DELETED_AT')
+			->orderBy('ID_SURVEI', 'ASC')
+			->get();
+
 		return view('template.header', $data) .
 			view('template_guest.course.course_detail', $data) .
 			view('template.footer', $data);
@@ -382,7 +419,7 @@ class CourseGuest extends Controller
 			";
 			$data['detail_item_course'] = DB::select($sql);
 		}
-		
+
 		return view('template_guest.course.ajax.detail_item', $data);
 	}
 
@@ -411,10 +448,10 @@ class CourseGuest extends Controller
 		$data['checking_trans'] = $this->checkoutModel->get_trans($data_user);
 		$data['course'] = $this->courseModel->get_course($id_activity);
 
-		if($data['course'] == NULL ) {
+		if ($data['course'] == NULL) {
 			return redirect('404');
 		}
-		
+
 		$condition = "item_course.ID_COURSE = '" . $data['course']->ID_COURSE . "'";
 		$data_itemCourse = $this->courseModel->get_item_course($condition);
 		$data['item_course'] = array();
@@ -739,7 +776,7 @@ class CourseGuest extends Controller
 
 			$data['course'] = $data['course']->paginate($perPage, ['*'], 'page', $currentPage)->appends(['category' => $cat_value]);
 		}
-		
+
 		return
 			view('template_guest.course.ajax.course_by_category', $data)->render();
 	}

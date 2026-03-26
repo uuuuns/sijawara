@@ -8,6 +8,7 @@ use App\Models\Checkout;
 use App\Models\Event;
 use App\Models\Category;
 use App\Models\Certificate;
+use App\Models\SurveiMaster;
 use Exception;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Session;
@@ -368,6 +369,42 @@ class KdmpGuest extends Controller
 			WHERE
 				tk.ID_ACTIVITY = '" . $data['id_activity'] . "'
 		");
+
+		$idUser = session('user')[0]->get('ID_USER');
+		$idActivity = $data['id_activity'];
+
+		$ratings = DB::table('tb_survei_rating')
+			->where('ID_USER', $idUser)
+			->where('ID_ACTIVITY', $idActivity)
+			->pluck('RATING', 'ID_SURVEI'); // keyed by ID_SURVEI
+
+		$komentars = DB::table('tb_survei_komentar')
+			->where('ID_USER', $idUser)
+			->where('ID_ACTIVITY', $idActivity)
+			->pluck('TEXT', 'ID_SURVEI'); // keyed by ID_SURVEI
+
+		$checkboxes = DB::table('tb_survei_checkbox')
+			->where('ID_USER', $idUser)
+			->where('ID_ACTIVITY', $idActivity)
+			->get()
+			->groupBy('ID_SURVEI');
+
+		$data['checking_survei'] = [];
+		foreach ($ratings as $id => $rating) {
+			$data['checking_survei'][$id]['rating'] = $rating;
+		}
+		foreach ($komentars as $id => $komentar) {
+			$data['checking_survei'][$id]['komentar'] = $komentar;
+		}
+		foreach ($checkboxes as $id => $cList) {
+			$data['checking_survei'][$id]['checkbox'] = $cList->pluck('ID_CHECKBOX')->toArray();
+		}
+
+		$data['survei'] = SurveiMaster::with('checkbox')
+			->whereNull('DELETED_AT')
+			->orderBy('ID_SURVEI', 'ASC')
+			->get();
+
 		return view('template.header', $data) .
 			view('template_guest.kdmp.kdmp_detail', $data) .
 			view('template.footer', $data);
@@ -522,7 +559,7 @@ class KdmpGuest extends Controller
 			AND
 				mc.ID_ITEM > '" . $data['id_item'] . "'
 		");
-		
+
 		if ($data['type'] != 1) {
 			$sql = "
 			SELECT
