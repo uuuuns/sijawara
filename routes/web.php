@@ -204,6 +204,11 @@ Route::middleware(['usersession:4,1'])->group(function () {
     Route::post('widyaiswara/store', 'WidyaiswaraController@store_widyaiswara');
     Route::post('widyaiswara/update', 'WidyaiswaraController@update_widyaiswara');
     Route::post('widyaiswara/delete', 'WidyaiswaraController@delete_widyaiswara');
+
+    Route::get('survei', 'SurveiController@index');
+    Route::post('survei/store', 'SurveiController@store');
+    Route::post('survei/update', 'SurveiController@update');
+    Route::post('survei/delete', 'SurveiController@delete');
     
     Route::get('statistik-peserta', 'DashboardController@statistik_index');
     Route::get('statistik-kategori', 'DashboardController@statistik_kategori_index');
@@ -242,6 +247,7 @@ Route::middleware(['usersession:4,3,2,1'])->group(function () {
     Route::post('kdmp/quiz/evaluation', 'guest_controller\KdmpGuest@QuizEvaluation');
     Route::post('kdmp/add', 'guest_controller\KdmpGuest@add_event');
     Route::post('kdmp/detail/addkomen', 'SocialController@addkomen');
+    Route::post('kdmp/detail/addsurvei', 'SurveiController@submitSurvei');
 
     //COURSE
     Route::get('kursus/detail/{any}', 'guest_controller\CourseGuest@detailCourse');
@@ -250,6 +256,7 @@ Route::middleware(['usersession:4,3,2,1'])->group(function () {
     Route::post('kursus/quiz/evaluation', 'guest_controller\CourseGuest@QuizEvaluation');
     Route::post('kursus/add', 'guest_controller\CourseGuest@add_event');
     Route::post('kursus/detail/addkomen', 'SocialController@addkomen');
+    Route::post('kursus/detail/addsurvei', 'SurveiController@submitSurvei');
 
     Route::get('kursus/aspirasi-kursus', 'guest_controller\CourseGuest@AspirasiKursus');
     Route::post('kursus/store_aspirasi', 'guest_controller\CourseGuest@storeAspirasi');
