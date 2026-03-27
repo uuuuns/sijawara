@@ -12,7 +12,7 @@ class SurveiController extends Controller
 {
     public function index()
     {
-        $data['title'] = "Badan Usaha";
+        $data['title'] = "Master Data Survei";
 
         $survei = Survei::with('checkbox')
             ->whereNull('DELETED_AT')
