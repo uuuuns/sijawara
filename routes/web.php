@@ -313,6 +313,9 @@ Route::middleware(['usersession:4,1,2'])->group(function () {
     Route::get('kursus-admin/get_course_item/{id}', 'CourseController@get_course_item'); // get materi / quiz
     Route::post('kursus-admin/get_quiz', 'CourseController@send_question'); //send to another page
 
+    Route::get('kursus-admin/get_survei', 'CourseController@get_survei');
+    Route::get('kursus-admin/laporan_survei', 'CourseController@laporan_survei');
+
     Route::post('kursus-admin/store', 'CourseController@store'); // store kursus
     Route::post('kursus-admin/update', 'CourseController@update'); // update kursus
     Route::post('kursus-admin/delete', 'CourseController@delete'); // delete kursus
@@ -335,6 +338,9 @@ Route::middleware(['usersession:4,1,2'])->group(function () {
     Route::get('kdmp-admin/get/{id}', 'KdmpController@deskripsi_get'); // get desc
     Route::get('kdmp-admin/get_course_item/{id}', 'KdmpController@get_course_item'); // get materi / quiz
     Route::post('kdmp-admin/get_quiz', 'KdmpController@send_question'); //send to another page
+
+    Route::get('kdmp-admin/get_survei', 'KdmpController@get_survei');
+    Route::get('kdmp-admin/laporan_survei', 'KdmpController@laporan_survei');
 
     Route::post('kdmp-admin/store', 'KdmpController@store'); // store kursus
     Route::post('kdmp-admin/update', 'KdmpController@update'); // update kursus

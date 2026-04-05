@@ -86,6 +86,13 @@
                                             <i class="bx bx-edit-alt font-size-16 align-middle"></i> Edit Kursus
                                         </button>
                                     </form>
+                                    <form action="{{ url('kdmp-admin/get_survei') }}?id={{ $item->ID_ACTIVITY }}" method="GET">
+                                        @csrf
+                                        <input type="hidden" name="id_activity" value="<?= $item->ID_ACTIVITY ?>">
+                                        <button type="submit" class="btn btn-info btn-sm-2 w-100 fs-8 rounded waves-effect waves-light px-2" style="min-width: 155px !important; margin: 5px 0px;">
+                                            <i class="bx bx-edit-alt font-size-16 align-middle"></i> Hasil Survei
+                                        </button>
+                                    </form>
                                     <button type="button" onclick="<?= $item->CHECK_PARTICIPANT == 0 ? "opendeleteModal('{$item->ID_ACTIVITY}')" : 'NotifDelete()' ?>" class="btn btn-danger btn-sm-2 w-100 fs-8 rounded waves-effect waves-light px-2" style="min-width: 155px !important;">
                                         <i class="bx bx-trash font-size-16 align-middle"></i> Hapus Kursus
                                     </button>
