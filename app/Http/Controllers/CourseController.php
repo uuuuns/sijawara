@@ -29,7 +29,7 @@ class CourseController extends Controller
         ];
         config(['mail.mailers.smtp' => $smtpConfig]);
     }
-    
+
     public function index()
     {
         $data['title'] = "Kursus - SIJAWARA+";
@@ -143,13 +143,13 @@ class CourseController extends Controller
                 'LOG_TIME'              => date('Y-m-d H:i:s'),
                 'SERTIF_IMAGE'          => $req->hasFile('sertif_image') ? FileUpload::S3($req->file('sertif_image'), 'SERTIF_IMAGE', 'Template-Certifiace-' . strtotime(now())) : null
             ];
-            
+
             if ($req->input('status') == 'on') {
                 $activity['STATUS'] = 1;
             } else {
                 $activity['STATUS'] = 0;
             }
-    
+
             $course = [
                 'ID_COURSE'             => $this->GenerateUniqID('ACT', $req->input('announcement')),
                 'ID_ACTIVITY'           => $activity['ID_ACTIVITY'],
@@ -157,26 +157,26 @@ class CourseController extends Controller
                 'BENEFIT'               => $req->input('benefit'),
                 'KATEGORI'              => $req->input('category')
             ];
-    
+
             if (!empty($req->input('kuota_peserta')) || $req->input('kuota_peserta') != 0) {
                 $course['KUOTA_PESERTA'] = $req->input('kuota_peserta');
             }
-    
+
             if ($req->input('req')) {
                 $course['REQUIREMENT']  = $req->input('req');
             }
             DB::beginTransaction();
-    
+
             DB::table('activity')->insert($activity);
             DB::table('course')->insert($course);
-    
+
             $data['ID_COURSE'] = $course['ID_COURSE'];
             $this->item_materi($data, $req);
             DB::commit();
             return redirect('kursus-admin')->with(['succ_msg' => 'Berhasil Menambahkan Kursus', 'location' => 'kursus-admin']);
         } catch (\Throwable $e) {
             DB::rollBack();
-            
+
             return response()->json([
                 'status' => 'failure',
                 'errors' => $e
@@ -603,9 +603,9 @@ class CourseController extends Controller
                         'DESKRIPSI'     => null,
                         'ORDER_LIST'    => $orderList[$i],
                         'TYPE'          => $categoryList[$i],
-                        'LIMIT_QUIZ'    => $req->input('limit_soal_'.$nomor),
-                        'MIN_NILAI'     => $req->input('min_nilai_'.$nomor),
-                        'MAX_ATTEMPT'   => $req->input('max_attempt_'.$nomor)
+                        'LIMIT_QUIZ'    => $req->input('limit_soal_' . $nomor),
+                        'MIN_NILAI'     => $req->input('min_nilai_' . $nomor),
+                        'MAX_ATTEMPT'   => $req->input('max_attempt_' . $nomor)
                     ];
                     $idQuiz[] = DB::table('item_course')->insertGetId($data_item);
                 }
@@ -749,7 +749,7 @@ class CourseController extends Controller
                         AND ti.ID_ACTIVITY = '" . $id_activity . "'
                 ");
 
-                $this->send_email_invited($data);
+            $this->send_email_invited($data);
             return redirect('kursus-admin/invite?id_activity=' . $id_activity)->with(['succ_msg' => 'User berhasil diundang', 'kursus-admin/invite?id_activity=' . $id_activity]);
         }
     }
@@ -818,7 +818,8 @@ class CourseController extends Controller
         return redirect('kursus-admin/invite?id_activity=' . $id_activity)->with(['succ_msg' => 'Berhasil mengundang user', 'kursus-admin/invite?id_activity=' . $id_activity]);
     }
 
-    public function send_email_invited($data) {
+    public function send_email_invited($data)
+    {
         $details = [
             'name' => $data['user']->NAME,
             'body' => 'Selamat Anda telah diundang dalam kursus khusus yaitu ' . $data['user']->TITLE_ACTIVITY . '. Silahkan login ke aplikasi SIJAWARA untuk melihat detail lebih lanjut.',
@@ -1037,7 +1038,7 @@ class CourseController extends Controller
                 FROM 
                     nilai_quiz
                 WHERE
-                    ID_QUIZ IN (".$id_quiz_in.")
+                    ID_QUIZ IN (" . $id_quiz_in . ")
             ");
         }
 
@@ -1050,12 +1051,12 @@ class CourseController extends Controller
         $kunci_soal         = $req->input('kunci_soal');
 
         $tmpNo = 0;
-        $tmpNoQuiz = 0; 
+        $tmpNoQuiz = 0;
         foreach ($question as $i => $questions) {
             $id_quiz = $lastIdQuiz[$tmpNoQuiz];
             $maxIndex = max(array_keys($questions));
             for ($j = 1; $j <= $maxIndex; $j++) {
-                if(array_key_exists($j, $questions)) {
+                if (array_key_exists($j, $questions)) {
                     $quiz = [
                         'ID_QUIZ'       => $id_quiz,
                         'ID_COURSE'     => $data['ID_COURSE'],
@@ -1068,7 +1069,7 @@ class CourseController extends Controller
                     $tmpNo++;
                 }
             }
-            if(!empty($id_quiz_old)) {
+            if (!empty($id_quiz_old)) {
                 DB::table('nilai_quiz')->WHERE(['ID_QUIZ' => $id_quiz_old[$tmpNoQuiz]->ID_QUIZ])->update(['ID_QUIZ' => $id_quiz]);
             }
             $tmpNoQuiz++;
@@ -1109,9 +1110,9 @@ class CourseController extends Controller
                         'DESKRIPSI'     => null,
                         'ORDER_LIST'    => $orderList[$i],
                         'TYPE'          => $categoryList[$i],
-                        'LIMIT_QUIZ'    => $req->input('limit_soal_'.$nomor),
-                        'MIN_NILAI'     => $req->input('min_nilai_'.$nomor),
-                        'MAX_ATTEMPT'   => $req->input('max_attempt_'.$nomor)
+                        'LIMIT_QUIZ'    => $req->input('limit_soal_' . $nomor),
+                        'MIN_NILAI'     => $req->input('min_nilai_' . $nomor),
+                        'MAX_ATTEMPT'   => $req->input('max_attempt_' . $nomor)
                     ];
                     $idQuiz[] = DB::table('item_course')->insertGetId($data_item);
                 }
@@ -1121,5 +1122,130 @@ class CourseController extends Controller
             $data['data_item'] = $data_item;
             $this->update_item_quiz($data, $req, $idQuiz);
         }
+    }
+
+    public function get_survei(Request $req)
+    {
+        $id = $req->input('id_activity');
+        $data['title'] = "Laporan Survei Aktivitas";
+        $data['id_activity'] = $id;
+        $data['judul'] = DB::SelectOne('SELECT a.TITLE_ACTIVITY FROM activity a WHERE a.ID_ACTIVITY = ?', [$id]);
+
+        DB::statement("SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));");
+
+        $data['survei_questions'] = DB::select("
+            SELECT 
+                DISTINCT m.*
+            FROM
+                md_survei m
+            LEFT JOIN tb_survei_rating r ON
+                m.ID_SURVEI = r.ID_SURVEI AND r.ID_ACTIVITY = ?
+            LEFT JOIN tb_survei_checkbox c ON
+                m.ID_SURVEI = c.ID_SURVEI AND c.ID_ACTIVITY = ?
+            LEFT JOIN tb_survei_komentar k ON
+                m.ID_SURVEI = k.ID_SURVEI AND k.ID_ACTIVITY = ?
+            WHERE
+                r.ID_ACTIVITY IS NOT NULL 
+            OR
+                c.ID_ACTIVITY IS NOT NULL 
+            OR
+                k.ID_ACTIVITY IS NOT NULL
+        ", [$id, $id, $id]);
+
+        $data['rating_data'] = DB::select(
+            "
+            SELECT
+                tb_survei_rating.*, 
+                user.NAME FROM tb_survei_rating
+            LEFT JOIN user ON
+                tb_survei_rating.ID_USER = user.ID_USER
+            WHERE
+                ID_ACTIVITY = ?",
+            [$id]
+        );
+
+        $data['checkbox_data'] = DB::select(
+            "
+            SELECT
+                tb_survei_checkbox.*, 
+                user.NAME,
+                GROUP_CONCAT(md_checkbox.VALUE SEPARATOR ', ') AS VALUE
+            FROM
+                tb_survei_checkbox
+            LEFT JOIN user ON
+                tb_survei_checkbox.ID_USER = user.ID_USER
+            LEFT JOIN md_checkbox ON
+                md_checkbox.ID_CHECKBOX = tb_survei_checkbox.ID_CHECKBOX
+            WHERE
+                ID_ACTIVITY = ?",
+            [$id]
+        );
+
+        $data['komentar_data'] = DB::select(
+            "
+            SELECT
+                tb_survei_komentar.*, 
+                user.NAME FROM tb_survei_komentar
+            LEFT JOIN user ON
+                tb_survei_komentar.ID_USER = user.ID_USER
+            WHERE
+                ID_ACTIVITY = ?",
+            [$id]
+        );
+
+        return
+            view('template.header', $data) .
+            view('template_admin/course/survei', $data) .
+            view('template.footer', $data);
+    }
+
+    public function laporan_survei(Request $req)
+    {
+        $id = $req->input('id_activity');
+
+        $activity = DB::select("SELECT TITLE_ACTIVITY FROM activity WHERE ID_ACTIVITY = ?", [$id]);
+        if (empty($activity)) return redirect()->back()->with('err_msg', 'Aktivitas tidak ditemukan.');
+
+        $questions = DB::select("SELECT ID_SURVEI, TEXT, KATEGORI FROM md_survei ORDER BY ID_SURVEI ASC");
+
+        $users = DB::select("
+        SELECT DISTINCT u.ID_USER, u.NAME 
+        FROM user u
+        WHERE u.ID_USER IN (
+            SELECT ID_USER FROM tb_survei_rating WHERE ID_ACTIVITY = ?
+            UNION SELECT ID_USER FROM tb_survei_checkbox WHERE ID_ACTIVITY = ?
+            UNION SELECT ID_USER FROM tb_survei_komentar WHERE ID_ACTIVITY = ?
+        )
+    ", [$id, $id, $id]);
+
+        $ratings = DB::select("SELECT ID_USER, ID_SURVEI, RATING FROM tb_survei_rating WHERE ID_ACTIVITY = ?", [$id]);
+        $comments = DB::select("SELECT ID_USER, ID_SURVEI, TEXT FROM tb_survei_komentar WHERE ID_ACTIVITY = ?", [$id]);
+        $checkboxes = DB::select("
+        SELECT c.ID_USER, c.ID_SURVEI, GROUP_CONCAT(m.VALUE SEPARATOR ', ') as JAWABAN
+        FROM tb_survei_checkbox c
+        JOIN md_checkbox m ON FIND_IN_SET(m.ID_CHECKBOX, c.ID_CHECKBOX)
+        WHERE c.ID_ACTIVITY = ?
+        GROUP BY c.ID_USER, c.ID_SURVEI
+    ", [$id]);
+
+        $matrix = [];
+        foreach ($ratings as $r) {
+            $matrix[$r->ID_USER][$r->ID_SURVEI] = $r->RATING;
+        }
+        foreach ($comments as $k) {
+            $matrix[$k->ID_USER][$k->ID_SURVEI] = $k->TEXT;
+        }
+        foreach ($checkboxes as $c) {
+            $matrix[$c->ID_USER][$c->ID_SURVEI] = $c->JAWABAN;
+        }
+
+        $payload = [
+            'title' => $activity[0]->TITLE_ACTIVITY,
+            'questions' => $questions,
+            'users' => $users,
+            'matrix' => $matrix
+        ];
+
+        return app(Laporan::class)->laporan_survei($payload);
     }
 }

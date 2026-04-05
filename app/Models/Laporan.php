@@ -100,6 +100,77 @@ class Laporan extends Model
         $writer->save('php://output');
     }
 
+    public function laporan_survei($data)
+    {
+        $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+        $ObjSheet = $spreadsheet->getActiveSheet();
+        $ObjSheet->setTitle("LAPORAN HASIL SURVEI");
+
+        $ObjSheet->getColumnDimension('C')->setWidth(30);
+
+        $getCol = function ($index) {
+            return \PhpOffice\PhpSpreadsheet\Cell\Coordinate::stringFromColumnIndex($index);
+        };
+
+        $lastColNum = 3 + count($data['questions']);
+        $lastColLetter = $getCol($lastColNum);
+
+        $ObjSheet->mergeCells("B2:{$lastColLetter}2")->setCellValue('B2', "LAPORAN HASIL SURVEI PESERTA")
+            ->getStyle("B2:{$lastColLetter}2")->applyFromArray($this->styling_title_template('ff4bacc6', 'ffffffff'))
+            ->getFont()->setSize(14)->setBold(true);
+
+        $ObjSheet->mergeCells("B3:{$lastColLetter}3")->setCellValue('B3', "Aktivitas: " . $data['title'])
+            ->getStyle("B3:{$lastColLetter}3")->applyFromArray($this->styling_title_template('ff4bacc6', 'ffffffff'));
+
+        $ObjSheet->setCellValue('B7', 'No')->getStyle('B7')->applyFromArray($this->styling_title_template('FFFFD966', 'FF000000'));
+        $ObjSheet->setCellValue('C7', 'Nama Peserta')->getStyle('C7')->applyFromArray($this->styling_title_template('FFFFD966', 'FF000000'));
+
+        // Header Pertanyaan (Mulai dari Kolom D / Index 4)
+        $colIdx = 4;
+        foreach ($data['questions'] as $q) {
+            $cell = $getCol($colIdx) . '7';
+            $ObjSheet->setCellValue($cell, $q->TEXT)
+                ->getStyle($cell)->applyFromArray($this->styling_title_template('FF4F81BD', 'FFFFFFFF'));
+            $ObjSheet->getColumnDimension($getCol($colIdx))->setAutoSize(true);
+            $colIdx++;
+        }
+
+        // --- Isi Data ---
+        $rowStart = 8;
+        foreach ($data['users'] as $key => $user) {
+            // Kolom Statis
+            $ObjSheet->setCellValue('B' . $rowStart, ($key + 1));
+            $ObjSheet->setCellValue('C' . $rowStart, $user->NAME);
+
+            // Kolom Jawaban Dinamis
+            $colIdx = 4;
+            foreach ($data['questions'] as $q) {
+                $jawaban = isset($data['matrix'][$user->ID_USER][$q->ID_SURVEI])
+                    ? $data['matrix'][$user->ID_USER][$q->ID_SURVEI]
+                    : '-';
+
+                $ObjSheet->setCellValue($getCol($colIdx) . $rowStart, $jawaban);
+                $colIdx++;
+            }
+
+            // Styling satu baris sekaligus
+            $ObjSheet->getStyle("B{$rowStart}:{$lastColLetter}{$rowStart}")
+                ->applyFromArray($this->styling_content_template('00FFFFFF', '00000000', 'center', 'left'));
+
+            $rowStart++;
+        }
+
+        // --- Penutup dan Download ---
+        $fileName = 'Laporan Survei - ' . $data['title'];
+        $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="' . $fileName . '.xlsx"');
+        header('Cache-Control: max-age=0');
+        $writer->save('php://output');
+        exit;
+    }
+
     public function laporan_course($data)
     {
         $spreadsheet = new Spreadsheet();
@@ -259,7 +330,7 @@ class Laporan extends Model
             $ObjSheet->setCellValue('N' . $rowStart, ($item->npwp == 0 ? "Tidak ada" : "Ada"))->getStyle('N' . $rowStart)->applyFromArray($this->styling_content_template('00FFFFFF', '00000000', 'center', 'left'))->getAlignment()->setWrapText(false);
             $ObjSheet->setCellValue('O' . $rowStart, (empty($item->tempat_lahir_pemilik) ? "Belum Mengisi" : $item->tempat_lahir_pemilik))->getStyle('O' . $rowStart)->applyFromArray($this->styling_content_template('00FFFFFF', '00000000', 'center', 'left'))->getAlignment()->setWrapText(false);
             $ObjSheet->setCellValue('P' . $rowStart, (empty($item->tanggal_lahir_pemilik) ? "Belum Mengisi" : $item->tanggal_lahir_pemilik))->getStyle('P' . $rowStart)->applyFromArray($this->styling_content_template('00FFFFFF', '00000000', 'center', 'left'))->getAlignment()->setWrapText(false);
-            $ObjSheet->setCellValue('Q' . $rowStart, ($item->jenis_kelamin_pemilik == "P" ? "Perempuan" : ($item->jenis_kelamin_pemilik == "L" ? "Laki Laki" : "Belum Mengisi")) ? "Belum Mengisi" : $item->jenis_kelamin_pemilik)  ->getStyle('Q' . $rowStart)->applyFromArray($this->styling_content_template('00FFFFFF', '00000000', 'center', 'left'))->getAlignment()->setWrapText(false);
+            $ObjSheet->setCellValue('Q' . $rowStart, ($item->jenis_kelamin_pemilik == "P" ? "Perempuan" : ($item->jenis_kelamin_pemilik == "L" ? "Laki Laki" : "Belum Mengisi")) ? "Belum Mengisi" : $item->jenis_kelamin_pemilik)->getStyle('Q' . $rowStart)->applyFromArray($this->styling_content_template('00FFFFFF', '00000000', 'center', 'left'))->getAlignment()->setWrapText(false);
             $ObjSheet->setCellValue('R' . $rowStart, (empty($item->pendidikan_terakhir_pemilik) ? "Belum Mengisi" : $item->pendidikan_terakhir_pemilik))->getStyle('R' . $rowStart)->applyFromArray($this->styling_content_template('00FFFFFF', '00000000', 'center', 'left'))->getAlignment()->setWrapText(false);
             $ObjSheet->setCellValue('S' . $rowStart, (empty($item->phone_pemilik) ? "Belum Mengisi" : $item->phone_pemilik))->getStyle('S' . $rowStart)->applyFromArray($this->styling_content_template('00FFFFFF', '00000000', 'center', 'left'))->getAlignment()->setWrapText(false);
             $ObjSheet->setCellValue('T' . $rowStart, (empty($item->nama_ukm) ? "Belum Mengisi" : $item->nama_ukm))->getStyle('T' . $rowStart)->applyFromArray($this->styling_content_template('00FFFFFF', '00000000', 'center', 'left'))->getAlignment()->setWrapText(true);
@@ -278,7 +349,7 @@ class Laporan extends Model
             $ObjSheet->setCellValue('AG' . $rowStart, (empty($item->lokasi_pemasaran) ? "Belum Mengisi" : $item->lokasi_pemasaran))->getStyle('AG' . $rowStart)->applyFromArray($this->styling_content_template('00FFFFFF', '00000000', 'center', 'left'))->getAlignment()->setWrapText(true);
             $ObjSheet->setCellValue('AH' . $rowStart, ($item->nilai_realisasi === NULL ? "Belum Mengisi" : $item->nilai_realisasi))->getStyle('AH' . $rowStart)->applyFromArray($this->styling_content_template('00FFFFFF', '00000000', 'center', 'left'))->getAlignment()->setWrapText(false);
             $ObjSheet->setCellValue('AI' . $rowStart, ($item->tahun_realisasi === NULL ? "Belum Mengisi" : $item->tahun_realisasi))->getStyle('AI' . $rowStart)->applyFromArray($this->styling_content_template('00FFFFFF', '00000000', 'center', 'left'))->getAlignment()->setWrapText(false);
-            
+
             $ObjSheet->getStyle('C' . $rowStart)->getNumberFormat()->setFormatCode('0');
             $ObjSheet->getStyle('F' . $rowStart)->getNumberFormat()->setFormatCode('0');
             $ObjSheet->getStyle('L' . $rowStart)->getNumberFormat()->setFormatCode('0');
@@ -430,7 +501,7 @@ class Laporan extends Model
             $ObjSheet->setCellValue('AA' . $rowStart, (empty($item->nm_sekretaris) ? "Belum Mengisi" : $item->nm_sekretaris))->getStyle('AA' . $rowStart)->applyFromArray($this->styling_content_template('00FFFFFF', '00000000', 'center', 'left'))->getAlignment()->setWrapText(false);
             $ObjSheet->setCellValue('AB' . $rowStart, ($item->phone_sekretaris === NULL ? "Belum Mengisi" : $item->phone_sekretaris))->getStyle('AB' . $rowStart)->applyFromArray($this->styling_content_template('00FFFFFF', '00000000', 'center', 'left'))->getAlignment()->setWrapText(false);
             $ObjSheet->setCellValue('AC' . $rowStart, (empty($item->nm_bendahara) ? "Belum Mengisi" : $item->nm_bendahara))->getStyle('AC' . $rowStart)->applyFromArray($this->styling_content_template('00FFFFFF', '00000000', 'center', 'left'))->getAlignment()->setWrapText(false);
-            $ObjSheet->setCellValue('AD' . $rowStart,    ($item->phone_bendahara === NULL ? "Belum Mengisi" : $item->phone_bendahara))->getStyle('AD' . $rowStart)->applyFromArray($this->styling_content_template('00FFFFFF', '00000000', 'center', 'left'))->getAlignment()->setWrapText(false);
+            $ObjSheet->setCellValue('AD' . $rowStart, ($item->phone_bendahara === NULL ? "Belum Mengisi" : $item->phone_bendahara))->getStyle('AD' . $rowStart)->applyFromArray($this->styling_content_template('00FFFFFF', '00000000', 'center', 'left'))->getAlignment()->setWrapText(false);
             $ObjSheet->setCellValue('AE' . $rowStart, ($item->anggota_pria === NULL ? "Belum Mengisi" : $item->anggota_pria))->getStyle('AE' . $rowStart)->applyFromArray($this->styling_content_template('00FFFFFF', '00000000', 'center', 'left'))->getAlignment()->setWrapText(false);
             $ObjSheet->setCellValue('AF' . $rowStart, ($item->anggota_wanita === NULL ? "Belum Mengisi" : $item->anggota_wanita))->getStyle('AF' . $rowStart)->applyFromArray($this->styling_content_template('00FFFFFF', '00000000', 'center', 'left'))->getAlignment()->setWrapText(false);
             $ObjSheet->setCellValue('AG' . $rowStart, ($item->manager_pria === NULL ? "Belum Mengisi" : $item->manager_pria))->getStyle('AG' . $rowStart)->applyFromArray($this->styling_content_template('00FFFFFF', '00000000', 'center', 'left'))->getAlignment()->setWrapText(false);
