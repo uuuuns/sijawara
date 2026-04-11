@@ -39,7 +39,12 @@ class Certificate extends Model
         }
         
         $type = pathinfo($path, PATHINFO_EXTENSION);
-        $getImage = file_get_contents($path);
+        // $getImage = file_get_contents($path);
+        
+        $relativePath = parse_url($path, PHP_URL_PATH);
+        $localPath = public_path($relativePath);
+        $getImage = file_get_contents($localPath);
+
         $data['IMAGE'] = 'data:image/' . $type . ';base64,' . base64_encode($getImage);
 
         $path_hal2 = 'assets/images/template_sertifikat_hal2.jpg';
@@ -48,7 +53,12 @@ class Certificate extends Model
         }
 
         $type_hal2 = pathinfo($path_hal2, PATHINFO_EXTENSION);
-        $getImage_hal2 = file_get_contents($path_hal2);
+        // $getImage_hal2 = file_get_contents($path_hal2);
+
+        $relativePath_hal2 = parse_url($path_hal2, PHP_URL_PATH);
+        $localPath_hal2 = public_path($relativePath_hal2);
+        $getImage_hal2 = file_get_contents($localPath_hal2);
+
         $data['IMAGE_HAL_2'] = 'data:image/' . $type_hal2 . ';base64,' . base64_encode($getImage_hal2);
 
         
