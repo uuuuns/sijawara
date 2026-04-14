@@ -16,8 +16,10 @@ class SurveiMaster extends Model
         'TEXT',
         'CREATED_AT',
         'UPDATED_AT',
+        'DELETED_AT',
         'CREATED_BY',
-        'UPDATED_BY'
+        'UPDATED_BY',
+        'DELETED_BY'
     ];
 
     public function checkbox()
