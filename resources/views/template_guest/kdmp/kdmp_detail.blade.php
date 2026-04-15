@@ -93,6 +93,8 @@
                                 aria-selected="true">Kursus</a>
                             <!-- <a class="nav-item nav-link" id="nav-announcement-tab" data-bs-toggle="tab" href="#nav-announcement" role="tab" aria-controls="nav-announcement-tab" aria-selected="false">Pengumuman</a> -->
                             <?php if ($tot_proggress == 100) { ?>
+                            <a class="nav-item nav-link" id="nav-survei-tab" data-bs-toggle="tab" href="#nav-survei"
+                                role="tab" aria-controls="nav-survei-tab" aria-selected="false">Survei</a>
                             <a class="nav-item nav-link" id="nav-sertif-tab" data-bs-toggle="tab" href="#nav-sertif"
                                 role="tab" aria-controls="nav-sertif-tab" aria-selected="false">Sertifikat</a>
                             <a class="nav-item nav-link" id="nav-komen-tab" data-bs-toggle="tab" href="#nav-komen"
