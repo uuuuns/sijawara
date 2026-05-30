@@ -375,7 +375,8 @@ class AuthController extends Controller
 
             $user_data = DB::selectOne('
                 SELECT
-                    u.ID_USER
+                    u.ID_USER,
+                    u.migrations
                 FROM
                     user u
                 WHERE
@@ -398,10 +399,23 @@ class AuthController extends Controller
                     'STATUS' => 0,
                     'LOG_TIME' => date('Y-m-d H:i:s'),
                 ];
-                DB::table('token')->updateOrInsert(['ID_USER' => $user_data->ID_USER], $formDataToken);
-                DB::table("user")->where(["EMAIL" => $email])->update(["PASS" => $hashPassword]);
-            }
 
+                $updateUser = [];
+
+                if($user_data->migrations == 2){
+                    $updateUser = [
+                        'PASS' => $hashPassword,
+                        'migrations' => 1
+                    ];
+                } else {
+                    $updateUser = [
+                        'PASS' => $hashPassword
+                    ];
+                }
+
+                DB::table('token')->updateOrInsert(['ID_USER' => $user_data->ID_USER], $formDataToken);
+                DB::table('user')->where(['ID_USER' => $user_data->ID_USER])->update($updateUser);
+            }
             DB::commit();
 
             return response()->json([
