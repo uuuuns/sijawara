@@ -20,7 +20,7 @@
                             <input type="password" class="form-control input-text woocommerce-Input woocommerce-Input--text" name="password" id="exampleInputPassword1" placeholder="Kata Sandi" aria-describedby="passwordHelp" required>
                             <span class="align-self-center fw-semibold" id="togglePassword" style="cursor: pointer;margin-left: -46px;z-index: 5;padding: 10px;"><i class="far fa-eye fs-4"></i></span>
                         </div>
-                        <div class="slidercaptcha card" id="card-captcha">
+                        {{-- <div class="slidercaptcha card" id="card-captcha">
                             <div class="card-header">
                                 <span>Please complete security verification before Login!</span>
                             </div>
@@ -33,12 +33,13 @@
                                 <circle class="path circle" fill="none" stroke="#73AF55" stroke-width="6" stroke-miterlimit="10" cx="65.1" cy="65.1" r="62.1"/>
                                 <polyline class="path check" fill="none" stroke="#73AF55" stroke-width="6" stroke-linecap="round" stroke-miterlimit="10" points="100.2,40.2 51.5,88.8 29.8,67.5 "/>
                             </svg>
-                        </div>
+                        </div> --}}
                         <div class="mt-3 my-3">
                             Lupa Password ? <a href="<?= url('lupa-katasandi') ?>">klik Disini</a>
                         </div>
                         <div class="my-4">
-                            <button id="btn-login" type="submit" class="btn  btn-main-2 btn-primary w-100 rounded-3 fw-semibold py-2 text-black border-0" disabled>Masuk</button>
+                            {{-- <button id="btn-login" type="submit" class="btn  btn-main-2 btn-primary w-100 rounded-3 fw-semibold py-2 text-black border-0" disabled>Masuk</button> --}}
+                            <button id="btn-login" type="submit" class="btn  btn-main-2 btn-primary w-100 rounded-3 fw-semibold py-2 text-black border-0">Masuk</button>
                         </div>
                         <div class="my-4 text-center">
                             <span>Tidak punya akun? <a href="<?= url('daftar') ?>" class="text-decoration-none fw-bold text-black">Daftar Sekarang</a></span>
@@ -54,7 +55,7 @@
 <!-- End Login -->
 
 <style>
-    #g-recaptcha-response {
+    /* #g-recaptcha-response {
         display: block !important;
         position: absolute;
         margin: -78px 0 0 0 !important;
@@ -62,7 +63,7 @@
         height: 76px !important;
         z-index: -999999;
         opacity: 0;
-    }
+    } */
 
     svg {
         width: 60px;
@@ -141,7 +142,7 @@
 </style>
 <script src="{{ asset('js/sliderPuzzle.js') }}"></script>
 <script>
-    window.onload = function() {
+    /* window.onload = function() {
         var $recaptcha = document.querySelector('#g-recaptcha-response');
 
         if ($recaptcha) {
@@ -154,7 +155,7 @@
                 event.preventDefault();
             }
         });
-    };
+    }; */
 
     const togglePassword = document.querySelector("#togglePassword");
     const password = document.querySelector("#exampleInputPassword1");
