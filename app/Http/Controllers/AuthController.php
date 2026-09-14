@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Services\SsoService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -15,8 +16,12 @@ use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
+    protected $ssoService;
+
     public function __construct()
     {
+        $this->ssoService = new SsoService();
+
         $smtpConfig = [
             'transport' => env('MAIL_MAILER'),
             'host' => env('MAIL_HOST'),
@@ -31,8 +36,7 @@ class AuthController extends Controller
 
     public function login()
     {
-        $data['title'] = "Masuk - SIJAWARA+";
-
+        // Already authenticated locally, send to dashboard
         if (!empty(session('user')[0]['ID_ROLE']) && session('user')[0]['ID_ROLE'] == 1) {
             return redirect('dashboard');
         } else if (!empty(session('user')[0]['ID_ROLE']) && session('user')[0]['ID_ROLE'] == 2) {
@@ -43,54 +47,65 @@ class AuthController extends Controller
             return redirect('dashboard');
         }
 
-        return
-            view('template.header', $data) .
-            view('auth.login') .
-            view('template.footer', $data);
+        // Local login is deprecated. Redirect to SSO login.
+        $ssoUrl = rtrim(env('SSO_URL', 'http://localhost:9000'), '/');
+        return redirect($ssoUrl . '/login');
     }
 
     public function login_authentication(Request $req)
     {
-        $auth_migration = DB::selectOne("
-            SELECT
-                user.*
-            FROM
-                user
-            WHERE
-                user.EMAIL = '" . $req->input('email') . "'
-            AND
-                user.migrations = 2
-        ");
+        $email = $req->input('email');
+        $password = $req->input('password');
 
-        if ($auth_migration != null) {
-            return redirect('lupa-katasandi')->with('succ', "Karena migrasi dari sistem lama, silahkan reset password anda");
+        // Authenticate via SSO server
+        $ssoResult = $this->ssoService->login($email, $password);
+
+        if (!$ssoResult['success']) {
+            return redirect()->back()->with('msg_auth', $ssoResult['message'] ?? 'Email atau Password Salah');
         }
 
-        $auth = DB::selectOne("
-            SELECT
-                u.*,
-                t.TYPE
-            FROM
-                user u
-            LEFT JOIN token t ON
-                t.ID_USER = u.ID_USER
-            WHERE
-                u.EMAIL = '" . $req->input('email') . "'
-            AND
-                u.PASS = '" . hash('sha256', md5($req->input('password'))) . "'
-        ");
+        $ssoData = $ssoResult['data']['data'];
+        $ssoUser = $ssoData['user'];
+        $ssoToken = $ssoData['access_token'];
+
+        // Look up local user by email
+        $auth = DB::selectOne('SELECT * FROM user WHERE EMAIL = ?', [$email]);
 
         if ($auth == null) {
-            return redirect()->back()->with('msg_auth', "Email atau Password Salah");
+            // SSO login succeeded but no local user — create local user
+            $KODE_USER = $this->GenerateUniqID($ssoUser['name'] ?? $email);
+            $isAdmin = in_array($ssoUser['user_type'] ?? '', ['admin', 'pegawai']) || (($ssoUser['email'] ?? '') === 'admin@diskopukm.jatimprov.go.id');
+
+            $localUser = new User();
+            $localUser->ID_USER = $KODE_USER;
+            $localUser->NAME = $ssoUser['name'] ?? $email;
+            $localUser->EMAIL = $email;
+            $localUser->PASS = hash('sha256', md5($password));
+            $localUser->ID_ROLE = $isAdmin ? 1 : 3;
+            $localUser->STATUS = 1;
+            $localUser->IS_DELETE = 0;
+            $localUser->REG_TIME = date('Y-m-d H:i:s');
+            $localUser->JENIS_INSTANSI = 'UMUM';
+            $localUser->save();
+
+            $auth = DB::selectOne('SELECT * FROM user WHERE ID_USER = ?', [$KODE_USER]);
+
+            // Set legacy_sijawara_id on SSO user
+            try {
+                $this->ssoService->updateLegacyId($ssoToken, 'legacy_sijawara_id', $KODE_USER);
+            } catch (\Throwable $e) {
+                \Illuminate\Support\Facades\Log::warning('Failed to set legacy_sijawara_id for ' . $KODE_USER . ': ' . $e->getMessage());
+            }
         }
 
         if ($auth->STATUS == 0) {
-            return redirect()->back()->with('resp_msg', "Tidak bisa masuk, akun anda belum diverifikasi, harap periksa email anda");
+            return redirect()->back()->with('resp_msg', 'Tidak bisa masuk, akun anda belum diverifikasi, harap periksa email anda');
         }
-        if ($auth->IS_DELETE == 1) {
-            return redirect()->back()->with('error_msg', "Tidak bisa masuk, akun anda telah di ban. Hubungi admin untuk informasi lebih lanjut");
+        if (isset($auth->IS_DELETE) && $auth->IS_DELETE == 1) {
+            return redirect()->back()->with('error_msg', 'Tidak bisa masuk, akun anda telah di ban. Hubungi admin untuk informasi lebih lanjut');
         }
 
+        // Check data completeness
         $mappingInstansi = [
             'KOPERASI' => 'koperasi',
             'UKM' => 'ukm',
@@ -98,29 +113,23 @@ class AuthController extends Controller
             'KOPERASI;UKM' => 'koperasi_ukm',
             'UKM;KOPERASI' => 'koperasi_ukm',
             'UMUM' => 'umum',
-            'KDMP' => 'kdmp'
+            'KDMP' => 'kdmp',
+            'ADMIN' => 'admin',
         ];
 
+        $jenisInstansi = $auth->JENIS_INSTANSI ?? 'UMUM';
         $joinCond = '';
-        if ($mappingInstansi[$auth->JENIS_INSTANSI] == 'ukm') {
+        $instansiKey = $mappingInstansi[$jenisInstansi] ?? 'umum';
+        if ($instansiKey == 'ukm') {
             $joinCond = 'LEFT JOIN tb_ukm tu ON tu.ID_USER = u.ID_USER';
-        } else if ($mappingInstansi[$auth->JENIS_INSTANSI] == 'koperasi') {
+        } else if ($instansiKey == 'koperasi') {
             $joinCond = 'LEFT JOIN tb_koperasi tk ON tk.ID_USER = u.ID_USER';
-        } else if ($mappingInstansi[$auth->JENIS_INSTANSI] == 'koperasi_ukm') {
+        } else if ($instansiKey == 'koperasi_ukm') {
             $joinCond = 'LEFT JOIN tb_koperasi tk ON tk.ID_USER = u.ID_USER
                         LEFT JOIN tb_ukm tu ON tu.ID_USER = u.ID_USER';
         }
 
-        // Query the database
-        $data = DB::selectOne('
-            SELECT 
-                *
-            FROM 
-                `user` u
-            ' . $joinCond . '
-            WHERE 
-                u.ID_USER = ?
-        ', [$auth->ID_USER]);
+        $data = DB::selectOne('SELECT * FROM `user` u ' . $joinCond . ' WHERE u.ID_USER = ?', [$auth->ID_USER]);
 
         $is_data_complete = true;
         if ($data) {
@@ -131,90 +140,224 @@ class AuthController extends Controller
             }
         }
 
-        if (!empty($auth)) {
-            $data = [
-                'LOG_TIME' => date('Y-m-d H:i:s')
-            ];
-            DB::table('user')->where('EMAIL', $req->input('email'))->update($data);
-            if ($auth->ID_ROLE == 1) {
-                $user_data = collect([
-                    'ID_USER' => $auth->ID_USER,
-                    'NAME' => $auth->NAME,
-                    'JENIS_INSTANSI' => "ADMIN",
-                    'ID_ROLE' => $auth->ID_ROLE,
-                    'FOTO_PROFILE' => $auth->FOTO_PROFILE,
-                    'EMAIL' => $auth->EMAIL,
-                    'IS_DATA_COMPLETE' => true,
-                    'LOGGED_IN' => TRUE
-                ]);
+        // Update last login time
+        DB::table('user')->where('EMAIL', $email)->update(['LOG_TIME' => date('Y-m-d H:i:s')]);
 
-                Session::push('user', $user_data);
+        // Build session data — same structure as before for backward compatibility
+        $user_data = collect([
+            'ID_USER' => $auth->ID_USER,
+            'NAME' => $auth->NAME,
+            'JENIS_INSTANSI' => ($auth->ID_ROLE == 1 || $auth->ID_ROLE == 4) ? 'ADMIN' : ($auth->JENIS_INSTANSI ?? 'UMUM'),
+            'ID_ROLE' => $auth->ID_ROLE,
+            'FOTO_PROFILE' => $auth->FOTO_PROFILE,
+            'EMAIL' => $auth->EMAIL,
+            'IS_DATA_COMPLETE' => ($auth->ID_ROLE == 1 || $auth->ID_ROLE == 4) ? true : $is_data_complete,
+            'LOGGED_IN' => true,
+        ]);
 
-                return redirect('dashboard');
-            } elseif ($auth->ID_ROLE == 2) {
+        // Clear any previous user session before setting new session
+        Session::forget(['user', 'sso_token', 'sso_user']);
+        Session::put('user', [$user_data]);
 
-                $user_data = collect([
-                    'ID_USER' => $auth->ID_USER,
-                    'NAME' => $auth->NAME,
-                    'JENIS_INSTANSI' => $auth->JENIS_INSTANSI,
-                    'ID_ROLE' => $auth->ID_ROLE,
-                    'FOTO_PROFILE' => $auth->FOTO_PROFILE,
-                    'EMAIL' => $auth->EMAIL,
-                    'IS_DATA_COMPLETE' => $is_data_complete,
-                    'LOGGED_IN' => TRUE
-                ]);
+        // Store SSO token in session for later use (logout, API calls)
+        Session::put('sso_token', $ssoToken);
+        Session::put('sso_user', $ssoUser);
 
-                Session::push('user', $user_data);
-                return redirect('/');
-            } elseif ($auth->ID_ROLE == 3) {
+        // Set legacy_sijawara_id on SSO user (best-effort)
+        try {
+            $this->ssoService->updateLegacyId($ssoToken, 'legacy_sijawara_id', $auth->ID_USER);
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::warning('Failed to set legacy_sijawara_id for ' . $auth->ID_USER . ': ' . $e->getMessage());
+        }
 
-                $user_data = collect([
-                    'ID_USER' => $auth->ID_USER,
-                    'NAME' => $auth->NAME,
-                    'JENIS_INSTANSI' => $auth->JENIS_INSTANSI,
-                    'ID_ROLE' => $auth->ID_ROLE,
-                    'FOTO_PROFILE' => $auth->FOTO_PROFILE,
-                    'EMAIL' => $auth->EMAIL,
-                    'IS_DATA_COMPLETE' => $is_data_complete,
-                    'LOGGED_IN' => TRUE
-                ]);
+        // Log activity to SSO server
+        $this->ssoService->logActivity($ssoToken, 'access_app', 'User login ke aplikasi SIJAWARA+', $req->ip(), $req->userAgent());
 
-                Session::push('user', $user_data);
+        // Redirect based on role
+        if ($auth->ID_ROLE == 1 || $auth->ID_ROLE == 4) {
+            return redirect('dashboard');
+        } elseif ($auth->ID_ROLE == 3) {
+            // Check if must change password
+            if (isset($ssoData['must_change_password']) && $ssoData['must_change_password']) {
+                return redirect('ganti_kata_sandi');
+            }
+            return redirect('/');
+        } else {
+            return redirect('/');
+        }
+    }
 
-                if ($auth->TYPE == 1) {
-                    return redirect('ganti_kata_sandi');
-                }
+    public function sso_transfer(Request $req)
+    {
+        $token = $req->input('sso_token');
+        if (!$token) {
+            return redirect('masuk')->with('error_msg', 'SSO Token tidak ditemukan');
+        }
 
-                return redirect('/');
-            } elseif ($auth->ID_ROLE == 4) {
+        $ssoResult = $this->ssoService->getUser($token);
 
-                $user_data = collect([
-                    'ID_USER' => $auth->ID_USER,
-                    'NAME' => $auth->NAME,
-                    'JENIS_INSTANSI' => $auth->JENIS_INSTANSI,
-                    'ID_ROLE' => $auth->ID_ROLE,
-                    'FOTO_PROFILE' => $auth->FOTO_PROFILE,
-                    'EMAIL' => $auth->EMAIL,
-                    'IS_DATA_COMPLETE' => true,
-                    'LOGGED_IN' => TRUE
-                ]);
+        if (!$ssoResult['success']) {
+            return redirect('masuk')->with('error_msg', 'SSO Token tidak valid');
+        }
 
-                Session::push('user', $user_data);
-                return redirect('/');
+        $ssoUser = $ssoResult['data'];
+        $legacyId = $ssoUser['legacy_sijawara_id'] ?? null;
+        $email = !empty($ssoUser['email']) ? trim($ssoUser['email']) : null;
+        $nik = !empty($ssoUser['nik']) ? trim($ssoUser['nik']) : null;
+
+        // Look up local user hierarchically: legacy_sijawara_id -> email -> nik
+        $auth = null;
+        if (!empty($legacyId)) {
+            $auth = DB::selectOne('SELECT * FROM user WHERE ID_USER = ?', [$legacyId]);
+        }
+        if (!$auth && !empty($email)) {
+            $auth = DB::selectOne('SELECT * FROM user WHERE EMAIL = ?', [$email]);
+        }
+        if (!$auth && !empty($nik)) {
+            $auth = DB::selectOne('SELECT * FROM user WHERE NIK = ? OR EMAIL = ?', [$nik, $nik]);
+        }
+
+        if ($auth == null) {
+            // SSO login succeeded but no local user — create local user
+            $userName = !empty($ssoUser['name']) ? $ssoUser['name'] : (!empty($email) ? $email : ($nik ?: 'User SSO'));
+            $userEmail = !empty($email) ? $email : (($nik ?: 'user_' . time()) . '@sso.local');
+            $KODE_USER = $this->GenerateUniqID($userName);
+            $isAdmin = in_array($ssoUser['user_type'] ?? '', ['admin', 'pegawai']) || ($userEmail === 'admin@diskopukm.jatimprov.go.id');
+
+            $localUser = new \App\Models\User();
+            $localUser->ID_USER = $KODE_USER;
+            $localUser->NAME = $userName;
+            $localUser->EMAIL = $userEmail;
+            if (!empty($nik)) {
+                $localUser->NIK = $nik;
+            }
+            if (!empty($ssoUser['phone'])) {
+                $localUser->TELP = $ssoUser['phone'];
+            }
+            $localUser->PASS = hash('sha256', md5(\Illuminate\Support\Str::random(12)));
+            $localUser->ID_ROLE = $isAdmin ? 1 : 3; // 1 for admin/pegawai, 3 for general user
+            $localUser->STATUS = 1;
+            $localUser->IS_DELETE = 0;
+            $localUser->REG_TIME = date('Y-m-d H:i:s');
+
+            // Parse instansi from SSO user_type
+            $userType = $ssoUser['user_type'] ?? 'umum';
+            $jenisInstansi = 'UMUM';
+            if ($userType == 'koperasi') {
+                $jenisInstansi = 'KOPERASI';
+            } elseif ($userType == 'ukm') {
+                $jenisInstansi = 'UKM';
+            }
+
+            $localUser->JENIS_INSTANSI = $jenisInstansi;
+            $localUser->save();
+
+            $auth = DB::selectOne('SELECT * FROM user WHERE ID_USER = ?', [$KODE_USER]);
+
+            // Set legacy_sijawara_id on SSO user
+            try {
+                $this->ssoService->updateLegacyId($token, 'legacy_sijawara_id', $KODE_USER);
+            } catch (\Throwable $e) {
+                \Illuminate\Support\Facades\Log::warning('Failed to set legacy_sijawara_id for ' . $KODE_USER . ': ' . $e->getMessage());
             }
         } else {
-            return redirect('masuk')->with('resp_msg', "Your Session Expired");
+            // If local user exists but legacy_sijawara_id on SSO was not set yet, update it
+            if (empty($ssoUser['legacy_sijawara_id'])) {
+                try {
+                    $this->ssoService->updateLegacyId($token, 'legacy_sijawara_id', $auth->ID_USER);
+                } catch (\Throwable $e) {
+                    \Illuminate\Support\Facades\Log::warning('Failed to set legacy_sijawara_id for ' . $auth->ID_USER . ': ' . $e->getMessage());
+                }
+            }
+        }
+
+        if ($auth->STATUS == 0) {
+            return redirect('masuk')->with('resp_msg', 'Tidak bisa masuk, akun anda belum diverifikasi');
+        }
+        if (isset($auth->IS_DELETE) && $auth->IS_DELETE == 1) {
+            return redirect('masuk')->with('error_msg', 'Tidak bisa masuk, akun anda telah di ban');
+        }
+
+        // Check data completeness for koperasi/ukm
+        $mappingInstansi = [
+            'KOPERASI' => 'koperasi',
+            'UKM' => 'ukm',
+            'INSTANSI' => 'instansi',
+            'KOPERASI;UKM' => 'koperasi_ukm',
+            'UKM;KOPERASI' => 'koperasi_ukm',
+            'UMUM' => 'umum',
+            'KDMP' => 'kdmp',
+            'ADMIN' => 'admin',
+        ];
+
+        $jenisInstansi = $auth->JENIS_INSTANSI ?? 'UMUM';
+        $joinCond = '';
+        $instansiKey = $mappingInstansi[$jenisInstansi] ?? 'umum';
+        if ($instansiKey == 'ukm') {
+            $joinCond = 'LEFT JOIN tb_ukm tu ON tu.ID_USER = u.ID_USER';
+        } else if ($instansiKey == 'koperasi') {
+            $joinCond = 'LEFT JOIN tb_koperasi tk ON tk.ID_USER = u.ID_USER';
+        } else if ($instansiKey == 'koperasi_ukm') {
+            $joinCond = 'LEFT JOIN tb_koperasi tk ON tk.ID_USER = u.ID_USER
+                        LEFT JOIN tb_ukm tu ON tu.ID_USER = u.ID_USER';
+        }
+
+        $data = DB::selectOne('SELECT * FROM `user` u ' . $joinCond . ' WHERE u.ID_USER = ?', [$auth->ID_USER]);
+
+        $is_data_complete = true;
+        if ($data) {
+            foreach ($data as $key => $value) {
+                if (is_null($value) || $value === '') {
+                    $is_data_complete = false;
+                }
+            }
+        }
+
+        // Update last login time
+        DB::table('user')->where('ID_USER', $auth->ID_USER)->update(['LOG_TIME' => date('Y-m-d H:i:s')]);
+
+        // Build session data
+        $user_data = collect([
+            'ID_USER' => $auth->ID_USER,
+            'NAME' => $auth->NAME,
+            'JENIS_INSTANSI' => ($auth->ID_ROLE == 1 || $auth->ID_ROLE == 4) ? 'ADMIN' : ($auth->JENIS_INSTANSI ?? 'UMUM'),
+            'ID_ROLE' => $auth->ID_ROLE,
+            'FOTO_PROFILE' => $auth->FOTO_PROFILE,
+            'EMAIL' => $auth->EMAIL,
+            'IS_DATA_COMPLETE' => ($auth->ID_ROLE == 1 || $auth->ID_ROLE == 4) ? true : $is_data_complete,
+            'LOGGED_IN' => true,
+        ]);
+
+        // Clear any previous session to avoid session stacking
+        Session::forget(['user', 'sso_token', 'sso_user']);
+        Session::put('user', [$user_data]);
+
+        // Store SSO token in session
+        Session::put('sso_token', $token);
+        Session::put('sso_user', $ssoUser);
+
+        // Log access activity to SSO server
+        $this->ssoService->logActivity($token, 'access_app', 'User mengakses aplikasi SIJAWARA+ via SSO', $req->ip(), $req->userAgent());
+
+        // Check must_change_password flag from SSO
+        if (!empty($ssoUser['must_change_password'])) {
+            return redirect('ganti_kata_sandi');
+        }
+
+        // Redirect based on role
+        if ($auth->ID_ROLE == 1 || $auth->ID_ROLE == 4) {
+            return redirect('dashboard');
+        } else {
+            return redirect('/');
         }
     }
 
     public function gantiSandi()
     {
-        $data["title"]  = "Ganti Kata sandi";
+        $data["title"] = "Ganti Kata Sandi";
 
-        $token = DB::table("token")->where("ID_USER", session("user")[0]["ID_USER"])->first();
-
-        if ($token->TYPE !== 1) {
-            return redirect("/");
+        if (!session("user")) {
+            return redirect('masuk');
         }
 
         return
@@ -226,43 +369,62 @@ class AuthController extends Controller
     public function submitSandi(Request $req)
     {
         try {
-            DB::beginTransaction();
+            $ssoToken = session('sso_token');
+            $currentPassword = $req->input('current_password');
+            $newPassword = $req->input('password');
 
-            $token = DB::table("token")->where("ID_USER", session("user")[0]["ID_USER"])->first();
-
-            if ($token->TYPE == 1) {
-                $hash_password = hash('sha256', md5($req->input("password")));
-
-                DB::table("user")->where("ID_USER", session("user")[0]["ID_USER"])->update(["PASS" => $hash_password]);
-                DB::table("token")->where("ID_USER", session("user")[0]["ID_USER"])->update(["TYPE" => 0]);
-
-                DB::commit();
-
+            if (!$ssoToken) {
                 return response()->json([
-                    'status_code'   => 200,
-                    'status_message' => "Ganti Kata Sandi Berhasil"
-                ]);
-            } else {
-                return redirect("/");
+                    'status_code' => 401,
+                    'message' => 'Sesi SSO tidak ditemukan. Silakan login ulang.'
+                ], 200);
             }
-        } catch (Exception $e) {
-            DB::rollBack();
+
+            // Change password on SSO server
+            $ssoResult = $this->ssoService->changePassword($ssoToken, $currentPassword, $newPassword);
+
+            if (!$ssoResult['success']) {
+                return response()->json([
+                    'status_code' => 400,
+                    'message' => $ssoResult['message'] ?? 'Gagal mengganti kata sandi di SSO.'
+                ], 200);
+            }
+
+            // Also update local DB for backward compatibility
+            $hash_password = hash('sha256', md5($newPassword));
+            DB::table("user")->where("ID_USER", session("user")[0]["ID_USER"])->update(["PASS" => $hash_password]);
+
+            // Clear must_change_password token if exists
+            DB::table("token")->where("ID_USER", session("user")[0]["ID_USER"])->update(["TYPE" => 0]);
 
             return response()->json([
-                'status_code'   => 500,
-                'status_message' => $e->getMessage()
+                'status_code' => 200,
+                'message' => 'Kata sandi berhasil diperbarui!'
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'status_code' => 500,
+                'message' => $e->getMessage()
             ]);
         }
     }
 
     public function register()
     {
-        $data['title'] = "Daftar - SIJAWARA+";
+        // Already authenticated locally, send to dashboard / home
+        if (!empty(session('user')[0]['ID_ROLE']) && session('user')[0]['ID_ROLE'] == 1) {
+            return redirect('dashboard');
+        } else if (!empty(session('user')[0]['ID_ROLE']) && session('user')[0]['ID_ROLE'] == 2) {
+            return redirect('/');
+        } else if (!empty(session('user')[0]['ID_ROLE']) && session('user')[0]['ID_ROLE'] == 3) {
+            return redirect('/');
+        } else if (!empty(session('user')[0]['ID_ROLE']) && session('user')[0]['ID_ROLE'] == 4) {
+            return redirect('dashboard');
+        }
 
-        return
-            view('template.header', $data) .
-            view('auth.register') .
-            view('template.footer', $data);
+        // Local registration is deprecated. Redirect to SSO register.
+        $ssoUrl = rtrim(env('SSO_URL', 'http://localhost:9000'), '/');
+        return redirect($ssoUrl . '/register');
     }
 
     public function store(Request $req)
@@ -272,39 +434,53 @@ class AuthController extends Controller
             ->first();
         if (empty($check_user)) {
             $KODE_USER = $this->GenerateUniqID($req->input('name'));
-            try {
-                $User = new User();
-                $User->ID_USER               = $KODE_USER;
-                $User->NAME                  = $req->input('name');
-                $User->EMAIL                 = $req->input('email');
-                $User->PASS                  = hash('sha256', md5($req->input('password')));
-                $User->ID_ROLE               = 3;
-                $User->STATUS                = 1;
-                $User->IS_DELETE             = 0;
-                $User->REG_TIME              = date('Y-m-d H:i:s');
-                $User->JENIS_INSTANSI        = $req->input('jenis_instansi');
-                $User->save();
-            } catch (\Throwable $e) {
-                return response()->json([
-                    'status' => 'failure',
-                    'errors' => $e
-                ], 422);
+
+            $user_type = strtolower($req->input('jenis_instansi'));
+
+            // Also register in SSO server
+            $ssoResult = $this->ssoService->register([
+                'name' => $req->input('name'),
+                'email' => $req->input('email'),
+                'password' => $req->input('password'),
+                'user_type' => $user_type,
+            ]);
+            // SSO registration is best-effort — don't block local registration
+            if (!$ssoResult['success']) {
+                \Illuminate\Support\Facades\Log::warning('SSO registration failed for ' . $req->input('email') . ': ' . ($ssoResult['message'] ?? 'Unknown error'));
+                return redirect('daftar')->with('error_msg', $ssoResult['message'] ?? 'Pendaftaran SSO gagal. Silakan coba lagi.');
+            } else {
+                // Set legacy_sijawara_id on SSO user
+                try {
+                    $loginResult = $this->ssoService->login($req->input('email'), $req->input('password'));
+                    if ($loginResult['success']) {
+                        $ssoToken = $loginResult['data']['data']['access_token'] ?? null;
+                        if ($ssoToken) {
+                            $this->ssoService->updateLegacyId($ssoToken, 'legacy_sijawara_id', $KODE_USER);
+                        }
+                    }
+                } catch (\Throwable $e) {
+                    \Illuminate\Support\Facades\Log::warning('Failed to set legacy_sijawara_id for ' . $KODE_USER . ': ' . $e->getMessage());
+                }
             }
 
-            // SEND EMAIL VERIFICATION
-            $token_key = bin2hex(random_bytes(32));
-            // $details = [
-            //     'name' => $req->input('name'),
-            //     'body' => 'Tekan Tombol dibawah ini untuk mengaktifkan akun.',
-            //     'link' => url('verifikasi/confirm?token=' . $token_key),
-            //     'button' => "Aktifkan",
-            // ];
-            // $mail = new MailSender($details);
-            // $mail->subject("Email Verification");
-            // Mail::to($req->input('email'))->send($mail);
-            // END SEND EMAIL VERIFICATION
+            try {
+                $User = new User();
+                $User->ID_USER = $KODE_USER;
+                $User->NAME = $req->input('name');
+                $User->EMAIL = $req->input('email');
+                $User->PASS = hash('sha256', md5($req->input('password')));
+                $User->ID_ROLE = 3;
+                $User->STATUS = 1;
+                $User->IS_DELETE = 0;
+                $User->REG_TIME = date('Y-m-d H:i:s');
+                $User->JENIS_INSTANSI = $req->input('jenis_instansi');
+                $User->save();
+            } catch (\Throwable $e) {
+                return redirect('daftar')->with('error_msg', 'Gagal menyimpan data pengguna: ' . $e->getMessage());
+            }
 
             // SAVE TOKEN
+            $token_key = bin2hex(random_bytes(32));
             $formDataToken = [
                 'ID_USER' => $KODE_USER,
                 'KEY' => $token_key,
@@ -353,19 +529,28 @@ class AuthController extends Controller
     //     return redirect('masuk')->with('succ_msg', 'Akun anda telah aktif, silahkan masuk!');
     // }
 
-    public function logout()
+    public function logout(Request $request)
     {
+        $ssoToken = Session::get('sso_token');
+
+        Session::forget(['user', 'sso_token', 'sso_user']);
         Session::flush();
-        return redirect('masuk');
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        $ssoUrl = rtrim(env('SSO_URL', 'http://localhost:9000'), '/');
+
+        // Redirect to SSO single-logout endpoint — SSO server revokes token,
+        // destroys web session, then redirects to /login
+        $sloUrl = $ssoUrl . '/slo' . ($ssoToken ? '?token=' . urlencode($ssoToken) : '');
+        return redirect($sloUrl);
     }
 
     public function forgot_password(Request $req)
     {
-        $data['title'] = 'Lupa Kata Sandi - SIJAWARA+';
-
-        return view('template.header', $data) .
-            view('auth.forgot_password', $data) .
-            view('template.footer', $data);
+        // Redirect to SSO server forgot password
+        $ssoUrl = rtrim(env('SSO_URL', 'http://localhost:9000'), '/');
+        return redirect($ssoUrl . '/forgot-password');
     }
 
     public function get_password(Request $req)
@@ -375,8 +560,7 @@ class AuthController extends Controller
 
             $user_data = DB::selectOne('
                 SELECT
-                    u.ID_USER,
-                    u.migrations
+                    u.ID_USER
                 FROM
                     user u
                 WHERE
@@ -399,36 +583,23 @@ class AuthController extends Controller
                     'STATUS' => 0,
                     'LOG_TIME' => date('Y-m-d H:i:s'),
                 ];
-
-                $updateUser = [];
-
-                if($user_data->migrations == 2){
-                    $updateUser = [
-                        'PASS' => $hashPassword,
-                        'migrations' => 1
-                    ];
-                } else {
-                    $updateUser = [
-                        'PASS' => $hashPassword
-                    ];
-                }
-
                 DB::table('token')->updateOrInsert(['ID_USER' => $user_data->ID_USER], $formDataToken);
-                DB::table('user')->where(['ID_USER' => $user_data->ID_USER])->update($updateUser);
+                DB::table("user")->where(["EMAIL" => $email])->update(["PASS" => $hashPassword]);
             }
+
             DB::commit();
 
             return response()->json([
-                'status_code'       => 200,
-                'status_message'    => "Berhasil Mereset Password!",
-                'data'              => $Password
+                'status_code' => 200,
+                'status_message' => "Berhasil Mereset Password!",
+                'data' => $Password
             ]);
         } catch (Exception $e) {
             DB::rollBack();
 
             return response()->json([
-                'status_code'       => 500,
-                'status_message'    => $e->getMessage()
+                'status_code' => 500,
+                'status_message' => $e->getMessage()
             ]);
         }
     }
@@ -436,34 +607,39 @@ class AuthController extends Controller
     public function change_password(Request $req)
     {
         try {
-            DB::beginTransaction();
+            $ssoToken = session('sso_token');
+            $currentPassword = $req->input('passwordOld');
+            $newPassword = $req->input('password');
 
-            $iduser = session("user")[0]["ID_USER"];
-            $checkPassword = DB::table("user")->where("ID_USER", $iduser)->first();
-            $oldPassword = hash("sha256", md5($req->input("passwordOld")));
-            $newPassword = hash("sha256", md5($req->input("password")));
-
-            if ($checkPassword->PASS == $oldPassword) {
-                $tes = DB::table("user")->where(["ID_USER" => $iduser])->update(["PASS" => $newPassword]);
-            } else {
+            if (!$ssoToken) {
                 return response()->json([
-                    'status_code'       => 400,
-                    'status_message'    => "Kata Sandi Lama Tidak Sesuai!"
+                    'status_code' => 401,
+                    'message' => 'Sesi SSO tidak ditemukan. Silakan login ulang.'
                 ]);
             }
 
-            DB::commit();
+            // Change password on SSO server
+            $ssoResult = $this->ssoService->changePassword($ssoToken, $currentPassword, $newPassword);
+
+            if (!$ssoResult['success']) {
+                return response()->json([
+                    'status_code' => 400,
+                    'message' => $ssoResult['message'] ?? 'Kata Sandi Lama Tidak Sesuai!'
+                ]);
+            }
+
+            // Also update local DB for backward compatibility
+            $hash_password = hash('sha256', md5($newPassword));
+            DB::table("user")->where("ID_USER", session("user")[0]["ID_USER"])->update(["PASS" => $hash_password]);
 
             return response()->json([
-                'status_code'       => 200,
-                'status_message'    => "Berhasil Mengganti Kata Sandi!"
+                'status_code' => 200,
+                'message' => 'Berhasil Mengganti Kata Sandi!'
             ]);
         } catch (Exception $e) {
-            DB::rollBack();
-
             return response()->json([
-                'status_code'       => 500,
-                'status_message'    => $e->getMessage()
+                'status_code' => 500,
+                'message' => $e->getMessage()
             ]);
         }
     }

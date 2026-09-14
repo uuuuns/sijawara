@@ -365,15 +365,40 @@ class ProfileGuest extends Controller
             $user_data = collect([
                 'EMAIL' => $request->input('email'),
                 'NAME' => $request->input('name_user'),
-                'JENIS_INSTANSI' => session('user')[0]['JENIS_INSTANSI'],
+                'JENIS_INSTANSI' => session('user')[0]['JENIS_INSTANSI'] ?? 'UMUM',
                 'ID_USER' => session('user')[0]['ID_USER'],
-                'FOTO_PROFILE' => $data[0]['FOTO_PROFILE'],
-                'ID_ROLE' => session('user')[0]['ID_ROLE'],
+                'FOTO_PROFILE' => !empty($data[0]['FOTO_PROFILE']) ? $data[0]['FOTO_PROFILE'] : (session('user')[0]['FOTO_PROFILE'] ?? null),
+                'ID_ROLE' => session('user')[0]['ID_ROLE'] ?? 3,
                 'IS_DATA_COMPLETE' => $is_data_complete,
                 'LOGGED_IN' => TRUE
             ]);
-            Session::flush();
-            Session::push('user', $user_data);
+
+            // Sync updated profile to SSO server (best-effort)
+            $ssoToken = session('sso_token');
+            try {
+                $ssoService = new \App\Services\SsoService();
+                $ssoProfileData = [
+                    'name' => $request->input('name_user'),
+                    'email' => $request->input('email'),
+                    'phone' => $request->input('no_hp'),
+                    'nik' => $request->input('nik'),
+                ];
+                if (!empty($data[0]['FOTO_PROFILE'])) {
+                    $ssoProfileData['photo'] = $data[0]['FOTO_PROFILE'];
+                }
+
+                if ($ssoToken) {
+                    $ssoService->updateProfile($ssoToken, $ssoProfileData);
+                } elseif (!empty($request->input('email'))) {
+                    $ssoService->updateUser($request->input('email'), $ssoProfileData);
+                }
+            } catch (\Throwable $e) {
+                \Illuminate\Support\Facades\Log::warning('Failed to sync profile update to SSO: ' . $e->getMessage());
+            }
+
+            // Replace user in session while keeping sso_token and sso_user intact
+            Session::forget('user');
+            Session::put('user', [$user_data]);
         }
         return redirect('/profil');
     }

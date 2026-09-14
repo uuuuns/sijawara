@@ -42,6 +42,8 @@ return [
     //     'client_secret' => env('INSTAGRAM_CLIENT_SECRET'),
     //     'redirect' => env('INSTAGRAM_REDIRECT_URL'),
     // ],
-
+    'sso' => [
+        'url' => env('SSO_URL', 'http://localhost:9000'),
+    ],
 
 ];

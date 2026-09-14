@@ -102,6 +102,21 @@ class UserController extends Controller
         DB::table('user')->INSERT($user);
         DB::table('user_data')->INSERT($userdata);
 
+        // Sync new user/instructor to SSO server (best-effort)
+        try {
+            $ssoService = app(\App\Services\SsoService::class);
+            $ssoService->createUser([
+                'name' => $req->input('name'),
+                'email' => $req->input('email'),
+                'phone' => $req->input('contact'),
+                'password' => $req->input('password'),
+                'user_type' => 'pegawai',
+                'legacy_sijawara_id' => $user['ID_USER'],
+            ]);
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::warning('Failed to sync new instructor to SSO: ' . $e->getMessage());
+        }
+
         return redirect('pengguna')->with(['succ_msg' => 'Berhasil menambahkan user baru', 'location' => 'user']);
     }
 
@@ -119,6 +134,19 @@ class UserController extends Controller
         }
 
         DB::table('user')->WHERE(['ID_USER' => $req->input('up_id_user')])->update($user);
+
+        // Sync to SSO server (best-effort)
+        if (!empty($req->input('up_email'))) {
+            try {
+                $ssoService = app(\App\Services\SsoService::class);
+                $ssoService->updateUser($req->input('up_email'), [
+                    'name' => $req->input('up_name'),
+                    'phone' => $req->input('up_contact'),
+                ]);
+            } catch (\Throwable $e) {
+                \Illuminate\Support\Facades\Log::warning('Failed to sync user update to SSO: ' . $e->getMessage());
+            }
+        }
 
         return redirect('pengguna')->with(['succ_msg' => 'Berhasil memperbarui user', 'location' => 'user']);
     }
@@ -147,6 +175,32 @@ class UserController extends Controller
         }
 
         DB::table('user')->where('ID_USER', $request->input('up_userId'))->update($user);
+
+        // Sync updated fields to SSO user via target_email (server-to-server)
+        $targetEmail = $request->input('up_userEmail');
+        if (!empty($targetEmail)) {
+            try {
+                $ssoService = app(\App\Services\SsoService::class);
+                $ssoProfileData = [];
+
+                if (!empty($request->input('up_userName'))) {
+                    $ssoProfileData['name'] = $request->input('up_userName');
+                }
+                if (!empty($request->input('up_userTelp'))) {
+                    $ssoProfileData['phone'] = $request->input('up_userTelp');
+                }
+                if (!empty($request->input('up_userNIK'))) {
+                    $ssoProfileData['nik'] = $request->input('up_userNIK');
+                }
+
+                if (!empty($ssoProfileData)) {
+                    $ssoService->updateUser($targetEmail, $ssoProfileData);
+                }
+            } catch (\Throwable $e) {
+                \Illuminate\Support\Facades\Log::warning('Failed to sync profile to SSO for user ' . $request->input('up_userId') . ': ' . $e->getMessage());
+            }
+        }
+
         return redirect('pengguna')->with([
             'msg' => 'Berhasil memperbarui data user ' . $request->input('up_userName'),
             'location' => 'user',

@@ -22,8 +22,8 @@ Route::get('auth/infoUser', 'api\Auth@getUserInfo');
 Route::get('info/UserKoperasi', 'api\UserData@dataKoperasi');
 Route::get('info/UserUkm', 'api\UserData@dataUkm');
 
-Route::get('masterdata/kota', 'api\MasterData@masterDataKota');
-Route::get('masterdata/provinsi', 'api\MasterData@masterDataProvinsi');
+// Route::get('masterdata/kota', 'api\MasterData@masterDataKota');
+// Route::get('masterdata/provinsi', 'api\MasterData@masterDataProvinsi');
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

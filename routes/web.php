@@ -40,10 +40,11 @@ Route::get('kdmp/info/{any}', 'guest_controller\KdmpGuest@infoCourse');
 
 //END KDMP GUEST
 
-Route::get('masuk', 'AuthController@login');
+Route::get('masuk', 'AuthController@login')->name('masuk');
 Route::post('masuk/authentication', 'AuthController@login_authentication');
+Route::get('sso-transfer', 'AuthController@sso_transfer');
 
-Route::get('daftar', 'AuthController@register');
+Route::get('daftar', 'AuthController@register')->name('daftar');
 Route::post('register/store', 'AuthController@store');
 
 Route::get('keluar', 'AuthController@logout');
